@@ -1,0 +1,13 @@
+#bdpAppMain {
+
+    .layout-content {
+        padding: 10px 24px 24px 24px;
+    }
+
+    #menuWrapper {
+        &.menu-wrapper {
+            border-top: 1px solid var(--bdpMenuBorder);
+            background-color: var(--bdpMenuBackground);
+        }
+    }
+}

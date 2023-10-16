@@ -1,0 +1,45 @@
+{
+    "data": [
+        {
+            "key": "0",
+            "label": "General",
+            "data": "Documents Folder",
+            "icon": "pi pi-fw pi-folder",
+            "children": [{
+                "key": "0-0",
+                "label": "Onboarding",
+                "data": "Work Folder",
+                "icon": "pi pi-fw pi-folder",
+                "children": [{ "key": "0-0-0", "label": "Vendor Onboarding & Training(Ocean)", "icon": "pi pi-fw pi-folder-open", "data": "Expenses Document",
+                "children": [{ "key": "0-0-0", "label": "VOT Air", "icon": "pi pi-fw pi-circle-fill", "data": "Expenses Document" },
+                { "key": "0-0-1", "label": "VOT Ocean", "icon": "pi pi-fw pi-circle-fill", "data": "Resume Document" }] },
+                 { "key": "0-0-1", "label": "Vendor Onboarding & Training(Air)", "icon": "pi pi-fw pi-folder-open", "data": "Resume Document" },
+                 { "key": "0-0-1", "label": "Customer Onboarding & Training(Ocean)", "icon": "pi pi-fw pi-folder-open", "data": "Resume Document" },
+                 { "key": "0-0-1", "label": "Customer Onboarding & Training(Air)", "icon": "pi pi-fw pi-folder-open", "data": "Resume Document" }]
+            }]
+        },
+        {
+            "key": "1",
+            "label": "Supply Chain Insights",
+            "data": "Events Folder",
+            "icon": "pi pi-fw pi-folder",
+            "children": [
+                { "key": "1-0", "label": "SC 1", "icon": "pi pi-fw pi-calendar-plus", "data": "Meeting" },
+                { "key": "1-1", "label": "SC 2", "icon": "pi pi-fw pi-calendar-plus", "data": "Product Launch" },
+                { "key": "1-2", "label": "SC 3", "icon": "pi pi-fw pi-calendar-plus", "data": "Report Review" }]
+        },
+        {
+            "key": "2",
+            "label": "Invoicing",
+            "data": "Movies Folder",
+            "icon": "pi pi-fw pi-folder",
+            "children": [{
+                "key": "0-0",
+                "label": "Onboarding",
+                "data": "Work Folder",
+                "icon": "pi pi-fw pi-folder",
+                "children": [{ "key": "0-0-0", "label": "Vendor Onboarding & Training(Ocean)", "icon": "pi pi-fw pi-folder-open", "data": "Expenses Document" }, { "key": "0-0-1", "label": "Vendor Onboarding & Training(Air)", "icon": "pi pi-fw pi-folder-open", "data": "Resume Document" },{ "key": "0-0-1", "label": "Customer Onboarding & Training(Ocean)", "icon": "pi pi-fw pi-folder-open", "data": "Resume Document" },{ "key": "0-0-1", "label": "Customer Onboarding & Training(Air)", "icon": "pi pi-fw pi-folder-open", "data": "Resume Document" }]
+            }]
+        }
+    ]
+}
