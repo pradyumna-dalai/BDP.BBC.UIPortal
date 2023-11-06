@@ -7,6 +7,7 @@ import {AppBreadcrumbService} from '../../../app.breadcrumb.service';
   styleUrls: ['./project.component.scss']
 })
 export class ProjectComponent {
+  text:string = '';
 
   constructor(private breadcrumbService: AppBreadcrumbService) {
     this.breadcrumbService.setItems([

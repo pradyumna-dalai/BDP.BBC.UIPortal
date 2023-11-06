@@ -23,9 +23,9 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'Project', icon: 'pi pi-fw pi-file', routerLink: ['/project'],
             },
-            {
-                label: 'Template', icon: 'pi pi-fw pi-th-large', routerLink: ['/template'],
-            },
+            // {
+            //     label: 'Template', icon: 'pi pi-fw pi-th-large', routerLink: ['/template'],
+            // },
             {
                 label: 'Glossary', icon: 'pi pi-fw pi-desktop', routerLink: ['/glossary'],
             },

@@ -1,23 +1,45 @@
-<div class="layout-dashboard">
-    <div class="card">
-        <div class="grid">
-            <div class="col-6"><h4><b>Building Block Service Hierarchy</b></h4></div>
-            <div style="display: flex;justify-content: end;" class="col-6">
-                    <span class="p-input-icon-left">
-                        <i class="pi pi-search"></i>
-                        <input type="text" pInputText placeholder="Search..."/>
-                    </span>
+<div class="grid p-fluid">
+    <div class="col-12 md:col-3">
+        <div class="card" style="height: 37rem;">
+            <div class="grid" style="margin-top: 4px;">
+                <div class="col-6"><h4 id="heading"><b>Building Blocks</b></h4></div>
+                <div style="display: flex;justify-content: end;" class="col-6">
+                    <button pButton pRipple [routerLink]="['/create-buildingblocks']" icon="pi pi-plus" style="border-radius: 6px;width: 79px;"  label="New" class="mr-2 mb-2"></button>
+                </div>
+                <div class="col-12"><span class="p-input-icon-left" style="margin-top: -19px;">
+                    <i class="pi pi-search"></i>
+                    <input type="text" pInputText placeholder="Search..."/>
+                </span></div>
+                <div class="col-12">
+                    <p-tabView>
+                        <p-tabPanel header="Building Blocks">
+                            <div style="margin-top: 115px;">
+                                <div style="display: flex;justify-content: center;"><h5>There Is No Available Data</h5></div>
+                                <div style="display: flex;justify-content: center;"><h6>Create Building Blocks To Show</h6></div>
+                            </div>
+                        </p-tabPanel>
+                        <p-tabPanel header="Drafts">
+                            <div style="margin-top: 115px;">
+                                <div style="display: flex;justify-content: center;"><h5>There Is No Available Data</h5></div>
+                                <div style="display: flex;justify-content: center;"><h6>Create Building Blocks To Show</h6></div>
+                            </div>
+                        </p-tabPanel>
+                    </p-tabView>
+                </div>
             </div>
         </div>
-        <div style="display: flex;justify-content: center;">
-            <img src="assets/layout/images/no-bb-found.svg" alt="No Building Blocks Found">
-           
-
-        </div><br>
-        <div style="display: flex;justify-content: center;"><h4>No Data To Show</h4></div>
-        <div style="display: flex;justify-content: center;"><h6>Create Building blocks to show</h6></div>
-        <div style="display: flex;justify-content: center;"><button pButton pRipple label="Create Building Blocks" class="mr-2 mb-2"></button></div>
-       
-
     </div>
+    <div class="col-12 md:col-9" >
+        <div class="card" style="height: 37rem;">
+            <div style="margin-top: 58px;">
+                <div style="display: flex;justify-content: center;">
+                    <img src="assets/layout/images/no-bb-found.svg" alt="No Building Blocks Found">
+                </div><br>
+                <div style="display: flex;justify-content: center;"><h4>No Data To Show</h4></div>
+                <div style="display: flex;justify-content: center;"><h6>Create Building blocks to show</h6></div>
+                <div style="display: flex;justify-content: center;"><a [routerLink]="['/create-buildingblocks']" style="text-decoration: underline;">Create Building Blocks</a></div>
+            </div>
+        </div>
+    </div>
+    
 </div>

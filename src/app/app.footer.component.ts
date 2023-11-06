@@ -4,7 +4,7 @@ import {AppComponent} from './app.component';
 @Component({
     selector: 'app-footer',
     template: `
-        <div class="layout-footer">
+        <div class="layout-footer" style="height:56px">
             <div class="col-12 md:col-3 bdp-align-left">
                 End User License Agreement <a target="blank" [routerLink]="['/end-user-license-agreement']">(EULA)</a>
             </div>

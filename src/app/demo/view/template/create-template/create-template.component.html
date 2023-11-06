@@ -1,3 +1,138 @@
-<div class="card" style="display: flex;justify-content: center;">
-    <h4>Page under construction</h4>
+<div class="card">
+    <p-tabView orientation="left">
+        <p-tabPanel header="General Information" class="line-height-3 m-0"><br>
+            <div class="p-fluid grid">
+                <div class="field col-12 md:col-4">
+                    <span class="p-float-label">
+                        <input type="text" id="inputtext" pInputText > 
+                        <label for="Template Name">Template Name</label>
+                    </span>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <span class="p-float-label">
+                        <p-dropdown inputId="dropdown"  optionLabel="name"></p-dropdown>
+                        <label for="Type">Type</label>
+                    </span>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <span class="p-float-label">
+                        <p-calendar inputId="calendar" ></p-calendar>
+                        <label for="Start Date">Start Date</label>
+                    </span>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <span class="p-float-label">
+                        <p-calendar inputId="calendar" ></p-calendar>
+                        <label for="End Date">End Date</label>
+                    </span>
+                </div>
+                
+                </div>
+                <div class="p-fluid grid">
+                    <div class="field col-12 md:col-12">
+                        <span class="p-float-label">
+                            <textarea inputId="textarea" rows="3" style="resize: none;" cols="30" pInputTextarea></textarea>
+                            <label for="Description">Description</label>
+                        </span>
+                    </div>
+                </div>
+                <span><b>Documents</b></span><br>
+                <p>Upload the following documents.File size - 5mb,Format-CSV,JPEG,Excel,PDF</p><br>
+                <div class="grid">
+                    <div class="col-4" style="display: flex;"><span style="padding-top: 6px;">Value Documents</span>&nbsp;&nbsp;<p-fileUpload  mode="basic" name="demo[]" url="./upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUpload($event)"></p-fileUpload></div>
+                    <div class="col-4" style="display: flex;"><span style="padding-top: 6px;">Response Document</span>&nbsp;&nbsp;<p-fileUpload mode="basic" name="demo[]" url="./upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUpload($event)"></p-fileUpload></div>
+                    <div class="col-4" style="display: flex;"><span style="padding-top: 6px;">Others</span>&nbsp;&nbsp;<p-fileUpload mode="basic" name="demo[]" url="./upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUpload($event)"></p-fileUpload></div>
+                </div>
+                <div style="padding-top: 29px;display: flex;justify-content: flex-end;">
+                    <button pButton pRipple type="button" label="Primary" class="p-button-outlined mr-2 mb-2"></button>
+                    <button pButton pRipple label="Submit" class="mr-2 mb-2"></button>
+                </div>
+
+           
+            
+        </p-tabPanel>
+        <p-tabPanel header="Builing Blocks" class="line-height-3 m-0">
+            <div class="grid p-fluid">
+                <div class="col-12 lg:col-6">
+                    <h5>Building Blocks</h5>
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input type="text" pInputText placeholder="Search..."/>
+                    </span>
+                    <p-tree [value]="files1"  [(selection)]="selectedFiles1"></p-tree>
+                </div>
+                <div class="col-12 lg:col-6">
+                        <h5>Selected Building Blocks</h5>
+                </div>
+            </div>
+            <div style="padding-top: 29px;display: flex;justify-content: flex-end;">
+                <button pButton pRipple type="button" label="Primary" class="p-button-outlined mr-2 mb-2"></button>
+                <button pButton pRipple label="Submit" class="mr-2 mb-2"></button>
+            </div>
+            
+        </p-tabPanel>
+        <p-tabPanel header="Summary" class="line-height-3 m-0">
+            <h5>Customer Onboarding</h5>
+            <p-accordion>
+                <p-accordionTab header="General Information" [selected]="true" class="line-height-3 m-0">
+                    <div class="p-fluid grid">
+                        <div class="field col-12 md:col-3">
+                                <label for="Template Name">Template Name</label><br>
+                                <span><b>Customer Onboarding</b></span>
+                        </div>
+                        <div class="field col-12 md:col-3">
+                                <label for="Type">Type</label><br>
+                                <span><b>Implementation</b></span>  
+                        </div>
+                        <div class="field col-12 md:col-3">
+                                <label for="Start Date">Start Date</label><br>
+                                <span><b>28 Jun 2023</b></span>
+                        </div>
+                        <div class="field col-12 md:col-3">
+                                <label for="End Date">End Date</label>
+                        </div> 
+                    </div>
+                    <div class="p-fluid grid">
+                        <div class="field col-12 md:col-12">
+                            <label for="Description">Description</label><br>
+                            <span><b>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                                dolore magna aliqua.
+                                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                consequat.
+                                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+                                laborum.</b></span>
+                                
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="p-fluid grid">
+                        <div class="field col-12 md:col-4">
+                                <label for="Template Name">Value Documents</label><br>
+                                <span><b>Loreum Ipsum.PDF</b></span>
+                               
+                        </div>
+                        <div class="field col-12 md:col-4">
+                                <label for="Type">Response Document</label><br>
+                                <span><b>Loreum Ipsum.Xls</b></span>
+                        </div>
+                        <div class="field col-12 md:col-4">
+                                <label for="Start Date">Others</label><br>
+                                <span><b>Loreum Ipsum.PDF</b></span>
+                        </div>
+                    </div>
+                </p-accordionTab>
+                <p-accordionTab header="Building Block" class="line-height-3 m-0">
+                    <ul>
+                        <li>Vendor Onboarding & Training(Ocean)</li>
+                        <li>Customer Onboarding & Training(Air)</li>
+                    </ul>
+                </p-accordionTab>
+            </p-accordion>
+            <div style="padding-top: 29px;display: flex;justify-content: flex-end;">
+                <button pButton pRipple type="button" label="Save As Draft" class="p-button-outlined mr-2 mb-2"></button>
+                <button pButton pRipple label="Continue" class="mr-2 mb-2"></button>
+            </div>
+        </p-tabPanel>
+    </p-tabView>
 </div>

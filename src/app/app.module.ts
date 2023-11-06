@@ -1,4 +1,5 @@
 import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {EditorModule} from 'primeng/editor';
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {BrowserModule} from '@angular/platform-browser';
@@ -113,10 +114,14 @@ import { ProjectComponent } from './demo/view/project/project.component';
 import { TemplateComponent } from './demo/view/template/template.component';
 import { GlossaryComponent } from './demo/view/glossary/glossary.component';
 import { CreateTemplateComponent } from './demo/view/template/create-template/create-template.component';
+import { CreateBbComponent } from './demo/view/create-bb/create-bb.component';
+import { GeneralInfoComponent } from './demo/view/create-bb/general-info.component';
+import { CommercialRefComponent } from './demo/view/create-bb/commercial-ref.component';
 
 @NgModule({
     imports: [
         BrowserModule,
+        EditorModule,
         FormsModule,
         AppRoutingModule,
         HttpClientModule,
@@ -217,7 +222,10 @@ import { CreateTemplateComponent } from './demo/view/template/create-template/cr
         ProjectComponent,
         TemplateComponent,
         GlossaryComponent,
-        CreateTemplateComponent
+        CreateTemplateComponent,
+        CreateBbComponent,
+        GeneralInfoComponent,
+        CommercialRefComponent
     ],
     providers: [
         {provide: LocationStrategy, useClass: HashLocationStrategy},
