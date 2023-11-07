@@ -15,13 +15,14 @@ interface City {
 export class CreateBbComponent {
   items: MenuItem[];
   routeItems: MenuItem[];
-  text: string = '';
+  // text: string = '';
   cities: City[];
   selectedCities: City[];
   product_category: any;
   showScopingCrad: boolean = true;
   showCommercialCrad: boolean = false;
   showOperationCrad:boolean = false;
+  visible: boolean = false;
   constructor(private breadcrumbService: AppBreadcrumbService,public messageService: MessageService) {
     this.breadcrumbService.setItems([
         {label: 'Building Blocks'},
@@ -45,6 +46,10 @@ ngOnInit() {
           routerLink: 'create-buildingblocks/commercial-ref'
       }
   ];
+}
+
+showDialog() {
+    this.visible = true;
 }
 onScopingCardClick()
 {

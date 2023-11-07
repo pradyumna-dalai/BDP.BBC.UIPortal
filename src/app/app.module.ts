@@ -85,7 +85,6 @@ import {TreeTableModule} from 'primeng/treetable';
 import {VirtualScrollerModule} from 'primeng/virtualscroller';
 import {FullCalendarModule} from '@fullcalendar/angular';
 
-import {AppCodeModule} from './blocks/app-code/app.code.component';
 import {AppComponent} from './app.component';
 import {AppMainComponent} from './app.main.component';
 import {AppMenuComponent} from './app.menu.component';
@@ -94,26 +93,13 @@ import {AppBreadcrumbComponent} from './app.breadcrumb.component';
 import {AppTopBarComponent} from './app.topbar.component';
 import {AppFooterComponent} from './app.footer.component';
 import {DashboardDemoComponent} from './demo/view/dashboarddemo.component';
-import {EmptyDemoComponent} from './demo/view/emptydemo.component';
-import {DocumentationComponent} from './demo/view/documentation.component';
 import {AppNotfoundComponent} from './pages/app.notfound.component';
-import {BlockViewer} from './blocks/blockviewer/blockviewer.component';
 
-import {CountryService} from './demo/service/countryservice';
-import {CustomerService} from './demo/service/customerservice';
-import {EventService} from './demo/service/eventservice';
-import {IconService} from './demo/service/iconservice';
-import {NodeService} from './demo/service/nodeservice';
-import {PhotoService} from './demo/service/photoservice';
-import {ProductService} from './demo/service/productservice';
-import {ConfigService} from './demo/service/app.config.service';
 
 import {MenuService} from './app.menu.service';
 import {AppBreadcrumbService} from './app.breadcrumb.service';
 import { ProjectComponent } from './demo/view/project/project.component';
-import { TemplateComponent } from './demo/view/template/template.component';
 import { GlossaryComponent } from './demo/view/glossary/glossary.component';
-import { CreateTemplateComponent } from './demo/view/template/create-template/create-template.component';
 import { CreateBbComponent } from './demo/view/create-bb/create-bb.component';
 import { GeneralInfoComponent } from './demo/view/create-bb/general-info.component';
 import { CommercialRefComponent } from './demo/view/create-bb/commercial-ref.component';
@@ -204,7 +190,6 @@ import { CommercialRefComponent } from './demo/view/create-bb/commercial-ref.com
         TreeModule,
         TreeTableModule,
         VirtualScrollerModule,
-        AppCodeModule
     ],
     declarations: [
         AppComponent,
@@ -215,22 +200,15 @@ import { CommercialRefComponent } from './demo/view/create-bb/commercial-ref.com
         AppTopBarComponent,
         AppFooterComponent,
         DashboardDemoComponent,
-        EmptyDemoComponent,
-        DocumentationComponent,
         AppNotfoundComponent,
-        BlockViewer,
         ProjectComponent,
-        TemplateComponent,
         GlossaryComponent,
-        CreateTemplateComponent,
         CreateBbComponent,
         GeneralInfoComponent,
         CommercialRefComponent
     ],
     providers: [
-        {provide: LocationStrategy, useClass: HashLocationStrategy},
-        CountryService, CustomerService, EventService, IconService, NodeService,
-        PhotoService, ProductService, MenuService, AppBreadcrumbService, ConfigService
+        {provide: LocationStrategy, useClass: HashLocationStrategy}, MenuService, AppBreadcrumbService
     ],
     bootstrap: [AppComponent]
 })
