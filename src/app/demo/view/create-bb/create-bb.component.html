@@ -1,22 +1,26 @@
 <div class="card">
     <h5>Create Building Blocks</h5>
     <hr>
-    <div class="p-fluid grid">
-        <div class="field col-12 md:col-3">
+    <div class="p-fluid grid common-header">
+        <div class="field master-dropdown">
             <label>Product Name</label>
-            <p-dropdown placeholder="Select Product Name" inputId="dropdown1"  optionLabel="pName"></p-dropdown> 
+            <p-dropdown placeholder="Select Product Name"  [(ngModel)]="product_name" inputId="dropdown1"  optionLabel="pName"></p-dropdown> 
         </div>
-        <div class="field col-12 md:col-3">
+        <div class="field master-dropdown">
                 <label>Product Scope</label>
                 <p-dropdown placeholder="Select Product Scope" inputId="dropdown2"  optionLabel="pScope"></p-dropdown> 
         </div>
-        <div class="field col-12 md:col-3">
+        <div class="field master-dropdown">
             <label>Product Category</label>
             <p-dropdown [(ngModel)]="product_category" placeholder="Select Product Category" inputId="dropdown3"  optionLabel="pCategory"></p-dropdown> 
         </div>
-        <div class="field col-12 md:col-3">
+        <div class="field master-dropdown">
                 <label>Building Block Name</label>
                 <input placeholder="Enter Building Block Name" type="text" id="inputtext" pInputText > 
+        </div>
+        <div class="field master-dropdown">
+            <label>Charge Code</label>
+            <p-dropdown [(ngModel)]="product_category" placeholder="Select Product Category" inputId="dropdown3"  optionLabel="pCategory"></p-dropdown> 
         </div>
         <!-- <div class="field col-12 md:col-3">
             <label for="Template Name">Charge Code</label>
@@ -24,9 +28,10 @@
         </div> -->
     </div>
 </div>
-<div class="p-fluid grid">
-    <div class="col-12 md:col-4">
-        <button pButton pRipple type="button"  (click)="onScopingCardClick()" label="Scoping Card" class="p-button-outlined mr-2 mb-2 bbCard"></button>
+<div class="p-fluid grid" >
+    <div class="col-12 md:col-4" >
+        
+        <button pButton pRipple  (click)="onScopingCardClick()" label="Scoping Card"  class="p-button-outlined mr-2 mb-2 bbCard"></button>
     </div>
     <div class="col-12 md:col-4">
         <button pButton pRipple type="button" (click)="onOperationCardClick()"  label="Operation Card" class="p-button-outlined mr-2 mb-2 bbCard"></button>
@@ -84,8 +89,10 @@
         <button pButton pRipple label="Continue" class="mr-2 mb-2"></button>
     </div>
 </div>
-<div class="card" *ngIf="this.showOperationCrad==true" style="display: flex;justify-content: center;height: 33rem;">
-    <img src="assets/layout/images/page-under-construction.jpg" alt="No Building Blocks Found">
+<div class="card" *ngIf="this.showOperationCrad==true">
+    <div class="page-under-construction">
+        <img src="assets/layout/images/page-under-construction.jpg" alt="No Building Blocks Found">
+    </div>
 </div>
 <!-- <div class="card" *ngIf="this.showCommercialCrad==true">
     <div class="card">
@@ -94,13 +101,15 @@
     </div>
     <router-outlet></router-outlet>   
 </div> -->
-<div class="card" *ngIf="this.showCommercialCrad==true" style="display: flex;justify-content: center;height: 33rem;">
-    <img src="assets/layout/images/page-under-construction.jpg" alt="No Building Blocks Found">
+<div class="card" *ngIf="this.showCommercialCrad==true">
+    <div class="page-under-construction">
+        <img src="assets/layout/images/page-under-construction.jpg" alt="No Building Blocks Found">
+    </div>
 </div>
 
 <!-- import from excel dialog -->
 <p-dialog header="Import Excel" [(visible)]="visible" [style]="{width: '70vw'}">
-    <div style="display: flex;justify-content: center;height: 33rem;">
+    <div class="page-under-construction">
         <img src="assets/layout/images/page-under-construction.jpg" alt="No Building Blocks Found">
     </div>
 </p-dialog>

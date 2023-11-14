@@ -26,3 +26,8 @@ i:not([class~="pi"]) {
     margin: 0 2px;
     display: inline-flex;
 }
+.page-under-construction{
+    display: flex;
+    justify-content: center;
+    height: 33rem;
+}

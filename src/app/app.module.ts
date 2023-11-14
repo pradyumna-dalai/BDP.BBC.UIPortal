@@ -3,7 +3,6 @@ import {EditorModule} from 'primeng/editor';
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {BrowserModule} from '@angular/platform-browser';
-import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AppRoutingModule} from './app-routing.module';
 import {AccordionModule} from 'primeng/accordion';
@@ -208,7 +207,7 @@ import { CommercialRefComponent } from './demo/view/create-bb/commercial-ref.com
         CommercialRefComponent
     ],
     providers: [
-        {provide: LocationStrategy, useClass: HashLocationStrategy}, MenuService, AppBreadcrumbService
+     MenuService, AppBreadcrumbService
     ],
     bootstrap: [AppComponent]
 })

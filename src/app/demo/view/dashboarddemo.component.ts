@@ -6,7 +6,7 @@ import {Subscription} from 'rxjs';
 @Component({
     templateUrl: './dashboard.component.html',
     styleUrls: ['../../../assets/demo/badges.scss',
-'./dashboard.component.css']
+'./dashboard.component.scss']
 })
 export class DashboardDemoComponent implements OnInit {
 

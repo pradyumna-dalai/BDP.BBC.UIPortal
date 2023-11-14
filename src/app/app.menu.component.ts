@@ -12,6 +12,7 @@ import {AppComponent} from './app.component';
 export class AppMenuComponent implements OnInit {
 
     model: any[];
+    model1: any[];
 
     constructor(public app: AppComponent) {}
 
@@ -23,9 +24,6 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'Project', icon: 'pi pi-fw pi-file', routerLink: ['/project'],
             },
-            // {
-            //     label: 'Template', icon: 'pi pi-fw pi-th-large', routerLink: ['/template'],
-            // },
             {
                 label: 'Glossary', icon: 'pi pi-fw pi-desktop', routerLink: ['/glossary'],
             },
@@ -47,5 +45,51 @@ export class AppMenuComponent implements OnInit {
                 ]
             }
         ];
+
+        this.model1 = [
+            {
+                "id": 1 ,
+                "name": "Building Block",
+                "description" : "Describe the menu options, which can be viewed in tooltip",
+                "parent_id" : null,
+                "redirect_url" : null,
+                "sub_menu" :  
+                [
+                {
+                            "id": 2 ,
+                            "name": "Building Block",
+                            "description" : "Describe the menu options, which can be viewed in tooltip",
+                            "parent_id" : 1,
+                            "redirect_url" : null,
+                            "sub_menu" : false
+                        },
+                         {
+                            "id": 3 ,
+                            "name": "Building Block",
+                            "description" : "Describe the menu options, which can be viewed in tooltip",
+                            "parent_id" : 1,
+                            "redirect_url" : null,
+                            "sub_menu" : false
+                        },
+                {
+                            "id": 2 ,
+                            "name": "Building Block",
+                            "description" : "Describe the menu options, which can be viewed in tooltip",
+                            "parent_id" : 1,
+                            "redirect_url" : null,
+                            "sub_menu" : false
+                        },
+                         {
+                            "id": 3 ,
+                            "name": "Building Block",
+                            "description" : "Describe the menu options, which can be viewed in tooltip",
+                            "parent_id" : 1,
+                            "redirect_url" : null,
+                            "sub_menu" : false
+                        }
+                ]
+            }
+        ]
+        
     }
 }
