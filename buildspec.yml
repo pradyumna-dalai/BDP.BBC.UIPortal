@@ -12,7 +12,8 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - ng build --configuration=production
+      # - ng build --configuration=production
+      - ng build
   post_build:
     commands:
       - echo build process finised on `date`
