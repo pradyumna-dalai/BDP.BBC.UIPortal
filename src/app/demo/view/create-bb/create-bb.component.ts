@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import {AppBreadcrumbService} from '../../../app.breadcrumb.service';
+import { AppBreadcrumbService } from '../../../app.breadcrumb.service';
 import { MenuItem, MessageService } from 'primeng/api';
 import { MasterTableService } from './../../../services/master-table.service'
+import { environment } from "../../../../environments/environment"
 
-interface City {
+interface modeOfTrans {
   name: string,
   code: string
 }
@@ -18,78 +19,100 @@ export class CreateBbComponent {
   items: MenuItem[];
   routeItems: MenuItem[];
   // text: string = '';
-  cities: City[];
-  selectedCities: City[];
+  mot: modeOfTrans[];
+  selectedMod: modeOfTrans[];
   product_category: any;
+  charge_code: any;
   showScopingCrad: boolean = true;
   showCommercialCrad: boolean = false;
-  showOperationCrad:boolean = false;
+  showOperationCrad: boolean = false;
   visible: boolean = false;
   product_name: any;
+  selected: boolean = true;
+  seervice_desc: any;
+  value_to_psa_bdp: any;
+  customer_requirement: any;
+  parameters: any;
+  deliverables: any;
+  stakeholders_audience: any;
+  data: any;
+  procuctNames: any
+  procuctNamesOptions = []
 
-  constructor(private breadcrumbService: AppBreadcrumbService,public messageService: MessageService, public MasterTableservice: MasterTableService) {
+  constructor(private breadcrumbService: AppBreadcrumbService, public messageService: MessageService, public MasterTableservice: MasterTableService) {
     this.breadcrumbService.setItems([
-        {label: 'Building Blocks'},
-        {label: 'Create Building Blocks'},
-    ]);
-    this.cities = [
-      {name: 'Ocean', code: 'NY'},
-      {name: 'Air', code: 'RM'},
-      {name: 'Rail', code: 'LDN'},
-      {name: 'Road', code: 'IST'},
-  ];
-}
-ngOnInit() {
-  this.routeItems = [
       {
-          label: 'General Information',
-          routerLink: 'general-info'
+        label: 'Building Blocks',
+        routerLink: 'building-block'
+      },
+      { label: 'Create Building Blocks' },
+    ]);
+    this.mot = [
+      { name: 'Ocean', code: 'NY' },
+      { name: 'Air', code: 'RM' },
+      { name: 'Rail', code: 'LDN' },
+      { name: 'Road', code: 'IST' },
+    ];
+  }
+  ngOnInit() {
+    this.routeItems = [
+      {
+        label: 'General Information',
+        routerLink: 'general-info'
       },
       {
-          label: 'Commercial Reference',
-          routerLink: 'create-buildingblocks/commercial-ref'
+        label: 'Commercial Reference',
+        routerLink: 'create-buildingblocks/commercial-ref'
       }
-  ];
-  this.getmasterData(this.product_name);
-}
+    ];
+    this.getmasterData(this.product_name);
 
-showDialog() {
+  }
+
+  showDialog() {
     this.visible = true;
-}
-onScopingCardClick()
-{
-  this.showScopingCrad = true;
-  this.showOperationCrad = false;
-  this.showCommercialCrad = false;
-}
-onOperationCardClick(){
-  this.showScopingCrad = false;
-  this.showOperationCrad = true;
-  this.showCommercialCrad = false;
-}
-onCommercialCardClick(){
-  this.showScopingCrad = false;
-  this.showOperationCrad = false;
-  this.showCommercialCrad = true;
-}
+  }
+  onScopingCardClick() {
+    this.showScopingCrad = true;
+    this.showOperationCrad = false;
+    this.showCommercialCrad = false;
+  }
+  onOperationCardClick() {
+    this.showScopingCrad = false;
+    this.showOperationCrad = true;
+    this.showCommercialCrad = false;
+  }
+  onCommercialCardClick() {
+    this.showScopingCrad = false;
+    this.showOperationCrad = false;
+    this.showCommercialCrad = true;
+  }
+  clear() {
+    this.seervice_desc = "";
+    this.value_to_psa_bdp = "";
+    this.customer_requirement = "";
+    this.parameters = "";
+    this.deliverables = "";
+    this.stakeholders_audience = "";
+    this.selectedMod = [];
+  }
 
-getmasterData(body) {
-  this.MasterTableservice.getProductName(body).subscribe((res: any) => {
-    console.log(res+"kk");
-      if (res?.success == true) {
-          // this.succes = res.success
-          // this.data = res?.result?.data;
-          // this.totalRecords = res?.result?.total;
-          // res?.result.data?.map((item, i) => {
-          //     if (item.is_top_port == 1) {
-          //         item.is_top_port = true
-          //     } else {
-          //         item.is_top_port = false
-          //     }
-          // })
-          // setTimeout(() => { this.loading = false }, 300);
+  getmasterData(body) {
+    this.MasterTableservice.getProductName(body).subscribe((res: any) => {
+      if (res?.message == "success") {
+        this.procuctNamesOptions = res?.data;
       }
-  })
-}
+    })
+  }
+
+  onProductSelect(body)
+  {
+    
+      this.MasterTableservice.getProductScope(body,this.product_name).subscribe((res: any) => {
+        console.log("ok");
+        
+      })
+    
+  }
 
 }

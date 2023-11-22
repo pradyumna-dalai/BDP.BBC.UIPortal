@@ -11,6 +11,6 @@ export const environment = {
     sessionTimeoutInterval: 5 * 60 * 1000,
     sessionDialogInterval: 1 * 60 * 1000,
     
-    endpoint_url:"http://localhost:8080/buildingblocks/api/v1/",
+    endpoint_url:"localhost:8080/buildingblocks/api/v1/",
   };
   

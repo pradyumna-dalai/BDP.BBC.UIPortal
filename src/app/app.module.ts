@@ -84,6 +84,9 @@ import {TreeTableModule} from 'primeng/treetable';
 import {VirtualScrollerModule} from 'primeng/virtualscroller';
 import {FullCalendarModule} from '@fullcalendar/angular';
 
+import { ApiErrorInterceptor, ApiRequestInterceptor } from '../app/common/index';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+
 import {AppComponent} from './app.component';
 import {AppMainComponent} from './app.main.component';
 import {AppMenuComponent} from './app.menu.component';
@@ -100,8 +103,6 @@ import {AppBreadcrumbService} from './app.breadcrumb.service';
 import { ProjectComponent } from './demo/view/project/project.component';
 import { GlossaryComponent } from './demo/view/glossary/glossary.component';
 import { CreateBbComponent } from './demo/view/create-bb/create-bb.component';
-import { GeneralInfoComponent } from './demo/view/create-bb/general-info.component';
-import { CommercialRefComponent } from './demo/view/create-bb/commercial-ref.component';
 
 @NgModule({
     imports: [
@@ -203,11 +204,20 @@ import { CommercialRefComponent } from './demo/view/create-bb/commercial-ref.com
         ProjectComponent,
         GlossaryComponent,
         CreateBbComponent,
-        GeneralInfoComponent,
-        CommercialRefComponent
+
     ],
     providers: [
-     MenuService, AppBreadcrumbService
+     MenuService, AppBreadcrumbService,
+     {
+        provide: HTTP_INTERCEPTORS,
+        useClass: ApiRequestInterceptor,
+        multi: true
+    },
+    {
+        provide: HTTP_INTERCEPTORS,
+        useClass: ApiErrorInterceptor,
+        multi: true
+    },
     ],
     bootstrap: [AppComponent]
 })

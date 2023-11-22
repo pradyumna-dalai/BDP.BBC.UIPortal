@@ -1,7 +1,9 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {AppBreadcrumbService} from '../../app.breadcrumb.service';
 import { AppMainComponent } from '../../app.main.component';
+import {TreeNode} from 'primeng/api';
 import {Subscription} from 'rxjs';
+
 
 @Component({
     templateUrl: './dashboard.component.html',
@@ -11,7 +13,8 @@ import {Subscription} from 'rxjs';
 export class DashboardDemoComponent implements OnInit {
 
 
-
+    files1: TreeNode[];
+    selectedFiles1: TreeNode;
 
     subscription: Subscription;
 
@@ -24,7 +27,7 @@ export class DashboardDemoComponent implements OnInit {
     }
 
     ngOnInit() {
-       
+   
     }
 
    
