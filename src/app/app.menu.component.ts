@@ -25,10 +25,6 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'Project', icon: 'pi pi-fw pi-file', routerLink: ['/project'],
             },
-            // {
-            //     label: 'Glossary', icon: 'pi pi-fw pi-desktop', routerLink: ['/glossary'],
-            // },
-
             {
                 label: 'Adminstration', icon: 'pi pi-fw pi-cog', routerLink: ['/uikit'],
                 items: [
