@@ -134,9 +134,9 @@ export class AppMenuitemComponent implements OnInit, OnDestroy {
         }
 
         // navigate with hover in horizontal mode
-        if (this.root) {
-            this.app.menuHoverActive = !this.app.menuHoverActive;
-        }
+        // if (this.root) {
+        //     this.app.menuHoverActive = !this.app.menuHoverActive;
+        // }
 
         // notify other items
         this.menuService.onMenuStateChange(this.key);

@@ -22,6 +22,8 @@ export class CreateBbComponent {
   mot: modeOfTrans[];
   selectedMod: modeOfTrans[];
   product_category: any;
+  product_scope: any;
+  building_block_name:any
   charge_code: any;
   showScopingCrad: boolean = true;
   showCommercialCrad: boolean = false;
@@ -38,6 +40,9 @@ export class CreateBbComponent {
   data: any;
   procuctNames: any
   procuctNamesOptions = []
+  procuctScopesOptions = []
+  procuctCategoryOptions = []
+  chargecodeOptions = []
 
   constructor(private breadcrumbService: AppBreadcrumbService, public messageService: MessageService, public MasterTableservice: MasterTableService) {
     this.breadcrumbService.setItems([
@@ -65,7 +70,9 @@ export class CreateBbComponent {
         routerLink: 'create-buildingblocks/commercial-ref'
       }
     ];
-    this.getmasterData(this.product_name);
+    this.getProdname();
+    this.getChargeCode();
+  
 
   }
 
@@ -97,8 +104,8 @@ export class CreateBbComponent {
     this.selectedMod = [];
   }
 
-  getmasterData(body) {
-    this.MasterTableservice.getProductName(body).subscribe((res: any) => {
+  getProdname() {
+    this.MasterTableservice.getProductName().subscribe((res: any) => {
       if (res?.message == "success") {
         this.procuctNamesOptions = res?.data;
       }
@@ -109,10 +116,29 @@ export class CreateBbComponent {
   {
     
       this.MasterTableservice.getProductScope(body,this.product_name).subscribe((res: any) => {
-        console.log("ok");
+        if (res?.message == "success") {
+          this.procuctScopesOptions = res?.data;
+        }
         
       })
+      
+  }
+  onScopeSelect(body)
+  {
+      this.MasterTableservice.getProductCategory(body,this.product_scope).subscribe((res: any) => {
+        if (res?.message == "success") {
+          this.procuctCategoryOptions = res?.data;
+        }
+      })
     
+  }
+  getChargeCode(){
+    this.MasterTableservice.getChargeCode().subscribe((res: any) => {
+      if (res?.message == "success") {
+        this.chargecodeOptions = res?.data;
+      }
+    })
+
   }
 
 }

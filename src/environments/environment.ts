@@ -19,7 +19,8 @@ export const environment = {
   sessionTimeoutInterval: 5 * 60 * 1000,
   sessionDialogInterval: 1 * 60 * 1000,
 
-  endpoint_url:"http://localhost:8080/buildingblocks/api/v1",
+  // endpoint_url:"http://localhost:5000/buildingblocks/api/v1",
+  endpoint_url:"http://bbc-dev-api.eba-wumjpfkg.us-east-1.elasticbeanstalk.com/buildingblocks/api/v1",
 };
 
 

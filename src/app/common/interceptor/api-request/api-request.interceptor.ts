@@ -32,8 +32,7 @@ export class ApiRequestInterceptor implements HttpInterceptor {
     
 
     if (!/^(http|https):/i.test(request.url)) {
-      console.log("kk");
-      AuthService.lastApiCall = moment();
+    
       let url = '';
       
         url = environment.endpoint_url + request.url

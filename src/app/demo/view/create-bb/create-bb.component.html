@@ -11,19 +11,24 @@
 
         <div class="field master-dropdown">
                 <label>Product Scope<span class="requiredField">*</span></label><br>
-                <p-dropdown pTooltip="Select Product Scope" tooltipPosition="bottom" placeholder="Select Product Scope" inputId="dropdown2"  optionLabel="pScope"></p-dropdown> 
+                <p-dropdown pTooltip="Select Product Scope" (onChange)="onScopeSelect($event)" [(ngModel)]="product_scope"  
+                [options]="procuctScopesOptions" optionValue="id" tooltipPosition="bottom" 
+                placeholder="Select Product Scope" inputId="dropdown2"  optionLabel="name"></p-dropdown> 
         </div>&nbsp;&nbsp;&nbsp;
         <div class="field master-dropdown">
             <label>Product Category<span class="requiredField">*</span></label><br>
-            <p-dropdown pTooltip="Select Product Category" tooltipPosition="bottom" [(ngModel)]="product_category" placeholder="Select Product Category" inputId="dropdown3"  optionLabel="pCategory"></p-dropdown> 
+            <p-dropdown pTooltip="Select Product Category" [options]="procuctCategoryOptions" tooltipPosition="bottom" 
+            [(ngModel)]="product_category" optionValue="id" placeholder="Select Product Category" inputId="dropdown3"  optionLabel="name"></p-dropdown> 
         </div>&nbsp;&nbsp;&nbsp;
         <div class="field master-dropdown">
                 <label>Building Block Name<span class="requiredField">*</span></label><br>
-                <input pTooltip="Enter Building Block Name" tooltipPosition="bottom" placeholder="Enter Building Block Name" type="text" id="inputtext" pInputText > 
+                <input pTooltip="Enter Building Block Name" [(ngModel)]="building_block_name" tooltipPosition="bottom" placeholder="Enter Building Block Name"
+                 type="text" id="inputtext" pInputText > 
         </div>&nbsp;&nbsp;&nbsp;
         <div class="field master-dropdown">
             <label>Charge Code</label><br>
-            <p-dropdown pTooltip="Select Charge Code" tooltipPosition="bottom" [(ngModel)]="charge_code" placeholder="Select Charge Code" inputId="dropdown4"  optionLabel="chargeCode"></p-dropdown> 
+            <p-dropdown pTooltip="Select Charge Code" [options]="chargecodeOptions" tooltipPosition="bottom" [(ngModel)]="charge_code" 
+            placeholder="Select Charge Code" optionValue="id" [(ngModel)]="charge_code" optionLabel="name" ></p-dropdown> 
         </div>
         <!-- <div class="field col-12 md:col-3">
             <label for="Template Name">Charge Code</label>

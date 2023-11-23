@@ -10,7 +10,8 @@ export namespace AppRoutes {
     // get all master dropdown data
     public static readonly getProductName = "/product";
     public static readonly getProductScope = "/scope";
-    public static readonly getProductCtegory = "/{scopeId}/category";
+    public static readonly getProductCtegory = "/category";
+    public static readonly getchargeCode = "/charge-code";
     
     }
     
