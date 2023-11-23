@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../../../environments/environment';
+//import { environment } from '../../../../environments/environment';
 import { HttpRequest,HttpHandler,HttpHeaders, HttpEvent,HttpInterceptor } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NavigationEnd, Router } from '@angular/router';
 import { AuthService } from '../../service/auth/auth.service';
 import { StorageService } from '../../service/storage/storage.service';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable()
