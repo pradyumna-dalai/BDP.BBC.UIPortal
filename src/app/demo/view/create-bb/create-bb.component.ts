@@ -227,10 +227,32 @@ export class CreateBbComponent {
       
 
     }
-    console.log(body);
-    this.CreateBuildingBlockservice.createBuildingBlock(body).subscribe((res) => {
-      console.log("okddd");
-    })
+    // console.log(body);
+    // this.CreateBuildingBlockservice.createBuildingBlock(body).subscribe((res) => {
+    //   console.log("okddd");
+    // })
+    this.CreateBuildingBlockservice.createBuildingBlock(body).subscribe(
+      (res) => {
+        console.log('Draft saved successfully:', res);
+  
+        this.messageService.add({
+          key: 'successToast',
+          severity: 'success',
+          summary: 'Success!',
+          detail: 'Building block draft is saved successfully.'
+        });
+      },
+      (error) => {
+        console.error('Error saving draft:', error);
+  
+        this.messageService.add({
+          key: 'errorToast',
+          severity: 'error',
+          summary: 'Error!',
+          detail: 'Failed to save building block draft.'
+        });
+      }
+    );
 
   }
 
