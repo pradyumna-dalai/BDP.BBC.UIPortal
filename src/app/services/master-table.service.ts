@@ -29,4 +29,8 @@ export class MasterTableService {
 
     return this.http.get<any>(settings.AppRoutes.Auth.getchargeCode);
   }
+  public getModeOfTransport() {
+
+    return this.http.get<any>(settings.AppRoutes.Auth.getModeofTransport);
+  }
 }

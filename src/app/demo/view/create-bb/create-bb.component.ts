@@ -58,12 +58,6 @@ export class CreateBbComponent {
       },
       { label: 'Create Building Blocks' },
     ]);
-    this.mot = [
-      { name: 'Ocean', code: 'NY',id: 1 },
-      { name: 'Air', code: 'RM',id: 2 },
-      { name: 'Rail', code: 'LDN',id: 3 },
-      { name: 'Road', code: 'IST',id: 4 },
-    ];
   }
   ngOnInit() {
     this.routeItems = [
@@ -78,6 +72,7 @@ export class CreateBbComponent {
     ];
     this.getProdname();
     this.getChargeCode();
+    this.getModeOfTransport();
 
 
   }
@@ -114,6 +109,8 @@ export class CreateBbComponent {
     this.MasterTableservice.getProductName().subscribe((res: any) => {
       if (res?.message == "success") {
         this.procuctNamesOptions = res?.data;
+      }else{
+        this.procuctNamesOptions = [];
       }
     })
   }
@@ -123,6 +120,8 @@ export class CreateBbComponent {
     this.MasterTableservice.getProductScope(body, this.product_name).subscribe((res: any) => {
       if (res?.message == "success") {
         this.procuctScopesOptions = res?.data;
+      }else{
+        this.procuctScopesOptions = [];
       }
 
     })
@@ -132,6 +131,8 @@ export class CreateBbComponent {
     this.MasterTableservice.getProductCategory(body, this.product_scope).subscribe((res: any) => {
       if (res?.message == "success") {
         this.procuctCategoryOptions = res?.data;
+      }else{
+        this.procuctCategoryOptions = [];
       }
     })
 
@@ -141,8 +142,20 @@ export class CreateBbComponent {
       if (res?.message == "success") {
         this.chargecodeOptions = res?.data;
       }
+      else{
+        this.chargecodeOptions = [];
+      }
     })
 
+  }
+  getModeOfTransport(){
+    this.MasterTableservice.getModeOfTransport().subscribe((res: any) => {
+      if (res?.message == "success") {
+        this.mot = res?.data;
+      }else{
+        this.mot = [];
+      }
+    })
   }
 
   // ---------------add building blocks------------------------//

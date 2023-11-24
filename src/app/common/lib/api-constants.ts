@@ -13,6 +13,7 @@ export namespace AppRoutes {
     public static readonly getProductScope = "/scope";
     public static readonly getProductCtegory = "/category";
     public static readonly getchargeCode = "/charge-code";
+    public static readonly getModeofTransport = "/mode-of-transport";
     
      // --------------------company management-----------------------//
 
