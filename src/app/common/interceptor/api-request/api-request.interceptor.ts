@@ -6,7 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 import { NavigationEnd, Router } from '@angular/router';
 import { AuthService } from '../../service/auth/auth.service';
 import { StorageService } from '../../service/storage/storage.service';
-import * as moment from 'moment';
+//import * as moment from 'moment';
 
 @Injectable()
 export class ApiRequestInterceptor implements HttpInterceptor {
@@ -33,7 +33,7 @@ export class ApiRequestInterceptor implements HttpInterceptor {
 
     if (!/^(http|https):/i.test(request.url)) {
       console.log("kk");
-      AuthService.lastApiCall = moment();
+    //  AuthService.lastApiCall = moment();
       let url = '';
       
         url = environment.endpoint_url + request.url
