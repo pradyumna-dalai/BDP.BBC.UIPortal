@@ -106,6 +106,7 @@ export class CreateBbComponent {
   }
 
   getProdname() {
+    this.procuctCategoryOptions = [];
     this.MasterTableservice.getProductName().subscribe((res: any) => {
       if (res?.message == "success") {
         this.procuctNamesOptions = res?.data;
@@ -116,7 +117,7 @@ export class CreateBbComponent {
   }
 
   onProductSelect(body) {
-  //  this.product_scope = "";
+    this.procuctCategoryOptions = [];
     this.MasterTableservice.getProductScope(body, this.product_name).subscribe((res: any) => {
       if (res?.message == "success") {
         this.procuctScopesOptions = res?.data;
