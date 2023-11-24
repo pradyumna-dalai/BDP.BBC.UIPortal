@@ -10,7 +10,7 @@ export class CreateBuildingBlockService {
   constructor(protected http: HttpClient) { }
   public createBuildingBlock(body) {
     // return this.http.get<any>(settings.AppRoutes.Auth.createBuildingBlock,body);
-    return this.http.post<any>("http://localhost:5000/buildingblocks/api/v1/buildingblock", body);
-    // return this.http.post<any>(settings.AppRoutes.Auth.createBuildingBlock,body);
+    // return this.http.post<any>("http://localhost:5000/buildingblocks/api/v1/buildingblock", body);
+    return this.http.post<any>(settings.AppRoutes.Auth.createBuildingBlock,body);
   }
 }

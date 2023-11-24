@@ -8,7 +8,8 @@ import { CreateBuildingBlockService } from './../../../services/create-buildingB
 
 interface modeOfTrans {
   name: string,
-  code: string
+  code: string,
+  id: any
 }
 @Component({
   selector: 'app-create-bb',
@@ -58,10 +59,10 @@ export class CreateBbComponent {
       { label: 'Create Building Blocks' },
     ]);
     this.mot = [
-      { name: 'Ocean', code: 'NY' },
-      { name: 'Air', code: 'RM' },
-      { name: 'Rail', code: 'LDN' },
-      { name: 'Road', code: 'IST' },
+      { name: 'Ocean', code: 'NY',id: 1 },
+      { name: 'Air', code: 'RM',id: 2 },
+      { name: 'Rail', code: 'LDN',id: 3 },
+      { name: 'Road', code: 'IST',id: 4 },
     ];
   }
   ngOnInit() {
