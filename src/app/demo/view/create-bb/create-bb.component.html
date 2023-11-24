@@ -160,7 +160,7 @@
         </div>
         <div class="field col-12 md:col-6">
             <div class="heading"><label>Configuriable</label></div><br>
-            <p-editor placeholder="Add Your Description Here...."    [style]="{'height':'220px'}">
+            <p-editor placeholder="Add Your Description Here...."  [(ngModel)]="configurables"    [style]="{'height':'220px'}">
                 <ng-template pTemplate="header">
                     <span class="ql-formats">
                         <select title="Text Alignment" class="ql-align" >
@@ -208,7 +208,7 @@
             <button pButton pRipple type="button" label="Cancel" (click)="clear()" class="p-button-outlined mr-2 mb-2"></button>
         </div>
        <div class="col-6" style="display: flex;justify-content: flex-end;">
-        <button pButton pRipple type="button" label="Save As Draft" class="p-button-outlined mr-2 mb-2"></button>
+        <button pButton pRipple type="button" (click)="saveAsDraft()" label="Save As Draft" class="p-button-outlined mr-2 mb-2"></button>
         <button type="submit" pButton pRipple label="Continue" class="mr-2 mb-2" (click)="onScopingCardClick()" ></button>
        </div>
     </div>

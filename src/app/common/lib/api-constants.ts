@@ -7,12 +7,17 @@ export namespace AppRoutes {
     export abstract class Auth 
     {
 
-    // get all master dropdown data
+    // --------------------get all master dropdown data-----------------------//
+
     public static readonly getProductName = "/product";
     public static readonly getProductScope = "/scope";
     public static readonly getProductCtegory = "/category";
     public static readonly getchargeCode = "/charge-code";
     
+     // --------------------company management-----------------------//
+
+     public static readonly createBuildingBlock = "/buildingblock";
+
     }
     
 }
