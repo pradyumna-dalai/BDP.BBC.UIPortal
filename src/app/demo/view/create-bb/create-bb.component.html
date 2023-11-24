@@ -204,7 +204,7 @@
     </div>
     <div class="grid">
         <div class="col-6">
-            <button pButton pRipple type="button" label="Cancel" (click)="clear()" class="p-button-outlined mr-2 mb-2"></button>
+            <button pButton pRipple type="button" label="Cancel" (click)="confirm()" class="p-button-outlined mr-2 mb-2"></button>
         </div>
        <div class="col-6" style="display: flex;justify-content: flex-end;">
         <button pButton pRipple type="button" (click)="saveAsDraft()" label="Save As Draft" class="p-button-outlined mr-2 mb-2"></button>
@@ -282,3 +282,4 @@
        
     </div>
 </p-dialog>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>

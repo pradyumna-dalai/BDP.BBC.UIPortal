@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { AppBreadcrumbService } from '../../../app.breadcrumb.service';
-import { MenuItem, MessageService } from 'primeng/api';
+import { MenuItem, MessageService,ConfirmationService } from 'primeng/api';
 import { MasterTableService } from './../../../services/master-table.service';
 import { CreateBuildingBlockService } from './../../../services/create-buildingBlock/create-building-block.service';
+import { Router } from '@angular/router';
 
 
 
@@ -15,7 +16,7 @@ interface modeOfTrans {
   selector: 'app-create-bb',
   templateUrl: './create-bb.component.html',
   styleUrls: ['./create-bb.component.scss'],
-  providers: [MessageService]
+  providers: [MessageService,ConfirmationService]
 })
 
 export class CreateBbComponent {
@@ -49,8 +50,10 @@ export class CreateBbComponent {
   procuctCategoryOptions = []
   chargecodeOptions = []
 
+
   constructor(private breadcrumbService: AppBreadcrumbService, public messageService: MessageService,
-    public MasterTableservice: MasterTableService, public CreateBuildingBlockservice: CreateBuildingBlockService) {
+    public MasterTableservice: MasterTableService,private confirmationService: ConfirmationService,
+     public CreateBuildingBlockservice: CreateBuildingBlockService,private router: Router) {
     this.breadcrumbService.setItems([
       {
         label: 'Building Blocks',
@@ -80,6 +83,15 @@ export class CreateBbComponent {
   showDialog() {
     this.visible = true;
   }
+  confirm() {
+    this.confirmationService.confirm({
+        message: 'Are you sure that you want to cancel this page?',
+        accept: () => {
+         this.router.navigateByUrl('/');
+        }
+    });
+}
+  
   onScopingCardClick() {
     this.showScopingCrad = true;
     this.showOperationCrad = false;
