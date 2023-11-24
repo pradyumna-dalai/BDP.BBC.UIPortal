@@ -2,14 +2,14 @@
     font-size: 18px;
 }
 
-@media only screen and (max-width: 1466px) {
+@media only screen and (max-width:1388px) {
     #heading {
         font-size: 14px;
     }
 }
 
-/* @media only screen and (max-width:1424px) {
+@media only screen and (min-width: 1388px) and (max-width: 1488px) {
     #heading {
-        font-size: 7px;
+        font-size: 16px;
     }
-} */
+}
