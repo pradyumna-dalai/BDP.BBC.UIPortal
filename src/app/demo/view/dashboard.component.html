@@ -30,14 +30,32 @@
                             </div> -->
                         </p-tabPanel>
                         <p-tabPanel header="Drafts">
-                            <div style="margin-top: 115px;">
+                            <!-- <div style="margin-top: 115px;"> -->
+                                    <p-tree [value]="treeData" [selectionMode]="'single'">
+                                        <ng-template let-node pTemplate="default">
+                                            <span>
+                                              
+                                                <!-- Add icons for each child based on the item type -->
+                                                <span *ngIf="node.data?.type === 1" class="fas fa-folder"></span>
+                                                <span *ngIf="node.data?.type === 2" class="fa-regular fa-folder"></span>
+                                                <span *ngIf="node.data?.type === 3" class="far fa-folder-open"></span>
+                                                <span *ngIf="node.data?.type === 4" class="fas fa-boxes"></span>
+                                                {{ node.label }}
+                                            </span>
+                                        </ng-template>
+                                    </p-tree>
+                                <!-- </div> -->
+
+
+                     
+                            <!-- <div style="margin-top: 115px;">
                                 <div style="display: flex;justify-content: center;">
                                     <h5>There Is No Available Data</h5>
                                 </div>
                                 <div style="display: flex;justify-content: center;">
                                     <h6>Create Building Blocks To Show</h6>
                                 </div>
-                            </div>
+                            </div> -->
                         </p-tabPanel>
                     </p-tabView>
                 </div>
