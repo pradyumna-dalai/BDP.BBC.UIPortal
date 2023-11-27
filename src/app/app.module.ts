@@ -103,6 +103,7 @@ import {AppBreadcrumbService} from './app.breadcrumb.service';
 import { ProjectComponent } from './demo/view/project/project.component';
 import { GlossaryComponent } from './demo/view/glossary/glossary.component';
 import { CreateBbComponent } from './demo/view/create-bb/create-bb.component';
+import { NodeService } from './demo/service/nodeservice';
 
 @NgModule({
     imports: [
@@ -207,7 +208,7 @@ import { CreateBbComponent } from './demo/view/create-bb/create-bb.component';
 
     ],
     providers: [
-     MenuService, AppBreadcrumbService,
+     MenuService, AppBreadcrumbService,NodeService,
      {
         provide: HTTP_INTERCEPTORS,
         useClass: ApiRequestInterceptor,
