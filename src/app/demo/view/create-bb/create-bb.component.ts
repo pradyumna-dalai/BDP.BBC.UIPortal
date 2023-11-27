@@ -7,11 +7,7 @@ import { Router } from '@angular/router';
 
 
 
-interface modeOfTrans {
-  name: string,
-  code: string,
-  id: any
-}
+
 @Component({
   selector: 'app-create-bb',
   templateUrl: './create-bb.component.html',
@@ -23,8 +19,8 @@ export class CreateBbComponent {
   items: MenuItem[];
   routeItems: MenuItem[];
   // text: string = '';
-  mot: modeOfTrans[];
-  selectedMod: modeOfTrans[];
+  mot: any;
+  selectedMod: any;
   product_category: any;
   product_scope: any;
   building_block_name: any
@@ -51,7 +47,7 @@ export class CreateBbComponent {
   chargecodeOptions = []
 
 
-  constructor(private breadcrumbService: AppBreadcrumbService, public messageService: MessageService,
+  constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
     public MasterTableservice: MasterTableService,private confirmationService: ConfirmationService,
      public CreateBuildingBlockservice: CreateBuildingBlockService,private router: Router) {
     this.breadcrumbService.setItems([
@@ -203,6 +199,8 @@ export class CreateBbComponent {
       chargeCode: {
         id: this.charge_code
       },
+      modeOfTransport: this.selectedMod.map(id => ({ id }))
+      ,
       scopingCard: {
         serviceDescription: this.seervice_desc,
         customerRequirment: this.customer_requirement,
@@ -211,9 +209,6 @@ export class CreateBbComponent {
         valueToPsaBdp: this.value_to_psa_bdp,
         parameter: this.parameters,
         configurable: this.configurables,
-        modeOfTransport: {
-          id: this.selectedMod
-        }
       },
       operationsCard: {
         card: ""
@@ -227,9 +222,9 @@ export class CreateBbComponent {
       
 
     }
-    // console.log(body);
+    //console.log(body);
     // this.CreateBuildingBlockservice.createBuildingBlock(body).subscribe((res) => {
-    //   console.log("okddd");
+     
     // })
     this.CreateBuildingBlockservice.createBuildingBlock(body).subscribe(
       (res) => {
@@ -253,6 +248,7 @@ export class CreateBbComponent {
         });
       }
     );
+  
 
   }
 
