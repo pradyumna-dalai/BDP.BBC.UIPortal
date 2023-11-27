@@ -7,11 +7,7 @@ import { Router } from '@angular/router';
 
 
 
-interface modeOfTrans {
-  name: string,
-  code: string,
-  id: any
-}
+
 @Component({
   selector: 'app-create-bb',
   templateUrl: './create-bb.component.html',
@@ -203,9 +199,8 @@ export class CreateBbComponent {
       chargeCode: {
         id: this.charge_code
       },
-      modeOfTransport: {
-        id: this.selectedMod.map(id => ({ id }))
-      },
+      modeOfTransport: this.selectedMod.map(id => ({ id }))
+      ,
       scopingCard: {
         serviceDescription: this.seervice_desc,
         customerRequirment: this.customer_requirement,
