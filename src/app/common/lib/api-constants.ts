@@ -17,7 +17,12 @@ export namespace AppRoutes {
     
      // --------------------company management-----------------------//
 
-     public static readonly createBuildingBlock = "/buildingblock";
+    public static readonly createBuildingBlock = "/buildingblock";
+
+//Explorer view of building block 
+    public static readonly getexploreViewBuildingBlock = "/buildingblock";
+
+
 
     }
     
