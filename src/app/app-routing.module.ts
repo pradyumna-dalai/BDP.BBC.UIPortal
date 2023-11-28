@@ -19,20 +19,21 @@ import { GeneralInfoComponent } from './demo/view/create-bb/general-info/general
                 redirectTo: 'building-block',
                 pathMatch: 'full'
             },
-            
+
             {
                 path: '', component: AppMainComponent,
                 children: [
-                    { path: '', component: DashboardDemoComponent },
+                    { path: '', redirectTo: 'building-block', pathMatch: 'full' },
                     { path: 'project', component: ProjectComponent },
                     { path: 'glossary', component: GlossaryComponent },
-                    { path: 'create-buildingblocks', component: CreateBbComponent,
-                    children: [
-                        { path: 'general-info', component: GeneralInfoComponent },
-                        { path: 'commercial-ref', component: CommercialRefComponent }
-                    ] },
-                   
                     { path: 'building-block', component: DashboardDemoComponent },
+                    {
+                        path: 'create-buildingblocks', component: CreateBbComponent,
+                        children: [
+                            { path: 'general-info', component: GeneralInfoComponent },
+                            { path: 'commercial-ref', component: CommercialRefComponent }
+                        ]
+                    },
                 ]
             },
             { path: 'notfound', component: AppNotfoundComponent },
