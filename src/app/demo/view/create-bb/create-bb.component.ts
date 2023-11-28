@@ -126,6 +126,7 @@ export class CreateBbComponent {
 // ---------------get scope data on product select------------------------//
   onProductSelect(body) {
     this.procuctCategoryOptions = [];
+    this.procuctScopesOptions = [];
     this.MasterTableservice.getProductScope(body, this.product_name).subscribe((res: any) => {
       if (res?.message == "success") {
         this.procuctScopesOptions = res?.data;
