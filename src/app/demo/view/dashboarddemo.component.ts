@@ -18,6 +18,7 @@ export class DashboardDemoComponent implements OnInit {
    // selectedFiles1: TreeNode;
    //explorerData: any;
    treeData: TreeNode[];
+   treeDataNew: TreeNode[];
 
     subscription: Subscription;
 
@@ -31,6 +32,7 @@ export class DashboardDemoComponent implements OnInit {
 
     ngOnInit() {
         this.loadTreeData();
+        this.loadTreeDataNew();
     }
 
     loadTreeData() {
@@ -53,6 +55,17 @@ export class DashboardDemoComponent implements OnInit {
         children: this.transformData(item.child || []),
       };
     });
+  }
+
+  loadTreeDataNew() {
+    this.createBuildingBlockservice.getExplorerDataNew().subscribe((data:any) => {
+        this.treeDataNew = this.transformData(data.data);
+    //    console.log('viewData',this.treeData);
+      },
+      (error) => {
+        console.error('Error loading tree data:', error);
+      }
+    );
   }
 }
 

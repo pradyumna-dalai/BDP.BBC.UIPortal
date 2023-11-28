@@ -22,4 +22,10 @@ export class CreateBuildingBlockService {
 
   }
 
+  public getExplorerDataNew() {
+    //return this.http.get<any>("http://localhost:5000/buildingblocks/api/v1/buildingblock?status=2");
+    return this.http.get<any>(url+settings.AppRoutes.Auth.getexploreViewBuildingBlockNew);
+
+  }
+
 }

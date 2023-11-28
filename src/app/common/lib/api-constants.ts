@@ -21,7 +21,8 @@ export namespace AppRoutes {
 
     //Explorer view of building block 
 
-    public static readonly getexploreViewBuildingBlock = "buildingblock";
+    public static readonly getexploreViewBuildingBlock = "buildingblock?status=1";
+    public static readonly getexploreViewBuildingBlockNew = "buildingblock?status=2";
 
 
 
