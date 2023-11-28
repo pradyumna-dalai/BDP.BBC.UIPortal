@@ -103,9 +103,11 @@ import {AppBreadcrumbService} from './app.breadcrumb.service';
 import { ProjectComponent } from './demo/view/project/project.component';
 import { GlossaryComponent } from './demo/view/glossary/glossary.component';
 import { CreateBbComponent } from './demo/view/create-bb/create-bb.component';
+
 import { NodeService } from './demo/service/nodeservice';
 import { GeneralInfoComponent } from './demo/view/create-bb/general-info/general-info.component';
 import { CommercialRefComponent } from './demo/view/create-bb/commercial-ref/commercial-ref.component';
+
 
 @NgModule({
     imports: [
@@ -212,7 +214,7 @@ import { CommercialRefComponent } from './demo/view/create-bb/commercial-ref/com
 
     ],
     providers: [
-     MenuService, AppBreadcrumbService,NodeService,
+     MenuService, AppBreadcrumbService,
      {
         provide: HTTP_INTERCEPTORS,
         useClass: ApiRequestInterceptor,
