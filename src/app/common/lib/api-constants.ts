@@ -20,10 +20,5 @@ export namespace AppRoutes {
      public static readonly createBuildingBlock = "/buildingblock";
 
     }
-    export abstract class CreateBuildingBlockPoints {
-      //  public static readonly DRAY_PROVIDER = "drayProvider";
-       // public static readonly ALL_DRAY_PROVIDER = DrayProviderPoints.DRAY_PROVIDER + "/getAllDrayProvider";
-        public static readonly CREATE_BUILING_BLOCK = "/buildingblock";
-    }
     
 }
