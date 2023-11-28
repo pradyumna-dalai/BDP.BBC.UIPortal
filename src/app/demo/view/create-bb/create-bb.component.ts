@@ -3,7 +3,7 @@ import { AppBreadcrumbService } from '../../../app.breadcrumb.service';
 import { MenuItem, MessageService,ConfirmationService } from 'primeng/api';
 import { MasterTableService } from './../../../services/master-table.service';
 import { CreateBuildingBlockService } from './../../../services/create-buildingBlock/create-building-block.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLinkActive } from '@angular/router';
 
 
 
@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
 })
 
 export class CreateBbComponent {
-  items: MenuItem[];
+  isloading: boolean = false;
   routeItems: MenuItem[];
   // text: string = '';
   mot: any;
@@ -65,8 +65,8 @@ export class CreateBbComponent {
         routerLink: 'general-info'
       },
       {
-        label: 'Commercial Reference',
-        routerLink: 'create-buildingblocks/commercial-ref'
+        label: 'commercial-ref',
+        routerLink: 'commercial-ref'
       }
     ];
     this.getProdname();
@@ -112,7 +112,7 @@ export class CreateBbComponent {
     this.stakeholders_audience = "";
     this.selectedMod = [];
   }
-
+// ---------------get product data------------------------//
   getProdname() {
     this.procuctCategoryOptions = [];
     this.MasterTableservice.getProductName().subscribe((res: any) => {
@@ -123,7 +123,7 @@ export class CreateBbComponent {
       }
     })
   }
-
+// ---------------get scope data on product select------------------------//
   onProductSelect(body) {
     this.procuctCategoryOptions = [];
     this.MasterTableservice.getProductScope(body, this.product_name).subscribe((res: any) => {
@@ -136,7 +136,9 @@ export class CreateBbComponent {
     })
 
   }
+  // ---------------get category data on scope selection------------------------//
   onScopeSelect(body) {
+    this.procuctCategoryOptions = [];
     this.MasterTableservice.getProductCategory(body, this.product_scope).subscribe((res: any) => {
       if (res?.message == "success") {
         this.procuctCategoryOptions = res?.data;
@@ -146,6 +148,7 @@ export class CreateBbComponent {
     })
 
   }
+  // ---------------get charge code data------------------------//
   getChargeCode() {
     this.MasterTableservice.getChargeCode().subscribe((res: any) => {
       if (res?.message == "success") {
@@ -157,6 +160,7 @@ export class CreateBbComponent {
     })
 
   }
+  // ---------------get mode of transport data------------------------//
   getModeOfTransport(){
     this.MasterTableservice.getModeOfTransport().subscribe((res: any) => {
       if (res?.message == "success") {
@@ -170,19 +174,24 @@ export class CreateBbComponent {
   // ---------------add building blocks------------------------//
 
   saveAsDraft() {
-    // if (this.product_name == '' || this.product_name == null || this.product_name == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Product name is a required field.`, detail: '' });
-    // }
-    // if (this.product_scope == '' || this.product_scope == null || this.product_scope == undefined) {
-    //     return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Product scope is a required field.`, detail: '' });
-    // }
-    // if (this.product_category == '' || this.product_category == null || this.product_category == undefined) {
-    //     return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Product category is a required field.`, detail: '' });
-    // }
-    // if (this.building_block_name == '' || this.building_block_name == null || this.building_block_name == undefined) {
-    //     return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Building block is a required field.`, detail: '' });
-    // }
-
+    if (this.product_name == '' || this.product_name == null || this.product_name == undefined) {
+      return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Product name is a required field.`, detail: '' });
+    }
+    if (this.product_scope == '' || this.product_scope == null || this.product_scope == undefined) {
+        return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Product scope is a required field.`, detail: '' });
+    }
+    if (this.product_category == '' || this.product_category == null || this.product_category == undefined) {
+        return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Product category is a required field.`, detail: '' });
+    }
+    if (this.building_block_name == '' || this.building_block_name == null || this.building_block_name == undefined) {
+        return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Building block is a required field.`, detail: '' });
+    }
+    if(this.selectedMod == "" || this.selectedMod == undefined || this.selectedMod == null){
+    var mod = []
+    }else{
+      mod = this.selectedMod.map(id => ({ id }))
+    }
+    this.isloading = true
     const body =
 
     {
@@ -199,7 +208,7 @@ export class CreateBbComponent {
       chargeCode: {
         id: this.charge_code
       },
-      modeOfTransport: this.selectedMod.map(id => ({ id }))
+      modeOfTransport: mod
       ,
       scopingCard: {
         serviceDescription: this.seervice_desc,

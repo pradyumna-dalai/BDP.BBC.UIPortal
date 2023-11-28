@@ -29,10 +29,7 @@
             <p-dropdown [options]="chargecodeOptions"  [(ngModel)]="charge_code" 
             placeholder="Select Charge Code" optionValue="id" [(ngModel)]="charge_code" optionLabel="name" ></p-dropdown> 
         </div>
-        <!-- <div class="field col-12 md:col-3">
-            <label for="Template Name">Charge Code</label>
-            <p-dropdown placeholder="Select Charge Code" inputId="dropdown"  optionLabel="name"></p-dropdown> 
-        </div> -->
+        <p-toast key="emptyToster"></p-toast>
     </div>
 </div>
 <div class="p-fluid grid" >
@@ -55,7 +52,7 @@
         <a (click)="showDialog()" style="text-decoration: underline;">Import From Excel</a>
        </div>
     </div>
-    <hr>
+    <hr class="align">
     <div class="p-fluid grid">
         <div class="field col-12 md:col-6">
                 <div class="heading"><label>Service Description</label></div><br>
@@ -158,7 +155,7 @@
             </p-editor> 
         </div>
         <div class="field col-12 md:col-6">
-            <div class="heading"><label>Configuriable</label></div><br>
+            <div class="heading"><label>Configurable</label></div><br>
             <p-editor placeholder="Add Your Description Here...."  [(ngModel)]="configurables"    [style]="{'height':'220px'}">
                 <ng-template pTemplate="header">
                     <span class="ql-formats">
@@ -231,9 +228,23 @@
     <router-outlet></router-outlet>   
 </div> -->
 <div class="card" *ngIf="this.showCommercialCrad==true">
-    <div class="page-under-construction">
+    <!-- <div class="page-under-construction">
         <img src="assets/layout/images/page-under-construction.jpg" alt="No Building Blocks Found">
+    </div> -->
+    <div class="grid">
+        <div class="col-6">
+            <h5>Commercial Card</h5>
+        </div>
+       <div class="col-6" style="display: flex;justify-content: flex-end;">
+        <a (click)="showDialog()" style="text-decoration: underline;">Import From Excel</a>
+       </div>
     </div>
+    <hr class="align">
+    <div class="card">
+        <p-toast></p-toast>
+        <p-steps [model]="routeItems" [readonly]="false"></p-steps>
+    </div>
+    <router-outlet></router-outlet>
 </div>
 
 <!-- import from excel dialog -->
