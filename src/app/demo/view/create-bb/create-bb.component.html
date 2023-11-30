@@ -4,43 +4,46 @@
     <div class="p-fluid grid common-header">
         <div class="field master-dropdown">
             <label>Product Name<span class="requiredField">*</span></label><br>
-            <p-dropdown [options]="procuctNamesOptions" (onChange)="onProductSelect($event)" id="product_name" [(ngModel)]="product_name"
-             optionLabel="name" optionValue="id" placeholder="Select Product Name"  ></p-dropdown> 
+            <p-dropdown [options]="procuctNamesOptions" (onChange)="onProductSelect($event)" id="product_name"
+                [(ngModel)]="product_name" optionLabel="name" optionValue="id"
+                placeholder="Select Product Name"></p-dropdown>
         </div>&nbsp;&nbsp;&nbsp;
 
         <div class="field master-dropdown">
-                <label>Product Scope<span class="requiredField">*</span></label><br>
-                <p-dropdown  (onChange)="onScopeSelect($event)" [(ngModel)]="product_scope"  
-                [options]="procuctScopesOptions" optionValue="id" 
-                placeholder="Select Product Scope" inputId="dropdown2"  optionLabel="name"></p-dropdown> 
+            <label>Product Scope<span class="requiredField">*</span></label><br>
+            <p-dropdown (onChange)="onScopeSelect($event)" [(ngModel)]="product_scope" [options]="procuctScopesOptions"
+                optionValue="id" placeholder="Select Product Scope" inputId="dropdown2" optionLabel="name"></p-dropdown>
         </div>&nbsp;&nbsp;&nbsp;
         <div class="field master-dropdown">
             <label>Product Category<span class="requiredField">*</span></label><br>
-            <p-dropdown [options]="procuctCategoryOptions"
-            [(ngModel)]="product_category" optionValue="id" placeholder="Select Product Category" inputId="dropdown3"  optionLabel="name"></p-dropdown> 
+            <p-dropdown [options]="procuctCategoryOptions" [(ngModel)]="product_category" optionValue="id"
+                placeholder="Select Product Category" inputId="dropdown3" optionLabel="name"></p-dropdown>
         </div>&nbsp;&nbsp;&nbsp;
         <div class="field master-dropdown">
-                <label>Building Block Name<span class="requiredField">*</span></label><br>
-                <input  [(ngModel)]="building_block_name"  placeholder="Enter Building Block Name"
-                 type="text" id="inputtext" pInputText > 
+            <label>Building Block Name<span class="requiredField">*</span></label><br>
+            <input [(ngModel)]="building_block_name" placeholder="Enter Building Block Name" type="text" id="inputtext"
+                pInputText>
         </div>&nbsp;&nbsp;&nbsp;
         <div class="field master-dropdown">
             <label>Charge Code</label><br>
-            <p-dropdown [options]="chargecodeOptions"  [(ngModel)]="charge_code" 
-            placeholder="Select Charge Code" optionValue="id" [(ngModel)]="charge_code" optionLabel="name" ></p-dropdown> 
+            <p-dropdown [options]="chargecodeOptions" [(ngModel)]="charge_code" placeholder="Select Charge Code"
+                optionValue="id" [(ngModel)]="charge_code" optionLabel="name"></p-dropdown>
         </div>
         <p-toast key="emptyToster"></p-toast>
     </div>
 </div>
-<div class="p-fluid grid" >
-    <div class="col-12 md:col-4" tabindex="1" > 
-        <button pButton pRipple  type="button" (click)="onScopingCardClick()" label="Scoping Card"  class="p-button-outlined mr-2 mb-2 bbCard"></button>
+<div class="p-fluid grid">
+    <div class="col-12 md:col-4" tabindex="1">
+        <button pButton pRipple type="button" (click)="onScopingCardClick()" label="Scoping Card"
+            class="p-button-outlined mr-2 mb-2 bbCard"></button>
     </div>
     <div class="col-12 md:col-4">
-        <button pButton pRipple type="button" (click)="onOperationCardClick()"  label="Operation Card" class="p-button-outlined mr-2 mb-2 bbCard"></button>
+        <button pButton pRipple type="button" (click)="onOperationCardClick()" label="Operation Card"
+            class="p-button-outlined mr-2 mb-2 bbCard"></button>
     </div>
     <div class="col-12 md:col-4">
-        <button pButton pRipple type="button" (click)="onCommercialCardClick()"  label="Commercial Card" class="p-button-outlined mr-2 mb-2 bbCard"></button>
+        <button pButton pRipple type="button" (click)="onCommercialCardClick()" label="Commercial Card"
+            class="p-button-outlined mr-2 mb-2 bbCard"></button>
     </div>
 </div>
 <div class="card" *ngIf="this.showScopingCrad==true">
@@ -48,43 +51,45 @@
         <div class="col-6">
             <h5>Scoping Card</h5>
         </div>
-       <div class="col-6" style="display: flex;justify-content: flex-end;">
-        <a (click)="showDialog()" style="text-decoration: underline;">Import From Excel</a>
-       </div>
+        <div class="col-6" style="display: flex;justify-content: flex-end;">
+            <a (click)="showDialog()" style="text-decoration: underline;">Import From Excel</a>
+        </div>
     </div>
     <hr class="align">
     <div class="p-fluid grid">
         <div class="field col-12 md:col-6">
-                <div class="heading"><label>Service Description</label></div><br>
-                <p-editor placeholder="Add Your Description Here...." [(ngModel)]="seervice_desc"  [style]="{'height':'220px'}" >
-                    <ng-template pTemplate="header">
-                        <span class="ql-formats">
-                            <select title="Text Alignment" class="ql-align" >
-                                <option selected>Gauche</option>
-                                <option value="center" label="Center"></option>
-                                <option value="right" label="Right"></option>
-                                <option value="justify" label="Justify"></option>
-                              </select>  
-                            <button type="button" class="ql-bold" aria-label="Bold"></button>
-                            <button type="button" class="ql-italic" aria-label="Italic"></button>
-                            <button type="button" class="ql-underline" aria-label="Underline"></button>
-                            <button class="ql-list" value="bullet" title="Bulleted List"></button>
-                            <button class="ql-list" value="ordered"></button>
-                        </span>
-                    </ng-template>
-                </p-editor> 
-        </div>
-        <div class="field col-12 md:col-6">
-            <div class="heading"><label>Value to PSA BDP</label></div><br>
-            <p-editor placeholder="Add Your Description Here...." [(ngModel)]="value_to_psa_bdp"    [style]="{'height':'220px'}">
+            <div class="heading"><label>Service Description</label></div><br>
+            <p-editor placeholder="Add Your Description Here...." [(ngModel)]="seervice_desc"
+                [style]="{'height':'220px'}">
                 <ng-template pTemplate="header">
                     <span class="ql-formats">
-                        <select title="Text Alignment" class="ql-align" >
+                        <select title="Text Alignment" class="ql-align">
                             <option selected>Gauche</option>
                             <option value="center" label="Center"></option>
                             <option value="right" label="Right"></option>
                             <option value="justify" label="Justify"></option>
-                          </select>  
+                        </select>
+                        <button type="button" class="ql-bold" aria-label="Bold"></button>
+                        <button type="button" class="ql-italic" aria-label="Italic"></button>
+                        <button type="button" class="ql-underline" aria-label="Underline"></button>
+                        <button class="ql-list" value="bullet" title="Bulleted List"></button>
+                        <button class="ql-list" value="ordered"></button>
+                    </span>
+                </ng-template>
+            </p-editor>
+        </div>
+        <div class="field col-12 md:col-6">
+            <div class="heading"><label>Value to PSA BDP</label></div><br>
+            <p-editor placeholder="Add Your Description Here...." [(ngModel)]="value_to_psa_bdp"
+                [style]="{'height':'220px'}">
+                <ng-template pTemplate="header">
+                    <span class="ql-formats">
+                        <select title="Text Alignment" class="ql-align">
+                            <option selected>Gauche</option>
+                            <option value="center" label="Center"></option>
+                            <option value="right" label="Right"></option>
+                            <option value="justify" label="Justify"></option>
+                        </select>
                         <button type="button" class="ql-bold" aria-label="Bold"></button>
                         <button type="button" class="ql-italic" aria-label="Italic"></button>
                         <button type="button" class="ql-underline" aria-label="Underline"></button>
@@ -96,15 +101,16 @@
         </div>
         <div class="field col-12 md:col-6">
             <div class="heading"><label>Customer Requirements</label></div><br>
-            <p-editor  placeholder="Add Your Description Here...." [(ngModel)]="customer_requirement"  [style]="{'height':'220px'}" >
+            <p-editor placeholder="Add Your Description Here...." [(ngModel)]="customer_requirement"
+                [style]="{'height':'220px'}">
                 <ng-template pTemplate="header">
                     <span class="ql-formats">
-                        <select title="Text Alignment" class="ql-align" >
+                        <select title="Text Alignment" class="ql-align">
                             <option selected>Gauche</option>
                             <option value="center" label="Center"></option>
                             <option value="right" label="Right"></option>
                             <option value="justify" label="Justify"></option>
-                          </select>  
+                        </select>
                         <button type="button" class="ql-bold" aria-label="Bold"></button>
                         <button type="button" class="ql-italic" aria-label="Italic"></button>
                         <button type="button" class="ql-underline" aria-label="Underline"></button>
@@ -112,19 +118,19 @@
                         <button class="ql-list" value="ordered"></button>
                     </span>
                 </ng-template>
-            </p-editor> 
+            </p-editor>
         </div>
         <div class="field col-12 md:col-6">
             <div class="heading"><label>Parameters</label></div><br>
-            <p-editor placeholder="Add Your Description Here...." [(ngModel)]="parameters"   [style]="{'height':'220px'}">
+            <p-editor placeholder="Add Your Description Here...." [(ngModel)]="parameters" [style]="{'height':'220px'}">
                 <ng-template pTemplate="header">
                     <span class="ql-formats">
-                        <select title="Text Alignment" class="ql-align" >
+                        <select title="Text Alignment" class="ql-align">
                             <option selected>Gauche</option>
                             <option value="center" label="Center"></option>
                             <option value="right" label="Right"></option>
                             <option value="justify" label="Justify"></option>
-                          </select>  
+                        </select>
                         <button type="button" class="ql-bold" aria-label="Bold"></button>
                         <button type="button" class="ql-italic" aria-label="Italic"></button>
                         <button type="button" class="ql-underline" aria-label="Underline"></button>
@@ -136,15 +142,16 @@
         </div>
         <div class="field col-12 md:col-6">
             <div class="heading"><label>Deliverables</label></div><br>
-            <p-editor placeholder="Add Your Description Here...." [(ngModel)]="deliverables"   [style]="{'height':'220px'}" >
+            <p-editor placeholder="Add Your Description Here...." [(ngModel)]="deliverables"
+                [style]="{'height':'220px'}">
                 <ng-template pTemplate="header">
                     <span class="ql-formats">
-                        <select title="Text Alignment" class="ql-align" >
+                        <select title="Text Alignment" class="ql-align">
                             <option selected>Gauche</option>
                             <option value="center" label="Center"></option>
                             <option value="right" label="Right"></option>
                             <option value="justify" label="Justify"></option>
-                          </select>  
+                        </select>
                         <button type="button" class="ql-bold" aria-label="Bold"></button>
                         <button type="button" class="ql-italic" aria-label="Italic"></button>
                         <button type="button" class="ql-underline" aria-label="Underline"></button>
@@ -152,19 +159,20 @@
                         <button class="ql-list" value="ordered"></button>
                     </span>
                 </ng-template>
-            </p-editor> 
+            </p-editor>
         </div>
         <div class="field col-12 md:col-6">
             <div class="heading"><label>Configurable</label></div><br>
-            <p-editor placeholder="Add Your Description Here...."  [(ngModel)]="configurables"    [style]="{'height':'220px'}">
+            <p-editor placeholder="Add Your Description Here...." [(ngModel)]="configurables"
+                [style]="{'height':'220px'}">
                 <ng-template pTemplate="header">
                     <span class="ql-formats">
-                        <select title="Text Alignment" class="ql-align" >
+                        <select title="Text Alignment" class="ql-align">
                             <option selected>Gauche</option>
                             <option value="center" label="Center"></option>
                             <option value="right" label="Right"></option>
                             <option value="justify" label="Justify"></option>
-                          </select>  
+                        </select>
                         <button type="button" class="ql-bold" aria-label="Bold"></button>
                         <button type="button" class="ql-italic" aria-label="Italic"></button>
                         <button type="button" class="ql-underline" aria-label="Underline"></button>
@@ -176,15 +184,16 @@
         </div>
         <div class="field col-12 md:col-6">
             <div class="heading"><label>Stakeholder/Audience</label></div><br>
-            <p-editor placeholder="Add Your Description Here...." [(ngModel)]="stakeholders_audience"   [style]="{'height':'220px'}" >
+            <p-editor placeholder="Add Your Description Here...." [(ngModel)]="stakeholders_audience"
+                [style]="{'height':'220px'}">
                 <ng-template pTemplate="header">
                     <span class="ql-formats">
-                        <select title="Text Alignment" class="ql-align" >
+                        <select title="Text Alignment" class="ql-align">
                             <option selected>Gauche</option>
                             <option value="center" label="Center"></option>
                             <option value="right" label="Right"></option>
                             <option value="justify" label="Justify"></option>
-                          </select>  
+                        </select>
                         <button type="button" class="ql-bold" aria-label="Bold"></button>
                         <button type="button" class="ql-italic" aria-label="Italic"></button>
                         <button type="button" class="ql-underline" aria-label="Underline"></button>
@@ -192,41 +201,35 @@
                         <button class="ql-list" value="ordered"></button>
                     </span>
                 </ng-template>
-            </p-editor> 
+            </p-editor>
         </div>
         <div class="field col-12 md:col-6">
             <div class="heading"><label>Mode Of Transport</label></div><br>
-            <p-multiSelect [options]="mot" placeholder="Select Mode Of Transport" optionValue="id" [(ngModel)]="selectedMod" optionLabel="name"></p-multiSelect>
+            <p-multiSelect [options]="mot" placeholder="Select Mode Of Transport" optionValue="id"
+                [(ngModel)]="selectedMod" optionLabel="name"></p-multiSelect>
         </div>
     </div>
     <div class="grid">
         <div class="col-6">
-            <button pButton pRipple type="button" label="Cancel" (click)="confirm()" class="p-button-outlined mr-2 mb-2"></button>
+            <button pButton pRipple type="button" label="Cancel" (click)="confirm()"
+                class="p-button-outlined mr-2 mb-2"></button>
         </div>
-       <div class="col-6" style="display: flex;justify-content: flex-end;">
-        <button pButton pRipple type="button" (click)="saveAsDraft()" label="Save As Draft" class="p-button-outlined mr-2 mb-2"></button>
-        <button type="submit" pButton pRipple label="Continue" class="mr-2 mb-2" (click)="onOperationCardClick()" ></button>
-        <p-toast key="successToast"></p-toast>
+        <div class="col-6" style="display: flex;justify-content: flex-end;">
+            <button pButton pRipple type="button" (click)="saveAsDraft()" label="Save As Draft"
+                class="p-button-outlined mr-2 mb-2"></button>
+            <button type="submit" pButton pRipple label="Continue" class="mr-2 mb-2"
+                (click)="onOperationCardClick()"></button>
+            <p-toast key="successToast"></p-toast>
+        </div>
     </div>
-    </div>
-    
-    <!-- <div style="padding-top: 29px;display: flex;justify-content: flex-end;">
-        <button pButton pRipple type="button" label="Save As Draft" class="p-button-outlined mr-2 mb-2"></button>
-        <button type="submit" pButton pRipple label="Continue" class="mr-2 mb-2" (click)="onScopingCardClick()" ></button>
-    </div> -->
+
 </div>
 <div class="card" *ngIf="this.showOperationCrad==true">
     <div class="page-under-construction">
         <img src="assets/layout/images/page-under-construction.jpg" alt="No Building Blocks Found">
     </div>
 </div>
-<!-- <div class="card" *ngIf="this.showCommercialCrad==true">
-    <div class="card">
-        <p-toast></p-toast>
-        <p-steps [model]="routeItems" (click)="showCommercialCrad()" styleClass="mt-5" [readonly]="false"></p-steps>
-    </div>
-    <router-outlet></router-outlet>   
-</div> -->
+
 <div class="card" *ngIf="this.showCommercialCrad==true">
     <!-- <div class="page-under-construction">
         <img src="assets/layout/images/page-under-construction.jpg" alt="No Building Blocks Found">
@@ -235,16 +238,250 @@
         <div class="col-6">
             <h5>Commercial Card</h5>
         </div>
-       <div class="col-6" style="display: flex;justify-content: flex-end;">
-        <a (click)="showDialog()" style="text-decoration: underline;">Import From Excel</a>
-       </div>
+        <div class="col-6" style="display: flex;justify-content: flex-end;">
+            <a (click)="showDialog()" style="text-decoration: underline;">Import From Excel</a>
+        </div>
     </div>
     <hr class="align">
-    <div class="card">
-        <p-toast></p-toast>
-        <p-steps [model]="routeItems" [readonly]="false"></p-steps>
-    </div>
-    <router-outlet></router-outlet>
+    
+    <p-tabView [(activeIndex)]="activeIndex">
+        <!-- General info tab view -->
+        <p-tabPanel header="General Information">
+            <div class="p-fluid grid">
+                <div class="field col-12 md:col-6">
+                        <div class="heading"><label>Service Description</label></div><br>
+                        <p-editor placeholder="Add Your Description Here...." [(ngModel)]="seervice_desc"  [style]="{'height':'220px'}" >
+                            <ng-template pTemplate="header">
+                                <span class="ql-formats">
+                                    <select title="Text Alignment" class="ql-align" >
+                                        <option selected>Gauche</option>
+                                        <option value="center" label="Center"></option>
+                                        <option value="right" label="Right"></option>
+                                        <option value="justify" label="Justify"></option>
+                                      </select>  
+                                    <button type="button" class="ql-bold" aria-label="Bold"></button>
+                                    <button type="button" class="ql-italic" aria-label="Italic"></button>
+                                    <button type="button" class="ql-underline" aria-label="Underline"></button>
+                                    <button class="ql-list" value="bullet" title="Bulleted List"></button>
+                                    <button class="ql-list" value="ordered"></button>
+                                </span>
+                            </ng-template>
+                        </p-editor> 
+                </div>
+                <div class="field col-12 md:col-6">
+                    <div class="heading"><label>Customer Requirements</label></div><br>
+                    <p-editor placeholder="Add Your Description Here...." [(ngModel)]="customer_requirement"   [style]="{'height':'220px'}">
+                        <ng-template pTemplate="header">
+                            <span class="ql-formats">
+                                <select title="Text Alignment" class="ql-align" >
+                                    <option selected>Gauche</option>
+                                    <option value="center" label="Center"></option>
+                                    <option value="right" label="Right"></option>
+                                    <option value="justify" label="Justify"></option>
+                                  </select>  
+                                <button type="button" class="ql-bold" aria-label="Bold"></button>
+                                <button type="button" class="ql-italic" aria-label="Italic"></button>
+                                <button type="button" class="ql-underline" aria-label="Underline"></button>
+                                <button class="ql-list" value="bullet" title="Bulleted List"></button>
+                                <button class="ql-list" value="ordered"></button>
+                            </span>
+                        </ng-template>
+                    </p-editor>
+                </div>
+                <div class="field col-12 md:col-6">
+                    <div class="heading"><label>PSA BDP Value Statement</label></div><br>
+                    <p-editor  placeholder="Add Your Description Here...." [(ngModel)]="value_to_psa_bdp"   [style]="{'height':'220px'}" >
+                        <ng-template pTemplate="header">
+                            <span class="ql-formats">
+                                <select title="Text Alignment" class="ql-align" >
+                                    <option selected>Gauche</option>
+                                    <option value="center" label="Center"></option>
+                                    <option value="right" label="Right"></option>
+                                    <option value="justify" label="Justify"></option>
+                                  </select>  
+                                <button type="button" class="ql-bold" aria-label="Bold"></button>
+                                <button type="button" class="ql-italic" aria-label="Italic"></button>
+                                <button type="button" class="ql-underline" aria-label="Underline"></button>
+                                <button class="ql-list" value="bullet" title="Bulleted List"></button>
+                                <button class="ql-list" value="ordered"></button>
+                            </span>
+                        </ng-template>
+                    </p-editor> 
+                </div>
+                <div class="field col-12 md:col-6">
+                    <div class="heading"><label>Mode Of Transport</label></div><br>
+                    <p-multiSelect [options]="mot" optionValue="id"  placeholder="Select Mode Of Transport" [(ngModel)]="selectedMod"  optionLabel="name"></p-multiSelect>
+                </div>
+            </div>
+            <div class="grid">
+                <div class="col-6">
+                    <button pButton pRipple type="button" label="Cancel" (click)="confirm()"  class="p-button-outlined mr-2 mb-2"></button>
+                </div>
+               <div class="col-6" style="display: flex;justify-content: flex-end;">
+                <button pButton pRipple type="button"  label="Save As Draft"  (click)="saveAsDraft()" class="p-button-outlined mr-2 mb-2"></button>
+                <button type="button" pButton pRipple label="Continue" (click)="activeIndex = 1"    class="mr-2 mb-2"></button>
+                <p-toast key="successToast"></p-toast>
+            </div>
+            </div>
+        </p-tabPanel>
+        <!--Commercial reference tab view -->
+        <p-tabPanel header="Commercial Reference">
+            <div class="p-fluid grid">
+                <div class="field col-12 md:col-6">
+                        <div class="heading"><label>Standard Service</label></div><br>
+                        <p-editor placeholder="Add Your Description Here...." [(ngModel)]="standard_service"    [style]="{'height':'220px'}" >
+                            <ng-template pTemplate="header">
+                                <span class="ql-formats">
+                                    <select title="Text Alignment" class="ql-align" >
+                                        <option selected>Gauche</option>
+                                        <option value="center" label="Center"></option>
+                                        <option value="right" label="Right"></option>
+                                        <option value="justify" label="Justify"></option>
+                                      </select>  
+                                    <button type="button" class="ql-bold" aria-label="Bold"></button>
+                                    <button type="button" class="ql-italic" aria-label="Italic"></button>
+                                    <button type="button" class="ql-underline" aria-label="Underline"></button>
+                                    <button class="ql-list" value="bullet" title="Bulleted List"></button>
+                                    <button class="ql-list" value="ordered"></button>
+                                </span>
+                            </ng-template>
+                        </p-editor> 
+                </div>
+                <div class="field col-12 md:col-6">
+                    <div class="heading"><label>SOW</label></div><br>
+                    <p-editor placeholder="Add Your Description Here...."  [(ngModel)]="sow"    [style]="{'height':'220px'}">
+                        <ng-template pTemplate="header">
+                            <span class="ql-formats">
+                                <select title="Text Alignment" class="ql-align" >
+                                    <option selected>Gauche</option>
+                                    <option value="center" label="Center"></option>
+                                    <option value="right" label="Right"></option>
+                                    <option value="justify" label="Justify"></option>
+                                  </select>  
+                                <button type="button" class="ql-bold" aria-label="Bold"></button>
+                                <button type="button" class="ql-italic" aria-label="Italic"></button>
+                                <button type="button" class="ql-underline" aria-label="Underline"></button>
+                                <button class="ql-list" value="bullet" title="Bulleted List"></button>
+                                <button class="ql-list" value="ordered"></button>
+                            </span>
+                        </ng-template>
+                    </p-editor>
+                </div>
+                <div class="field col-12 md:col-6">
+                    <div class="heading"><label>Pre-requisite Information</label></div><br>
+                    <p-editor  placeholder="Add Your Description Here...."  [(ngModel)]="pre_requisite_info"   [style]="{'height':'220px'}" >
+                        <ng-template pTemplate="header">
+                            <span class="ql-formats">
+                                <select title="Text Alignment" class="ql-align" >
+                                    <option selected>Gauche</option>
+                                    <option value="center" label="Center"></option>
+                                    <option value="right" label="Right"></option>
+                                    <option value="justify" label="Justify"></option>
+                                  </select>  
+                                <button type="button" class="ql-bold" aria-label="Bold"></button>
+                                <button type="button" class="ql-italic" aria-label="Italic"></button>
+                                <button type="button" class="ql-underline" aria-label="Underline"></button>
+                                <button class="ql-list" value="bullet" title="Bulleted List"></button>
+                                <button class="ql-list" value="ordered"></button>
+                            </span>
+                        </ng-template>
+                    </p-editor> 
+                </div>
+                <div class="field col-12 md:col-6">
+                    <div class="heading"><label>Combined Value</label></div><br>
+                    <p-editor  placeholder="Add Your Description Here...." [(ngModel)]="combined_value"  [style]="{'height':'220px'}" >
+                        <ng-template pTemplate="header">
+                            <span class="ql-formats">
+                                <select title="Text Alignment" class="ql-align" >
+                                    <option selected>Gauche</option>
+                                    <option value="center" label="Center"></option>
+                                    <option value="right" label="Right"></option>
+                                    <option value="justify" label="Justify"></option>
+                                  </select>  
+                                <button type="button" class="ql-bold" aria-label="Bold"></button>
+                                <button type="button" class="ql-italic" aria-label="Italic"></button>
+                                <button type="button" class="ql-underline" aria-label="Underline"></button>
+                                <button class="ql-list" value="bullet" title="Bulleted List"></button>
+                                <button class="ql-list" value="ordered"></button>
+                            </span>
+                        </ng-template>
+                    </p-editor> 
+                </div>
+                <div class="field col-12 md:col-6">
+                    <div class="heading"><label>Do's</label></div><br>
+                    <p-editor  placeholder="Add Your Description Here...." [(ngModel)]="do_s"  [style]="{'height':'220px'}" >
+                        <ng-template pTemplate="header">
+                            <span class="ql-formats">
+                                <select title="Text Alignment" class="ql-align" >
+                                    <option selected>Gauche</option>
+                                    <option value="center" label="Center"></option>
+                                    <option value="right" label="Right"></option>
+                                    <option value="justify" label="Justify"></option>
+                                  </select>  
+                                <button type="button" class="ql-bold" aria-label="Bold"></button>
+                                <button type="button" class="ql-italic" aria-label="Italic"></button>
+                                <button type="button" class="ql-underline" aria-label="Underline"></button>
+                                <button class="ql-list" value="bullet" title="Bulleted List"></button>
+                                <button class="ql-list" value="ordered"></button>
+                            </span>
+                        </ng-template>
+                    </p-editor> 
+                </div>
+                <div class="field col-12 md:col-6">
+                    <div class="heading"><label>Dont's</label></div><br>
+                    <p-editor  placeholder="Add Your Description Here...." [(ngModel)]="don_s"  [style]="{'height':'220px'}" >
+                        <ng-template pTemplate="header">
+                            <span class="ql-formats">
+                                <select title="Text Alignment" class="ql-align" >
+                                    <option selected>Gauche</option>
+                                    <option value="center" label="Center"></option>
+                                    <option value="right" label="Right"></option>
+                                    <option value="justify" label="Justify"></option>
+                                  </select>  
+                                <button type="button" class="ql-bold" aria-label="Bold"></button>
+                                <button type="button" class="ql-italic" aria-label="Italic"></button>
+                                <button type="button" class="ql-underline" aria-label="Underline"></button>
+                                <button class="ql-list" value="bullet" title="Bulleted List"></button>
+                                <button class="ql-list" value="ordered"></button>
+                            </span>
+                        </ng-template>
+                    </p-editor> 
+                </div>
+                <div class="field col-12 md:col-6">
+                    <div class="heading"><label>Configurable</label></div><br>
+                    <p-editor  placeholder="Add Your Description Here...." [(ngModel)]="configurables"   [style]="{'height':'220px'}" >
+                        <ng-template pTemplate="header">
+                            <span class="ql-formats">
+                                <select title="Text Alignment" class="ql-align" >
+                                    <option selected>Gauche</option>
+                                    <option value="center" label="Center"></option>
+                                    <option value="right" label="Right"></option>
+                                    <option value="justify" label="Justify"></option>
+                                  </select>  
+                                <button type="button" class="ql-bold" aria-label="Bold"></button>
+                                <button type="button" class="ql-italic" aria-label="Italic"></button>
+                                <button type="button" class="ql-underline" aria-label="Underline"></button>
+                                <button class="ql-list" value="bullet" title="Bulleted List"></button>
+                                <button class="ql-list" value="ordered"></button>
+                            </span>
+                        </ng-template>
+                    </p-editor>
+                </div>
+                
+            </div>
+            <div class="grid">
+                <div class="col-6">
+                    <button pButton pRipple type="button" label="Cancel" (click)="confirm()"  class="p-button-outlined mr-2 mb-2"></button>
+                </div>
+               <div class="col-6" style="display: flex;justify-content: flex-end;">
+                <button pButton pRipple type="button"  label="Save As Draft" (click)="saveAsDraft()" class="p-button-outlined mr-2 mb-2"></button>
+                <button type="submit" pButton pRipple label="Submit"  class="mr-2 mb-2"></button>
+                <p-toast key="successToast"></p-toast>
+            </div>
+            </div>
+        </p-tabPanel>
+    </p-tabView>
+    
 </div>
 
 <!-- import from excel dialog -->
@@ -255,24 +492,25 @@
     <ng-template pTemplate="header">
         <div style="width: 100%;">
             <h5 style="display: contents;">Import From Excel</h5>&nbsp;&nbsp;&nbsp;
-            <h5 style="display: contents;" ><a href="*" style="text-decoration: underline;">Download Sample File</a></h5>
+            <h5 style="display: contents;"><a href="*" style="text-decoration: underline;">Download Sample File</a></h5>
         </div>
     </ng-template>
     <hr>
     <div>
         <div>
             <h6><b>Instructions</b></h6>
-            
-                <ul class="list">
-                    <li>Maximum File Size: 5MB</li>
-                    <li>File Format: 5MB: CSV(Shipments pushed through CSV will be available for tracking within 5 hours)</li>
-                </ul>
-                <ol class="list" type="1">
-                    <li>Make sure Data's are validated</li>
-                    <li>Keep file name recognisable</li>
-                    <li>Avoid uploading incomplete file</li>
-                </ol>
-           
+
+            <ul class="list">
+                <li>Maximum File Size: 5MB</li>
+                <li>File Format: 5MB: CSV(Shipments pushed through CSV will be available for tracking within 5 hours)
+                </li>
+            </ul>
+            <ol class="list" type="1">
+                <li>Make sure Data's are validated</li>
+                <li>Keep file name recognisable</li>
+                <li>Avoid uploading incomplete file</li>
+            </ol>
+
         </div>
         <div style="display: flex; justify-content: center;">
             <!-- <div class="demo-container p-4">
@@ -291,7 +529,7 @@
             </div> -->
         </div>
 
-       
+
     </div>
 </p-dialog>
 <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>

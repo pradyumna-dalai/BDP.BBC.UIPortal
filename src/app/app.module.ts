@@ -105,8 +105,7 @@ import { GlossaryComponent } from './demo/view/glossary/glossary.component';
 import { CreateBbComponent } from './demo/view/create-bb/create-bb.component';
 
 import { NodeService } from './demo/service/nodeservice';
-import { GeneralInfoComponent } from './demo/view/create-bb/general-info/general-info.component';
-import { CommercialRefComponent } from './demo/view/create-bb/commercial-ref/commercial-ref.component';
+
 
 
 @NgModule({
@@ -209,8 +208,6 @@ import { CommercialRefComponent } from './demo/view/create-bb/commercial-ref/com
         ProjectComponent,
         GlossaryComponent,
         CreateBbComponent,
-        GeneralInfoComponent,
-        CommercialRefComponent,
 
     ],
     providers: [
