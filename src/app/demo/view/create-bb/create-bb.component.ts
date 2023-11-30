@@ -1,10 +1,9 @@
-import { Component } from '@angular/core';
+import { Component  } from '@angular/core';
 import { AppBreadcrumbService } from '../../../app.breadcrumb.service';
 import { MenuItem, MessageService,ConfirmationService } from 'primeng/api';
 import { MasterTableService } from './../../../services/master-table.service';
 import { CreateBuildingBlockService } from './../../../services/create-buildingBlock/create-building-block.service';
-import { ActivatedRoute, Router, RouterLinkActive } from '@angular/router';
-
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 
@@ -16,9 +15,11 @@ import { ActivatedRoute, Router, RouterLinkActive } from '@angular/router';
 })
 
 export class CreateBbComponent {
+
+
   isloading: boolean = false;
   routeItems: MenuItem[];
-  // text: string = '';
+
   mot: any;
   selectedMod: any;
   product_category: any;
@@ -32,6 +33,7 @@ export class CreateBbComponent {
   visible: boolean = false;
   product_name: any;
   selected: boolean = true;
+
   seervice_desc: any;
   value_to_psa_bdp: any;
   customer_requirement: any;
@@ -39,12 +41,22 @@ export class CreateBbComponent {
   deliverables: any;
   stakeholders_audience: any;
   configurables: any;
+  standard_service: any;
+  sow: any;
+  pre_requisite_info:any;
+  combined_value:any;
+  do_s:any;
+  don_s:any;
+  
+
+
   data: any;
   procuctNames: any
   procuctNamesOptions = []
   procuctScopesOptions = []
   procuctCategoryOptions = []
   chargecodeOptions = []
+  activeIndex: number = 0;
 
 
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
@@ -59,20 +71,10 @@ export class CreateBbComponent {
     ]);
   }
   ngOnInit() {
-    this.routeItems = [
-      {
-        label: 'General Information',
-        routerLink: 'general-info'
-      },
-      {
-        label: 'commercial-ref',
-        routerLink: 'commercial-ref'
-      }
-    ];
+  
     this.getProdname();
     this.getChargeCode();
     this.getModeOfTransport();
-
 
   }
 
@@ -111,7 +113,10 @@ export class CreateBbComponent {
     this.deliverables = "";
     this.stakeholders_audience = "";
     this.selectedMod = [];
+    
   }
+ 
+
 // ---------------get product data------------------------//
   getProdname() {
     this.procuctCategoryOptions = [];
@@ -224,18 +229,14 @@ export class CreateBbComponent {
         card: ""
       },
       commercialCard: {
-        serviceDescription: "",
-        customerRequirment: "",
-        psaBdpValueStatement: "",
-        standardService: ""
+        serviceDescription: this.configurables,
+        customerRequirment: this.configurables,
+        psaBdpValueStatement: this.value_to_psa_bdp,
+        standardService: this.standard_service
       }
       
 
     }
-    //console.log(body);
-    // this.CreateBuildingBlockservice.createBuildingBlock(body).subscribe((res) => {
-     
-    // })
     this.CreateBuildingBlockservice.createBuildingBlock(body).subscribe(
       (res) => {
         console.log('Draft saved successfully:', res);
