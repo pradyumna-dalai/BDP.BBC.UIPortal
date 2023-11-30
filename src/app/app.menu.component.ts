@@ -1,92 +1,76 @@
+// app-menu.component.ts
 import { Component, OnInit } from '@angular/core';
-import { AppComponent } from './app.component';
+import { MenuItem } from 'primeng/api';
+import { MenuService } from './app.menu.service';
 
 @Component({
     selector: 'app-menu',
     template: `
         <ul class="layout-menu">
-            <li app-menuitem *ngFor="let item of model; let i = index;" [item]="item" [index]="i" [root]="true"></li>
+            <li *ngFor="let item of menuItems" app-menuitem [item]="item" [index]="item.id" [root]="true"></li>
         </ul>
     `
 })
 export class AppMenuComponent implements OnInit {
 
-    model: any[];
-    model1: any[];
-    new: any;
+    menuItems: MenuItem[] = [];
 
-    constructor(public app: AppComponent) { }
+    constructor(private menuService: MenuService) { }
 
     ngOnInit() {
-        this.model = [
-            {
-                label: 'Building Blocks', icon: 'pi pi-fw pi-sitemap', routerLink: ['/'],
-            },
-            {
-                label: 'Project', icon: 'pi pi-fw pi-file', routerLink: ['/project'],
-            },
-            {
-                label: 'Adminstration', icon: 'pi pi-fw pi-cog', routerLink: ['/uikit'],
-                items: [
-                    { label: 'Adminstration 1', icon: 'pi pi-fw pi-image', routerLink: ['/uikit/media'] },
-                    { label: 'Adminstration 2', icon: 'pi pi-fw pi-bars', routerLink: ['/uikit/menu'], preventExact: true },
-                    { label: 'Adminstration 3', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/uikit/charts'] },
-                ]
-            },
-            {
-                label: 'Master Data Management', icon: 'pi pi-fw pi-database', routerLink: ['/uikit'],
-                items: [
-                    { label: 'Master Data 1', icon: 'pi pi-fw pi-image', routerLink: ['/uikit/media'] },
-                    { label: 'Master Data 2', icon: 'pi pi-fw pi-bars', routerLink: ['/uikit/menu'], preventExact: true },
-                    { label: 'Master Data 3', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/uikit/charts'] },
-                ]
-            }
-        ];
-
-        this.model1 = [
-            {
-                "id": 1,
-                "name": "Building Block",
-                "description": "Describe the menu options, which can be viewed in tooltip",
-                "parent_id": null,
-                "redirect_url": null,
-                "sub_menu":
-                    [
-                        {
-                            "id": 2,
-                            "name": "Building Block",
-                            "description": "Describe the menu options, which can be viewed in tooltip",
-                            "parent_id": 1,
-                            "redirect_url": null,
-                            "sub_menu": false
-                        },
-                        {
-                            "id": 3,
-                            "name": "Building Block",
-                            "description": "Describe the menu options, which can be viewed in tooltip",
-                            "parent_id": 1,
-                            "redirect_url": null,
-                            "sub_menu": false
-                        },
-                        {
-                            "id": 2,
-                            "name": "Building Block",
-                            "description": "Describe the menu options, which can be viewed in tooltip",
-                            "parent_id": 1,
-                            "redirect_url": null,
-                            "sub_menu": false
-                        },
-                        {
-                            "id": 3,
-                            "name": "Building Block",
-                            "description": "Describe the menu options, which can be viewed in tooltip",
-                            "parent_id": 1,
-                            "redirect_url": null,
-                            "sub_menu": false
-                        }
-                    ]
-            }
-        ]
-
+        this.menuService.getMenuItems().subscribe(apiMenuItems => {
+            this.menuItems = this.convertToMenuItems(apiMenuItems.data);
+        });
     }
+
+    convertToMenuItems(apiItems: any[]): MenuItem[] {
+        return apiItems.map(item => {
+            const menuItem: MenuItem = {
+                label: item.name,
+                icon: this.getIconForName(item.name),
+                routerLink: this.getRouterLinkForName(item.name, item.redirectUrl)
+            };
+
+            if (item.subMenu && item.subMenu.length > 0) {
+                menuItem.items = this.convertToMenuItems(item.subMenu);
+            }
+
+            return menuItem;
+        });
+    }
+
+
+    getIconForName(name: string): string {
+        switch (name.toLowerCase()) {
+            case 'building blocks':
+                return 'pi pi-fw pi-sitemap';
+            case 'project':
+                return 'pi pi-fw pi-file';
+            case 'administration':
+                return 'pi pi-fw pi-cog';
+            case 'master data management':
+                return 'pi pi-fw pi-database';
+            default:
+                return 'pi pi-fw pi-desktop'; // Default icon if not matched
+        }
+    }
+
+    getRouterLinkForName(name: string, customLink: string): any[] {
+        if (customLink) {
+            return [customLink];
+        }
+        switch (name.toLowerCase()) {
+            case 'building blocks':
+                return ['/'];
+            case 'project':
+                return ['/project'];
+            case 'administration':
+                return ['/uikit'];
+            case 'master data management':
+                return ['/master-data'];
+            default:
+                return ['/uikit'];
+        }
+    }
+
 }

@@ -24,7 +24,7 @@ export namespace AppRoutes {
     public static readonly getexploreViewBuildingBlock = "buildingblock?status=1";
     public static readonly getexploreViewBuildingBlockNew = "buildingblock?status=2";
 
-
+    public static readonly getMenuItem = "ui/menu";
 
     }
     
