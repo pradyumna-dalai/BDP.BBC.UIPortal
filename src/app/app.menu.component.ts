@@ -51,7 +51,7 @@ export class AppMenuComponent implements OnInit {
             case 'master data management':
                 return 'pi pi-fw pi-database';
             default:
-                return 'pi pi-fw pi-question'; // Default icon if not matched
+                return 'pi pi-fw pi-desktop'; // Default icon if not matched
         }
     }
 
