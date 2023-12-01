@@ -6,6 +6,8 @@
     background-color: #FDFEFF;
     border: none;
     font-weight: 700;
+    display: flex;
+    justify-content: center;
 }
 .master-dropdown{
     width: 19%;
@@ -24,4 +26,7 @@
 }
 .align{
     margin-top: -9px;
+}
+.icon-with-margin {
+    margin-right: 4px;
 }

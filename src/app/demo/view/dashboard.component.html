@@ -13,7 +13,8 @@
                 <div class="col-12"><span class="p-input-icon-left" style="margin-top: -19px;">
                         <i class="pi pi-search"></i>
                         <input type="text" pInputText placeholder="Search..." />
-                    </span></div>
+                    </span>
+                </div>
                 <div class="col-12">
                     <p-tabView>
                         <p-tabPanel header="Building Blocks">
@@ -76,7 +77,7 @@
         </div>
     </div>
     <div class="col-12 md:col-9">
-        <div class="card" style="height: 37rem;">
+        <!-- <div class="card" style="height: 37rem;">
             <div style="margin-top: 58px;">
                 <div style="display: flex;justify-content: center;">
                     <img src="assets/layout/images/no-bb-found.svg" alt="No Building Blocks Found">
@@ -90,7 +91,199 @@
                 <div style="display: flex;justify-content: center;"><a [routerLink]="['/create-buildingblocks']"
                         style="text-decoration: underline;">Create Building Blocks</a></div>
             </div>
+        </div> -->
+        <div class="card">
+            <div class="p-fluid grid" style="margin-top: 5px;margin-bottom: -19px;">
+                <div class="col-12 md:col-11">
+                <h5>General-Onboarding-Vendor onboarding & Training (Ocean)</h5>
+                </div>
+                <div class="col-12 md:col-1">
+                    <button pButton pRipple type="button"  label="Edit"
+                    class="p-button-outlined mr-2 mb-2"></button>
+                </div>
+            </div>
+            <hr>
+            <div class="p-fluid grid">
+                <div class="col-12 md:col-3">
+                    <label><b>Product Name</b></label><br>
+                    <label>Product Name</label>
+                </div>
+                <div class="col-12 md:col-3">
+                    <label><b>Product Scope</b></label><br>
+                    <label>Product Name</label>
+                </div>
+                <div class="col-12 md:col-3">
+                    <label><b>Product Category</b></label><br>
+                    <label>Product Name</label>
+                </div>
+                <div class="col-12 md:col-3">
+                    <label><b>Building Block Name</b></label><br>
+                    <label>Product Name</label>
+                </div>
+            </div>
         </div>
+
+        <div class="p-fluid grid">
+            <div class="col-12 md:col-4">
+                    <button pButton pRipple type="button" (click)="onCardClick('scoping')" class="p-button-outlined mr-2 mb-2 bbCard">
+                        <i class="pi pi-arrows-alt icon-with-margin"></i>
+                        Scoping Card
+                    </button>
+            </div>
+            <div class="col-12 md:col-4">
+                <button pButton pRipple type="button" (click)="onCardClick('operation')"  
+                class="p-button-outlined mr-2 mb-2 bbCard"> <i class="pi pi-cog icon-with-margin"></i>
+            Operation Card</button>
+            </div>
+            <div class="col-12 md:col-4">
+                <button pButton pRipple type="button" (click)="onCardClick('commercial')" 
+                    class="p-button-outlined mr-2 mb-2 bbCard">
+                    <i class="pi pi-money-bill icon-with-margin"></i>
+                    Commercial Card</button>
+            </div>
+        </div>
+        <!-- scoping card details -->
+        <div class="card" *ngIf="this.showScopingCrad==true">
+            <div class="grid">
+                <div class="col-6">
+                    <h5>Scoping Card</h5>
+                </div>
+                <div class="col-6" style="display: flex;justify-content: flex-end;">
+                    <a style="text-decoration: underline;">Import From Excel</a>
+                </div>
+            </div>
+            <hr class="align">
+            <p-accordion [activeIndex]="0">
+                <p-accordionTab header="Service Description">
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    </p>
+                </p-accordionTab>
+                <p-accordionTab header="Value To PSA BDP">
+                    <p>
+                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim
+                        ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
+                    </p>
+                </p-accordionTab>
+                <p-accordionTab header="Customer Requirements">
+                    <p>
+                        At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
+                        qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+                    </p>
+                </p-accordionTab>
+                <p-accordionTab header="Parameters">
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    </p>
+                </p-accordionTab>
+                <p-accordionTab header="Deliverables">
+                    <p>
+                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim
+                        ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
+                    </p>
+                </p-accordionTab>
+                <p-accordionTab header="Configurable">
+                    <p>
+                        At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
+                        qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+                    </p>
+                </p-accordionTab>
+                <p-accordionTab header="Mode Of Transport">
+                    <p>
+                        At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
+                        qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+                    </p>
+                </p-accordionTab>
+                <p-accordionTab header="Stakeholder / Audience">
+                    <p>
+                        At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
+                        qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+                    </p>
+                </p-accordionTab>
+            </p-accordion>
+        </div>
+        <!-- Operation card details -->
+        <div class="card" *ngIf="this.showOperationCrad==true">
+            <div class="grid">
+                <div class="col-6">
+                    <h5>Operation Card</h5>
+                </div>
+                <div class="col-6" style="display: flex;justify-content: flex-end;">
+                    <a style="text-decoration: underline;">Import From Excel</a>
+                </div>
+            </div>
+            <hr class="align">
+        </div>
+        <!-- commercial card details -->
+        <div class="card" *ngIf="this.showCommercialCrad==true">
+            <div class="grid">
+                <div class="col-6">
+                    <h5>Commercial Card</h5>
+                </div>
+                <div class="col-6" style="display: flex;justify-content: flex-end;">
+                    <a style="text-decoration: underline;">Import From Excel</a>
+                </div>
+            </div>
+            <hr class="align">
+            <h6><b>General Information</b></h6>
+            <p-accordion [activeIndex]="0">
+                <p-accordionTab header="Standard Service">
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    </p>
+                </p-accordionTab>
+                <p-accordionTab header="SOW">
+                    <p>
+                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim
+                        ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
+                    </p>
+                </p-accordionTab>
+                <p-accordionTab header="Pre-requisite Information">
+                    <p>
+                        At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
+                        qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+                    </p>
+                </p-accordionTab>
+            </p-accordion>
+                <h6><b>Commercial Reference</b></h6>
+
+                <p-accordion [activeIndex]="0">
+                <p-accordionTab header="Combined Value">
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    </p>
+                </p-accordionTab>
+                <p-accordionTab header="Do's">
+                    <p>
+                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim
+                        ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
+                    </p>
+                </p-accordionTab>
+                <p-accordionTab header="Dont's">
+                    <p>
+                        At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
+                        qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+                    </p>
+                </p-accordionTab>
+                <p-accordionTab header="Configurable">
+                    <p>
+                        At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
+                        qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+                    </p>
+                </p-accordionTab>
+                <p-accordionTab header="Stakeholder / Audience">
+                    <p>
+                        At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
+                        qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+                    </p>
+                </p-accordionTab>
+            </p-accordion>
+        </div>
+        
     </div>
 
 </div>

@@ -14,9 +14,9 @@ import { CreateBuildingBlockService } from 'src/app/services/create-buildingBloc
 export class DashboardDemoComponent implements OnInit {
 
 
-   // files1: TreeNode[];
-   // selectedFiles1: TreeNode;
-   //explorerData: any;
+  showScopingCrad: boolean = true;
+  showCommercialCrad: boolean = false;
+  showOperationCrad: boolean = false;
    treeData: TreeNode[];
    treeDataNew: TreeNode[];
 
@@ -67,5 +67,29 @@ export class DashboardDemoComponent implements OnInit {
       }
     );
   }
+  // for card click
+
+  onCardClick(val) {
+    if (val == 'scoping') {
+      this.showScopingCrad = true;
+      this.showOperationCrad = false;
+      this.showCommercialCrad = false;
+    }
+    if (val == 'operation') {
+      this.showScopingCrad = false;
+      this.showOperationCrad = true;
+      this.showCommercialCrad = false;
+
+    }
+    if (val == 'commercial') {
+      this.showScopingCrad = false;
+      this.showOperationCrad = false;
+      this.showCommercialCrad = true;
+
+    }
+
+  }
 }
+
+
 
