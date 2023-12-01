@@ -90,20 +90,25 @@ export class CreateBbComponent {
     });
 }
   
-  onScopingCardClick() {
-    this.showScopingCrad = true;
-    this.showOperationCrad = false;
-    this.showCommercialCrad = false;
-  }
-  onOperationCardClick() {
-    this.showScopingCrad = false;
-    this.showOperationCrad = true;
-    this.showCommercialCrad = false;
-  }
-  onCommercialCardClick() {
-    this.showScopingCrad = false;
-    this.showOperationCrad = false;
-    this.showCommercialCrad = true;
+  onCardClick(val) {
+    if (val == 'scoping') {
+      this.showScopingCrad = true;
+      this.showOperationCrad = false;
+      this.showCommercialCrad = false;
+    }
+    if (val == 'operation') {
+      this.showScopingCrad = false;
+      this.showOperationCrad = true;
+      this.showCommercialCrad = false;
+
+    }
+    if (val == 'commercial') {
+      this.showScopingCrad = false;
+      this.showOperationCrad = false;
+      this.showCommercialCrad = true;
+
+    }
+
   }
   clear() {
     this.seervice_desc = "";

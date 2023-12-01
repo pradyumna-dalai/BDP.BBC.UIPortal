@@ -33,17 +33,22 @@
     </div>
 </div>
 <div class="p-fluid grid">
-    <div class="col-12 md:col-4" tabindex="1">
-        <button pButton pRipple type="button" (click)="onScopingCardClick()" label="Scoping Card"
-            class="p-button-outlined mr-2 mb-2 bbCard"></button>
+    <div class="col-12 md:col-4">
+            <button pButton pRipple type="button" (click)="onCardClick('scoping')" class="p-button-outlined mr-2 mb-2 bbCard">
+                <i class="pi pi-arrows-alt icon-with-margin"></i>
+                Scoping Card
+            </button>
     </div>
     <div class="col-12 md:col-4">
-        <button pButton pRipple type="button" (click)="onOperationCardClick()" label="Operation Card"
-            class="p-button-outlined mr-2 mb-2 bbCard"></button>
+        <button pButton pRipple type="button" (click)="onCardClick('operation')"  
+        class="p-button-outlined mr-2 mb-2 bbCard"> <i class="pi pi-cog icon-with-margin"></i>
+    Operation Card</button>
     </div>
     <div class="col-12 md:col-4">
-        <button pButton pRipple type="button" (click)="onCommercialCardClick()" label="Commercial Card"
-            class="p-button-outlined mr-2 mb-2 bbCard"></button>
+        <button pButton pRipple type="button" (click)="onCardClick('commercial')" 
+            class="p-button-outlined mr-2 mb-2 bbCard">
+            <i class="pi pi-money-bill icon-with-margin"></i>
+            Commercial Card</button>
     </div>
 </div>
 <div class="card" *ngIf="this.showScopingCrad==true">
