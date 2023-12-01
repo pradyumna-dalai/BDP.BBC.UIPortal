@@ -10,10 +10,12 @@
                         style="border-radius: 6px;" label="New" class="mr-2
                         mb-2"></button>
                 </div>
-                <div class="col-12"><span class="p-input-icon-left" style="margin-top: -19px;">
+                <div class="col-12">
+                    <span class="p-input-icon-left" style="margin-top: -19px;">
                         <i class="pi pi-search"></i>
-                        <input type="text" pInputText placeholder="Search..." />
-                    </span></div>
+                        <input type="text" pInputText placeholder="Search..."  [(ngModel)]="searchText" (input)="onSearchChange()"/>
+                    </span>
+                </div>
                 <div class="col-12">
                     <p-tabView>
                         <p-tabPanel header="Building Blocks">
