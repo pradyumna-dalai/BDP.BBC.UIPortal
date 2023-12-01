@@ -11,8 +11,13 @@ import { CreateBuildingBlockService } from 'src/app/services/create-buildingBloc
 })
 export class DashboardDemoComponent implements OnInit {
 
-    treeData: TreeNode[];
-    treeDataNew: TreeNode[];
+
+  showScopingCrad: boolean = true;
+  showCommercialCrad: boolean = false;
+  showOperationCrad: boolean = false;
+   treeData: TreeNode[];
+   treeDataNew: TreeNode[];
+
     subscription: Subscription;
     searchText: string = ''; 
 
@@ -74,4 +79,31 @@ export class DashboardDemoComponent implements OnInit {
     private filterTreeData(data: TreeNode[], searchText: string): TreeNode[] {
         return data.filter(node => node.label.toLowerCase().includes(searchText.toLowerCase()));
     }
+
+    onCardClick(val) {
+        if (val == 'scoping') {
+          this.showScopingCrad = true;
+          this.showOperationCrad = false;
+          this.showCommercialCrad = false;
+        }
+        if (val == 'operation') {
+          this.showScopingCrad = false;
+          this.showOperationCrad = true;
+          this.showCommercialCrad = false;
+    
+        }
+        if (val == 'commercial') {
+          this.showScopingCrad = false;
+          this.showOperationCrad = false;
+          this.showCommercialCrad = true;
+    
+        }
+    
+      }
 }
+
+ 
+
+
+
+
