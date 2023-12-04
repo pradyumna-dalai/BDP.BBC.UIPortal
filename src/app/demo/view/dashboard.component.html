@@ -1,14 +1,14 @@
 <div class="grid p-fluid">
     <div class="col-12 md:col-3">
-        <div class="card" style="min-height: 37rem;">
+        <div class="card" style="min-height: 669px;;">
             <div class="grid" style="margin-top: 4px;">
                 <div class="col-6">
                     <h4 id="heading"><b>Building Blocks</b></h4>
                 </div>
                 <div style="display: flex;justify-content: end;" class="col-6">
-                    <button pButton pRipple [routerLink]="['/create-buildingblocks']" icon="pi pi-plus"
-                        style="border-radius: 6px;" label="New" class="mr-2
-                        mb-2"></button>
+                    <button pButton pRipple [routerLink]="['/create-buildingblocks']"  class="mr-2 mb-2 new-button"> <i class="pi pi-plus icon-with-margin"></i>
+                        New</button>
+                       
                 </div>
                 <div class="col-12">
                     <span class="p-input-icon-left" style="margin-top: -19px;">
@@ -150,54 +150,54 @@
                     <h5>Scoping Card</h5>
                 </div>
                 <div class="col-6" style="display: flex;justify-content: flex-end;">
-                    <a style="text-decoration: underline;">Import From Excel</a>
+                    <p-button (click)="isExpanded = !isExpanded" class="p-button-outlined" label="{{ isExpanded ? 'Collapse All' : 'Expand All' }}" ></p-button> 
                 </div>
             </div>
             <hr class="align">
-            <p-accordion [activeIndex]="0">
-                <p-accordionTab header="Service Description">
+            <p-accordion [multiple]="true">
+                <p-accordionTab header="Service Description" [selected]="isExpanded">
                     <p>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
                         consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
                     </p>
                 </p-accordionTab>
-                <p-accordionTab header="Value To PSA BDP">
+                <p-accordionTab header="Value To PSA BDP" [selected]="isExpanded">
                     <p>
                         Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim
                         ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
                     </p>
                 </p-accordionTab>
-                <p-accordionTab header="Customer Requirements">
+                <p-accordionTab header="Customer Requirements" [selected]="isExpanded">
                     <p>
                         At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
                         qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
                     </p>
                 </p-accordionTab>
-                <p-accordionTab header="Parameters">
+                <p-accordionTab header="Parameters" [selected]="isExpanded">
                     <p>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
                         consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
                     </p>
                 </p-accordionTab>
-                <p-accordionTab header="Deliverables">
+                <p-accordionTab header="Deliverables" [selected]="isExpanded">
                     <p>
                         Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim
                         ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
                     </p>
                 </p-accordionTab>
-                <p-accordionTab header="Configurable">
+                <p-accordionTab header="Configurable" [selected]="isExpanded">
                     <p>
                         At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
                         qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
                     </p>
                 </p-accordionTab>
-                <p-accordionTab header="Mode Of Transport">
+                <p-accordionTab header="Mode Of Transport" [selected]="isExpanded">
                     <p>
                         At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
                         qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
                     </p>
                 </p-accordionTab>
-                <p-accordionTab header="Stakeholder / Audience">
+                <p-accordionTab header="Stakeholder / Audience" [selected]="isExpanded">
                     <p>
                         At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
                         qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
@@ -207,7 +207,7 @@
         </div>
         <!-- Operation card details -->
         <div class="card" *ngIf="this.showOperationCrad==true">
-            <div class="grid">
+            <!-- <div class="grid">
                 <div class="col-6">
                     <h5>Operation Card</h5>
                 </div>
@@ -215,7 +215,10 @@
                     <a style="text-decoration: underline;">Import From Excel</a>
                 </div>
             </div>
-            <hr class="align">
+            <hr class="align"> -->
+            <div class="page-under-construction">
+                <img src="assets/layout/images/page-under-construction.jpg" alt="No Building Blocks Found">
+            </div>
         </div>
         <!-- commercial card details -->
         <div class="card" *ngIf="this.showCommercialCrad==true">
@@ -224,25 +227,25 @@
                     <h5>Commercial Card</h5>
                 </div>
                 <div class="col-6" style="display: flex;justify-content: flex-end;">
-                    <a style="text-decoration: underline;">Import From Excel</a>
+                    <p-button (click)="isExpanded = !isExpanded" class="p-button-outlined" label="{{ isExpanded ? 'Collapse All' : 'Expand All' }}" ></p-button> 
                 </div>
             </div>
             <hr class="align">
             <h6><b>General Information</b></h6>
-            <p-accordion [activeIndex]="0">
-                <p-accordionTab header="Standard Service">
+            <p-accordion [multiple]="true">
+                <p-accordionTab header="Standard Service" [selected]="isExpanded">
                     <p>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
                         consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
                     </p>
                 </p-accordionTab>
-                <p-accordionTab header="SOW">
+                <p-accordionTab header="SOW" [selected]="isExpanded">
                     <p>
                         Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim
                         ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
                     </p>
                 </p-accordionTab>
-                <p-accordionTab header="Pre-requisite Information">
+                <p-accordionTab header="Pre-requisite Information" [selected]="isExpanded">
                     <p>
                         At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
                         qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
@@ -251,32 +254,32 @@
             </p-accordion>
                 <h6><b>Commercial Reference</b></h6>
 
-                <p-accordion [activeIndex]="0">
-                <p-accordionTab header="Combined Value">
+                <p-accordion  [multiple]="true">
+                <p-accordionTab header="Combined Value" [selected]="isExpanded">
                     <p>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
                         consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
                     </p>
                 </p-accordionTab>
-                <p-accordionTab header="Do's">
+                <p-accordionTab header="Do's" [selected]="isExpanded">
                     <p>
                         Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim
                         ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
                     </p>
                 </p-accordionTab>
-                <p-accordionTab header="Dont's">
+                <p-accordionTab header="Dont's" [selected]="isExpanded">
                     <p>
                         At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
                         qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
                     </p>
                 </p-accordionTab>
-                <p-accordionTab header="Configurable">
+                <p-accordionTab header="Configurable" [selected]="isExpanded">
                     <p>
                         At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
                         qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
                     </p>
                 </p-accordionTab>
-                <p-accordionTab header="Stakeholder / Audience">
+                <p-accordionTab header="Stakeholder / Audience" [selected]="isExpanded">
                     <p>
                         At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
                         qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
