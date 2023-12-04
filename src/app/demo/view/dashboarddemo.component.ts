@@ -1,9 +1,10 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnInit } from '@angular/core';
 import {AppBreadcrumbService} from '../../app.breadcrumb.service';
 import { AppMainComponent } from '../../app.main.component';
 import {TreeNode} from 'primeng/api';
 import {Subscription} from 'rxjs';
 import { CreateBuildingBlockService } from 'src/app/services/create-buildingBlock/create-building-block.service';
+import { Accordion } from 'primeng/accordion';
 
 
 @Component({
@@ -13,14 +14,14 @@ import { CreateBuildingBlockService } from 'src/app/services/create-buildingBloc
 })
 export class DashboardDemoComponent implements OnInit {
 
-
+ 
   showScopingCrad: boolean = true;
   showCommercialCrad: boolean = false;
   showOperationCrad: boolean = false;
+  private _isExpanded = false;
    treeData: TreeNode[];
    treeDataNew: TreeNode[];
-
-    subscription: Subscription;
+  subscription: Subscription;
 
     constructor(private breadcrumbService: AppBreadcrumbService, private appMain: AppMainComponent, private createBuildingBlockservice:CreateBuildingBlockService) {
         this.breadcrumbService.setItems([
@@ -31,6 +32,7 @@ export class DashboardDemoComponent implements OnInit {
     }
 
     ngOnInit() {
+  
         this.loadTreeData();
         this.loadTreeDataNew();
     }
@@ -89,6 +91,15 @@ export class DashboardDemoComponent implements OnInit {
     }
 
   }
+  
+  public get isExpanded() {
+    return this._isExpanded;
+  }
+
+  public set isExpanded(value: boolean) {
+     this._isExpanded = value;
+  }
+ 
 }
 
 
