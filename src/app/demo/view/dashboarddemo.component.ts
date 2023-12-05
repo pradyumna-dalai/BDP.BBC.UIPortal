@@ -1,9 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AppBreadcrumbService } from '../../app.breadcrumb.service';
+import {Component, OnDestroy, OnInit } from '@angular/core';
+import {AppBreadcrumbService} from '../../app.breadcrumb.service';
 import { AppMainComponent } from '../../app.main.component';
 import { TreeNode } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { CreateBuildingBlockService } from 'src/app/services/create-buildingBlock/create-building-block.service';
+import { Accordion } from 'primeng/accordion';
 
 @Component({
     templateUrl: './dashboard.component.html',
@@ -33,6 +34,7 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+  
         this.loadTreeData();
         this.loadTreeDataNew();
 

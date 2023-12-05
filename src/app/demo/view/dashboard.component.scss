@@ -14,11 +14,14 @@
     }
 }
 
-
+.new-button{
+    border-radius: 6px;display: flex;justify-content: center;
+}
 
 .heading{
     padding: 7px;
     background-color: #E5F2FD;
+    border-radius: 6px;
 }
 .bbCard{
     background-color: #FDFEFF;
@@ -26,6 +29,7 @@
     font-weight: 700;
     display: flex;
     justify-content: center;
+    border-radius: 6px;
 }
 .master-dropdown{
     width: 19%;
