@@ -21,6 +21,7 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
     searchText: string = '';
     selectedNode: TreeNode;
     buildingBlockDetails: any;
+    private _isExpanded = false;
 
     constructor(private breadcrumbService: AppBreadcrumbService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
         this.breadcrumbService.setItems([
@@ -126,6 +127,13 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
                 }
             );
         }
+    }
+    public get isExpanded() {
+      return this._isExpanded;
+    }
+  
+    public set isExpanded(value: boolean) {
+       this._isExpanded = value;
     }
 
 
