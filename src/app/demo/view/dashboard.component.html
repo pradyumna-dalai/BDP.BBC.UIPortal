@@ -13,16 +13,18 @@
                 <div class="col-12">
                     <span class="p-input-icon-left" style="margin-top: -19px;">
                         <i class="pi pi-search"></i>
-                        <input type="text" pInputText placeholder="Search..."  [(ngModel)]="searchText" (input)="onSearchChange()"/>
+                        <input type="text" pInputText placeholder="Search..." [(ngModel)]="searchText"
+                            (input)="onSearchChange()" />
                     </span>
                 </div>
                 <div class="col-12">
                     <p-tabView>
                         <p-tabPanel header="Building Blocks">
-                            <p-tree [value]="treeDataNew" [selectionMode]="'single'">
+                            <p-tree [value]="treeDataNew" [selectionMode]="'single'"
+                                (onNodeSelect)="onNodeSelect($event)">
                                 <ng-template let-node pTemplate="default">
                                     <span>
-                                      
+
                                         <!-- Add icons for each child based on the item type -->
                                         <span *ngIf="node.data?.type === 1" class="fas fa-folder"></span>
                                         <span *ngIf="node.data?.type === 2" class="fa-regular fa-folder"></span>
@@ -46,23 +48,22 @@
                         </p-tabPanel>
                         <p-tabPanel header="Drafts">
                             <!-- <div style="margin-top: 115px;"> -->
-                                    <p-tree [value]="treeData" [selectionMode]="'single'">
-                                        <ng-template let-node pTemplate="default">
-                                            <span>
-                                              
-                                                <!-- Add icons for each child based on the item type -->
-                                                <span *ngIf="node.data?.type === 1" class="fas fa-folder"></span>
-                                                <span *ngIf="node.data?.type === 2" class="fa-regular fa-folder"></span>
-                                                <span *ngIf="node.data?.type === 3" class="far fa-folder-open"></span>
-                                                <span *ngIf="node.data?.type === 4" class="fas fa-boxes"></span>
-                                                {{ node.label }}
-                                            </span>
-                                        </ng-template>
-                                    </p-tree>
-                                <!-- </div> -->
+                            <p-tree [value]="treeData" [selectionMode]="'single'" (onNodeSelect)="onNodeSelect($event)">
+                                <ng-template let-node pTemplate="default">
+                                    <span>
+                                        <!-- Add icons for each child based on the item type -->
+                                        <span *ngIf="node.data?.type === 1" class="fas fa-folder"></span>
+                                        <span *ngIf="node.data?.type === 2" class="fa-regular fa-folder"></span>
+                                        <span *ngIf="node.data?.type === 3" class="far fa-folder-open"></span>
+                                        <span *ngIf="node.data?.type === 4" class="fas fa-boxes"></span>
+                                        {{ node.label }}
+                                    </span>
+                                </ng-template>
+                            </p-tree>
+                            <!-- </div> -->
 
 
-                     
+
                             <!-- <div style="margin-top: 115px;">
                                 <div style="display: flex;justify-content: center;">
                                     <h5>There Is No Available Data</h5>
@@ -78,216 +79,174 @@
         </div>
     </div>
     <div class="col-12 md:col-9">
-        <!-- <div class="card" style="height: 37rem;">
-            <div style="margin-top: 58px;">
-                <div style="display: flex;justify-content: center;">
-                    <img src="assets/layout/images/no-bb-found.svg" alt="No Building Blocks Found">
-                </div><br>
-                <div style="display: flex;justify-content: center;">
-                    <h4>No Data To Show</h4>
-                </div>
-                <div style="display: flex;justify-content: center;">
-                    <h6>Create Building blocks to show</h6>
-                </div>
-                <div style="display: flex;justify-content: center;"><a [routerLink]="['/create-buildingblocks']"
-                        style="text-decoration: underline;">Create Building Blocks</a></div>
-            </div>
-        </div> -->
-        <div class="card">
-            <div class="p-fluid grid" style="margin-top: 5px;margin-bottom: -19px;">
-                <div class="col-12 md:col-11">
-                <h5>General-Onboarding-Vendor onboarding & Training (Ocean)</h5>
-                </div>
-                <div class="col-12 md:col-1">
-                    <button pButton pRipple type="button"  label="Edit"
-                    class="p-button-outlined mr-2 mb-2"></button>
+        <ng-container *ngIf="!selectedNode">
+            <div class="card" style="height: 37rem;">
+                <div style="margin-top: 58px;">
+                    <div style="display: flex;justify-content: center;">
+                        <img src="assets/layout/images/no-bb-found.svg" alt="No Building Blocks Found">
+                    </div><br>
+                    <div style="display: flex;justify-content: center;">
+                        <h4>No Preview To Show</h4>
+                    </div>
+                    <div style="display: flex;justify-content: center;">
+                        <h6>Select a Building blocks to view the details</h6>
+                    </div>
+                    <div style="display: flex;justify-content: center;"><a [routerLink]="['/create-buildingblocks']"
+                            style="text-decoration: underline;">Create Building Blocks</a></div>
                 </div>
             </div>
-            <hr>
-            <div class="p-fluid grid">
-                <div class="col-12 md:col-3">
-                    <label><b>Product Name</b></label><br>
-                    <label>Product Name</label>
+        </ng-container>
+        <ng-container *ngIf="selectedNode">
+            <div class="card">
+                <div class="p-fluid grid" style="margin-top: 5px;margin-bottom: -19px;">
+                    <div class="col-12 md:col-11">
+                        <h5>General-Onboarding-Vendor onboarding & Training (Ocean)</h5>
+                    </div>
+                    <div class="col-12 md:col-1">
+                        <button pButton pRipple type="button" label="Edit" class="p-button-outlined mr-2 mb-2"></button>
+                    </div>
                 </div>
-                <div class="col-12 md:col-3">
-                    <label><b>Product Scope</b></label><br>
-                    <label>Product Name</label>
-                </div>
-                <div class="col-12 md:col-3">
-                    <label><b>Product Category</b></label><br>
-                    <label>Product Name</label>
-                </div>
-                <div class="col-12 md:col-3">
-                    <label><b>Building Block Name</b></label><br>
-                    <label>Product Name</label>
+                <hr>
+                <div class="p-fluid grid">
+                    <div class="col-12 md:col-3">
+                        <label><b>Product Name</b></label><br>
+                        <label>{{ buildingBlockDetails?.data?.product?.name }}</label>
+                    </div>
+                    <div class="col-12 md:col-3">
+                        <label><b>Product Scope</b></label><br>
+                        <label>{{ buildingBlockDetails?.data?.scope?.name }}</label>
+                    </div>
+                    <div class="col-12 md:col-3">
+                        <label><b>Product Category</b></label><br>
+                        <label>{{ buildingBlockDetails?.data?.category?.name }}</label>
+                    </div>
+                    <div class="col-12 md:col-3">
+                        <label><b>Building Block Name</b></label><br>
+                        <label>{{ buildingBlockDetails?.data?.blockName }}</label>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="p-fluid grid">
-            <div class="col-12 md:col-4">
-                    <button pButton pRipple type="button" (click)="onCardClick('scoping')" class="p-button-outlined mr-2 mb-2 bbCard">
+            <div class="p-fluid grid">
+                <div class="col-12 md:col-4">
+                    <button pButton pRipple type="button" (click)="onCardClick('scoping')"
+                        class="p-button-outlined mr-2 mb-2 bbCard">
                         <i class="pi pi-arrows-alt icon-with-margin"></i>
                         Scoping Card
                     </button>
-            </div>
-            <div class="col-12 md:col-4">
-                <button pButton pRipple type="button" (click)="onCardClick('operation')"  
-                class="p-button-outlined mr-2 mb-2 bbCard"> <i class="pi pi-cog icon-with-margin"></i>
-            Operation Card</button>
-            </div>
-            <div class="col-12 md:col-4">
-                <button pButton pRipple type="button" (click)="onCardClick('commercial')" 
-                    class="p-button-outlined mr-2 mb-2 bbCard">
-                    <i class="pi pi-money-bill icon-with-margin"></i>
-                    Commercial Card</button>
-            </div>
-        </div>
-        <!-- scoping card details -->
-        <div class="card" *ngIf="this.showScopingCrad==true">
-            <div class="grid">
-                <div class="col-6">
-                    <h5>Scoping Card</h5>
                 </div>
-                <div class="col-6" style="display: flex;justify-content: flex-end;">
-                    <p-button (click)="isExpanded = !isExpanded" class="p-button-outlined" label="{{ isExpanded ? 'Collapse All' : 'Expand All' }}" ></p-button> 
+                <div class="col-12 md:col-4">
+                    <button pButton pRipple type="button" (click)="onCardClick('operation')"
+                        class="p-button-outlined mr-2 mb-2 bbCard"> <i class="pi pi-cog icon-with-margin"></i>
+                        Operation Card</button>
+                </div>
+                <div class="col-12 md:col-4">
+                    <button pButton pRipple type="button" (click)="onCardClick('commercial')"
+                        class="p-button-outlined mr-2 mb-2 bbCard">
+                        <i class="pi pi-money-bill icon-with-margin"></i>
+                        Commercial Card</button>
                 </div>
             </div>
-            <hr class="align">
-            <p-accordion [multiple]="true">
-                <p-accordionTab header="Service Description" [selected]="isExpanded">
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    </p>
-                </p-accordionTab>
-                <p-accordionTab header="Value To PSA BDP" [selected]="isExpanded">
-                    <p>
-                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim
-                        ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
-                    </p>
-                </p-accordionTab>
-                <p-accordionTab header="Customer Requirements" [selected]="isExpanded">
-                    <p>
-                        At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
-                        qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
-                    </p>
-                </p-accordionTab>
-                <p-accordionTab header="Parameters" [selected]="isExpanded">
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    </p>
-                </p-accordionTab>
-                <p-accordionTab header="Deliverables" [selected]="isExpanded">
-                    <p>
-                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim
-                        ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
-                    </p>
-                </p-accordionTab>
-                <p-accordionTab header="Configurable" [selected]="isExpanded">
-                    <p>
-                        At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
-                        qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
-                    </p>
-                </p-accordionTab>
-                <p-accordionTab header="Mode Of Transport" [selected]="isExpanded">
-                    <p>
-                        At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
-                        qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
-                    </p>
-                </p-accordionTab>
-                <p-accordionTab header="Stakeholder / Audience" [selected]="isExpanded">
-                    <p>
-                        At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
-                        qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
-                    </p>
-                </p-accordionTab>
-            </p-accordion>
-        </div>
-        <!-- Operation card details -->
-        <div class="card" *ngIf="this.showOperationCrad==true">
-            <!-- <div class="grid">
-                <div class="col-6">
-                    <h5>Operation Card</h5>
+            <!-- scoping card details -->
+            <div class="card" *ngIf="this.showScopingCrad==true">
+                <div class="grid">
+                    <div class="col-6">
+                        <h5>Scoping Card</h5>
+                    </div>
+                    <div class="col-6" style="display: flex;justify-content: flex-end;">
+                        <a style="text-decoration: underline;">Import From Excel</a>
+                    </div>
                 </div>
-                <div class="col-6" style="display: flex;justify-content: flex-end;">
-                    <a style="text-decoration: underline;">Import From Excel</a>
-                </div>
+                <hr class="align">
+                <p-accordion [activeIndex]="0">
+                    <p-accordionTab header="Service Description">
+                        <p>{{ buildingBlockDetails?.data?.scopingCard?.serviceDescription }}</p>
+                    </p-accordionTab>
+                    <p-accordionTab header="Value To PSA BDP">
+                        <p>{{ buildingBlockDetails?.data?.scopingCard?.psaBdpValueStatement }}</p>
+                    </p-accordionTab>
+                    <p-accordionTab header="Customer Requirements">
+                        <p>{{ buildingBlockDetails?.data?.scopingCard?.customerRequirement }}</p>
+                    </p-accordionTab>
+                    <p-accordionTab header="Parameters">
+                        <p>{{ buildingBlockDetails?.data?.scopingCard?.parameter }}</p>
+                    </p-accordionTab>
+                    <p-accordionTab header="Deliverables">
+                        <p>{{ buildingBlockDetails?.data?.scopingCard?.deliverable }}</p>
+                    </p-accordionTab>
+                    <p-accordionTab header="Configurable">
+                        <p>{{ buildingBlockDetails?.data?.scopingCard?.configurable }}</p>
+                    </p-accordionTab>
+                    <p-accordionTab header="Mode Of Transport">
+                        <p>{{ buildingBlockDetails?.data?.scopingCard?.modeOfTransport }}</p>
+                    </p-accordionTab>
+                    <p-accordionTab header="Stakeholder / Audience">
+                        <p>{{ buildingBlockDetails?.data?.scopingCard?.stakeHolder }}</p>
+                    </p-accordionTab>
+                </p-accordion>
             </div>
-            <hr class="align"> -->
-            <div class="page-under-construction">
-                <img src="assets/layout/images/page-under-construction.jpg" alt="No Building Blocks Found">
-            </div>
-        </div>
-        <!-- commercial card details -->
-        <div class="card" *ngIf="this.showCommercialCrad==true">
-            <div class="grid">
-                <div class="col-6">
-                    <h5>Commercial Card</h5>
+            <!-- Operation card details -->
+            <div class="card" *ngIf="this.showOperationCrad==true">
+                <div class="grid">
+                    <div class="col-6">
+                        <h5>Operation Card</h5>
+                    </div>
+                    <div class="col-6" style="display: flex;justify-content: flex-end;">
+                        <a style="text-decoration: underline;">Import From Excel</a>
+                    </div>
                 </div>
-                <div class="col-6" style="display: flex;justify-content: flex-end;">
-                    <p-button (click)="isExpanded = !isExpanded" class="p-button-outlined" label="{{ isExpanded ? 'Collapse All' : 'Expand All' }}" ></p-button> 
-                </div>
+                <hr class="align">
             </div>
-            <hr class="align">
-            <h6><b>General Information</b></h6>
-            <p-accordion [multiple]="true">
-                <p-accordionTab header="Standard Service" [selected]="isExpanded">
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    </p>
-                </p-accordionTab>
-                <p-accordionTab header="SOW" [selected]="isExpanded">
-                    <p>
-                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim
-                        ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
-                    </p>
-                </p-accordionTab>
-                <p-accordionTab header="Pre-requisite Information" [selected]="isExpanded">
-                    <p>
-                        At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
-                        qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
-                    </p>
-                </p-accordionTab>
-            </p-accordion>
+            <!-- commercial card details -->
+            <div class="card" *ngIf="this.showCommercialCrad==true">
+                <div class="grid">
+                    <div class="col-6">
+                        <h5>Commercial Card</h5>
+                    </div>
+                    <div class="col-6" style="display: flex;justify-content: flex-end;">
+                        <a style="text-decoration: underline;">Import From Excel</a>
+                    </div>
+                </div>
+                <hr class="align">
+                <h6><b>General Information</b></h6>
+                <p-accordion [activeIndex]="0">
+                    <p-accordionTab header="Service Description">
+                        <p>{{ buildingBlockDetails?.data?.commercialCard?.serviceDescription }}</p>
+                    </p-accordionTab>
+                    <p-accordionTab header="Customer Requirement">
+                        <p>{{ buildingBlockDetails?.data?.commercialCard?.customerRequirement }}</p>
+                    </p-accordionTab>
+                    <p-accordionTab header="PSA BDP Value Statement">
+                        <p>{{ buildingBlockDetails?.data?.commercialCard?.psaBdpValueStatement }}</p>
+                    </p-accordionTab>
+                </p-accordion>
                 <h6><b>Commercial Reference</b></h6>
 
-                <p-accordion  [multiple]="true">
-                <p-accordionTab header="Combined Value" [selected]="isExpanded">
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    </p>
-                </p-accordionTab>
-                <p-accordionTab header="Do's" [selected]="isExpanded">
-                    <p>
-                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim
-                        ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
-                    </p>
-                </p-accordionTab>
-                <p-accordionTab header="Dont's" [selected]="isExpanded">
-                    <p>
-                        At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
-                        qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
-                    </p>
-                </p-accordionTab>
-                <p-accordionTab header="Configurable" [selected]="isExpanded">
-                    <p>
-                        At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
-                        qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
-                    </p>
-                </p-accordionTab>
-                <p-accordionTab header="Stakeholder / Audience" [selected]="isExpanded">
-                    <p>
-                        At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
-                        qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
-                    </p>
-                </p-accordionTab>
-            </p-accordion>
-        </div>
-        
+                <p-accordion [activeIndex]="0">
+                    <p-accordionTab header="Standard Service">
+                        <p>{{ buildingBlockDetails?.data?.commercialCard?.standardService }}</p>
+                    </p-accordionTab>
+                    <p-accordionTab header="SOW">
+                        <p>{{ buildingBlockDetails?.data?.commercialCard?.sow }}</p>
+                    </p-accordionTab>
+                    <p-accordionTab header="Pre-requisite Information">
+                        <p>{{ buildingBlockDetails?.data?.commercialCard?.preRequisiteInformation }}</p>
+                    </p-accordionTab>
+                    <p-accordionTab header="Combined Value">
+                        <p>{{ buildingBlockDetails?.data?.commercialCard?.combinedValue }}</p>
+                    </p-accordionTab>
+                    <p-accordionTab header="Do's">
+                        <p>{{ buildingBlockDetails?.data?.commercialCard?.dos }}</p>
+                    </p-accordionTab>
+                    <p-accordionTab header="Dont's">
+                        <p>{{ buildingBlockDetails?.data?.commercialCard?.dont }}</p>
+                    </p-accordionTab>
+                    <p-accordionTab header="Configurable">
+                        <p>{{ buildingBlockDetails?.data?.commercialCard?.configurable }}</p>
+                    </p-accordionTab>
+                </p-accordion>
+            </div>
+        </ng-container>
     </div>
 
 </div>
