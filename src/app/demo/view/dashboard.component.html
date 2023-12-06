@@ -103,7 +103,7 @@
                         <h5>General-Onboarding-Vendor onboarding & Training (Ocean)</h5>
                     </div>
                     <div class="col-12 md:col-1">
-                        <button pButton pRipple type="button" label="Edit" class="p-button-outlined mr-2 mb-2"></button>
+                        <button pButton pRipple type="button" label="Edit" class="p-button-outlined mr-2 mb-2" [routerLink]="['/create-buildingblocks']" ></button>
                     </div>
                 </div>
                 <hr>
@@ -122,7 +122,7 @@
                     </div>
                     <div class="col-12 md:col-3">
                         <label><b>Building Block Name</b></label><br>
-                        <label>{{ buildingBlockDetails?.data?.blockName }}</label>
+                        <label>{{ buildingBlockDetails?.data?.name }}</label>
                     </div>
                 </div>
             </div>
