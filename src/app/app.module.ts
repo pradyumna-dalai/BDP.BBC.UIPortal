@@ -105,6 +105,7 @@ import { GlossaryComponent } from './demo/view/glossary/glossary.component';
 import { CreateBbComponent } from './demo/view/create-bb/create-bb.component';
 
 import { NodeService } from './demo/service/nodeservice';
+import { CreateProjectComponent } from './demo/view/project/create-project/create-project.component';
 
 
 
@@ -208,6 +209,7 @@ import { NodeService } from './demo/service/nodeservice';
         ProjectComponent,
         GlossaryComponent,
         CreateBbComponent,
+        CreateProjectComponent,
 
     ],
     providers: [

@@ -1,5 +1,17 @@
-<div class="card">
+<!-- <div class="card">
   <div class="page-under-construction">
     <img src="assets/layout/images/page-under-construction.jpg" alt="No Building Blocks Found">
   </div>
-</div>
+</div> -->
+<div class="card">
+  <div class="grid">
+      <div class="col-6">
+          <h5>Project</h5>
+      </div>
+      <div class="col-6" style="display: flex;justify-content: flex-end;">
+        <button pButton pRipple type="button"  label="Create Project Using Template"   class="p-button-outlined mr-2 mb-2"></button>
+        <button type="button" pButton pRipple label="Create Project" [routerLink]="['/create-project']"  class="mr-2 mb-2"></button>
+      </div>
+  </div>
+  <hr class="align">
+  </div>

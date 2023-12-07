@@ -8,7 +8,6 @@
                 [(ngModel)]="product_name" optionLabel="name" optionValue="id"
                 placeholder="Select Product Name"></p-dropdown>
         </div>&nbsp;&nbsp;&nbsp;
-
         <div class="field master-dropdown">
             <label>Product Scope<span class="requiredField">*</span></label><br>
             <p-dropdown (onChange)="onScopeSelect($event)" [(ngModel)]="product_scope" [options]="procuctScopesOptions"
