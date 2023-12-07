@@ -490,7 +490,7 @@
 </div>
 
 <!-- import from excel dialog -->
-<p-dialog header="Import Excel" [(visible)]="visible" [style]="{width: '70vw'}">
+<p-dialog header="Import Excel" [(visible)]="visible" [style]="{width: '50vw'}">
     <!-- <div class="page-under-construction">
         <img src="assets/layout/images/page-under-construction.jpg" alt="No Building Blocks Found">
     </div> -->
@@ -515,6 +515,8 @@
                 <li>Keep file name recognisable</li>
                 <li>Avoid uploading incomplete file</li>
             </ol>
+            <label for="fileUpload"><b>Upload File</b></label>
+            <p-fileUpload name="file" url="/your-upload-url" chooseLabel="Choose" uploadLabel="Upload" cancelLabel="Cancel"></p-fileUpload>
 
         </div>
         <div style="display: flex; justify-content: center;">
