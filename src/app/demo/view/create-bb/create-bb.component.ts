@@ -295,8 +295,8 @@ export class CreateBbComponent {
         // Assign details to component properties
         this.building_block_name = details.data.name;
         this.product_name = details.data.product.id;
-        this.product_scope = details.data.scope.id;
-        this.product_category = details.data.category.id;
+        this.product_scope = details.data.scope?.id;
+        this.product_category = details.data.category?.id;
         this.charge_code = details.data.chargeCode.id;
         this.seervice_desc = details.data.scopingCard.serviceDescription;
         this.customer_requirement = details.data.scopingCard.customerRequirement;

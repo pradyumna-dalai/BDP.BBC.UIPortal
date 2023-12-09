@@ -26,7 +26,7 @@
         </div>&nbsp;&nbsp;&nbsp;
         <div class="field master-dropdown">
             <label>Charge Code</label><br>
-            <p-dropdown [options]="chargecodeOptions" [(ngModel)]="charge_code" placeholder="Select Charge Code"
+            <p-dropdown [options]="chargecodeOptions"  placeholder="Select Charge Code"
                 optionValue="id" [(ngModel)]="charge_code" optionLabel="name"></p-dropdown>
         </div>
         <p-toast key="emptyToster"></p-toast>
@@ -66,7 +66,7 @@
         <div class="field col-12 md:col-6">
             <div class="heading"><label>Service Description</label></div><br>
             <p-editor placeholder="Add Your Description Here...." [(ngModel)]="seervice_desc"
-                [style]="{'height':'220px'}">
+                [style]="{'height':'220px'}"  >
                 <ng-template pTemplate="header">
                     <span class="ql-formats">
                         <select title="Text Alignment" class="ql-align">
