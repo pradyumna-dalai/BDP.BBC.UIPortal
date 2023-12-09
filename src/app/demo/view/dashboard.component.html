@@ -6,9 +6,10 @@
                     <h4 id="heading"><b>Building Blocks</b></h4>
                 </div>
                 <div style="display: flex;justify-content: end;" class="col-6">
-                    <button pButton pRipple [routerLink]="['/create-buildingblocks']"  class="mr-2 mb-2 new-button"> <i class="pi pi-plus icon-with-margin"></i>
+                    <button pButton pRipple [routerLink]="['/create-buildingblocks']" class="mr-2 mb-2 new-button"> <i
+                            class="pi pi-plus icon-with-margin"></i>
                         New</button>
-                       
+
                 </div>
                 <div class="col-12">
                     <span class="p-input-icon-left" style="margin-top: -19px;">
@@ -100,17 +101,19 @@
             <div class="card">
                 <div class="p-fluid grid" style="margin-top: 5px;margin-bottom: -19px;">
                     <div class="col-12 md:col-11">
-                        <h5>General-Onboarding-Vendor onboarding & Training (Ocean)</h5>
+                        <h3>{{ buildingBlockDetails?.data?.scope?.name }} - {{
+                            buildingBlockDetails?.data?.category?.name }} - {{ buildingBlockDetails?.data?.name }}</h3>
                     </div>
                     <div class="col-12 md:col-1">
-                        <button pButton pRipple type="button" label="Edit" class="p-button-outlined mr-2 mb-2" [routerLink]="['/create-buildingblocks']" ></button>
+                        <button pButton pRipple type="button" label="Edit" class="p-button-outlined mr-2 mb-2"
+                            [routerLink]="['/create-buildingblocks', buildingBlockDetails?.data?.id]"></button>
                     </div>
                 </div>
                 <hr>
                 <div class="p-fluid grid">
                     <div class="col-12 md:col-3">
                         <label><b>Product Name</b></label><br>
-                        <label>{{ buildingBlockDetails?.data?.product?.name }}</label>
+                        <label>{{ buildingBlockDetails?.data?.product?.name }}{{buildingBlockDetails?.data?.id}}</label>
                     </div>
                     <div class="col-12 md:col-3">
                         <label><b>Product Scope</b></label><br>
@@ -154,7 +157,8 @@
                         <h5>Scoping Card</h5>
                     </div>
                     <div class="col-6" style="display: flex;justify-content: flex-end;">
-                        <p-button (click)="isExpanded = !isExpanded" class="p-button-outlined" label="{{ isExpanded ? 'Collapse All' : 'Expand All' }}" ></p-button> 
+                        <p-button (click)="isExpanded = !isExpanded" class="p-button-outlined"
+                            label="{{ isExpanded ? 'Collapse All' : 'Expand All' }}"></p-button>
                     </div>
                 </div>
                 <hr class="align">
@@ -204,7 +208,8 @@
                         <h5>Commercial Card</h5>
                     </div>
                     <div class="col-6" style="display: flex;justify-content: flex-end;">
-                        <p-button (click)="isExpanded = !isExpanded" class="p-button-outlined" label="{{ isExpanded ? 'Collapse All' : 'Expand All' }}" ></p-button> 
+                        <p-button (click)="isExpanded = !isExpanded" class="p-button-outlined"
+                            label="{{ isExpanded ? 'Collapse All' : 'Expand All' }}"></p-button>
                     </div>
                 </div>
                 <hr class="align">

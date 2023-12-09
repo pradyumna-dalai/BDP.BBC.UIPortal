@@ -1,5 +1,5 @@
-import {Component, OnDestroy, OnInit } from '@angular/core';
-import {AppBreadcrumbService} from '../../app.breadcrumb.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AppBreadcrumbService } from '../../app.breadcrumb.service';
 import { AppMainComponent } from '../../app.main.component';
 import { TreeNode } from 'primeng/api';
 import { Subscription } from 'rxjs';
@@ -35,7 +35,7 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-  
+
         this.loadTreeData();
         this.loadTreeDataNew();
 
@@ -129,14 +129,17 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
         }
     }
     public get isExpanded() {
-      return this._isExpanded;
+        return this._isExpanded;
     }
-  
+
     public set isExpanded(value: boolean) {
-       this._isExpanded = value;
+        this._isExpanded = value;
     }
 
-
+    // goToEditBuildingBlock(selectedNode) {
+    //    if(this.selectedNode) 
+    //    this.createBuildingBlockservice.navigateRoute({})
+    // }
 }
 
 

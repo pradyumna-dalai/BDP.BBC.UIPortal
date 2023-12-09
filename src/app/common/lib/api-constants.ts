@@ -17,7 +17,7 @@ export namespace AppRoutes {
     
      // --------------------create building block----------------------//
 
-    public static readonly createBuildingBlock = "buildingblock";
+    public static readonly saveEditBuildingBlock = "buildingblock";
 
     //Explorer view of building block 
 
