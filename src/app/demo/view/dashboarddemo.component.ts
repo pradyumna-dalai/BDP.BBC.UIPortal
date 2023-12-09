@@ -120,7 +120,7 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
             this.createBuildingBlockservice.getBuildingBlockDetails(itemId).subscribe(
                 (data: any) => {
                     this.buildingBlockDetails = data;
-                    // console.log('Building Block Details for explore view:', this.buildingBlockDetails);
+                    console.log('Building Block Details for explore view:', this.buildingBlockDetails);
                 },
                 (error) => {
                     console.error('Error loading building block details:', error);
@@ -136,10 +136,6 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
         this._isExpanded = value;
     }
 
-    // goToEditBuildingBlock(selectedNode) {
-    //    if(this.selectedNode) 
-    //    this.createBuildingBlockservice.navigateRoute({})
-    // }
 }
 
 

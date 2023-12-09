@@ -1,6 +1,6 @@
 <div class="grid p-fluid">
     <div class="col-12 md:col-3">
-        <div class="card" style="min-height: 669px;;">
+        <div class="card" style="min-height: 669px;">
             <div class="grid" style="margin-top: 4px;">
                 <div class="col-6">
                     <h4 id="heading"><b>Building Blocks</b></h4>
@@ -81,7 +81,7 @@
     </div>
     <div class="col-12 md:col-9">
         <ng-container *ngIf="!selectedNode">
-            <div class="card" style="height: 37rem;">
+            <div class="card" style="min-height: 669px;">
                 <div style="margin-top: 58px;">
                     <div style="display: flex;justify-content: center;">
                         <img src="assets/layout/images/no-bb-found.svg" alt="No Building Blocks Found">
@@ -101,7 +101,8 @@
             <div class="card">
                 <div class="p-fluid grid" style="margin-top: 5px;margin-bottom: -19px;">
                     <div class="col-12 md:col-11">
-                        <h3>{{ buildingBlockDetails?.data?.scope?.name }} - {{
+                        <h3>{{ buildingBlockDetails?.data?.product?.name }} - {{ buildingBlockDetails?.data?.scope?.name
+                            }} - {{
                             buildingBlockDetails?.data?.category?.name }} - {{ buildingBlockDetails?.data?.name }}</h3>
                     </div>
                     <div class="col-12 md:col-1">
@@ -111,11 +112,11 @@
                 </div>
                 <hr>
                 <div class="p-fluid grid">
-                    <div class="col-12 md:col-3">
+                    <div class="col-12 md:col-2">
                         <label><b>Product Name</b></label><br>
-                        <label>{{ buildingBlockDetails?.data?.product?.name }}{{buildingBlockDetails?.data?.id}}</label>
+                        <label>{{ buildingBlockDetails?.data?.product?.name }}</label>
                     </div>
-                    <div class="col-12 md:col-3">
+                    <div class="col-12 md:col-2">
                         <label><b>Product Scope</b></label><br>
                         <label>{{ buildingBlockDetails?.data?.scope?.name }}</label>
                     </div>
@@ -126,6 +127,10 @@
                     <div class="col-12 md:col-3">
                         <label><b>Building Block Name</b></label><br>
                         <label>{{ buildingBlockDetails?.data?.name }}</label>
+                    </div>
+                    <div class="col-12 md:col-2">
+                        <label><b>Charge Code</b></label><br>
+                        <label>{{ buildingBlockDetails?.data?.chargeCode.name }}</label>
                     </div>
                 </div>
             </div>
@@ -167,7 +172,7 @@
                         <p>{{ buildingBlockDetails?.data?.scopingCard?.serviceDescription }}</p>
                     </p-accordionTab>
                     <p-accordionTab header="Value To PSA BDP" [selected]="isExpanded">
-                        <p>{{ buildingBlockDetails?.data?.scopingCard?.psaBdpValueStatement }}</p>
+                        <p>{{ buildingBlockDetails?.data?.scopingCard?.valueToPsaBdp }}</p>
                     </p-accordionTab>
                     <p-accordionTab header="Customer Requirements" [selected]="isExpanded">
                         <p>{{ buildingBlockDetails?.data?.scopingCard?.customerRequirement }}</p>
@@ -182,7 +187,10 @@
                         <p>{{ buildingBlockDetails?.data?.scopingCard?.configurable }}</p>
                     </p-accordionTab>
                     <p-accordionTab header="Mode Of Transport" [selected]="isExpanded">
-                        <p>{{ buildingBlockDetails?.data?.scopingCard?.modeOfTransport }}</p>
+                        <!-- <p>{{ buildingBlockDetails?.data?.modeOfTransport?.name }}</p> -->
+                        <ng-container *ngFor="let mode of buildingBlockDetails?.data?.modeOfTransport">
+                            <p>{{ mode?.name }}</p>
+                        </ng-container>
                     </p-accordionTab>
                     <p-accordionTab header="Stakeholder / Audience" [selected]="isExpanded">
                         <p>{{ buildingBlockDetails?.data?.scopingCard?.stakeHolder }}</p>
@@ -216,10 +224,10 @@
                 <h6><b>General Information</b></h6>
                 <p-accordion [multiple]="true">
                     <p-accordionTab header="Service Description" [selected]="isExpanded">
-                        <p>{{ buildingBlockDetails?.data?.commercialCard?.serviceDescription }}</p>
+                        <p>{{ buildingBlockDetails?.data?.scopingCard?.serviceDescription }}</p>
                     </p-accordionTab>
                     <p-accordionTab header="Customer Requirement" [selected]="isExpanded">
-                        <p>{{ buildingBlockDetails?.data?.commercialCard?.customerRequirement }}</p>
+                        <p>{{ buildingBlockDetails?.data?.scopingCard?.customerRequirement }}</p>
                     </p-accordionTab>
                     <p-accordionTab header="PSA BDP Value Statement" [selected]="isExpanded">
                         <p>{{ buildingBlockDetails?.data?.commercialCard?.psaBdpValueStatement }}</p>
@@ -235,7 +243,7 @@
                         <p>{{ buildingBlockDetails?.data?.commercialCard?.sow }}</p>
                     </p-accordionTab>
                     <p-accordionTab header="Pre-requisite Information" [selected]="isExpanded">
-                        <p>{{ buildingBlockDetails?.data?.commercialCard?.preRequisiteInformation }}</p>
+                        <p>{{ buildingBlockDetails?.data?.commercialCard?.prerequisiteInfo }}</p>
                     </p-accordionTab>
                     <p-accordionTab header="Combined Value" [selected]="isExpanded">
                         <p>{{ buildingBlockDetails?.data?.commercialCard?.combinedValue }}</p>
@@ -244,7 +252,7 @@
                         <p>{{ buildingBlockDetails?.data?.commercialCard?.dos }}</p>
                     </p-accordionTab>
                     <p-accordionTab header="Dont's" [selected]="isExpanded">
-                        <p>{{ buildingBlockDetails?.data?.commercialCard?.dont }}</p>
+                        <p>{{ buildingBlockDetails?.data?.commercialCard?.donts }}</p>
                     </p-accordionTab>
                     <p-accordionTab header="Configurable" [selected]="isExpanded">
                         <p>{{ buildingBlockDetails?.data?.commercialCard?.configurable }}</p>
