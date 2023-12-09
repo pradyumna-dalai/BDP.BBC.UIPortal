@@ -26,8 +26,12 @@ import { CreateBbComponent } from './demo/view/create-bb/create-bb.component';
                     { path: 'project', component: ProjectComponent },
                     { path: 'glossary', component: GlossaryComponent },
                     { path: 'create-buildingblocks', component: CreateBbComponent },
-                   
-                    { path: 'building-block', component: DashboardDemoComponent }       
+                    {
+                        path: 'create-buildingblocks/:id',
+                        component: CreateBbComponent,
+                    },
+
+                    { path: 'building-block', component: DashboardDemoComponent }
                 ]
             },
             { path: 'notfound', component: AppNotfoundComponent },
