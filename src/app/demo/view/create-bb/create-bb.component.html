@@ -26,8 +26,8 @@
         </div>&nbsp;&nbsp;&nbsp;
         <div class="field master-dropdown">
             <label>Charge Code</label><br>
-            <p-dropdown [options]="chargecodeOptions"  placeholder="Select Charge Code"
-                optionValue="id" [(ngModel)]="charge_code" optionLabel="name"></p-dropdown>
+            <p-dropdown [options]="chargecodeOptions" placeholder="Select Charge Code" optionValue="id"
+                [(ngModel)]="charge_code" optionLabel="name"></p-dropdown>
         </div>
         <p-toast key="emptyToster"></p-toast>
     </div>
@@ -66,7 +66,7 @@
         <div class="field col-12 md:col-6">
             <div class="heading"><label>Service Description</label></div><br>
             <p-editor placeholder="Add Your Description Here...." [(ngModel)]="seervice_desc"
-                [style]="{'height':'220px'}"  >
+                [style]="{'height':'220px'}">
                 <ng-template pTemplate="header">
                     <span class="ql-formats">
                         <select title="Text Alignment" class="ql-align">
@@ -222,7 +222,7 @@
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
             <button pButton pRipple type="button" (click)="saveAsDraft()" label="Save As Draft"
-                class="p-button-outlined mr-2 mb-2"></button>
+                class="p-button-outlined mr-2 mb-2" *ngIf="!isSaveAsDraftDisabled()"></button>
             <button type="submit" pButton pRipple label="Continue" class="mr-2 mb-2"
                 (click)="onCardClick('operation')"></button>
             <p-toast key="successToast"></p-toast>
@@ -241,7 +241,7 @@
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
             <button pButton pRipple type="button" (click)="saveAsDraft()" label="Save As Draft"
-                class="p-button-outlined mr-2 mb-2"></button>
+            *ngIf="!isSaveAsDraftDisabled()" class="p-button-outlined mr-2 mb-2"></button>
             <button type="submit" pButton pRipple label="Continue" class="mr-2 mb-2"
                 (click)="onCardClick('commercial')"></button>
             <p-toast key="successToast"></p-toast>
@@ -343,7 +343,7 @@
                 </div>
                 <div class="col-6" style="display: flex;justify-content: flex-end;">
                     <button pButton pRipple type="button" label="Save As Draft" (click)="saveAsDraft()"
-                        class="p-button-outlined mr-2 mb-2"></button>
+                    *ngIf="!isSaveAsDraftDisabled()" class="p-button-outlined mr-2 mb-2"></button>
                     <button type="button" pButton pRipple label="Continue" (click)="activeIndex = 1"
                         class="mr-2 mb-2"></button>
                     <p-toast key="successToast"></p-toast>
@@ -509,7 +509,7 @@
                 </div>
                 <div class="col-6" style="display: flex;justify-content: flex-end;">
                     <button pButton pRipple type="button" label="Save As Draft" (click)="saveAsDraft()"
-                        class="p-button-outlined mr-2 mb-2"></button>
+                    *ngIf="!isSaveAsDraftDisabled()" class="p-button-outlined mr-2 mb-2"></button>
                     <button type="submit" pButton pRipple label="Submit" (click)="saveAsBuildingBlock()"
                         class="mr-2 mb-2"></button>
                     <p-toast key="successToast"></p-toast>

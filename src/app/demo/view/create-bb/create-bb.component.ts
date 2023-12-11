@@ -84,6 +84,7 @@ export class CreateBbComponent {
         { label: 'Create Building Blocks' },
       ]);
     }
+    
   }
 
 
@@ -291,11 +292,13 @@ export class CreateBbComponent {
 
 
   }
+  
 
   private fetchBuildingBlockDetails(id: any): void {
     this.createBuildingBlockservice.getBuildingBlockDetails(id).subscribe(
       (details) => {
         // Assign details to component properties
+        this.status=details.data.status.id;
         this.building_block_name = details.data.name;
         this.product_name = details.data.product.id;
         this.product_scope = details.data.scope.id;
@@ -463,6 +466,9 @@ export class CreateBbComponent {
       }
     );
 
+  }
+  isSaveAsDraftDisabled(): boolean {
+    return this.status === 2;
   }
 
 }
