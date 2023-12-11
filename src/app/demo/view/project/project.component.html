@@ -1,5 +1,107 @@
-<div class="card">
+<!-- <div class="card">
   <div class="page-under-construction">
     <img src="assets/layout/images/page-under-construction.jpg" alt="No Building Blocks Found">
   </div>
-</div>
+</div> -->
+<div class="card">
+  <div class="grid">
+      <div class="col-6">
+          <h5>Project</h5>
+      </div>
+      <div class="col-6" style="display: flex;justify-content: flex-end;">
+        <button type="button" pButton pRipple label="Create Project" [routerLink]="['/create-project']"  class="mr-2 mb-2"></button>
+      </div>
+  </div>
+  <hr class="align">
+  <p-table #dt1 [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [value]="data"
+  selectionMode="single" dataKey="id" styleClass="p-datatable-gridlines" responsiveLayout="scroll"
+  [rows]="10" [paginator]="true"
+  scrollHeight="400px" scrollDirection="both" [resizableColumns]="true">
+  <!-- <ng-template pTemplate="colgroup" let-columns>
+      <colgroup>
+          <col style="width: 50px" />
+          <col style="width: 70px" />
+          <col style="width: 70px" />
+          <col style="width: 200px" />
+          <col style="width: 300px" />
+          <col style="width: 120px" />
+          <col style="width: 180px" />
+          <col style="width: 180px" />
+      </colgroup>
+  </ng-template> -->
+  <ng-template pTemplate="caption">
+      <div class="table-header">
+          <div class="col-12 pb-0">
+              <span class="bdp-filter-elem">
+                  <input pInputText type="text"
+                      placeholder="Search" class="input-column-width" style="width: unset !important;" />
+              </span>
+          </div>
+      </div>
+  </ng-template>
+  <ng-template pTemplate="header">
+      <tr>
+          <th style="text-align: center;width: 50px">Actions</th>
+          <th style="text-align: center; width: 200px" pSortableColumn="comp_name">Company Name<p-sortIcon field="comp_name"></p-sortIcon>
+          </th>
+          <th style="text-align: center; width: 200px" pSortableColumn="proj_id">Project ID<p-sortIcon field="proj_id"></p-sortIcon>
+          </th>
+          <th style="text-align: center; width: 200px" pSortableColumn="oppourtunity_name">Opportunity<p-sortIcon field="oppourtunity_name"></p-sortIcon>
+          </th>
+          <th style="text-align: center; width: 200px" pSortableColumn="proj_stage">Project Stage<p-sortIcon field="proj_stage"></p-sortIcon>
+          </th>
+          <th style="text-align: center; width: 200px" pSortableColumn="proj_status">Project Status<p-sortIcon field="proj_status"></p-sortIcon>
+          </th>
+          <th style="text-align: center; width: 200px" pSortableColumn="oppourtunity_manager">Opportunity Manager<p-sortIcon field="oppourtunity_manager"></p-sortIcon>
+          </th>
+          <th style="text-align: center; width: 200px" pSortableColumn="start_date">Start Date<p-sortIcon field="start_date"></p-sortIcon>
+          </th>
+          <th style="text-align: center; width: 200px" pSortableColumn="end_date">End Date<p-sortIcon field="end_date"></p-sortIcon>
+          </th>
+         
+
+      </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-item>
+      <tr>
+          <td style="text-align: center;">
+              <span style="cursor: pointer;"><i class="pi pi-copy"></i></span>&nbsp;
+              <span style="cursor: pointer;"><i class="pi pi-trash"></i></span>
+          </td>
+          <td style="text-align: center; word-wrap: break-word;">
+              <span>{{item.comp_name}}</span>
+          </td>
+          <td style="text-align: center; word-wrap: break-word;">
+              <span>{{item.proj_id}}</span>
+          </td>
+          <td style="text-align: center; word-wrap: break-word;">
+            <span><a href="">{{item.oppourtunity_name}}</a></span>
+          </td>
+          <td style="text-align: center; word-wrap: break-word;">
+              <span>{{item.proj_stage}}</span>
+          </td>
+          <td style="text-align: center; word-wrap: break-word;">
+              <span>{{item.proj_status}}</span>
+          </td>
+          <td style="text-align: center; word-wrap: break-word;">
+              <span>{{item.oppourtunity_manager}}</span>
+          </td>
+          <td style="text-align: center; word-wrap: break-word;">
+              <span>{{item.start_date}}</span>
+          </td>
+          <td style="text-align: center; word-wrap: break-word;">
+              <span>{{item.end_date}}</span>
+          </td>
+         
+        
+          
+      </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+      <tr>
+          <td style="text-align: center;" colspan="18">No Data found.</td>
+      </tr>
+  </ng-template>
+</p-table>
+  </div>
