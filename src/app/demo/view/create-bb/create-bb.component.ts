@@ -4,6 +4,7 @@ import { MenuItem, MessageService, ConfirmationService } from 'primeng/api';
 import { MasterTableService } from './../../../services/master-table.service';
 import { CreateBuildingBlockService } from './../../../services/create-buildingBlock/create-building-block.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 
 @Component({
@@ -62,7 +63,7 @@ export class CreateBbComponent {
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
     public MasterTableservice: MasterTableService, private confirmationService: ConfirmationService,
     public CreateBuildingBlockservice: CreateBuildingBlockService, private router: Router,
-    private route: ActivatedRoute, private createBuildingBlockservice: CreateBuildingBlockService) {
+    private route: ActivatedRoute, private createBuildingBlockservice: CreateBuildingBlockService, private sanitizer: DomSanitizer) {
     const id = this.route.snapshot.paramMap.get('id');
     if (id !== null && id !== undefined) {
       this.breadcrumbService.setItems([
@@ -307,23 +308,24 @@ export class CreateBbComponent {
         this.value_to_psa_bdp = details.data.scopingCard.valueToPsaBdp;
         this.parameters = details.data.scopingCard.parameter;
         this.configurables = details.data.scopingCard.configurable;
-        this.cvalue_to_psa_bdp = details.data.commercialCard.psaBdpValueStatement;
-        this.standard_service = details.data.commercialCard.standardService;
+        this.cvalue_to_psa_bdp =details.data.commercialCard.psaBdpValueStatement;
+        this.standard_service =details.data.commercialCard.standardService;
         this.sow = details.data.commercialCard.sow;
         this.pre_requisite_info = details.data.commercialCard.prerequisiteInfo;
         this.combined_value = details.data.commercialCard.combinedValue;
         this.do_s = details.data.commercialCard.dos;
         this.don_s = details.data.commercialCard.donts;
         this.cconfigurables = details.data.commercialCard.configurable;
-        this.selectedMod = details.data.modeOfTransport.id;
-       // this.getModeOfTransport(details.data.modeOfTransport.id);
-
+        this.selectedMod = details.data.modeOfTransport.map((item) => item.id);
 
       },
       (error) => {
         console.error('Error fetching building block details:', error);
       }
     );
+  }
+  private sanitize(html: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(html);
   }
 
   saveAsBuildingBlock() {
@@ -437,7 +439,7 @@ export class CreateBbComponent {
       },
 
     }
-    console.log('check', body);
+   console.log('check', body);
     this.CreateBuildingBlockservice.saveEditBuildingBlocks(2, body).subscribe(
       (res) => {
         console.log('Building Block saved successfully:', res);
