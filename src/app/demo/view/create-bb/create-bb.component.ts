@@ -295,8 +295,10 @@ export class CreateBbComponent {
         // Assign details to component properties
         this.building_block_name = details.data.name;
         this.product_name = details.data.product.id;
-        this.product_scope = details.data.scope?.id;
-        this.product_category = details.data.category?.id;
+        this.product_scope = details.data.scope.id;
+        this.product_category = details.data.category.id;
+        this.onProductSelect(details.data.product.id);
+        this.onScopeSelect(details.data.scope.id);
         this.charge_code = details.data.chargeCode.id;
         this.seervice_desc = details.data.scopingCard.serviceDescription;
         this.customer_requirement = details.data.scopingCard.customerRequirement;
@@ -314,6 +316,7 @@ export class CreateBbComponent {
         this.don_s = details.data.commercialCard.donts;
         this.cconfigurables = details.data.commercialCard.configurable;
         this.selectedMod = details.data.modeOfTransport.id;
+       // this.getModeOfTransport(details.data.modeOfTransport.id);
 
 
       },
@@ -337,7 +340,7 @@ export class CreateBbComponent {
       return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Building block is a required field.`, detail: '' });
     }
     if (this.seervice_desc == '' || this.seervice_desc == null || this.seervice_desc == undefined) {
-      return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Service is a required field.`, detail: '' });
+      return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Service Description is a required field.`, detail: '' });
     }
     if (this.customer_requirement == '' || this.customer_requirement == null || this.customer_requirement == undefined) {
       return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Customer Requirement  is a required field.`, detail: '' });
@@ -346,13 +349,37 @@ export class CreateBbComponent {
       return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Deliverables is a required field.`, detail: '' });
     }
     if (this.stakeholders_audience == '' || this.stakeholders_audience == null || this.stakeholders_audience == undefined) {
-      return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `stakeholders_audience is a required field.`, detail: '' });
+      return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Stakeholders Audience is a required field.`, detail: '' });
     }
     if (this.value_to_psa_bdp == '' || this.value_to_psa_bdp == null || this.value_to_psa_bdp == undefined) {
-      return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `value_to_psa_bdp is a required field.`, detail: '' });
+      return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Value to PSA BDP is a required field.`, detail: '' });
     }
     if (this.parameters == '' || this.parameters == null || this.parameters == undefined) {
       return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Parameter is a required field.`, detail: '' });
+    }
+    if (this.configurables == '' || this.configurables == null || this.configurables == undefined) {
+      return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Configurables is a required field.`, detail: '' });
+    }
+    if (this.standard_service == '' || this.standard_service == null || this.standard_service == undefined) {
+      return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Standard Service is a required field.`, detail: '' });
+    }
+    if (this.sow == '' || this.sow == null || this.sow == undefined) {
+      return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Sow is a required field.`, detail: '' });
+    }
+    if (this.pre_requisite_info == '' || this.pre_requisite_info == null || this.pre_requisite_info == undefined) {
+      return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `PreRequisite Information is a required field.`, detail: '' });
+    }
+    if (this.combined_value == '' || this.combined_value == null || this.combined_value == undefined) {
+      return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Combined Value is a required field.`, detail: '' });
+    }
+    if (this.do_s == '' || this.do_s == null || this.do_s == undefined) {
+      return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Do is a required field.`, detail: '' });
+    }
+    if (this.don_s == '' || this.don_s == null || this.don_s == undefined) {
+      return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Dont's is a required field.`, detail: '' });
+    }
+    if (this.cconfigurables == '' || this.cconfigurables == null || this.cconfigurables == undefined) {
+      return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Commercial card Configurables is a required field.`, detail: '' });
     }
     if (this.selectedMod == "" || this.selectedMod == undefined || this.selectedMod == null) {
       var mod = []

@@ -234,6 +234,19 @@
     <div class="page-under-construction">
         <img src="assets/layout/images/page-under-construction.jpg" alt="No Building Blocks Found">
     </div>
+    <div class="grid">
+        <div class="col-6">
+            <button pButton pRipple type="button" label="Cancel" (click)="confirm()"
+                class="p-button-outlined mr-2 mb-2"></button>
+        </div>
+        <div class="col-6" style="display: flex;justify-content: flex-end;">
+            <button pButton pRipple type="button" (click)="saveAsDraft()" label="Save As Draft"
+                class="p-button-outlined mr-2 mb-2"></button>
+            <button type="submit" pButton pRipple label="Continue" class="mr-2 mb-2"
+                (click)="onCardClick('commercial')"></button>
+            <p-toast key="successToast"></p-toast>
+        </div>
+    </div>
 </div>
 
 <div class="card" *ngIf="this.showCommercialCrad==true">
