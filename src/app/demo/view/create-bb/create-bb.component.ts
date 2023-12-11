@@ -336,6 +336,30 @@ export class CreateBbComponent {
     if (this.building_block_name == '' || this.building_block_name == null || this.building_block_name == undefined) {
       return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Building block is a required field.`, detail: '' });
     }
+    if (this.seervice_desc == '' || this.seervice_desc == null || this.seervice_desc == undefined) {
+      return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Service is a required field.`, detail: '' });
+    }
+    if (this.customer_requirement == '' || this.customer_requirement == null || this.customer_requirement == undefined) {
+      return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Customer Requirement  is a required field.`, detail: '' });
+    }
+    if (this.deliverables == '' || this.deliverables == null || this.deliverables == undefined) {
+      return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Deliverables is a required field.`, detail: '' });
+    }
+    if (this.stakeholders_audience == '' || this.stakeholders_audience == null || this.stakeholders_audience == undefined) {
+      return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `stakeholders_audience is a required field.`, detail: '' });
+    }
+    if (this.value_to_psa_bdp == '' || this.value_to_psa_bdp == null || this.value_to_psa_bdp == undefined) {
+      return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `value_to_psa_bdp is a required field.`, detail: '' });
+    }
+    if (this.parameters == '' || this.parameters == null || this.parameters == undefined) {
+      return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Parameter is a required field.`, detail: '' });
+    }
+    if (this.selectedMod == "" || this.selectedMod == undefined || this.selectedMod == null) {
+      var mod = []
+    } else {
+      mod = this.selectedMod.map(id => ({ id }))
+    }
+    this.isloading = true
     if (this.selectedMod == "" || this.selectedMod == undefined || this.selectedMod == null) {
       var mod = []
     } else {
