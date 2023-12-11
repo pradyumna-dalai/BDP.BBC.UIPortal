@@ -58,7 +58,8 @@ export class CreateBbComponent {
   procuctCategoryOptions = []
   chargecodeOptions = []
   activeIndex: number = 0;
-
+  isEditMode: boolean = false;
+  buildingBlockId: string | null = null;
 
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
     public MasterTableservice: MasterTableService, private confirmationService: ConfirmationService,
@@ -201,6 +202,7 @@ export class CreateBbComponent {
   // ---------------add building blocks------------------------//
 
   saveAsDraft() {
+    this.buildingBlockId = this.route.snapshot.paramMap.get('id');
     if (this.product_name == '' || this.product_name == null || this.product_name == undefined) {
       return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Product name is a required field.`, detail: '' });
     }
@@ -222,6 +224,7 @@ export class CreateBbComponent {
     const body =
 
     {
+      id: this.buildingBlockId,
       name: this.building_block_name,
       product: {
         id: this.product_name
@@ -292,7 +295,6 @@ export class CreateBbComponent {
   private fetchBuildingBlockDetails(id: any): void {
     this.createBuildingBlockservice.getBuildingBlockDetails(id).subscribe(
       (details) => {
-        console.log('please details', details);
         // Assign details to component properties
         this.building_block_name = details.data.name;
         this.product_name = details.data.product.id;
@@ -308,8 +310,8 @@ export class CreateBbComponent {
         this.value_to_psa_bdp = details.data.scopingCard.valueToPsaBdp;
         this.parameters = details.data.scopingCard.parameter;
         this.configurables = details.data.scopingCard.configurable;
-        this.cvalue_to_psa_bdp =details.data.commercialCard.psaBdpValueStatement;
-        this.standard_service =details.data.commercialCard.standardService;
+        this.cvalue_to_psa_bdp = details.data.commercialCard.psaBdpValueStatement;
+        this.standard_service = details.data.commercialCard.standardService;
         this.sow = details.data.commercialCard.sow;
         this.pre_requisite_info = details.data.commercialCard.prerequisiteInfo;
         this.combined_value = details.data.commercialCard.combinedValue;
@@ -324,11 +326,9 @@ export class CreateBbComponent {
       }
     );
   }
-  private sanitize(html: string): SafeHtml {
-    return this.sanitizer.bypassSecurityTrustHtml(html);
-  }
 
   saveAsBuildingBlock() {
+    this.buildingBlockId = this.route.snapshot.paramMap.get('id');
     if (this.product_name == '' || this.product_name == null || this.product_name == undefined) {
       return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Product name is a required field.`, detail: '' });
     }
@@ -398,6 +398,7 @@ export class CreateBbComponent {
     const body =
 
     {
+      id: this.buildingBlockId,
       name: this.building_block_name,
       product: {
         id: this.product_name
@@ -439,7 +440,6 @@ export class CreateBbComponent {
       },
 
     }
-   console.log('check', body);
     this.CreateBuildingBlockservice.saveEditBuildingBlocks(2, body).subscribe(
       (res) => {
         console.log('Building Block saved successfully:', res);
