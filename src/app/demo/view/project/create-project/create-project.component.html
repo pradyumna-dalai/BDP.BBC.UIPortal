@@ -1,0 +1,136 @@
+<p-tabView>
+    <p-tabPanel header="Project Information">
+            <div>
+                <h5>Project Information</h5>
+            </div>
+            <div class="p-fluid grid">
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>Company Name</label></div>
+                    <p-dropdown id="product_name"
+                    placeholder="Select Company Name"></p-dropdown>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>Company Code</label></div>
+                    <input   placeholder="Company Code" type="text" 
+                    pInputText>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>Opportunity Name</label></div>
+                    <input   placeholder="Opportunity Name" type="text" 
+                    pInputText>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>Industry Vertical</label></div>
+                    <input  placeholder="Industry Vertical" type="text"
+                pInputText>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>Region</label></div>
+                    <p-dropdown id="product_name"
+                    placeholder="Select Region"></p-dropdown>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>Project Name</label></div>
+                    <input  placeholder="Enter Project Name"  type="text" id="inputtext"
+                pInputText>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>Project Stage</label></div>
+                    <p-dropdown id="product_name"
+                    placeholder="Select Project Stage"></p-dropdown>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>Project Status</label></div>
+                    <p-dropdown id="product_name"
+                    placeholder="Select Project Status"></p-dropdown>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>Opportunity Manager</label></div>
+                    <p-multiSelect  optionValue="id" placeholder="Select Opportunity Manager"
+                    optionLabel="name"></p-multiSelect>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>Start Date</label></div>
+                    <p-calendar [(ngModel)]="date" [showIcon]="true"></p-calendar>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>End Date</label></div>
+                    <p-calendar [(ngModel)]="date" [showIcon]="true"></p-calendar>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>Design Notes</label></div>
+                    <input  placeholder="Enter Design Notes"  type="text" id="inputtext"
+                pInputText>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>Implementation Notes</label></div>
+                    <input  placeholder="Enter Implementation Notes"  type="text" id="inputtext"
+                pInputText>
+                </div>
+                
+            </div>
+            <div class="col-12" style="display: flex;justify-content: flex-end;">
+                <button pButton pRipple type="button"  label="Save As Draft" class="p-button-outlined mr-2 mb-2" ></button>
+                <button type="submit" pButton pRipple label="Continue" class="mr-2 mb-2"></button>
+            </div>
+            <!-- <hr>
+            <h6><b>Documents</b></h6>
+            <p>Upload the following documnets: File Size < 5 mb,Format CSV,JPEG,Excel,PDF</p>
+            <div class="p-fluid grid">
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>Value Document</label></div>
+                    <p-fileUpload name="file" url="/your-upload-url" chooseLabel="Choose" uploadLabel="Upload" cancelLabel="Cancel"></p-fileUpload>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>Response Document</label></div>
+                    <p-fileUpload name="file" url="/your-upload-url" chooseLabel="Choose" uploadLabel="Upload" cancelLabel="Cancel"></p-fileUpload>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>Others</label></div>
+                    <p-fileUpload name="file" url="/your-upload-url" chooseLabel="Choose" uploadLabel="Upload" cancelLabel="Cancel"></p-fileUpload>
+                </div>
+            </div> -->
+    </p-tabPanel>
+    <p-tabPanel header="Building Block">
+        <p>
+            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim
+            ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
+        </p>
+    </p-tabPanel>
+    <p-tabPanel header="Configurable">
+        <p>
+            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
+            qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+        </p>
+    </p-tabPanel>
+    <p-tabPanel header="Add Volume">
+        <p>
+            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
+            qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+        </p>
+    </p-tabPanel>
+    <p-tabPanel header="Cost Line Item">
+        <p>
+            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
+            qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+        </p>
+    </p-tabPanel>
+    <p-tabPanel header="Additional Cost">
+        <p>
+            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
+            qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+        </p>
+    </p-tabPanel>
+    <p-tabPanel header="Revenue">
+        <p>
+            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
+            qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+        </p>
+    </p-tabPanel>
+    <p-tabPanel header="Cost Output">
+        <p>
+            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
+            qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+        </p>
+    </p-tabPanel>
+</p-tabView>
