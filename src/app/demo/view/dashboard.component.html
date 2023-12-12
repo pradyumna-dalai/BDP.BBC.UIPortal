@@ -137,19 +137,19 @@
 
             <div class="p-fluid grid">
                 <div class="col-12 md:col-4">
-                    <button pButton pRipple type="button" (click)="onCardClick('scoping')"
+                    <button pButton pRipple type="button" (click)="onCardClick('scoping')" [ngStyle]="{'border': showScopingCrad ? '1px solid #1B74C5' : 'none'}"
                         class="p-button-outlined mr-2 mb-2 bbCard">
                         <i class="pi pi-arrows-alt icon-with-margin"></i>
                         Scoping Card
                     </button>
                 </div>
                 <div class="col-12 md:col-4">
-                    <button pButton pRipple type="button" (click)="onCardClick('operation')"
+                    <button pButton pRipple type="button" (click)="onCardClick('operation')" [ngStyle]="{'border': showOperationCrad ? '1px solid #1B74C5' : 'none'}"
                         class="p-button-outlined mr-2 mb-2 bbCard"> <i class="pi pi-cog icon-with-margin"></i>
                         Operation Card</button>
                 </div>
                 <div class="col-12 md:col-4">
-                    <button pButton pRipple type="button" (click)="onCardClick('commercial')"
+                    <button pButton pRipple type="button" (click)="onCardClick('commercial')" [ngStyle]="{'border': showCommercialCrad ? '1px solid #1B74C5' : 'none'}"
                         class="p-button-outlined mr-2 mb-2 bbCard">
                         <i class="pi pi-money-bill icon-with-margin"></i>
                         Commercial Card</button>
