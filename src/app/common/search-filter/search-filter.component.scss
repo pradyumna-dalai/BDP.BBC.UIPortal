@@ -1,0 +1,33 @@
+.bdp-filter-panel {
+    padding: 10px;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+}
+
+//   .sidebar-button {
+//     background-color: #e1e6eb;
+//     color: #fff; 
+//   }
+
+.bdp-clear-filters {
+    cursor: pointer;
+    color: #007BFF;
+}
+
+.bdp-clear-filters:hover {
+    text-decoration: underline;
+}
+
+.font-color-dark {
+    color: #030303;
+}
+
+.bdp-filter-panel .bdp-visible-filters label {
+    margin-bottom: 10px;
+}
