@@ -6,6 +6,7 @@ import { AppNotfoundComponent } from './pages/app.notfound.component';
 import { ProjectComponent } from './demo/view/project/project.component';
 import { GlossaryComponent } from './demo/view/glossary/glossary.component';
 import { CreateBbComponent } from './demo/view/create-bb/create-bb.component';
+import { CreateProjectComponent } from './demo/view/project/create-project/create-project.component';
 
 
 
@@ -31,7 +32,8 @@ import { CreateBbComponent } from './demo/view/create-bb/create-bb.component';
                         component: CreateBbComponent,
                     },
 
-                    { path: 'building-block', component: DashboardDemoComponent }
+                    { path: 'building-block', component: DashboardDemoComponent },
+                    { path: 'create-project', component: CreateProjectComponent } 
                 ]
             },
             { path: 'notfound', component: AppNotfoundComponent },

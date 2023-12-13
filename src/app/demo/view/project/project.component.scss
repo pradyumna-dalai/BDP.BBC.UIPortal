@@ -1,0 +1,10 @@
+.align{
+    margin-top: -9px;
+}
+:host ::ng-deep .p-paginator {
+    justify-content: flex-end;
+  }
+  .disabled {
+    opacity: 0.5; /* You can adjust the opacity or use other styles to visually indicate the disabled state */
+    cursor: not-allowed;
+  }
