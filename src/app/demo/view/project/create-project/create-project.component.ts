@@ -4,6 +4,7 @@ import { FormControl, FormGroup,Validators,FormBuilder } from '@angular/forms';
 // import { MasterTableService } from '.';
 // import { MasterTableService } from '../../../../';
 import { MasterTableService } from '../../../../services/master-table.service';
+import {TreeNode} from 'primeng/api';
 
 @Component({
   selector: 'app-create-project',
@@ -17,6 +18,7 @@ export class CreateProjectComponent implements OnInit {
   myForm: FormGroup;
   projectStatusOptions = [];
   region = [];
+  // files1: TreeNode[];
 
   constructor(private breadcrumbService: AppBreadcrumbService,private fb: FormBuilder,public MasterTableservice: MasterTableService) {
     this.breadcrumbService.setItems([
@@ -44,9 +46,12 @@ export class CreateProjectComponent implements OnInit {
       designNotes: ['', Validators.required],
       impleNotes: ['', Validators.required],
       // Add more fields as needed
+      
     });
     this.getProjectStatus();
     this.getRegion();
+  
+  
   }
 
    // ---------------get project status------------------------//
@@ -71,5 +76,96 @@ export class CreateProjectComponent implements OnInit {
      }
    })
  }
+
+//  files1 = [
+//     {
+//       "key": "0",
+//       "label": "BB1",
+//       "data": "Documents Folder",
+//       "icon": "pi pi-fw pi-inbox",
+//       "children": [
+//         {
+//           "key": "0-0",
+//           "label": "step-1",
+//           "data": "Work Folder",
+//           "icon": "pi pi-fw pi-cog",
+//           "children": [
+//             {
+//               "key": "0-0-0",
+//               "label": "EDI",
+//               "icon": "pi pi-fw pi-file",
+//               "data": "Expenses Document",
+//               "children": [
+//                 {
+//                   "key": "0-0-0-0",
+//                   "label": "India",
+//                   "data": "Work Folder",
+//                   "icon": "pi pi-fw pi-cog"
+//                 },
+//                 {
+//                   "key": "0-0-0-1",
+//                   "label": "Singapore",
+//                   "data": "Work Folder",
+//                   "icon": "pi pi-fw pi-cog"
+//                 },
+//                 {
+//                   "key": "0-0-0-2",
+//                   "label": "China",
+//                   "data": "Work Folder",
+//                   "icon": "pi pi-fw pi-cog"
+//                 }
+//               ]
+//             },
+//             {
+//               "key": "0-0-1",
+//               "label": "Manual",
+//               "icon": "pi pi-fw pi-file",
+//               "data": "Resume Document",
+//               "children": [
+//                 {
+//                   "key": "0-0-1-0",
+//                   "label": "step-1",
+//                   "data": "Work Folder",
+//                   "icon": "pi pi-fw pi-cog"
+//                 }
+//               ]
+//             }
+//           ]
+//         },
+//         {
+//           "key": "0-0",
+//           "label": "step-2",
+//           "data": "Work Folder",
+//           "icon": "pi pi-fw pi-cog",
+//           "children": [
+//             { "key": "0-0-0", "label": "Expenses.doc", "icon": "pi pi-fw pi-file", "data": "Expenses Document" },
+//             { "key": "0-0-1", "label": "Resume.doc", "icon": "pi pi-fw pi-file", "data": "Resume Document" }
+//           ]
+//         },
+//         {
+//           "key": "0-0",
+//           "label": "step-3",
+//           "data": "Work Folder",
+//           "icon": "pi pi-fw pi-cog",
+//           "children": [
+//             { "key": "0-0-0", "label": "Expenses.doc", "icon": "pi pi-fw pi-file", "data": "Expenses Document" },
+//             { "key": "0-0-1", "label": "Resume.doc", "icon": "pi pi-fw pi-file", "data": "Resume Document" }
+//           ]
+//         },
+//         {
+//           "key": "0-1",
+//           "label": "step-4",
+//           "data": "Home Folder",
+//           "icon": "pi pi-fw pi-home",
+//           "children": [
+//             { "key": "0-1-0", "label": "Invoices.txt", "icon": "pi pi-fw pi-file", "data": "Invoices for this month" }
+//           ]
+//         }
+//       ]
+//     }
+//   ];
+
+ 
+// selectedFiles1: any[] = [];
 
 }

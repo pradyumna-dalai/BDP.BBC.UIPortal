@@ -17,7 +17,7 @@
   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [value]="data"
   selectionMode="single" dataKey="id" styleClass="p-datatable-gridlines" responsiveLayout="scroll"
   [rows]="10" [paginator]="true"
-  scrollHeight="400px" scrollDirection="both" [resizableColumns]="true">
+  scrollHeight="500px" scrollDirection="both" [resizableColumns]="true">
   <!-- <ng-template pTemplate="colgroup" let-columns>
       <colgroup>
           <col style="width: 50px" />
@@ -102,7 +102,7 @@
   </ng-template>
   <ng-template pTemplate="emptymessage">
       <tr>
-          <td style="text-align: center;" colspan="18">No Data found.</td>
+          <td style="text-align: center;" colspan="9">No Data found.</td>
       </tr>
   </ng-template>
 </p-table>

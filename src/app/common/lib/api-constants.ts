@@ -16,6 +16,7 @@ export namespace AppRoutes {
     public static readonly getModeofTransport = "mode-of-transport";
     public static readonly getProjectStatus = "status";
     public static readonly getRegion = "region";
+    public static readonly getCompany = "company";
     
      // --------------------create building block----------------------//
 

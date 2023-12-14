@@ -43,5 +43,9 @@ export class MasterTableService {
 
     return this.http.get<any>(url+settings.AppRoutes.Auth.getRegion);
   }
+  public getCompany() {
+
+    return this.http.get<any>(url+settings.AppRoutes.Auth.getCompany);
+  }
 
 }

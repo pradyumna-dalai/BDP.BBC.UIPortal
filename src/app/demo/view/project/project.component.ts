@@ -163,6 +163,8 @@ ngOnInit(){
 ]
 }
 
+
+
 confirm(val: string, itemId: string) {
   if (val == 'copy'){
     this.confirmationService.confirm({

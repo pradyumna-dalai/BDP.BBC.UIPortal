@@ -106,10 +106,21 @@
         </p>
     </p-tabPanel>
     <p-tabPanel header="Add Volume">
-        <p>
-            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
-            qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
-        </p>
+        <!-- <div class="col-12">
+            <div class="card">
+                <h5>Tree</h5>
+                <p-tree [value]="files1"  [(selection)]="selectedFiles1">
+                    <ng-template let-node pTemplate="default">
+                      <div class="node-content">
+                        <span>
+                          {{ node.label }}
+                        </span>
+                        <input *ngIf="node.label === 'India' || node.label === 'Singapore' || node.label === 'China'" type="text" [(ngModel)]="node.customData" placeholder="Enter data">
+                      </div>
+                    </ng-template>
+                  </p-tree>
+            </div>
+        </div> -->
     </p-tabPanel>
     <p-tabPanel header="Cost Line Item">
         <p>
