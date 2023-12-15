@@ -8,4 +8,9 @@
     opacity: 0.5; /* You can adjust the opacity or use other styles to visually indicate the disabled state */
     cursor: not-allowed;
   }
-  
+  .sticky-header {
+    position: sticky;
+    top: 0;
+    background-color: #f8f9fa; /* Adjust the background color as needed */
+    z-index: 100;
+  }

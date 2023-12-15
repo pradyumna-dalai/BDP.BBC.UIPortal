@@ -13,7 +13,7 @@ export class ProjectComponent {
   text:string = '';
   data: any = {};
   rowDisabledState: { [key: string]: boolean } = {};
- 
+
   constructor(private breadcrumbService: AppBreadcrumbService, private confirmationService: ConfirmationService,private router: Router) {
     this.breadcrumbService.setItems([
         {label: 'Project'}
