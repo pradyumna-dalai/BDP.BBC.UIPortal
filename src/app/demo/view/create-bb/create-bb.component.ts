@@ -344,6 +344,9 @@ export class CreateBbComponent {
     if (this.building_block_name == '' || this.building_block_name == null || this.building_block_name == undefined) {
       return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Building block is a required field.`, detail: '' });
     }
+    if (this.charge_code == '' || this.charge_code == null || this.charge_code == undefined) {
+      return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Charge Code is a required field.`, detail: '' });
+    }
     if (this.seervice_desc == '' || this.seervice_desc == null || this.seervice_desc == undefined) {
       return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Service Description in Scoping Card is a required field.`, detail: '' });
     }
