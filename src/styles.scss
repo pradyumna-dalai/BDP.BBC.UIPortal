@@ -8,3 +8,17 @@ $gutter: 1rem; //for primeflex grid system
 @import "assets/demo/flags/flags.css";
 @import "assets/demo/documentation.scss";
 @import "~@fortawesome/fontawesome-free/css/all.css";
+
+
+
+
+/* Limit the width of the dropdown options */
+.p-dropdown .p-dropdown-panel .p-dropdown-items {
+    max-width: 200px; /* Adjust the max-width as needed */
+  }
+  
+  /* Break long option labels into multiple lines */
+  .p-dropdown .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+    white-space: normal;
+  }
+  

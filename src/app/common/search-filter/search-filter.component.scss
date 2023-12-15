@@ -43,4 +43,29 @@
         top: 0; 
         left: 0; 
       }
-  
+  .hr{
+    background-color: black;
+  }
+  #bdpfilter .sidebar-button{
+    width: 100px;
+  }
+  /* Add this CSS to your component's stylesheet */
+
+/* Limit the width of the dropdown options */
+#bdpfilter .p-dropdown-panel .p-dropdown-items {
+  max-width: 300px; /* Adjust the max-width as needed */
+}
+
+/* Break long option labels into multiple lines */
+#bdpfilter .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+  white-space: normal;
+}
+#bdpfilter .p-dropdown-label {
+  width: 89%; /* Adjust the width as needed */
+}
+
+/* Additional styling for label */
+#bdpfilter .p-dropdown-label .p-dropdown-label-text {
+  display: block;
+  white-space: normal;
+}

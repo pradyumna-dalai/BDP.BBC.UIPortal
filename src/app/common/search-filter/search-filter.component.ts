@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FilterService } from '../filter/filter.service';
+import { MasterTableService } from 'src/app/services/master-table.service';
 
 
 @Component({
@@ -17,20 +18,17 @@ export class SearchFilterComponent {
   endDate: Date;
   selectedOpportunityManagers: any[] = [];
   statusOptions: any[]
-  projectSuggestions: any[]
+  projectSuggestions: any[] = [];
   managerOptions: any[]
   opportunityManagers: any[];
-  opportunity_name: any;
-  constructor(private filterService: FilterService) {
-    this.fetchProjectStatus();
-    this.fetchAllCompanyProjects();
-    this.fetchOpportunityManagers();
-    this.fetchOportunityNameByCompany();
-    
-   }
+  constructor(private filterService: FilterService, public MasterTableservice: MasterTableService) {
+
+  }
 
   ngOnInit() {
-
+    this.fetchProjectStatus();
+    this.fetchOpportunityManagers();
+    this.fetchProjectbyCompany();
   }
 
   searchProjects(query: string) {
@@ -43,20 +41,20 @@ export class SearchFilterComponent {
 
   onClearFilterClick() {
     console.log("Clearing filters...");
-  this.statusOptions = null;
-  this.projectSuggestions = null;
-  this.startDate = null;
-  this.endDate = null;
-  this.managerOptions = null;
-  this.opportunityManagers = null;
-  console.log("Filters cleared.");
-  this.fetchProjectStatus();
-  this.fetchAllCompanyProjects();
-  this.fetchOpportunityManagers();
-  this.fetchOportunityNameByCompany();
+    this.statusOptions = null;
+    this.projectSuggestions = null;
+    this.startDate = null;
+    this.endDate = null;
+    this.managerOptions = null;
+    this.opportunityManagers = null;
+    console.log("Filters cleared.");
+    this.fetchProjectStatus();
+    this.fetchOpportunityManagers();
+    this.fetchProjectbyCompany();
   }
 
   fetchProjectStatus() {
+    this.selectedStatus = '';
     this.filterService.getprojectStatus().subscribe((res: any) => {
       if (res?.message === "success") {
         this.statusOptions = res?.data.map((status: any) => ({
@@ -69,42 +67,23 @@ export class SearchFilterComponent {
     });
   }
 
-  // fetchOportunityNameByCompany(companyId: number) {
-  //   this.managerOptions = [];
-  //   this.filterService.getOpportunityNameByCompany(companyId).subscribe((res: any) => {
-  //     if (res?.message == "success") {
-  //       this.managerOptions = res?.data;
-  //     } else {
-  //       this.managerOptions = [];
-  //     }
-
-  //   })
-  // }
-  fetchAllCompanyProjects() {
-    this.filterService.getAllProjectByCompany().subscribe((res: any) => {
-      if (res?.message === "success") {
-        this.projectSuggestions = res?.data.map((project: any) => ({
-          label: project.name,
-          value: project.id,
-          companyId: project.companyId,
-        }));
+  fetchProjectbyCompany() {
+    this.projectSuggestions = [];
+    this.MasterTableservice.getCompany().subscribe((res: any) => {
+      if (res?.message == "success") {
+        this.projectSuggestions = res?.data;
       } else {
         this.projectSuggestions = [];
       }
-    });
+    })
+
   }
 
-  fetchOportunityNameByCompany() {
+  fetchOpprNameOnCompanySelect(event) {
     this.managerOptions = [];
-
-    if (!this.selectedProject) {
-      return;
-    }
-    const companyId = this.selectedProject.companyId;
-
-    this.filterService.getOpportunityNameByCompany(companyId).subscribe((res: any) => {
-      console.log("Opportunity Names Response:", res);
-      if (res?.message == "success") {
+    const selectedCompanyId = event.value;
+    this.MasterTableservice.getOpportunityName(selectedCompanyId).subscribe((res: any) => {
+      if (res?.message === "success") {
         this.managerOptions = res?.data;
       } else {
         this.managerOptions = [];
@@ -112,8 +91,8 @@ export class SearchFilterComponent {
     });
   }
 
-
   fetchOpportunityManagers() {
+    this.selectedOpportunityManagers = [];
     this.filterService.getOpportunityManager().subscribe((res: any) => {
       if (res?.message === "success") {
         this.opportunityManagers = res?.data.map((manager: any) => ({
