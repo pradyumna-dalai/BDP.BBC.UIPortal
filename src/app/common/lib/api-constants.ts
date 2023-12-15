@@ -8,11 +8,20 @@ export namespace AppRoutes {
 
         // --------------------get all master dropdown data-----------------------//
 
-        public static readonly getProductName = "product";
-        public static readonly getProductScope = "scope";
-        public static readonly getProductCtegory = "category";
-        public static readonly getchargeCode = "charge-code";
-        public static readonly getModeofTransport = "mode-of-transport";
+    public static readonly getProductName = "product";
+    public static readonly getProductScope = "scope";
+    public static readonly getProductCtegory = "category";
+    public static readonly getchargeCode = "charge-code";
+    public static readonly getModeofTransport = "mode-of-transport";
+    public static readonly getProjectStatus = "status";
+    public static readonly getRegion = "region";
+    public static readonly getCompany = "company";
+    public static readonly getProjectStage = "project-stage";
+    public static readonly getOpportunityManger= "opportunity-manager";
+    public static readonly getOpportunityName= "opportunity-name";
+    public static readonly getIndustryVertical = "industry-vertical";
+    
+     // --------------------create building block----------------------//
 
         // --------------------create building block----------------------//
 
