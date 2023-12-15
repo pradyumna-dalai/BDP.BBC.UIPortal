@@ -1,0 +1,46 @@
+#bdpfilter .bdp-filter-panel {
+    padding: 10px;
+  }
+  
+  #bdpfilter .sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+  }
+  
+  #bdpfilter .bdp-clear-filters {
+    cursor: pointer;
+    color: #007BFF;
+  }
+  
+  #bdpfilter .bdp-clear-filters:hover {
+    text-decoration: underline;
+  }
+  
+  #bdpfilter .font-color-dark {
+    color: #030303;
+  }
+  
+  #bdpfilter .bdp-filter-panel .bdp-visible-filters label {
+    margin-bottom: 10px;
+  }
+  
+  #bdpfilter .bdp-filter-dropdown .p-dropdown-item {
+    max-height: 50px !important;
+    overflow: hidden !important;
+    white-space: nowrap !important;
+    word-wrap: break-word !important;
+      
+  
+    }
+    #bdpfilter .bdp-filter-dropdown .p-dropdown-items-wrapper {
+        max-width: 200px;
+        overflow: hidden;
+        white-space: nowrap;
+        position: absolute; 
+        top: 0; 
+        left: 0; 
+      }
+  

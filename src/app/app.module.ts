@@ -83,7 +83,6 @@ import {TreeModule} from 'primeng/tree';
 import {TreeTableModule} from 'primeng/treetable';
 import {VirtualScrollerModule} from 'primeng/virtualscroller';
 import {FullCalendarModule} from '@fullcalendar/angular';
-import { ReactiveFormsModule } from '@angular/forms';
 
 import { ApiErrorInterceptor, ApiRequestInterceptor } from '../app/common/index';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -106,8 +105,7 @@ import { GlossaryComponent } from './demo/view/glossary/glossary.component';
 import { CreateBbComponent } from './demo/view/create-bb/create-bb.component';
 
 import { NodeService } from './demo/service/nodeservice';
-import { CreateProjectComponent } from './demo/view/project/create-project/create-project.component';
-
+import { SearchFilterComponent } from './common/search-filter/search-filter.component';
 
 
 
@@ -197,7 +195,6 @@ import { CreateProjectComponent } from './demo/view/project/create-project/creat
         TreeModule,
         TreeTableModule,
         VirtualScrollerModule,
-        ReactiveFormsModule
     ],
     declarations: [
         AppComponent,
@@ -212,7 +209,7 @@ import { CreateProjectComponent } from './demo/view/project/create-project/creat
         ProjectComponent,
         GlossaryComponent,
         CreateBbComponent,
-        CreateProjectComponent,
+        SearchFilterComponent,
 
     ],
     providers: [

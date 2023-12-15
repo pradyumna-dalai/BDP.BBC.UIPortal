@@ -25,6 +25,7 @@
                                 (onNodeSelect)="onNodeSelect($event)">
                                 <ng-template let-node pTemplate="default">
                                     <span>
+
                                         <!-- Add icons for each child based on the item type -->
                                         <span *ngIf="node.data?.type === 1" class="fas fa-folder"></span>
                                         <span *ngIf="node.data?.type === 2" class="fa-regular fa-folder"></span>

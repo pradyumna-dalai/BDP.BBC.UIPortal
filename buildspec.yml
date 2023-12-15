@@ -22,10 +22,6 @@ artifacts:
   type: zip
   files:
       - dist/**/*
-      - Bbc_Report/**/*
       - package.json
       - app.js
       - .ebextensions/**/*
-      - deploy_scripts/*
-      - deploy_config/*
-      - appspec.yml
