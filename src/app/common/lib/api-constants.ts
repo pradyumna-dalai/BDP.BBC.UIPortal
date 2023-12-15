@@ -47,6 +47,11 @@ export namespace AppRoutes {
 
         public static readonly getOpportuniyByCompany="opportunity-name";
 
+
+        // --------------------create project---------------//
+
+        public static readonly  saveProjectDraft ="project";
+
     }
 
 }
