@@ -67,6 +67,83 @@ ngOnInit(){
         "start_date": "10/10/2020",
         "end_date": "10/10/2020"
 
+},
+{
+  "comp_name": "Accenture",
+        "proj_id": "172",
+        "oppourtunity_name": "project 4",
+        "proj_stage": "decommissioned",
+        "proj_status": "Updated",
+        "oppourtunity_manager": "Priya",
+        "start_date": "10/10/2020",
+        "end_date": "10/10/2020"
+
+},
+{
+  "comp_name": "Accenture",
+        "proj_id": "172",
+        "oppourtunity_name": "project 4",
+        "proj_stage": "decommissioned",
+        "proj_status": "Updated",
+        "oppourtunity_manager": "Priya",
+        "start_date": "10/10/2020",
+        "end_date": "10/10/2020"
+
+},
+{
+  "comp_name": "Accenture",
+        "proj_id": "172",
+        "oppourtunity_name": "project 4",
+        "proj_stage": "decommissioned",
+        "proj_status": "Updated",
+        "oppourtunity_manager": "Priya",
+        "start_date": "10/10/2020",
+        "end_date": "10/10/2020"
+
+},
+{
+  "comp_name": "Accenture",
+        "proj_id": "172",
+        "oppourtunity_name": "project 4",
+        "proj_stage": "decommissioned",
+        "proj_status": "Updated",
+        "oppourtunity_manager": "Priya",
+        "start_date": "10/10/2020",
+        "end_date": "10/10/2020"
+
+},
+{
+  "comp_name": "Accenture",
+        "proj_id": "172",
+        "oppourtunity_name": "project 4",
+        "proj_stage": "decommissioned",
+        "proj_status": "Updated",
+        "oppourtunity_manager": "Priya",
+        "start_date": "10/10/2020",
+        "end_date": "10/10/2020"
+
+},
+{
+  "comp_name": "Accenture",
+        "proj_id": "172",
+        "oppourtunity_name": "project 4",
+        "proj_stage": "decommissioned",
+        "proj_status": "Updated",
+        "oppourtunity_manager": "Priya",
+        "start_date": "10/10/2020",
+        "end_date": "10/10/2020"
+
+},
+{
+  "comp_name": "Accenture",
+        "proj_id": "172",
+        "oppourtunity_name": "project 4",
+        "proj_stage": "decommissioned",
+        "proj_status": "Updated",
+        "oppourtunity_manager": "Priya",
+        "start_date": "10/10/2020",
+        "end_date": "10/10/2020"
+
 }
 ]
 }
