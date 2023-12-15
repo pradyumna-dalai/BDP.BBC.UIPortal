@@ -108,6 +108,7 @@ import { CreateBbComponent } from './demo/view/create-bb/create-bb.component';
 import { NodeService } from './demo/service/nodeservice';
 import { CreateProjectComponent } from './demo/view/project/create-project/create-project.component';
 
+import { SearchFilterComponent } from './common/search-filter/search-filter.component';
 
 
 
@@ -212,7 +213,7 @@ import { CreateProjectComponent } from './demo/view/project/create-project/creat
         ProjectComponent,
         GlossaryComponent,
         CreateBbComponent,
-        CreateProjectComponent,
+        SearchFilterComponent,
 
     ],
     providers: [
