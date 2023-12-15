@@ -27,6 +27,12 @@ export class FilterService {
     return this.http.get<any>(url+settings.AppRoutes.Auth.getopportunityManager);
   }
 
+  getAllProjectByCompany(){
+    return this.http.get<any>(url+settings.AppRoutes.Auth.getallProject);
+  }
 
-
+  getOpportunityNameByCompany(companyId:number){
+    const params = new HttpParams().set('companyId', companyId.toString());
+    return this.http.get<any>(url+settings.AppRoutes.Auth.getOpportuniyByCompany,{params});
+  }
 }

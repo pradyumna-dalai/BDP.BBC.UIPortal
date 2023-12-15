@@ -28,9 +28,15 @@ export namespace AppRoutes {
         public static readonly getbuildingBlockDetailsView = "buildingblock";
 
 
+
+        //--------------------Project filter--------//
         public static readonly getprojectStatus = "status";
 
         public static readonly getopportunityManager = "opportunity-manager";
+
+        public static readonly getallProject ="company";
+
+        public static readonly getOpportuniyByCompany="opportunity-name";
 
     }
 

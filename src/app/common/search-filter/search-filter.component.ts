@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { EventEmitter, OnInit, Output } from '@angular/core';
 import { FilterService } from '../filter/filter.service';
 
 
@@ -13,17 +12,24 @@ export class SearchFilterComponent {
   showAdvancedSearch: boolean = false;
   selectedStatus: string;
   selectedProject: any;
+  selectedManager: any;
   startDate: Date;
   endDate: Date;
-  selectedManagers: any[] = [];
+  selectedOpportunityManagers: any[] = [];
   statusOptions: any[]
   projectSuggestions: any[]
   managerOptions: any[]
   opportunityManagers: any[];
-  constructor(private filterService: FilterService) { }
+  opportunity_name: any;
+  constructor(private filterService: FilterService) {
+    this.fetchProjectStatus();
+    this.fetchAllCompanyProjects();
+    this.fetchOpportunityManagers();
+    this.fetchOportunityNameByCompany();
+    
+   }
 
   ngOnInit() {
-    this.fetchProjectStatus();
 
   }
 
@@ -36,18 +42,18 @@ export class SearchFilterComponent {
   }
 
   onClearFilterClick() {
-    // Implement logic to clear filters
-  }
-   fetchOpportunityManagers() {
-    this.filterService.getOpportunityManager().subscribe(
-      (response) => {
-        console.log("op",response)
-        this.opportunityManagers = response; 
-      },
-      (error) => {
-        console.error('Error fetching opportunity managers', error);
-      }
-    );
+    console.log("Clearing filters...");
+  this.statusOptions = null;
+  this.projectSuggestions = null;
+  this.startDate = null;
+  this.endDate = null;
+  this.managerOptions = null;
+  this.opportunityManagers = null;
+  console.log("Filters cleared.");
+  this.fetchProjectStatus();
+  this.fetchAllCompanyProjects();
+  this.fetchOpportunityManagers();
+  this.fetchOportunityNameByCompany();
   }
 
   fetchProjectStatus() {
@@ -63,5 +69,61 @@ export class SearchFilterComponent {
     });
   }
 
+  // fetchOportunityNameByCompany(companyId: number) {
+  //   this.managerOptions = [];
+  //   this.filterService.getOpportunityNameByCompany(companyId).subscribe((res: any) => {
+  //     if (res?.message == "success") {
+  //       this.managerOptions = res?.data;
+  //     } else {
+  //       this.managerOptions = [];
+  //     }
+
+  //   })
+  // }
+  fetchAllCompanyProjects() {
+    this.filterService.getAllProjectByCompany().subscribe((res: any) => {
+      if (res?.message === "success") {
+        this.projectSuggestions = res?.data.map((project: any) => ({
+          label: project.name,
+          value: project.id,
+          companyId: project.companyId,
+        }));
+      } else {
+        this.projectSuggestions = [];
+      }
+    });
+  }
+
+  fetchOportunityNameByCompany() {
+    this.managerOptions = [];
+
+    if (!this.selectedProject) {
+      return;
+    }
+    const companyId = this.selectedProject.companyId;
+
+    this.filterService.getOpportunityNameByCompany(companyId).subscribe((res: any) => {
+      console.log("Opportunity Names Response:", res);
+      if (res?.message == "success") {
+        this.managerOptions = res?.data;
+      } else {
+        this.managerOptions = [];
+      }
+    });
+  }
+
+
+  fetchOpportunityManagers() {
+    this.filterService.getOpportunityManager().subscribe((res: any) => {
+      if (res?.message === "success") {
+        this.opportunityManagers = res?.data.map((manager: any) => ({
+          label: manager.name,
+          value: manager.id,
+        }));
+      } else {
+        this.opportunityManagers = [];
+      }
+    })
+  }
 
 }

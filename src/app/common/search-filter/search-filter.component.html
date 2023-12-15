@@ -1,46 +1,51 @@
-<p-sidebar [(visible)]="sidebarVisible" class="p-sidebar-md" styleClass="w-30rem">
-    <div class="bdp-filter-panel">
-      <div class="bdp-sticky-header">
-        <div class="sidebar-header">
-          <h5>Advanced Search</h5>
-          <p-button label="Apply" class="sidebar-button"></p-button>
-          <span class="bdp-clear-filters"><a style="cursor: pointer;">Clear Filters</a></span>
-        </div>
-      </div>
-  
-      <div class="p-fluid bdp-filter-wrapper">
-        <div class="bdp-visible-filters">
-            <br>
-            <label>Status: </label>
-            <br>
-            <p-dropdown [(ngModel)]="selectedStatus" [options]="statusOptions" placeholder="Select Status"></p-dropdown>
-            <br>
-            <label>Project Name:</label>
-            <br>
-            <p-autoComplete [(ngModel)]="selectedProject" [suggestions]="projectSuggestions" placeholder="Search Project"
-              (completeMethod)="searchProjects($event.query)"></p-autoComplete>
-            <br>
-            <label>Date Range:</label>
-            <p-calendar [(ngModel)]="startDate" placeholder="Start Date"></p-calendar>
-            <p-calendar [(ngModel)]="endDate" placeholder="End Date"></p-calendar>
-            <br>
-            <label>Opportunity Name:</label>
-            <br>
-            <p-dropdown [(ngModel)]="selectedStatus" [options]="statusOptions" placeholder="Select Name"></p-dropdown>
-            <br>
-            <label>Opportunity Manager:</label>
-            <br>
-            <p-multiSelect [(ngModel)]="selectedManagers" [options]="opportunityManagers" placeholder="Select Managers"></p-multiSelect>
-        
-            <!-- <button pButton label="Search" (click)="onSearchClick()"></button>
-            <button pButton label="Clear Filter" (click)="onClearFilterClick()"></button> -->
-        </div>
-        <!-- end here -->
+<p-sidebar [(visible)]="sidebarVisible" id="bdpfilter" styleClass="w-30rem">
+  <div class="bdp-filter-panel">
+    <div class="bdp-sticky-header">
+      <div class="sidebar-header">
+        <h5>Advanced Search</h5>
+        <p-button label="Apply" class="sidebar-button"></p-button>
+        <span class="bdp-clear-filters"><a style="cursor: pointer;" (click)="onClearFilterClick()">Clear Filters</a></span>
       </div>
     </div>
-  </p-sidebar>
-  
-<p-button (click)="sidebarVisible = true" class="bdp-filter-button" label="Show filters"><img src='assets/layout/images/filter.svg' style="width: 70px;
+
+    <div class="p-fluid bdp-filter-wrapper">
+      <div class="bdp-visible-filters">
+        <br>
+        <label>Status: </label>
+        <br>
+        <p-dropdown class="bdp-filter-dropdown" [(ngModel)]="selectedStatus" [options]="statusOptions" placeholder="Select Status"
+          optionValue="id"></p-dropdown>
+        <br>
+        <label>Project Name:</label>
+        <br>
+        <!-- <p-autoComplete [(ngModel)]="selectedProject" [options]="projectSuggestions" placeholder="Search Project"
+              (completeMethod)="searchProjects($event.query)"></p-autoComplete> -->
+        <p-dropdown class="bdp-filter-dropdown" [(ngModel)]="selectedProject" [options]="projectSuggestions" placeholder="Select Project"
+          optionValue="id" (ngModelChange)="fetchOportunityNameByCompany()"  [resetFilterOnHide]=true></p-dropdown>
+        <br>
+        <label>Date Range:</label>
+        <p-calendar [(ngModel)]="startDate" placeholder="Start Date"></p-calendar>
+        <p-calendar [(ngModel)]="endDate" placeholder="End Date"></p-calendar>
+        <br>
+        <label>Opportunity Name:</label>
+        <br>
+        <p-dropdown [(ngModel)]="selectedManager" class="bdp-filter-dropdown" [options]="managerOptions" placeholder="Select  Name"
+          optionValue="id"></p-dropdown>
+        <br>
+        <label>Opportunity Manager:</label>
+        <br>
+        <p-multiSelect class="bdp-filter-dropdown" [(ngModel)]="selectedOpportunityManagers" [options]="opportunityManagers"
+        placeholder="Select Managers" optionValue="id"></p-multiSelect>      
+
+        <!-- <button pButton label="Search" (click)="onSearchClick()"></button>
+            <button pButton label="Clear Filter" (click)="onClearFilterClick()"></button> -->
+      </div>
+      <!-- end here -->
+    </div>
+  </div>
+</p-sidebar>
+
+<p-button (click)="sidebarVisible = true" class="bdp-filter-button" label="Show filters"><img
+    src='assets/layout/images/filter.svg' style="width: 70px;
         height: 25px;
         margin-right: 1px;"></p-button>
-
