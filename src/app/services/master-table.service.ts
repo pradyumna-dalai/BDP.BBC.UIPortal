@@ -10,7 +10,7 @@ export class MasterTableService {
 
   constructor(protected http: HttpClient) { }
 
-   // ********************master data:  Building Blocks *********************//
+   // ********************master data: Product *********************//
    public getProductName() 
    {
     
@@ -33,19 +33,4 @@ export class MasterTableService {
 
     return this.http.get<any>(url+settings.AppRoutes.Auth.getModeofTransport);
   }
-
-  // ********************master data:  Project *********************//
-  public getProjectStatus() {
-
-    return this.http.get<any>(url+settings.AppRoutes.Auth.getProjectStatus);
-  }
-  public getRegion() {
-
-    return this.http.get<any>(url+settings.AppRoutes.Auth.getRegion);
-  }
-  public getCompany() {
-
-    return this.http.get<any>(url+settings.AppRoutes.Auth.getCompany);
-  }
-
 }
