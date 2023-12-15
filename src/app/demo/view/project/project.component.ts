@@ -1,16 +1,20 @@
 import { Component } from '@angular/core';
 import {AppBreadcrumbService} from '../../../app.breadcrumb.service';
+import { MenuItem, MessageService, ConfirmationService } from 'primeng/api';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-project',
   templateUrl: './project.component.html',
-  styleUrls: ['./project.component.scss']
+  styleUrls: ['./project.component.scss'],
+  providers: [MessageService, ConfirmationService]
 })
 export class ProjectComponent {
   text:string = '';
   data: any = {};
+  rowDisabledState: { [key: string]: boolean } = {};
 
-  constructor(private breadcrumbService: AppBreadcrumbService) {
+  constructor(private breadcrumbService: AppBreadcrumbService, private confirmationService: ConfirmationService,private router: Router) {
     this.breadcrumbService.setItems([
         {label: 'Project'}
     ]);
@@ -67,8 +71,119 @@ ngOnInit(){
         "start_date": "10/10/2020",
         "end_date": "10/10/2020"
 
+},
+{
+  "comp_name": "Accenture",
+        "proj_id": "172",
+        "oppourtunity_name": "project 4",
+        "proj_stage": "decommissioned",
+        "proj_status": "Updated",
+        "oppourtunity_manager": "Priya",
+        "start_date": "10/10/2020",
+        "end_date": "10/10/2020"
+
+},
+{
+  "comp_name": "Accenture",
+        "proj_id": "172",
+        "oppourtunity_name": "project 4",
+        "proj_stage": "decommissioned",
+        "proj_status": "Updated",
+        "oppourtunity_manager": "Priya",
+        "start_date": "10/10/2020",
+        "end_date": "10/10/2020"
+
+},
+{
+  "comp_name": "Accenture",
+        "proj_id": "172",
+        "oppourtunity_name": "project 4",
+        "proj_stage": "decommissioned",
+        "proj_status": "Updated",
+        "oppourtunity_manager": "Priya",
+        "start_date": "10/10/2020",
+        "end_date": "10/10/2020"
+
+},
+{
+  "comp_name": "Accenture",
+        "proj_id": "172",
+        "oppourtunity_name": "project 4",
+        "proj_stage": "decommissioned",
+        "proj_status": "Updated",
+        "oppourtunity_manager": "Priya",
+        "start_date": "10/10/2020",
+        "end_date": "10/10/2020"
+
+},
+{
+  "comp_name": "Accenture",
+        "proj_id": "172",
+        "oppourtunity_name": "project 4",
+        "proj_stage": "decommissioned",
+        "proj_status": "Updated",
+        "oppourtunity_manager": "Priya",
+        "start_date": "10/10/2020",
+        "end_date": "10/10/2020"
+
+},
+{
+  "comp_name": "Accenture",
+        "proj_id": "172",
+        "oppourtunity_name": "project 4",
+        "proj_stage": "decommissioned",
+        "proj_status": "Updated",
+        "oppourtunity_manager": "Priya",
+        "start_date": "10/10/2020",
+        "end_date": "10/10/2020"
+
+},
+{
+  "comp_name": "Accenture",
+        "proj_id": "172",
+        "oppourtunity_name": "project 4",
+        "proj_stage": "decommissioned",
+        "proj_status": "Updated",
+        "oppourtunity_manager": "Priya",
+        "start_date": "10/10/2020",
+        "end_date": "10/10/2020"
+
+},
+{
+  "comp_name": "Accenture",
+        "proj_id": "172",
+        "oppourtunity_name": "project 4",
+        "proj_stage": "decommissioned",
+        "proj_status": "Updated",
+        "oppourtunity_manager": "Priya",
+        "start_date": "10/10/2020",
+        "end_date": "10/10/2020"
+
 }
 ]
 }
+
+
+
+confirm(val: string, itemId: string) {
+  if (val == 'copy'){
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want to copy this project?',
+      accept: () => {
+         this.router.navigateByUrl('/create-project');
+      }
+    });
+  }
+  if (val == 'delete'){
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want delete this project?',
+      accept: () => {
+        this.rowDisabledState[itemId] = true;
+
+      }
+    });
+  }
+  
+  }
 
 }
