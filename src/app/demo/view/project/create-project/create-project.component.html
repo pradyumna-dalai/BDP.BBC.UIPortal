@@ -7,7 +7,7 @@
                 <div class="p-fluid grid">
                     <div class="field col-12 md:col-4">
                         <div class="p-d-block"><label>Company Name<span class="requiredField">*</span></label></div>
-                        <p-dropdown id="product_name"  formControlName="companyName"
+                        <p-dropdown [options]="companyOptions" (onChange)="onCompanySelect($event)" optionLabel="name" optionValue="id"   formControlName="companyName"
                         placeholder="Select Company Name"></p-dropdown>
                     </div>
                     <div class="field col-12 md:col-4">
@@ -17,17 +17,22 @@
                     </div>
                     <div class="field col-12 md:col-4">
                         <div class="p-d-block"><label>Opportunity Name<span class="requiredField">*</span></label></div>
-                        <input   placeholder="Enter Opportunity Name" formControlName="opportunityName" type="text" 
-                        pInputText>
+                        <p-dropdown [options]="opportunityNameOptions" optionLabel="name" (onChange)="onOpportunitySelect($event)" optionValue="id"   formControlName="opportunityName"
+                        placeholder="Select Opportunity Name"></p-dropdown>
+                        <!-- <input   placeholder="Enter Opportunity Name" formControlName="opportunityName" type="text" 
+                        pInputText> -->
                     </div>
                     <div class="field col-12 md:col-4">
                         <div class="p-d-block"><label>Industry Vertical<span class="requiredField">*</span></label></div>
-                        <input  placeholder="Enter Industry Vertical" formControlName="industryVertical" type="text"
-                    pInputText>
+                        <p-dropdown [options]="IVOptions" optionLabel="name" optionValue="id" 
+                        formControlName="industryVertical"
+                        placeholder="Enter Industry Vertical"></p-dropdown>
+                        <!-- <input  placeholder="Enter Industry Vertical" formControlName="industryVertical" type="text"
+                    pInputText> -->
                     </div>
                     <div class="field col-12 md:col-4">
                         <div class="p-d-block"><label>Region<span class="requiredField">*</span></label></div>
-                        <p-dropdown [options]="region" formControlName="region" id="product_name"
+                        <p-dropdown [options]="regionOptions" formControlName="region" 
                         placeholder="Select Region" optionLabel="name" optionValue="id"></p-dropdown>
                     </div>
                     <div class="field col-12 md:col-4">
@@ -37,18 +42,18 @@
                     </div>
                     <div class="field col-12 md:col-4">
                         <div class="p-d-block"><label>Project Stage<span class="requiredField">*</span></label></div>
-                        <p-dropdown formControlName="projectStage" id="product_name"
-                        placeholder="Select Project Stage"></p-dropdown>
+                        <p-dropdown [options]="projectStageOptions" formControlName="projectStage" 
+                        placeholder="Select Project Stage" optionLabel="name" optionValue="id"></p-dropdown>
                     </div>
                     <div class="field col-12 md:col-4">
                         <div class="p-d-block"><label>Project Status<span class="requiredField">*</span></label></div>
-                        <p-dropdown  [options]="projectStatusOptions" formControlName="projectStatus" id="product_name"
+                        <p-dropdown  [options]="projectStatusOptions" formControlName="projectStatus" 
                         placeholder="Select Project Status" optionLabel="name" optionValue="id"></p-dropdown>
                     </div>
                     <div class="field col-12 md:col-4">
                         <div class="p-d-block"><label>Opportunity Manager<span class="requiredField">*</span></label></div>
-                        <p-multiSelect formControlName="opportunityManger" optionValue="id" placeholder="Select Opportunity Manager"
-                        optionLabel="name"></p-multiSelect>
+                        <p-multiSelect [options]="opportunityManagerOptions" formControlName="opportunityManger"optionLabel="name" 
+                        optionValue="id" placeholder="Select Opportunity Manager"></p-multiSelect>
                     </div>
                     <div class="field col-12 md:col-4">
                         <div class="p-d-block"><label>Start Date<span class="requiredField">*</span></label></div>
@@ -60,13 +65,22 @@
                     </div>
                     <div class="field col-12 md:col-4">
                         <div class="p-d-block"><label>Design Notes<span class="requiredField">*</span></label></div>
-                        <input formControlName="designNotes"  placeholder="Enter Design Notes"  type="text" id="inputtext"
-                    pInputText>
+                        <textarea rows="2" cols="30" pInputTextarea formControlName="designNotes"  placeholder="Enter Design Notes"
+                          id="inputtext"></textarea>
+                        
+                    <div class="error" *ngIf="myForm.get('designNotes').hasError('maxlength')">
+                        Maximum character limit exceeded (1000 characters).
+                      </div>
                     </div>
                     <div class="field col-12 md:col-4">
                         <div class="p-d-block"><label>Implementation Notes<span class="requiredField">*</span></label></div>
-                        <input formControlName="impleNotes" placeholder="Enter Implementation Notes"  type="text" id="inputtext"
-                    pInputText>
+                        <!-- <input formControlName="impleNotes" placeholder="Enter Implementation Notes"  type="text" id="inputtext"
+                    pInputText> -->
+                    <textarea rows="2" cols="30" pInputTextarea formControlName="impleNotes" placeholder="Enter Implementation Notes" 
+                          id="inputtext"></textarea>
+                    <div class="error" *ngIf="myForm.get('impleNotes').hasError('maxlength')">
+                        Maximum character limit exceeded (1000 characters).
+                      </div>
                     </div>
                     
                 </div>
@@ -106,21 +120,21 @@
         </p>
     </p-tabPanel>
     <p-tabPanel header="Add Volume">
-        <!-- <div class="col-12">
+        <div class="col-12">
             <div class="card">
                 <h5>Tree</h5>
                 <p-tree [value]="files1"  [(selection)]="selectedFiles1">
                     <ng-template let-node pTemplate="default">
                       <div class="node-content">
                         <span>
-                          {{ node.label }}
+                        {{ node.label }}
                         </span>
                         <input *ngIf="node.label === 'India' || node.label === 'Singapore' || node.label === 'China'" type="text" [(ngModel)]="node.customData" placeholder="Enter data">
                       </div>
                     </ng-template>
                   </p-tree>
             </div>
-        </div> -->
+        </div>
     </p-tabPanel>
     <p-tabPanel header="Cost Line Item">
         <p>

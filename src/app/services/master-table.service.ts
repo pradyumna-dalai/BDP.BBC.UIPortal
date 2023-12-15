@@ -47,5 +47,21 @@ export class MasterTableService {
 
     return this.http.get<any>(url+settings.AppRoutes.Auth.getCompany);
   }
+  public getProjectStage() {
 
+    return this.http.get<any>(url+settings.AppRoutes.Auth.getProjectStage);
+  }
+  public getOpportunityManger() {
+
+    return this.http.get<any>(url+settings.AppRoutes.Auth.getOpportunityManger);
+  }
+  public getOpportunityName(companyId: string) 
+  {
+  
+    return this.http.get<any>(url+companyId+`/`+settings.AppRoutes.Auth.getOpportunityName);
+  }
+  public getIndustryVertical(opportunityId: string) {
+    
+    return this.http.get<any>(url+opportunityId+`/`+settings.AppRoutes.Auth.getIndustryVertical);
+  }
 }

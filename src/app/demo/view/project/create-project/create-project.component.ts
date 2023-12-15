@@ -17,8 +17,15 @@ export class CreateProjectComponent implements OnInit {
   activeIndex: number = 0;
   myForm: FormGroup;
   projectStatusOptions = [];
-  region = [];
-  // files1: TreeNode[];
+  regionOptions = [];
+  // companyOptions = [];
+  IVOptions = [];
+  projectStageOptions = [];
+  opportunityManagerOptions = [];
+  companyOptions: any[] = [];
+  opportunityNameOptions: any[] = [];
+
+  
 
   constructor(private breadcrumbService: AppBreadcrumbService,private fb: FormBuilder,public MasterTableservice: MasterTableService) {
     this.breadcrumbService.setItems([
@@ -34,7 +41,7 @@ export class CreateProjectComponent implements OnInit {
       // Define your form controls here
       companyName: ['', Validators.required],
       customerCode: ['', Validators.required],
-      opportunityName: ['', [Validators.required, Validators.email]],
+      opportunityName: ['', [Validators.required]],
       industryVertical: ['', Validators.required],
       region: ['', Validators.required],
       projectName: ['', Validators.required],
@@ -43,16 +50,21 @@ export class CreateProjectComponent implements OnInit {
       opportunityManger: ['', Validators.required],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
-      designNotes: ['', Validators.required],
-      impleNotes: ['', Validators.required],
+      designNotes: ['', [Validators.required, Validators.maxLength(1000)]],
+      impleNotes: ['', [Validators.required, Validators.maxLength(5)]],
       // Add more fields as needed
       
     });
     this.getProjectStatus();
     this.getRegion();
+    this.getCompany();
+    this.getProjectStage();
+    this.getOpportunityManger();
+    
   
   
   }
+  
 
    // ---------------get project status------------------------//
    getProjectStatus() {
@@ -65,107 +77,167 @@ export class CreateProjectComponent implements OnInit {
       }
     })
   }
-   // ---------------get project status------------------------//
+   // ---------------get Region------------------------//
    getRegion() {
-    this.region = [];
+    this.regionOptions = [];
    this.MasterTableservice.getRegion().subscribe((res: any) => {
      if (res?.message == "success") {
-       this.region = res?.data;
+       this.regionOptions = res?.data;
      } else {
-       this.region = [];
+       this.regionOptions = [];
      }
    })
  }
+ // ---------------get Comapany------------------------//
+ getCompany() {
+  this.companyOptions = [];
+ this.MasterTableservice.getCompany().subscribe((res: any) => {
+   if (res?.message == "success") {
+     this.companyOptions = res?.data;
+   } else {
+     this.companyOptions = [];
+   }
+ })
 
-//  files1 = [
-//     {
-//       "key": "0",
-//       "label": "BB1",
-//       "data": "Documents Folder",
-//       "icon": "pi pi-fw pi-inbox",
-//       "children": [
-//         {
-//           "key": "0-0",
-//           "label": "step-1",
-//           "data": "Work Folder",
-//           "icon": "pi pi-fw pi-cog",
-//           "children": [
-//             {
-//               "key": "0-0-0",
-//               "label": "EDI",
-//               "icon": "pi pi-fw pi-file",
-//               "data": "Expenses Document",
-//               "children": [
-//                 {
-//                   "key": "0-0-0-0",
-//                   "label": "India",
-//                   "data": "Work Folder",
-//                   "icon": "pi pi-fw pi-cog"
-//                 },
-//                 {
-//                   "key": "0-0-0-1",
-//                   "label": "Singapore",
-//                   "data": "Work Folder",
-//                   "icon": "pi pi-fw pi-cog"
-//                 },
-//                 {
-//                   "key": "0-0-0-2",
-//                   "label": "China",
-//                   "data": "Work Folder",
-//                   "icon": "pi pi-fw pi-cog"
-//                 }
-//               ]
-//             },
-//             {
-//               "key": "0-0-1",
-//               "label": "Manual",
-//               "icon": "pi pi-fw pi-file",
-//               "data": "Resume Document",
-//               "children": [
-//                 {
-//                   "key": "0-0-1-0",
-//                   "label": "step-1",
-//                   "data": "Work Folder",
-//                   "icon": "pi pi-fw pi-cog"
-//                 }
-//               ]
-//             }
-//           ]
-//         },
-//         {
-//           "key": "0-0",
-//           "label": "step-2",
-//           "data": "Work Folder",
-//           "icon": "pi pi-fw pi-cog",
-//           "children": [
-//             { "key": "0-0-0", "label": "Expenses.doc", "icon": "pi pi-fw pi-file", "data": "Expenses Document" },
-//             { "key": "0-0-1", "label": "Resume.doc", "icon": "pi pi-fw pi-file", "data": "Resume Document" }
-//           ]
-//         },
-//         {
-//           "key": "0-0",
-//           "label": "step-3",
-//           "data": "Work Folder",
-//           "icon": "pi pi-fw pi-cog",
-//           "children": [
-//             { "key": "0-0-0", "label": "Expenses.doc", "icon": "pi pi-fw pi-file", "data": "Expenses Document" },
-//             { "key": "0-0-1", "label": "Resume.doc", "icon": "pi pi-fw pi-file", "data": "Resume Document" }
-//           ]
-//         },
-//         {
-//           "key": "0-1",
-//           "label": "step-4",
-//           "data": "Home Folder",
-//           "icon": "pi pi-fw pi-home",
-//           "children": [
-//             { "key": "0-1-0", "label": "Invoices.txt", "icon": "pi pi-fw pi-file", "data": "Invoices for this month" }
-//           ]
-//         }
-//       ]
-//     }
-//   ];
+}
+ // ---------------get Opportunity name on company select------------------------//
+
+ onCompanySelect(event) {
+  const selectedCompanyId = event.value;
+  this.MasterTableservice.getOpportunityName(selectedCompanyId).subscribe((res: any) => {
+    if (res?.message === "success") {
+      this.opportunityNameOptions = res?.data;
+    } else {
+      this.opportunityNameOptions = [];
+    }
+  });
+}
+// ---------------get Industry Vertical------------------------//
+onOpportunitySelect(event) {
+  const selectedOpportunityId = event.value;
+
+  // Assuming your service method to get industry vertical takes the selected opportunity ID
+  this.MasterTableservice.getIndustryVertical(selectedOpportunityId).subscribe((res: any) => {
+    if (res?.message === "success") {
+      this.IVOptions = res?.data;
+    } else {
+      this.IVOptions = [];
+    }
+  });
+}
+// ---------------get Project Stage------------------------//
+getProjectStage() {
+  this.projectStageOptions = [];
+ this.MasterTableservice.getProjectStage().subscribe((res: any) => {
+   if (res?.message == "success") {
+     this.projectStageOptions = res?.data;
+   } else {
+     this.projectStageOptions = [];
+   }
+ })
+}
+// ---------------get Opportunity Manager------------------------//
+getOpportunityManger() {
+  this.projectStageOptions = [];
+ this.MasterTableservice.getOpportunityManger().subscribe((res: any) => {
+   if (res?.message == "success") {
+     this.opportunityManagerOptions = res?.data;
+   } else {
+     this.opportunityManagerOptions = [];
+   }
+ })
+}
+
+ files1 = [
+    {
+      "key": "0",
+      "label": "BB1",
+      "data": "Documents Folder",
+      "icon": "pi pi-fw pi-inbox",
+      "children": [
+        {
+          "key": "0-0",
+          "label": "step-1",
+          "data": "Work Folder",
+          "icon": "pi pi-fw pi-cog",
+          "children": [
+            {
+              "key": "0-0-0",
+              "label": "EDI",
+              "icon": "pi pi-fw pi-file",
+              "data": "Expenses Document",
+              "children": [
+                {
+                  "key": "0-0-0-0",
+                  "label": "India",
+                  "data": "Work Folder",
+                  "icon": "pi pi-fw pi-cog"
+                },
+                {
+                  "key": "0-0-0-1",
+                  "label": "Singapore",
+                  "data": "Work Folder",
+                  "icon": "pi pi-fw pi-cog"
+                },
+                {
+                  "key": "0-0-0-2",
+                  "label": "China",
+                  "data": "Work Folder",
+                  "icon": "pi pi-fw pi-cog"
+                }
+              ]
+            },
+            {
+              "key": "0-0-1",
+              "label": "Manual",
+              "icon": "pi pi-fw pi-file",
+              "data": "Resume Document",
+              "children": [
+                {
+                  "key": "0-0-1-0",
+                  "label": "step-1",
+                  "data": "Work Folder",
+                  "icon": "pi pi-fw pi-cog"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "0-0",
+          "label": "step-2",
+          "data": "Work Folder",
+          "icon": "pi pi-fw pi-cog",
+          "children": [
+            { "key": "0-0-0", "label": "Expenses.doc", "icon": "pi pi-fw pi-file", "data": "Expenses Document" },
+            { "key": "0-0-1", "label": "Resume.doc", "icon": "pi pi-fw pi-file", "data": "Resume Document" }
+          ]
+        },
+        {
+          "key": "0-0",
+          "label": "step-3",
+          "data": "Work Folder",
+          "icon": "pi pi-fw pi-cog",
+          "children": [
+            { "key": "0-0-0", "label": "Expenses.doc", "icon": "pi pi-fw pi-file", "data": "Expenses Document" },
+            { "key": "0-0-1", "label": "Resume.doc", "icon": "pi pi-fw pi-file", "data": "Resume Document" }
+          ]
+        },
+        {
+          "key": "0-1",
+          "label": "step-4",
+          "data": "Home Folder",
+          "icon": "pi pi-fw pi-home",
+          "children": [
+            { "key": "0-1-0", "label": "Invoices.txt", "icon": "pi pi-fw pi-file", "data": "Invoices for this month" }
+          ]
+        }
+      ]
+    }
+  ];
 
  
-// selectedFiles1: any[] = [];
+selectedFiles1: any[] = [];
+
 
 }

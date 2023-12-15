@@ -17,6 +17,10 @@ export namespace AppRoutes {
     public static readonly getProjectStatus = "status";
     public static readonly getRegion = "region";
     public static readonly getCompany = "company";
+    public static readonly getProjectStage = "project-stage";
+    public static readonly getOpportunityManger= "opportunity-manager";
+    public static readonly getOpportunityName= "opportunity-name";
+    public static readonly getIndustryVertical = "industry-vertical";
     
      // --------------------create building block----------------------//
 
