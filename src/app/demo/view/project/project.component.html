@@ -6,9 +6,7 @@
 <div class="card">
   <div class="grid">
       <div class="col-6">
-        <div class="sidebar-container" >
-        <app-search-filter></app-search-filter>
-        </div>
+          <h5>Project</h5>
       </div>
       <div class="col-6" style="display: flex;justify-content: flex-end;">
         <button type="button" pButton pRipple label="Create Project" [routerLink]="['/create-project']"  class="mr-2 mb-2"></button>
@@ -32,13 +30,16 @@
           <col style="width: 180px" />
       </colgroup>
   </ng-template> -->
-  <!-- <ng-template pTemplate="caption">
+  <ng-template pTemplate="caption">
       <div class="table-header">
-          <div class="col-2 pb-0">
-            <app-search-filter></app-search-filter>
+          <div class="col-12 pb-0">
+              <span class="bdp-filter-elem">
+                  <input pInputText type="text"
+                      placeholder="Search" class="input-column-width" style="width: unset !important;" />
+              </span>
           </div>
       </div>
-  </ng-template> -->
+  </ng-template>
   <ng-template pTemplate="header">
       <tr>
           <th style="text-align: center;width: 50px">Actions</th>
