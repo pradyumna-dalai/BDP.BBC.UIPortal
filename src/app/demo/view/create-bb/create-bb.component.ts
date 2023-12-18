@@ -84,7 +84,7 @@ export class CreateBbComponent {
         { label: 'Create Building Blocks' },
       ]);
     }
-    
+
   }
 
 
@@ -281,24 +281,54 @@ export class CreateBbComponent {
       (error) => {
         console.error('Error saving draft:', error);
 
-        this.messageService.add({
-          key: 'errorToast',
-          severity: 'error',
-          summary: 'Error!',
-          detail: 'Failed to save building block draft.'
-        });
+        if (error && error.status === 400) {
+          const errorMessage = error.error?.message;
+          const data = error.error?.data;
+          console.log('error', errorMessage)
+          console.log('error', data)
+          if (data && data.includes('Block name exist')) {
+            // Handle the case where the block name already exists
+            this.messageService.add({
+              key: 'errorToast',
+              severity: 'error',
+              summary: 'Error!',
+              detail: 'Building block name already exists. Please choose a different name.'
+            });
+          } else if (errorMessage === 'Fill required field(s)') {
+            this.messageService.add({
+              key: 'errorToast',
+              severity: 'error',
+              summary: 'Error!',
+              detail: 'Fill required field(s).'
+            });
+          } else {
+            this.messageService.add({
+              key: 'errorToast',
+              severity: 'error',
+              summary: 'Error!',
+              detail: 'Failed to save building block draft.'
+            });
+          }
+        } else {
+          this.messageService.add({
+            key: 'errorToast',
+            severity: 'error',
+            summary: 'Error!',
+            detail: 'Failed to save building block draft.'
+          });
+        }
       }
     );
 
 
   }
-  
+
 
   private fetchBuildingBlockDetails(id: any): void {
     this.createBuildingBlockservice.getBuildingBlockDetails(id).subscribe(
       (details) => {
         // Assign details to component properties
-        this.status=details.data.status.id;
+        this.status = details.data.status.id;
         this.building_block_name = details.data.name;
         this.product_name = details.data.product.id;
         this.product_scope = details.data.scope.id;
@@ -457,12 +487,42 @@ export class CreateBbComponent {
       (error) => {
         console.error('Error saving draft:', error);
 
-        this.messageService.add({
-          key: 'errorToast',
-          severity: 'error',
-          summary: 'Error!',
-          detail: 'Failed to save building block draft.'
-        });
+        if (error && error.status === 400) {
+          const errorMessage = error.error?.message;
+          const data = error.error?.data;
+          console.log('error', errorMessage)
+          console.log('error', data)
+          if (data && data.includes('Block name exist')) {
+            // Handle the case where the block name already exists
+            this.messageService.add({
+              key: 'errorToast',
+              severity: 'error',
+              summary: 'Error!',
+              detail: 'Building block name already exists. Please choose a different name.'
+            });
+          } else if (errorMessage === 'Fill required field(s)') {
+            this.messageService.add({
+              key: 'errorToast',
+              severity: 'error',
+              summary: 'Error!',
+              detail: 'Fill required field(s).'
+            });
+          } else {
+            this.messageService.add({
+              key: 'errorToast',
+              severity: 'error',
+              summary: 'Error!',
+              detail: 'Failed to save building block .'
+            });
+          }
+        } else {
+          this.messageService.add({
+            key: 'errorToast',
+            severity: 'error',
+            summary: 'Error!',
+            detail: 'Failed to save building block .'
+          });
+        }
       }
     );
 
