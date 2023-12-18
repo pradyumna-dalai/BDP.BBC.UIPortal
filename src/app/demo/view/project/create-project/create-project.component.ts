@@ -1,15 +1,15 @@
-import { Component,OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AppBreadcrumbService } from '../../../../app.breadcrumb.service';
-import { FormControl, FormGroup,Validators,FormBuilder } from '@angular/forms';
-// import { MasterTableService } from '.';
-// import { MasterTableService } from '../../../../';
+import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { MasterTableService } from '../../../../services/master-table.service';
-import {TreeNode} from 'primeng/api';
+import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-create-project',
   templateUrl: './create-project.component.html',
-  styleUrls: ['./create-project.component.scss']
+  styleUrls: ['./create-project.component.scss'],
+  providers: [MessageService, ConfirmationService]
 })
 export class CreateProjectComponent implements OnInit {
 
@@ -24,10 +24,23 @@ export class CreateProjectComponent implements OnInit {
   opportunityManagerOptions = [];
   companyOptions: any[] = [];
   opportunityNameOptions: any[] = [];
+  // body//
+  projectName:string;
+  customerCode: any;
+  opportunityName: any;
+  companyName: any;
+  industryVertical: any;
+  region: any;
+  projectStage: any;
+  projectStatus: any;
+  startDate: any;
+  endDate: any;
+  designNotes: any;
+  impleNotes: any;
+  opportunityManger: any;
 
-  
 
-  constructor(private breadcrumbService: AppBreadcrumbService,private fb: FormBuilder,public MasterTableservice: MasterTableService) {
+  constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,private fb: FormBuilder, public MasterTableservice: MasterTableService, public projectService: ProjectsService) {
     this.breadcrumbService.setItems([
       {
         label: 'PROJECT',
@@ -53,22 +66,22 @@ export class CreateProjectComponent implements OnInit {
       designNotes: ['', [Validators.required, Validators.maxLength(1000)]],
       impleNotes: ['', [Validators.required, Validators.maxLength(5)]],
       // Add more fields as needed
-      
+
     });
     this.getProjectStatus();
     this.getRegion();
     this.getCompany();
     this.getProjectStage();
     this.getOpportunityManger();
-    
-  
-  
-  }
-  
 
-   // ---------------get project status------------------------//
-   getProjectStatus() {
-     this.projectStatusOptions = [];
+
+
+  }
+
+
+  // ---------------get project status------------------------//
+  getProjectStatus() {
+    this.projectStatusOptions = [];
     this.MasterTableservice.getProjectStatus().subscribe((res: any) => {
       if (res?.message == "success") {
         this.projectStatusOptions = res?.data;
@@ -77,75 +90,134 @@ export class CreateProjectComponent implements OnInit {
       }
     })
   }
-   // ---------------get Region------------------------//
-   getRegion() {
+  // ---------------get Region------------------------//
+  getRegion() {
     this.regionOptions = [];
-   this.MasterTableservice.getRegion().subscribe((res: any) => {
-     if (res?.message == "success") {
-       this.regionOptions = res?.data;
-     } else {
-       this.regionOptions = [];
-     }
-   })
- }
- // ---------------get Comapany------------------------//
- getCompany() {
-  this.companyOptions = [];
- this.MasterTableservice.getCompany().subscribe((res: any) => {
-   if (res?.message == "success") {
-     this.companyOptions = res?.data;
-   } else {
-     this.companyOptions = [];
-   }
- })
+    this.MasterTableservice.getRegion().subscribe((res: any) => {
+      if (res?.message == "success") {
+        this.regionOptions = res?.data;
+      } else {
+        this.regionOptions = [];
+      }
+    })
+  }
+  // ---------------get Comapany------------------------//
+  getCompany() {
+    this.companyOptions = [];
+    this.MasterTableservice.getCompany().subscribe((res: any) => {
+      if (res?.message == "success") {
+        this.companyOptions = res?.data;
+      } else {
+        this.companyOptions = [];
+      }
+    })
 
-}
- // ---------------get Opportunity name on company select------------------------//
+  }
+  // ---------------get Opportunity name on company select------------------------//
 
- onCompanySelect(event) {
-  const selectedCompanyId = event.value;
-  this.MasterTableservice.getOpportunityName(selectedCompanyId).subscribe((res: any) => {
-    if (res?.message === "success") {
-      this.opportunityNameOptions = res?.data;
-    } else {
-      this.opportunityNameOptions = [];
+  onCompanySelect(event) {
+    const selectedCompanyId = event.value;
+    this.MasterTableservice.getOpportunityName(selectedCompanyId).subscribe((res: any) => {
+      if (res?.message === "success") {
+        this.opportunityNameOptions = res?.data;
+      } else {
+        this.opportunityNameOptions = [];
+      }
+    });
+  }
+  // ---------------get Industry Vertical------------------------//
+  onOpportunitySelect(event) {
+    const selectedOpportunityId = event.value;
+
+    // Assuming your service method to get industry vertical takes the selected opportunity ID
+    this.MasterTableservice.getIndustryVertical(selectedOpportunityId).subscribe((res: any) => {
+      if (res?.message === "success") {
+        this.IVOptions = res?.data;
+      } else {
+        this.IVOptions = [];
+      }
+    });
+  }
+  // ---------------get Project Stage------------------------//
+  getProjectStage() {
+    this.projectStageOptions = [];
+    this.MasterTableservice.getProjectStage().subscribe((res: any) => {
+      if (res?.message == "success") {
+        this.projectStageOptions = res?.data;
+      } else {
+        this.projectStageOptions = [];
+      }
+    })
+  }
+  // ---------------get Opportunity Manager------------------------//
+  getOpportunityManger() {
+    this.projectStageOptions = [];
+    this.MasterTableservice.getOpportunityManger().subscribe((res: any) => {
+      if (res?.message == "success") {
+        this.opportunityManagerOptions = res?.data;
+      } else {
+        this.opportunityManagerOptions = [];
+      }
+    })
+  }
+
+
+  //----------------------Save Project as Draft-----------------------//
+  SaveAsDraftProjects() {
+    const body =
+    {
+      name: this.projectName,
+     // description:this.,
+      projectInformation: {
+        customerCode: this.customerCode,
+        projectName: this.projectName,
+        startDate: this.startDate,
+        endDate: this.endDate,
+        designNote: this.designNotes,
+        implementationNote: this.impleNotes,
+        company: {
+          id: this.companyName,
+        },
+        opportunityName: {
+          id: this.opportunityName,
+        },
+        industryVertical: {
+          id: this.industryVertical,
+        },
+        region: {
+          id: this.region,
+        },
+        projectStage: {
+          id: this.projectStage,
+        },
+        projectStatus: {
+          id: this.projectStatus,
+        },
+        opportunityManager: this.opportunityManger.map(id => ({ id }))
+      }
     }
-  });
-}
-// ---------------get Industry Vertical------------------------//
-onOpportunitySelect(event) {
-  const selectedOpportunityId = event.value;
+    this.projectService.saveAsDraftProject(1, body).subscribe(
+    (res) => {
+      console.log('Draft saved successfully:', res);
 
-  // Assuming your service method to get industry vertical takes the selected opportunity ID
-  this.MasterTableservice.getIndustryVertical(selectedOpportunityId).subscribe((res: any) => {
-    if (res?.message === "success") {
-      this.IVOptions = res?.data;
-    } else {
-      this.IVOptions = [];
+      this.messageService.add({
+        key: 'successToast',
+        severity: 'success',
+        summary: 'Success!',
+        detail: 'Project draft is saved Successfully.'
+      });
+    },
+    (error) => {
+      console.error('Error saving draft:', error);
+
+      this.messageService.add({
+        key: 'errorToast',
+        severity: 'error',
+        summary: 'Error!',
+        detail: 'Failed to save Project draft.'
+      });
     }
-  });
-}
-// ---------------get Project Stage------------------------//
-getProjectStage() {
-  this.projectStageOptions = [];
- this.MasterTableservice.getProjectStage().subscribe((res: any) => {
-   if (res?.message == "success") {
-     this.projectStageOptions = res?.data;
-   } else {
-     this.projectStageOptions = [];
-   }
- })
-}
-// ---------------get Opportunity Manager------------------------//
-getOpportunityManger() {
-  this.projectStageOptions = [];
- this.MasterTableservice.getOpportunityManger().subscribe((res: any) => {
-   if (res?.message == "success") {
-     this.opportunityManagerOptions = res?.data;
-   } else {
-     this.opportunityManagerOptions = [];
-   }
- })
+  );
 }
 
 
