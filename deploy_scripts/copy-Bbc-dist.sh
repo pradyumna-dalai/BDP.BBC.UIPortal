@@ -14,9 +14,9 @@ checkStatus() {
   fi
 }
 copySource() {
-if [ -d "$BASE_PATH/Bbc_Report" ]; then
+if [ -d "$BASE_PATH" ]; then
         echo "[info] copy dist dir to dist folder"
-        sudo cp -avr $SOURCE_PATH/Bbc_Report $BASE_PATH/Bbc_Report
+        sudo cp -avr $SOURCE_PATH/dist/poseidon-ng/* $BASE_PATH/
         sudo chown $USER:$GROUP $BASE_PATH -R
                 if [ $? -eq 0 ]; then
                         echo "[info] latest version update succeed"
@@ -25,7 +25,7 @@ if [ -d "$BASE_PATH/Bbc_Report" ]; then
                         exit
                 fi
 else
-        sudo cp -avr $SOURCE_PATH/Bbc_Report $BASE_PATH/Bbc_Report
+        sudo cp -avr $SOURCE_PATH/dist/poseidon-ng/* $BASE_PATH/
         sudo chown $USER:$GROUP $BASE_PATH -R
                 if [ $? -eq 0 ]; then
                         echo "[info] latest version update succeed"
