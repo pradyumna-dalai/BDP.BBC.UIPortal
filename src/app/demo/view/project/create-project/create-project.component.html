@@ -120,8 +120,20 @@
         </p>
     </p-tabPanel>
     <p-tabPanel header="Add Volume">
-        <div class="col-12">
-            
+         <div class="col-12">
+            <div class="card">
+                <h5>Tree</h5>
+                <p-tree [value]="files1"  [(selection)]="selectedFiles1">
+                    <ng-template let-node pTemplate="default">
+                      <div class="node-content">
+                        <span>
+                          {{ node.label }}
+                        </span>
+                        <input *ngIf="node.label === 'India' || node.label === 'Singapore' || node.label === 'China'" type="text" [(ngModel)]="node.customData" placeholder="Add Volume">
+                      </div>
+                    </ng-template>
+                  </p-tree>
+            </div>
         </div>
     </p-tabPanel>
     <p-tabPanel header="Cost Line Item">

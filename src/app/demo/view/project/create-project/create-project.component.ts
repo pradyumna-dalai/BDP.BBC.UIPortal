@@ -148,7 +148,92 @@ getOpportunityManger() {
  })
 }
 
+files1 = [
+  {
+    "key": "0",
+    "label": "BB1",
+    "data": "Documents Folder",
+    "icon": "pi pi-fw pi-inbox",
+    "children": [
+      {
+        "key": "0-0",
+        "label": "step-1",
+        "data": "Work Folder",
+        "icon": "pi pi-fw pi-cog",
+        "children": [
+          {
+            "key": "0-0-0",
+            "label": "EDI",
+            "icon": "pi pi-fw pi-file",
+            "data": "Expenses Document",
+            "children": [
+              
+              {
+                "key": "0-0-0-3",
+                "label": "Location",
+                "icon": "pi pi-fw pi-map-marker",
+                "children": [
+                  {
+                    "key": "0-0-0-3-0",
+                    "label": "Singapore",
+                    "data": "Work Folder",
+                    "icon": "pi pi-fw pi-cog"
+                  },
+                  {
+                    "key": "0-0-0-3-1",
+                    "label": "China",
+                    "data": "Work Folder",
+                    "icon": "pi pi-fw pi-cog"
+                  },
+                  {
+                    "key": "0-0-0-3-1",
+                    "label": "India",
+                    "data": "Work Folder",
+                    "icon": "pi pi-fw pi-cog"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "key": "0-0-1",
+            "label": "Manual",
+            "icon": "pi pi-fw pi-file",
+            "data": "Resume Document",
+            "children": [
+              {
+                "key": "0-0-1-0",
+                "label": "step-1",
+                "data": "Work Folder",
+                "icon": "pi pi-fw pi-cog"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "0-0-2",
+        "label": "Step-2",
+        "icon": "pi pi-fw pi-cog",
+        "children": [
+          { "key": "0-0-2-0", "label": "Expenses.doc", "icon": "pi pi-fw pi-file", "data": "Expenses Document" },
+          { "key": "0-0-2-1", "label": "Resume.doc", "icon": "pi pi-fw pi-file", "data": "Resume Document" }
+        ]
+      },
+      {
+        "key": "0-1",
+        "label": "Step-3",
+        "icon": "pi pi-fw pi-home",
+        "children": [
+          { "key": "0-1-0", "label": "Invoices.txt", "icon": "pi pi-fw pi-file", "data": "Invoices for this month" }
+        ]
+      }
+    ]
+  }
+];
 
+ 
+selectedFiles1: any[] = [];
 
 
 }
