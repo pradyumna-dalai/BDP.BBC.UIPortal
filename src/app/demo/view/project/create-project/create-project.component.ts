@@ -164,39 +164,46 @@ export class CreateProjectComponent implements OnInit {
 
   //----------------------Save Project as Draft-----------------------//
   SaveAsDraftProjects() {
-    const body =
-    {
-      name: this.projectName,
-     // description:this.,
-      projectInformation: {
-        customerCode: this.customerCode,
-        projectName: this.projectName,
-        startDate: this.startDate,
-        endDate: this.endDate,
-        designNote: this.designNotes,
-        implementationNote: this.impleNotes,
-        company: {
-          id: this.companyName,
-        },
-        opportunityName: {
-          id: this.opportunityName,
-        },
-        industryVertical: {
-          id: this.industryVertical,
-        },
-        region: {
-          id: this.region,
-        },
-        projectStage: {
-          id: this.projectStage,
-        },
-        projectStatus: {
-          id: this.projectStatus,
-        },
-        opportunityManager: this.opportunityManger.map(id => ({ id }))
-      }
+    var om = this.myForm.get('opportunityManger').value;
+    if (om == "" || om == undefined || om == null) {
+      var opportunityMangers = []
+    } else {
+      opportunityMangers = om.map(id => ({ id }))
     }
-    this.projectService.saveAsDraftProject(1, body).subscribe(
+
+    const body = {
+      name: "",
+      description: "",
+      projectInformation: {
+          customerCode: this.myForm.get('customerCode').value,
+          projectName: this.myForm.get('projectName').value,
+          startDate: this.myForm.get('startDate').value,
+          endDate: this.myForm.get('endDate').value,
+          designNote: this.myForm.get('designNotes').value,
+          implementationNote: this.myForm.get('impleNotes').value,
+          company: {
+              "id": this.myForm.get('companyName').value,
+          },
+          opportunityName: {
+              "id": this.myForm.get('opportunityName').value,
+          },
+          industryVertical: {
+              "id":this.myForm.get('industryVertical').value,
+          },
+          region: {
+              "id": this.myForm.get('region').value,
+          },
+          projectStage: {
+              "id": this.myForm.get('projectStage').value,
+          },
+          projectStatus: {
+              "id": this.myForm.get('projectStatus').value,
+          },
+          opportunityManager: opportunityMangers
+      }
+  }
+    console.log(body);
+    this.projectService.saveAsDraftProject(body).subscribe(
     (res) => {
       console.log('Draft saved successfully:', res);
 

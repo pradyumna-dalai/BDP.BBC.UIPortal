@@ -14,9 +14,9 @@ export class ProjectsService {
   constructor(protected http: HttpClient) { }
 
 
-saveAsDraftProject(status: number, body: any){
-  const params = new HttpParams().set('status', status.toString());
-  return this.http.post<any>(url + settings.AppRoutes.Auth.saveProjectDraft, body, { params });
+saveAsDraftProject(body: any){
+  // const params = new HttpParams().set('status', status.toString());
+  return this.http.post<any>(url + settings.AppRoutes.Auth.saveProjectDraft, body);
 }
 
 

@@ -85,9 +85,10 @@
                     
                 </div>
                 <div class="col-12" style="display: flex;justify-content: flex-end;">
-                    <button pButton pRipple type="button"  label="Save As Draft" class="p-button-outlined mr-2 mb-2" ></button>
+                    <button pButton pRipple type="button"  label="Save As Draft" (click)="SaveAsDraftProjects()"  class="p-button-outlined mr-2 mb-2" ></button>
                     <button type="submit" pButton pRipple label="Continue" (click)="activeIndex = 1" class="mr-2 mb-2"></button>
                 </div>
+                <p-toast key="successToast"></p-toast>
             </form>
             <!-- <hr>
             <h6><b>Documents</b></h6>
