@@ -87,6 +87,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { ApiErrorInterceptor, ApiRequestInterceptor } from '../app/common/index';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
 
 import {AppComponent} from './app.component';
 import {AppMainComponent} from './app.main.component';
@@ -197,7 +198,8 @@ import { CreateProjectComponent } from './demo/view/project/create-project/creat
         TreeModule,
         TreeTableModule,
         VirtualScrollerModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        DatePipe
     ],
     declarations: [
         AppComponent,
@@ -217,7 +219,7 @@ import { CreateProjectComponent } from './demo/view/project/create-project/creat
 
     ],
     providers: [
-     MenuService, AppBreadcrumbService,
+     MenuService, AppBreadcrumbService, DatePipe,
      {
         provide: HTTP_INTERCEPTORS,
         useClass: ApiRequestInterceptor,

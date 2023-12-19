@@ -52,6 +52,8 @@ export namespace AppRoutes {
 
         public static readonly  saveProjectDraft ="project";
 
+        public static readonly getallProjects ="projects";
+
     }
 
 }
