@@ -39,7 +39,7 @@ export namespace AppRoutes {
 
 
         //--------------------Project filter--------//
-        public static readonly getprojectStatus = "status";
+        public static readonly getprojectStatus = "project-status";
 
         public static readonly getopportunityManager = "opportunity-manager";
 
