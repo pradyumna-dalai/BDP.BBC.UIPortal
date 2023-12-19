@@ -1,86 +1,89 @@
 <p-tabView [(activeIndex)]="activeIndex">
     <p-tabPanel header="Project Information">
-            <div>
-                <h5>Project Information</h5>
-            </div>
-            <form [formGroup]="myForm">
-                <div class="p-fluid grid">
-                    <div class="field col-12 md:col-4">
-                        <div class="p-d-block"><label>Company Name<span class="requiredField">*</span></label></div>
-                        <p-dropdown [options]="companyOptions" (onChange)="onCompanySelect($event)" optionLabel="name" optionValue="id"   formControlName="companyName"
-                        placeholder="Select Company Name"></p-dropdown>
-                    </div>
-                    <div class="field col-12 md:col-4">
-                        <div class="p-d-block"><label>Customer Code</label></div>
-                        <input   placeholder="Enter Customer Code" formControlName="customerCode" type="text" 
-                        pInputText>
-                    </div>
-                    <div class="field col-12 md:col-4">
-                        <div class="p-d-block"><label>Opportunity Name<span class="requiredField">*</span></label></div>
-                        <p-dropdown [options]="opportunityNameOptions" optionLabel="name" (onChange)="onOpportunitySelect($event)" optionValue="id"   formControlName="opportunityName"
-                        placeholder="Select Opportunity Name"></p-dropdown>
-                        <!-- <input   placeholder="Enter Opportunity Name" formControlName="opportunityName" type="text" 
+        <div>
+            <h5>Project Information</h5>
+        </div>
+        <form [formGroup]="myForm">
+            <div class="p-fluid grid">
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>Company Name<span class="requiredField">*</span></label></div>
+                    <p-dropdown [options]="companyOptions" (onChange)="onCompanySelect($event)" optionLabel="name"
+                        optionValue="id" formControlName="companyName" placeholder="Select Company Name" [filter]="true"
+                        filterBy="name"></p-dropdown>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>Customer Code</label></div>
+                    <input placeholder="Enter Customer Code" formControlName="customerCode" type="text" pInputText>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>Opportunity Name<span class="requiredField">*</span></label></div>
+                    <p-dropdown [options]="opportunityNameOptions" optionLabel="name"
+                        (onChange)="onOpportunitySelect($event)" optionValue="id" formControlName="opportunityName"
+                        placeholder="Select Opportunity Name" [filter]="true" filterBy="name"></p-dropdown>
+                    <!-- <input   placeholder="Enter Opportunity Name" formControlName="opportunityName" type="text" 
                         pInputText> -->
-                    </div>
-                    <div class="field col-12 md:col-4">
-                        <div class="p-d-block"><label>Industry Vertical<span class="requiredField">*</span></label></div>
-                        <p-dropdown [options]="IVOptions" optionLabel="name" optionValue="id" 
-                        formControlName="industryVertical"
-                        placeholder="Enter Industry Vertical"></p-dropdown>
-                        <!-- <input  placeholder="Enter Industry Vertical" formControlName="industryVertical" type="text"
+                </div>
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>Industry Vertical<span class="requiredField">*</span></label></div>
+                    <p-dropdown [options]="IVOptions" optionLabel="name" optionValue="id"
+                        formControlName="industryVertical" placeholder="Enter Industry Vertical" [filter]="true"
+                        filterBy="name"></p-dropdown>
+                    <!-- <input  placeholder="Enter Industry Vertical" formControlName="industryVertical" type="text"
                     pInputText> -->
-                    </div>
-                    <div class="field col-12 md:col-4">
-                        <div class="p-d-block"><label>Region<span class="requiredField">*</span></label></div>
-                        <p-dropdown [options]="regionOptions" formControlName="region" 
-                        placeholder="Select Region" optionLabel="name" optionValue="id"></p-dropdown>
-                    </div>
-                    <div class="field col-12 md:col-4">
-                        <div class="p-d-block"><label>Project Name<span class="requiredField">*</span></label></div>
-                        <input formControlName="projectName"  placeholder="Enter Project Name"  type="text" id="inputtext"
-                    pInputText>
-                    </div>
-                    <div class="field col-12 md:col-4">
-                        <div class="p-d-block"><label>Project Stage<span class="requiredField">*</span></label></div>
-                        <p-dropdown [options]="projectStageOptions" formControlName="projectStage" 
-                        placeholder="Select Project Stage" optionLabel="name" optionValue="id"></p-dropdown>
-                    </div>
-                    <div class="field col-12 md:col-4">
-                        <div class="p-d-block"><label>Project Status<span class="requiredField">*</span></label></div>
-                        <p-dropdown  [options]="projectStatusOptions" formControlName="projectStatus" 
-                        placeholder="Select Project Status" optionLabel="name" optionValue="id"></p-dropdown>
-                    </div>
-                    <div class="field col-12 md:col-4">
-                        <div class="p-d-block"><label>Opportunity Manager<span class="requiredField">*</span></label></div>
-                        <p-multiSelect [options]="opportunityManagerOptions" formControlName="opportunityManger"optionLabel="name" 
-                        optionValue="id" placeholder="Select Opportunity Manager"></p-multiSelect>
-                    </div>
-                    <div class="field col-12 md:col-2">
-                        <div class="p-d-block"><label>Start Date<span class="requiredField">*</span></label></div>
-                        <p-calendar formControlName="startDate"  [showIcon]="true"></p-calendar>
-                    </div>
-                    <div class="field col-12 md:col-2">
-                        <div class="p-d-block"><label>End Date<span class="requiredField">*</span></label></div>
-                        <p-calendar formControlName="endDate"  [showIcon]="true"></p-calendar>
-                    </div>
-                    <div class="field col-12 md:col-4">
-                        <div class="p-d-block"><label>Design Notes<span class="requiredField">*</span></label></div>
-                        <textarea rows="4" cols="30" pInputTextarea formControlName="designNotes"  placeholder="Enter Design Notes"
-                          id="inputtext"></textarea>
-                        
+                </div>
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>Region<span class="requiredField">*</span></label></div>
+                    <p-dropdown [options]="regionOptions" formControlName="region" placeholder="Select Region"
+                        optionLabel="name" optionValue="id" [filter]="true" filterBy="name"></p-dropdown>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>Project Name<span class="requiredField">*</span></label></div>
+                    <input formControlName="projectName" placeholder="Enter Project Name" type="text" id="inputtext"
+                        pInputText>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>Project Stage<span class="requiredField">*</span></label></div>
+                    <p-dropdown [options]="projectStageOptions" formControlName="projectStage"
+                        placeholder="Select Project Stage" optionLabel="name" optionValue="id" [filter]="true"
+                        filterBy="name"></p-dropdown>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>Project Status<span class="requiredField">*</span></label></div>
+                    <p-dropdown [options]="projectStatusOptions" formControlName="projectStatus"
+                        placeholder="Select Project Status" optionLabel="name" optionValue="id" [filter]="true"
+                        filterBy="name"></p-dropdown>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>Opportunity Manager<span class="requiredField">*</span></label></div>
+                    <p-multiSelect [options]="opportunityManagerOptions" formControlName="opportunityManger"
+                        optionLabel="name" optionValue="id" placeholder="Select Opportunity Manager" [filter]="true"
+                        filterBy="name"></p-multiSelect>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>Start Date<span class="requiredField">*</span></label></div>
+                    <p-calendar formControlName="startDate" [showIcon]="true"></p-calendar>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>End Date<span class="requiredField">*</span></label></div>
+                    <p-calendar formControlName="endDate" [showIcon]="true"></p-calendar>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>Design Notes<span class="requiredField">*</span></label></div>
+                    <textarea rows="2" cols="30" pInputTextarea formControlName="designNotes"
+                        placeholder="Enter Design Notes" id="inputtext"></textarea>
+
                     <div class="error" *ngIf="myForm.get('designNotes').hasError('maxlength')">
                         Maximum character limit exceeded (1000 characters).
-                      </div>
                     </div>
-                    <div class="field col-12 md:col-4">
-                        <div class="p-d-block"><label>Implementation Notes<span class="requiredField">*</span></label></div>
-                        <!-- <input formControlName="impleNotes" placeholder="Enter Implementation Notes"  type="text" id="inputtext"
+                </div>
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>Implementation Notes<span class="requiredField">*</span></label></div>
+                    <!-- <input formControlName="impleNotes" placeholder="Enter Implementation Notes"  type="text" id="inputtext"
                     pInputText> -->
                     <textarea rows="4" cols="30" pInputTextarea formControlName="impleNotes" placeholder="Enter Implementation Notes" 
                           id="inputtext"></textarea>
                     <div class="error" *ngIf="myForm.get('impleNotes').hasError('maxlength')">
                         Maximum character limit exceeded (1000 characters).
-                      </div>
                     </div>
                 </div>
                 <div class="col-12" style="display: flex;justify-content: flex-end;">
@@ -109,43 +112,61 @@
     </p-tabPanel>
     <p-tabPanel header="Building Block">
         <p>
-            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim
-            ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
+            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem
+            aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+            Nemo enim
+            ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos
+            qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
         </p>
     </p-tabPanel>
     <p-tabPanel header="Configurable">
         <p>
-            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
-            qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti
+            atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique
+            sunt in culpa
+            qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et
+            expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
         </p>
     </p-tabPanel>
     <p-tabPanel header="Add Volume">
         <div class="col-12">
-            
+
         </div>
     </p-tabPanel>
     <p-tabPanel header="Cost Line Item">
         <p>
-            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
-            qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti
+            atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique
+            sunt in culpa
+            qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et
+            expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
         </p>
     </p-tabPanel>
     <p-tabPanel header="Additional Cost">
         <p>
-            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
-            qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti
+            atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique
+            sunt in culpa
+            qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et
+            expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
         </p>
     </p-tabPanel>
     <p-tabPanel header="Revenue">
         <p>
-            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
-            qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti
+            atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique
+            sunt in culpa
+            qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et
+            expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
         </p>
     </p-tabPanel>
     <p-tabPanel header="Cost Output">
         <p>
-            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
-            qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti
+            atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique
+            sunt in culpa
+            qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et
+            expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
         </p>
     </p-tabPanel>
 </p-tabView>
