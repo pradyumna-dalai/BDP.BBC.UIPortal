@@ -24,6 +24,7 @@ ngOnInit(){
     {
         "comp_name": "psa bdp",
         "proj_id": "12",
+        "proj_name": "proj",
         "oppourtunity_name": "customer onboarding",
         "proj_stage": "implementation",
         "proj_status": "completed",
@@ -34,6 +35,7 @@ ngOnInit(){
     {
       "comp_name": "bdp",
         "proj_id": "13",
+        "proj_name": "proj1",
         "oppourtunity_name": "project 1",
         "proj_stage": "operational",
         "proj_status": "closed",
@@ -44,6 +46,7 @@ ngOnInit(){
   {
     "comp_name": "tata",
         "proj_id": "199",
+        "proj_name": "proj2",
         "oppourtunity_name": "project 2",
         "proj_stage": "design",
         "proj_status": "new",
@@ -54,6 +57,7 @@ ngOnInit(){
 {
   "comp_name": "psa bdp",
         "proj_id": "12",
+        "proj_name": "proj3",
         "oppourtunity_name": "project 3",
         "proj_stage": "implementation",
         "proj_status": "completed",
@@ -64,6 +68,7 @@ ngOnInit(){
 {
   "comp_name": "Accenture",
         "proj_id": "172",
+        "proj_name": "proj5",
         "oppourtunity_name": "project 4",
         "proj_stage": "decommissioned",
         "proj_status": "Updated",
@@ -75,6 +80,7 @@ ngOnInit(){
 {
   "comp_name": "Accenture",
         "proj_id": "172",
+        "proj_name": "proj4",
         "oppourtunity_name": "project 4",
         "proj_stage": "decommissioned",
         "proj_status": "Updated",
@@ -86,6 +92,7 @@ ngOnInit(){
 {
   "comp_name": "Accenture",
         "proj_id": "172",
+        "proj_name": "proj",
         "oppourtunity_name": "project 4",
         "proj_stage": "decommissioned",
         "proj_status": "Updated",
@@ -97,6 +104,7 @@ ngOnInit(){
 {
   "comp_name": "Accenture",
         "proj_id": "172",
+        "proj_name": "proj",
         "oppourtunity_name": "project 4",
         "proj_stage": "decommissioned",
         "proj_status": "Updated",
@@ -108,6 +116,7 @@ ngOnInit(){
 {
   "comp_name": "Accenture",
         "proj_id": "172",
+        "proj_name": "proj",
         "oppourtunity_name": "project 4",
         "proj_stage": "decommissioned",
         "proj_status": "Updated",
@@ -119,6 +128,7 @@ ngOnInit(){
 {
   "comp_name": "Accenture",
         "proj_id": "172",
+        "proj_name": "proj",
         "oppourtunity_name": "project 4",
         "proj_stage": "decommissioned",
         "proj_status": "Updated",
@@ -130,6 +140,7 @@ ngOnInit(){
 {
   "comp_name": "Accenture",
         "proj_id": "172",
+        "proj_name": "proj",
         "oppourtunity_name": "project 4",
         "proj_stage": "decommissioned",
         "proj_status": "Updated",
@@ -141,6 +152,7 @@ ngOnInit(){
 {
   "comp_name": "Accenture",
         "proj_id": "172",
+        "proj_name": "proj",
         "oppourtunity_name": "project 4",
         "proj_stage": "decommissioned",
         "proj_status": "Updated",
