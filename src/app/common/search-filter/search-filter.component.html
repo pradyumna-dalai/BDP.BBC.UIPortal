@@ -7,20 +7,14 @@
       <div class="p-fluid grid">
         <br>
         <div class="field col-12">
-          <div class="p-d-block"><label>Project Status : </label></div>
+          <div class="p-d-block"><label>Status : </label></div>
           <p-dropdown optionLabel="label" optionValue="id" [(ngModel)]="selectedStatus" [options]="statusOptions"
-            placeholder="Select Status" [filter]="true" filterBy="label"></p-dropdown>
+            placeholder="Select Status"></p-dropdown>
         </div>
         <div class="field col-12">
-          <div class="p-d-block"><label>Project Name :</label></div>
-          <p-dropdown optionLabel="name" optionValue="id" placeholder="Select Project" [filter]="true"
-            filterBy="name"></p-dropdown>
-        </div>
-        <div class="field col-12">
-          <div class="p-d-block"><label>Company Name:</label></div>
+          <div class="p-d-block"><label>Project :</label></div>
           <p-dropdown [options]="projectSuggestions" (onChange)="fetchOpprNameOnCompanySelect($event)"
-            optionLabel="name" optionValue="id" [(ngModel)]="selectedProject" placeholder="Select Project"
-            [filter]="true" filterBy="name"></p-dropdown>
+            optionLabel="name" optionValue="id" [(ngModel)]="selectedProject" placeholder="Select Project"></p-dropdown>
         </div>
         <div class="field col-12">
           <div class="p-d-block"><label>Date Range :</label></div>
@@ -30,13 +24,12 @@
         <div class="field col-12">
           <div class="p-d-block"><label>Opportunity Name :</label></div>
           <p-dropdown [options]="managerOptions" optionLabel="name" optionValue="id" [(ngModel)]="selectedManager"
-            placeholder="Select Opportunity Name" [filter]="true" filterBy="name"  [disabled]="!isCompanySelected"></p-dropdown>
+            placeholder="Select Opportunity Name"></p-dropdown>
         </div>
         <div class="field col-12">
           <div class="p-d-block"><label>Opportunity Manager :</label></div>
-          <p-dropdown [options]="opportunityManagers" optionLabel="label" optionValue="id" [filter]="true"
-            filterBy="label" [(ngModel)]="selectedOpportunityManagers"
-            placeholder="Select Opportunity Managers"></p-dropdown>
+          <p-dropdown [options]="opportunityManagers" optionLabel="label" optionValue="id"
+            [(ngModel)]="selectedOpportunityManagers" placeholder="Select Opportunity Managers"></p-dropdown>
         </div>
       </div>
 
