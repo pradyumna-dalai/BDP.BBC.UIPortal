@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AppBreadcrumbService } from '../../../../app.breadcrumb.service';
-import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormControl, FormGroup, Validators, FormBuilder,AbstractControl, ValidatorFn, ValidationErrors } from '@angular/forms';
 import { MasterTableService } from '../../../../services/master-table.service';
 import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -53,7 +53,7 @@ export class CreateProjectComponent implements OnInit {
     this.myForm = this.fb.group({
       // Define your form controls here
       companyName: ['', Validators.required],
-      customerCode: ['', Validators.required],
+      customerCode: [''],
       opportunityName: ['', [Validators.required]],
       industryVertical: ['', Validators.required],
       region: ['', Validators.required],
@@ -64,7 +64,7 @@ export class CreateProjectComponent implements OnInit {
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
       designNotes: ['', [Validators.required, Validators.maxLength(1000)]],
-      impleNotes: ['', [Validators.required, Validators.maxLength(5)]],
+      impleNotes: ['', [Validators.required, Validators.maxLength(1000)]],
       // Add more fields as needed
 
     });
