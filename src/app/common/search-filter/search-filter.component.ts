@@ -21,6 +21,7 @@ export class SearchFilterComponent {
   projectSuggestions: any[] = [];
   managerOptions: any[]
   opportunityManagers: any[];
+  isCompanySelected: boolean = false;
   constructor(private filterService: FilterService, public MasterTableservice: MasterTableService) {
 
   }
@@ -82,6 +83,7 @@ export class SearchFilterComponent {
   fetchOpprNameOnCompanySelect(event) {
     this.managerOptions = [];
     const selectedCompanyId = event.value;
+    this.isCompanySelected = !!selectedCompanyId;
     this.MasterTableservice.getOpportunityName(selectedCompanyId).subscribe((res: any) => {
       if (res?.message === "success") {
         this.managerOptions = res?.data;
