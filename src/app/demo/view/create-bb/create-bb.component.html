@@ -5,21 +5,19 @@
         <div class="field master-dropdown">
             <label>Product Name<span class="requiredField">*</span></label><br>
             <p-dropdown [options]="procuctNamesOptions" (onChange)="onProductSelect($event)" id="product_name"
-                [(ngModel)]="product_name" optionLabel="name" optionValue="id" [filter]="true" filterBy="name"
-                placeholder="Select Product Name"></p-dropdown>
+                [(ngModel)]="product_name" optionLabel="name" optionValue="id"
+                placeholder="Select Product Name" [filter]="true" filterBy="name"></p-dropdown>
         </div>&nbsp;&nbsp;&nbsp;
 
         <div class="field master-dropdown">
             <label>Product Scope<span class="requiredField">*</span></label><br>
             <p-dropdown (onChange)="onScopeSelect($event)" [(ngModel)]="product_scope" [options]="procuctScopesOptions"
-                optionValue="id" placeholder="Select Product Scope" inputId="dropdown2" optionLabel="name"
-                [filter]="true" filterBy="name"></p-dropdown>
+                optionValue="id" placeholder="Select Product Scope" inputId="dropdown2" optionLabel="name" [filter]="true" filterBy="name"></p-dropdown>
         </div>&nbsp;&nbsp;&nbsp;
         <div class="field master-dropdown">
             <label>Product Category<span class="requiredField">*</span></label><br>
             <p-dropdown [options]="procuctCategoryOptions" [(ngModel)]="product_category" optionValue="id"
-                placeholder="Select Product Category" inputId="dropdown3" optionLabel="name" [filter]="true"
-                filterBy="name"></p-dropdown>
+                placeholder="Select Product Category" inputId="dropdown3" optionLabel="name" [filter]="true" filterBy="name"></p-dropdown>
         </div>&nbsp;&nbsp;&nbsp;
         <div class="field master-dropdown">
             <label>Building Block Name<span class="requiredField">*</span></label><br>
@@ -36,22 +34,19 @@
 </div>
 <div class="p-fluid grid">
     <div class="col-12 md:col-4">
-        <button pButton pRipple type="button" (click)="onCardClick('scoping')"
-            [ngStyle]="{'border': showScopingCrad ? '1px solid #1B74C5' : 'none'}"
+        <button pButton pRipple type="button" (click)="onCardClick('scoping')" [ngStyle]="{'border': showScopingCrad ? '1px solid #1B74C5' : 'none'}"
             class="p-button-outlined mr-2 mb-2 bbCard">
             <i class="pi pi-arrows-alt icon-with-margin"></i>
             Scoping Card
         </button>
     </div>
     <div class="col-12 md:col-4">
-        <button pButton pRipple type="button" (click)="onCardClick('operation')"
-            [ngStyle]="{'border': showOperationCrad ? '1px solid #1B74C5' : 'none'}"
+        <button pButton pRipple type="button" (click)="onCardClick('operation')" [ngStyle]="{'border': showOperationCrad ? '1px solid #1B74C5' : 'none'}"
             class="p-button-outlined mr-2 mb-2 bbCard"> <i class="pi pi-cog icon-with-margin"></i>
             Operation Card</button>
     </div>
     <div class="col-12 md:col-4">
-        <button pButton pRipple type="button" (click)="onCardClick('commercial')"
-            [ngStyle]="{'border': showCommercialCrad ? '1px solid #1B74C5' : 'none'}"
+        <button pButton pRipple type="button" (click)="onCardClick('commercial')" [ngStyle]="{'border': showCommercialCrad ? '1px solid #1B74C5' : 'none'}"
             class="p-button-outlined mr-2 mb-2 bbCard">
             <i class="pi pi-money-bill icon-with-margin"></i>
             Commercial Card</button>
@@ -247,7 +242,7 @@
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
             <button pButton pRipple type="button" (click)="saveAsDraft()" label="Save As Draft"
-                *ngIf="!isSaveAsDraftDisabled()" class="p-button-outlined mr-2 mb-2"></button>
+            *ngIf="!isSaveAsDraftDisabled()" class="p-button-outlined mr-2 mb-2"></button>
             <button type="submit" pButton pRipple label="Continue" class="mr-2 mb-2"
                 (click)="onCardClick('commercial')"></button>
             <p-toast key="successToast"></p-toast>
@@ -350,7 +345,7 @@
                 </div>
                 <div class="col-6" style="display: flex;justify-content: flex-end;">
                     <button pButton pRipple type="button" label="Save As Draft" (click)="saveAsDraft()"
-                        *ngIf="!isSaveAsDraftDisabled()" class="p-button-outlined mr-2 mb-2"></button>
+                    *ngIf="!isSaveAsDraftDisabled()" class="p-button-outlined mr-2 mb-2"></button>
                     <button type="button" pButton pRipple label="Continue" (click)="activeIndex = 1"
                         class="mr-2 mb-2"></button>
                     <p-toast key="successToast"></p-toast>
@@ -516,7 +511,7 @@
                 </div>
                 <div class="col-6" style="display: flex;justify-content: flex-end;">
                     <button pButton pRipple type="button" label="Save As Draft" (click)="saveAsDraft()"
-                        *ngIf="!isSaveAsDraftDisabled()" class="p-button-outlined mr-2 mb-2"></button>
+                    *ngIf="!isSaveAsDraftDisabled()" class="p-button-outlined mr-2 mb-2"></button>
                     <button type="submit" pButton pRipple label="Submit" (click)="saveAsBuildingBlock()"
                         class="mr-2 mb-2"></button>
                     <p-toast key="successToast"></p-toast>
