@@ -52,6 +52,10 @@ export namespace AppRoutes {
 
         public static readonly  saveProjectDraft ="project";
 
+        // -------------------- project List---------------//
+
+        public static readonly sortingProjectGrid="project-sorting";
+
     }
 
 }

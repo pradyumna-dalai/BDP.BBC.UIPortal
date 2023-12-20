@@ -15,8 +15,13 @@ export class ProjectsService {
 
 
 saveAsDraftProject(body: any){
-  // const params = new HttpParams().set('status', status.toString());
+
   return this.http.post<any>(url + settings.AppRoutes.Auth.saveProjectDraft, body);
+}
+
+sortingProjectGrid(body){
+  // const params = new HttpParams().set('status', status.toString());
+  return this.http.post<any>(url + settings.AppRoutes.Auth.sortingProjectGrid, body);
 }
 
 
