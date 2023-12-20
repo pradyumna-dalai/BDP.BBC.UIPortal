@@ -35,4 +35,8 @@ export class FilterService {
     const params = new HttpParams().set('companyId', companyId.toString());
     return this.http.get<any>(url+settings.AppRoutes.Auth.getOpportuniyByCompany,{params});
   }
+
+  getFiltersSearchData(body){
+    return this.http.get<any>(url+settings.AppRoutes.Auth.applyFilter,body);
+  }
 }

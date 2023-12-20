@@ -13,7 +13,7 @@
         </div>
         <div class="field col-12">
           <div class="p-d-block"><label>Project Name :</label></div>
-          <p-dropdown optionLabel="name" optionValue="id" placeholder="Select Project" [filter]="true"
+          <p-dropdown optionLabel="name" optionValue="id" [(ngModel)]="projectName" placeholder="Select Project" [filter]="true"
             filterBy="name"></p-dropdown>
         </div>
         <div class="field col-12">
@@ -45,7 +45,7 @@
     </div>
     <div class="bdp-sticky-header">
       <div class="sidebar-header">
-        <p-button label="Apply" class="sidebar-button"></p-button>
+        <p-button label="Apply" (click)="applyFilter()" class="sidebar-button"></p-button>
         <span class="bdp-clear-filters"><a style="cursor: pointer;" (click)="onClearFilterClick()">Clear
             Filters</a></span>
       </div>

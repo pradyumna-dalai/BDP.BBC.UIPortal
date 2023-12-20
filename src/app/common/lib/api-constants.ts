@@ -47,6 +47,8 @@ export namespace AppRoutes {
 
         public static readonly getOpportuniyByCompany="opportunity-name";
 
+        public static readonly applyFilter="advance-search";
+
 
         // --------------------create project---------------//
 
