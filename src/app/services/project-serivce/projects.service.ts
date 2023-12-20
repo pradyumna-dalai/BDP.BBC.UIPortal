@@ -19,5 +19,7 @@ saveAsDraftProject(body: any){
   return this.http.post<any>(url + settings.AppRoutes.Auth.saveProjectDraft, body);
 }
 
-
+getAllProjectDetails(){
+  return this.http.get<any>(url + settings.AppRoutes.Auth.getallProjects);
+}
 }

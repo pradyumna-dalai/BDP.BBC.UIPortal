@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import {AppBreadcrumbService} from '../../../app.breadcrumb.service';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import {  Router } from '@angular/router';
+import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-project',
@@ -13,155 +15,14 @@ export class ProjectComponent {
   text:string = '';
   data: any = {};
   rowDisabledState: { [key: string]: boolean } = {};
-
-  constructor(private breadcrumbService: AppBreadcrumbService, private confirmationService: ConfirmationService,private router: Router) {
+  proejctdetails=[];
+  constructor(private datePipe: DatePipe,private breadcrumbService: AppBreadcrumbService, private confirmationService: ConfirmationService,private router: Router ,private projectsService:ProjectsService) {
     this.breadcrumbService.setItems([
         {label: 'Project'}
     ]);
 }
 ngOnInit(){
-  this.data =  [
-    {
-        "comp_name": "psa bdp",
-        "proj_id": "12",
-        "proj_name": "proj",
-        "oppourtunity_name": "customer onboarding",
-        "proj_stage": "implementation",
-        "proj_status": "completed",
-        "oppourtunity_manager": "mac",
-        "start_date": "10/10/2020",
-        "end_date": "10/10/2020"
-    },
-    {
-      "comp_name": "bdp",
-        "proj_id": "13",
-        "proj_name": "proj1",
-        "oppourtunity_name": "project 1",
-        "proj_stage": "operational",
-        "proj_status": "closed",
-        "oppourtunity_manager": "john",
-        "start_date": "10/10/2020",
-        "end_date": "10/10/2020"
-  },
-  {
-    "comp_name": "tata",
-        "proj_id": "199",
-        "proj_name": "proj2",
-        "oppourtunity_name": "project 2",
-        "proj_stage": "design",
-        "proj_status": "new",
-        "oppourtunity_manager": "nil",
-        "start_date": "10/10/2020",
-        "end_date": "10/10/2020"
-},
-{
-  "comp_name": "psa bdp",
-        "proj_id": "12",
-        "proj_name": "proj3",
-        "oppourtunity_name": "project 3",
-        "proj_stage": "implementation",
-        "proj_status": "completed",
-        "oppourtunity_manager": "mac",
-        "start_date": "10/10/2020",
-        "end_date": "10/10/2020"
-},
-{
-  "comp_name": "Accenture",
-        "proj_id": "172",
-        "proj_name": "proj5",
-        "oppourtunity_name": "project 4",
-        "proj_stage": "decommissioned",
-        "proj_status": "Updated",
-        "oppourtunity_manager": "Priya",
-        "start_date": "10/10/2020",
-        "end_date": "10/10/2020"
-
-},
-{
-  "comp_name": "Accenture",
-        "proj_id": "172",
-        "proj_name": "proj4",
-        "oppourtunity_name": "project 4",
-        "proj_stage": "decommissioned",
-        "proj_status": "Updated",
-        "oppourtunity_manager": "Priya",
-        "start_date": "10/10/2020",
-        "end_date": "10/10/2020"
-
-},
-{
-  "comp_name": "Accenture",
-        "proj_id": "172",
-        "proj_name": "proj",
-        "oppourtunity_name": "project 4",
-        "proj_stage": "decommissioned",
-        "proj_status": "Updated",
-        "oppourtunity_manager": "Priya",
-        "start_date": "10/10/2020",
-        "end_date": "10/10/2020"
-
-},
-{
-  "comp_name": "Accenture",
-        "proj_id": "172",
-        "proj_name": "proj",
-        "oppourtunity_name": "project 4",
-        "proj_stage": "decommissioned",
-        "proj_status": "Updated",
-        "oppourtunity_manager": "Priya",
-        "start_date": "10/10/2020",
-        "end_date": "10/10/2020"
-
-},
-{
-  "comp_name": "Accenture",
-        "proj_id": "172",
-        "proj_name": "proj",
-        "oppourtunity_name": "project 4",
-        "proj_stage": "decommissioned",
-        "proj_status": "Updated",
-        "oppourtunity_manager": "Priya",
-        "start_date": "10/10/2020",
-        "end_date": "10/10/2020"
-
-},
-{
-  "comp_name": "Accenture",
-        "proj_id": "172",
-        "proj_name": "proj",
-        "oppourtunity_name": "project 4",
-        "proj_stage": "decommissioned",
-        "proj_status": "Updated",
-        "oppourtunity_manager": "Priya",
-        "start_date": "10/10/2020",
-        "end_date": "10/10/2020"
-
-},
-{
-  "comp_name": "Accenture",
-        "proj_id": "172",
-        "proj_name": "proj",
-        "oppourtunity_name": "project 4",
-        "proj_stage": "decommissioned",
-        "proj_status": "Updated",
-        "oppourtunity_manager": "Priya",
-        "start_date": "10/10/2020",
-        "end_date": "10/10/2020"
-
-},
-{
-  "comp_name": "Accenture",
-        "proj_id": "172",
-        "proj_name": "proj",
-        "oppourtunity_name": "project 4",
-        "proj_stage": "decommissioned",
-        "proj_status": "Updated",
-        "oppourtunity_manager": "Priya",
-        "start_date": "10/10/2020",
-        "end_date": "10/10/2020"
-
-}
-]
+  this.fetchAllProjectDetails();
 }
 confirm(val: string, itemId: string) {
   if (val == 'copy'){
@@ -184,4 +45,32 @@ confirm(val: string, itemId: string) {
   
   }
 
+
+  fetchAllProjectDetails() {
+    this.projectsService.getAllProjectDetails().subscribe((res: any) => {
+      if (res?.message == "success") {
+        this.proejctdetails = res?.data.map((item: any) => {
+          const opportunityManagers = item.projectInformation.opportunityManager?.map(manager => manager.name).join(', ');
+          //console.log('opp',opportunityManagers);
+          const formattedStartDate = this.datePipe.transform(item.projectInformation?.startDate, 'dd-MM-yyyy');
+          const formattedEndDate = this.datePipe.transform(item.projectInformation?.endDate, 'dd-MM-yyyy');
+      return {
+            comp_name: item.name,
+            proj_id: item.projectInformation?.customerCode,
+            proj_name: item.projectInformation?.projectName,
+            oppourtunity_name: item.projectInformation?.opportunityName?.name,
+            proj_stage: item.projectInformation?.projectStage?.name,
+            proj_status: item.status?.name,
+            oppourtunity_manager: opportunityManagers,
+            start_date: formattedStartDate,
+            end_date: formattedEndDate,
+          };
+        });
+        //console.log('fbggf', this.proejctdetails);
+      } else {
+        this.proejctdetails = [];
+      }
+    });
+  }
+  
 }
