@@ -204,7 +204,6 @@ export class CreateProjectComponent implements OnInit {
           opportunityManager: opportunityMangers
       }
   }
-    console.log(body);
     this.projectService.saveAsDraftProject(body).subscribe(
     (res) => {
       console.log('Draft saved successfully:', res);
