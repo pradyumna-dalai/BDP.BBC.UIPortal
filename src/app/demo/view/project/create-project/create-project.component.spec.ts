@@ -1,8 +1,11 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CreateProjectComponent } from './create-project.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { AppBreadcrumbService } from 'src/app/app.breadcrumb.service';
+import { AppModule } from 'src/app/app.module';
 
-describe('CreateBbComponent', () => {
+describe('CreateProjectComponent', () => {
   let component: CreateProjectComponent;
   let fixture: ComponentFixture<CreateProjectComponent>;
 
@@ -17,8 +20,10 @@ describe('CreateBbComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
+
       declarations: [CreateProjectComponent],
-      imports: [ReactiveFormsModule, FormsModule],
+      imports: [ReactiveFormsModule, FormsModule,HttpClientTestingModule,AppModule],
+      providers:[AppBreadcrumbService]
     }).compileComponents();
   }));
 
