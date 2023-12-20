@@ -52,19 +52,19 @@ export class CreateProjectComponent implements OnInit {
   ngOnInit() {
     this.myForm = this.fb.group({
       // Define your form controls here
-      companyName: ['', Validators.required],
+      companyName: [''],
       customerCode: [''],
-      opportunityName: ['', [Validators.required]],
-      industryVertical: ['', Validators.required],
-      region: ['', Validators.required],
+      opportunityName: [''],
+      industryVertical: [''],
+      region: [''],
       projectName: ['', Validators.required],
-      projectStage: ['', Validators.required],
-      projectStatus: ['', Validators.required],
-      opportunityManger: ['', Validators.required],
-      startDate: ['', Validators.required],
-      endDate: ['', Validators.required],
-      designNotes: ['', [Validators.required, Validators.maxLength(1000)]],
-      impleNotes: ['', [Validators.required, Validators.maxLength(1000)]],
+      projectStage: [''],
+      projectStatus: [''],
+      opportunityManger: [''],
+      startDate: [''],
+      endDate: [''],
+      designNotes: ['', [Validators.maxLength(1000)]],
+      impleNotes: ['', [Validators.maxLength(1000)]],
       // Add more fields as needed
 
     });
@@ -116,6 +116,8 @@ export class CreateProjectComponent implements OnInit {
   // ---------------get Opportunity name on company select------------------------//
 
   onCompanySelect(event) {
+    this.IVOptions = [];
+    this.opportunityNameOptions = [];
     const selectedCompanyId = event.value;
     this.MasterTableservice.getOpportunityName(selectedCompanyId).subscribe((res: any) => {
       if (res?.message === "success") {
