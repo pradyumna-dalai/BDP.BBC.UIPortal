@@ -52,23 +52,23 @@ export class CreateProjectComponent implements OnInit {
   ngOnInit() {
     this.myForm = this.fb.group({
       // Define your form controls here
-      companyName: ['', Validators.required],
+      companyName: [''],
       customerCode: [''],
-      opportunityName: ['', [Validators.required]],
-      industryVertical: ['', Validators.required],
-      region: ['', Validators.required],
+      opportunityName: [''],
+      industryVertical: [''],
+      region: [''],
       projectName: ['', Validators.required],
-      projectStage: ['', Validators.required],
-      projectStatus: ['', Validators.required],
-      opportunityManger: ['', Validators.required],
-      startDate: ['', Validators.required],
-      endDate: ['', Validators.required],
-      designNotes: ['', [Validators.required, Validators.maxLength(1000)]],
-      impleNotes: ['', [Validators.required, Validators.maxLength(1000)]],
+      projectStage: [''],
+      projectStatus: [''],
+      opportunityManger: [''],
+      startDate: [''],
+      endDate: [''],
+      designNotes: ['', [Validators.maxLength(1000)]],
+      impleNotes: ['', [Validators.maxLength(1000)]],
       // Add more fields as needed
 
     });
-    this.getProjectStatus();
+    //this.getProjectStatus();
     this.getRegion();
     this.getCompany();
     this.getProjectStage();
@@ -79,17 +79,6 @@ export class CreateProjectComponent implements OnInit {
   }
 
 
-  // ---------------get project status------------------------//
-  getProjectStatus() {
-    this.projectStatusOptions = [];
-    this.MasterTableservice.getProjectStatus().subscribe((res: any) => {
-      if (res?.message == "success") {
-        this.projectStatusOptions = res?.data;
-      } else {
-        this.projectStatusOptions = [];
-      }
-    })
-  }
   // ---------------get Region------------------------//
   getRegion() {
     this.regionOptions = [];
@@ -116,6 +105,8 @@ export class CreateProjectComponent implements OnInit {
   // ---------------get Opportunity name on company select------------------------//
 
   onCompanySelect(event) {
+    this.IVOptions = [];
+    this.opportunityNameOptions = [];
     const selectedCompanyId = event.value;
     this.MasterTableservice.getOpportunityName(selectedCompanyId).subscribe((res: any) => {
       if (res?.message === "success") {
@@ -146,6 +137,18 @@ export class CreateProjectComponent implements OnInit {
         this.projectStageOptions = res?.data;
       } else {
         this.projectStageOptions = [];
+      }
+    })
+  }
+   // ---------------get project status------------------------//
+   OnStageSelectProjectstatus(event) {
+   // this.projectStatusOptions = [];
+    const selectedStageId = event.value;
+    this.MasterTableservice.getProjectStatus(selectedStageId).subscribe((res: any) => {
+      if (res?.message == "success") {
+        this.projectStatusOptions = res?.data;
+      } else {
+        this.projectStatusOptions = [];
       }
     })
   }

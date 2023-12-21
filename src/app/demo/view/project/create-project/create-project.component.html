@@ -3,11 +3,12 @@
         <div>
             <h5>Project Information</h5>
         </div>
+        <hr class="align">
         <form [formGroup]="myForm">
             <div class="p-fluid grid">
                 <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>Company Name<span class="requiredField">*</span></label></div>
-                    <p-dropdown [options]="companyOptions" (onChange)="onCompanySelect($event)" optionLabel="name"
+                    <p-dropdown   [options]="companyOptions" (onChange)="onCompanySelect($event)" optionLabel="name"
                         optionValue="id" formControlName="companyName" placeholder="Select Company Name" [filter]="true"
                         filterBy="name"></p-dropdown>
                 </div>
@@ -43,7 +44,7 @@
                 </div>
                 <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>Project Stage<span class="requiredField">*</span></label></div>
-                    <p-dropdown [options]="projectStageOptions" formControlName="projectStage"
+                    <p-dropdown [options]="projectStageOptions" formControlName="projectStage"   (onChange)="OnStageSelectProjectstatus($event)"
                         placeholder="Select Project Stage" optionLabel="name" optionValue="id" [filter]="true"
                         filterBy="name"></p-dropdown>
                 </div>
@@ -87,6 +88,7 @@
                     </div>
                 </div>
             </div>
+            <hr class="aligndown">
             <div class="col-12" style="display: flex;justify-content: flex-end;">
                 <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
                     (click)="SaveAsDraftProjects()" class="p-button-outlined mr-2 mb-2"></button>
