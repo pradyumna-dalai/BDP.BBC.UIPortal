@@ -54,6 +54,8 @@ export namespace AppRoutes {
 
         public static readonly getallProjects ="projects";
 
+        public static readonly getSortingData ="project-sorting";
+
     }
 
 }

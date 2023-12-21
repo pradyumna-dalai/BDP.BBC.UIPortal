@@ -22,4 +22,18 @@ saveAsDraftProject(body: any){
 getAllProjectDetails(){
   return this.http.get<any>(url + settings.AppRoutes.Auth.getallProjects);
 }
+
+public getExplorerData(status: number): Observable<any> {
+  const params = new HttpParams().set('status', status.toString());
+
+  return this.http.get<any>(`${url}${settings.AppRoutes.Auth.getexploreViewBuildingBlock}`, { params });
+}
+
+getSortingProjectDetails(colName: string): Observable<any>{
+  var sortDirection: string = 'asc';
+  const params = new HttpParams().set('colName', colName.toString());
+  return this.http.get<any>(`${url}${settings.AppRoutes.Auth.getSortingData}`, { params });
+}
+
+
 }
