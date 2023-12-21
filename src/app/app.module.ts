@@ -109,6 +109,7 @@ import { CreateBbComponent } from './demo/view/create-bb/create-bb.component';
 import { NodeService } from './demo/service/nodeservice';
 import { SearchFilterComponent } from './common/search-filter/search-filter.component';
 import { CreateProjectComponent } from './demo/view/project/create-project/create-project.component';
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 
 
 
@@ -199,7 +200,9 @@ import { CreateProjectComponent } from './demo/view/project/create-project/creat
         TreeTableModule,
         VirtualScrollerModule,
         ReactiveFormsModule,
-        DatePipe
+        DatePipe,
+        NgxDaterangepickerMd.forRoot(),
+        CalendarModule
     ],
     declarations: [
         AppComponent,
