@@ -68,7 +68,7 @@ export class CreateProjectComponent implements OnInit {
       // Add more fields as needed
 
     });
-    this.getProjectStatus();
+    //this.getProjectStatus();
     this.getRegion();
     this.getCompany();
     this.getProjectStage();
@@ -79,17 +79,6 @@ export class CreateProjectComponent implements OnInit {
   }
 
 
-  // ---------------get project status------------------------//
-  getProjectStatus() {
-    this.projectStatusOptions = [];
-    this.MasterTableservice.getProjectStatus().subscribe((res: any) => {
-      if (res?.message == "success") {
-        this.projectStatusOptions = res?.data;
-      } else {
-        this.projectStatusOptions = [];
-      }
-    })
-  }
   // ---------------get Region------------------------//
   getRegion() {
     this.regionOptions = [];
@@ -148,6 +137,18 @@ export class CreateProjectComponent implements OnInit {
         this.projectStageOptions = res?.data;
       } else {
         this.projectStageOptions = [];
+      }
+    })
+  }
+   // ---------------get project status------------------------//
+   OnStageSelectProjectstatus(event) {
+   // this.projectStatusOptions = [];
+    const selectedStageId = event.value;
+    this.MasterTableservice.getProjectStatus(selectedStageId).subscribe((res: any) => {
+      if (res?.message == "success") {
+        this.projectStatusOptions = res?.data;
+      } else {
+        this.projectStatusOptions = [];
       }
     })
   }
