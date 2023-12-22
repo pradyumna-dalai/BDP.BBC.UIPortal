@@ -173,38 +173,37 @@ export class CreateProjectComponent implements OnInit {
     } else {
       opportunityMangers = om.map(id => ({ id }))
     }
-
-    const body = {
-      name: "",
-      description: "",
-      projectInformation: {
-          customerCode: this.myForm.get('customerCode').value,
-          projectName: this.myForm.get('projectName').value,
-          startDate: this.myForm.get('startDate').value,
-          endDate: this.myForm.get('endDate').value,
-          designNote: this.myForm.get('designNotes').value,
-          implementationNote: this.myForm.get('impleNotes').value,
-          company: {
-              "id": this.myForm.get('companyName').value,
-          },
-          opportunityName: {
-              "id": this.myForm.get('opportunityName').value,
-          },
-          industryVertical: {
-              "id":this.myForm.get('industryVertical').value,
-          },
-          region: {
-              "id": this.myForm.get('region').value,
-          },
-          projectStage: {
-              "id": this.myForm.get('projectStage').value,
-          },
-          projectStatus: {
-              "id": this.myForm.get('projectStatus').value,
-          },
-          opportunityManager: opportunityMangers
-      }
+const body = {
+  description: "",
+  projectInformation: {
+      customerCode: this.myForm.get('customerCode').value,
+      projectName: this.myForm.get('projectName').value,
+      startDate: this.myForm.get('startDate').value,
+      endDate: this.myForm.get('endDate').value,
+      designNote: this.myForm.get('designNotes').value,
+      implementationNote: this.myForm.get('impleNotes').value,
+      company: {
+          "id": this.myForm.get('companyName').value,
+      },
+      opportunityName: {
+        "id": this.myForm.get('opportunityName').value,
+    },
+    industryVertical: {
+        "id":this.myForm.get('industryVertical').value,
+    },
+    region: {
+        "id": this.myForm.get('region').value,
+    },
+    projectStage: {
+        "id": this.myForm.get('projectStage').value,
+    },
+    projectStatus: {
+        "id": this.myForm.get('projectStatus').value,
+    },
+    opportunityManager: opportunityMangers
   }
+}
+    
     console.log(body);
     this.projectService.saveAsDraftProject(body).subscribe(
     (res) => {
