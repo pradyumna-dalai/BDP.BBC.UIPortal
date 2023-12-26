@@ -65,6 +65,7 @@ export class CreateBbComponent {
     public MasterTableservice: MasterTableService, private confirmationService: ConfirmationService,
     public CreateBuildingBlockservice: CreateBuildingBlockService, private router: Router,
     private route: ActivatedRoute, private createBuildingBlockservice: CreateBuildingBlockService, private sanitizer: DomSanitizer) {
+      this.fetchBuildingBlockDetails('id');
     const id = this.route.snapshot.paramMap.get('id');
     if (id !== null && id !== undefined) {
       this.breadcrumbService.setItems([
@@ -468,7 +469,7 @@ export class CreateBbComponent {
         this.product_category = details.data.category.id;
         this.onProductSelect(details.data.product.id);
         this.onScopeSelect(details.data.scope.id);
-        this.charge_code = details.data.chargeCode.id;
+        this.charge_code = details.data?.chargeCode?.id;
         this.seervice_desc = details.data.scopingCard.serviceDescription;
         this.customer_requirement = details.data.scopingCard.customerRequirement;
         this.deliverables = details.data.scopingCard.deliverable;
