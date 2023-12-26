@@ -16,28 +16,28 @@
       </div>
     </div>
     <div class="col-6" style="display: flex;justify-content: flex-end;">
-      <button type="button" pButton pRipple label="Export Excel" (click)="showDateRangeDialog()"
+      <button type="button" pButton pRipple label="Export Excel" (click)="toggleDateRangeSelection()"
         class="mr-2 mb-2"></button>
 
-      <p-dialog header="Select Date Range" [(visible)]="displayDateRangeDialog" [modal]="true" [closable]="true"
-        [responsive]="true" [modal]="true">
-        <div class="date-range-dialog-content">
-          <div class="predefined-date-ranges">
-            <div *ngFor="let range of predefinedDateRanges" (click)="setPredefinedDateRange(range.label)"
-              [ngClass]="{'selected': range.label === selectedPredefinedDateRange?.label}">
-              {{ range.label }}
-            </div>
-          </div>
-          <div class="custom-date-range">
-            <p-calendar [(ngModel)]="selectedStartDate" selectionMode="single" [readonlyInput]="true"
-              dateFormat="dd.mm.yy" placeholder="Start Date" style="width: 100%;"></p-calendar>
-            <p-calendar [(ngModel)]="selectedEndDate" selectionMode="single" [readonlyInput]="true"
-              dateFormat="dd.mm.yy" placeholder="End Date" style="width: 100%;"></p-calendar>
-          </div>
-          <!-- <button pButton type="button" label="Cancel" (click)="cancelDateRange()" class="mr-2 mb-2 cancel-button"></button> -->
-          <button pButton type="button" label="Apply" (click)="applyDateRange()" class="mr-2 mb-2"></button>
+      <div *ngIf="showDateRangeSelection" class="custom-date-range-dropdown">
+        <p-dropdown [options]="predefinedDateRanges" [(ngModel)]="selectedPredefinedDateRange" optionLabel="label"
+          placeholder="Select Date Range" [style]="{'width': '200px'}"
+          (onChange)="onPredefinedDateRangeChange()"></p-dropdown>
+        <br>
+        <div class="custom-date-range" *ngIf="selectedPredefinedDateRange?.value === 'custom'">
+          &nbsp;
+          <p-calendar [(ngModel)]="selectedStartDate" selectionMode="single" [readonlyInput]="true"
+            dateFormat="dd.mm.yy" placeholder="Start Date" style="width: 100%;"></p-calendar>
+          <p-calendar [(ngModel)]="selectedEndDate" selectionMode="single" [readonlyInput]="true" dateFormat="dd.mm.yy"
+            placeholder="End Date" style="width: 100%;"></p-calendar>
         </div>
-      </p-dialog>
+        <br>
+        <button pButton type="button" label="Cancel" (click)="cancelDateRange()" class="mr-2 mb-2"></button>
+
+        <button pButton type="button" label="Apply" (click)="applyDateRange()" class="mr-2 mb-2"></button>
+      </div>
+
+
       <p-toast key="successToast"></p-toast>
     </div>
   </div>
@@ -145,4 +145,5 @@
     </ng-template>
   </p-table>
 </div>
-<p-confirmDialog [header]="confirmationHeader" icon="pi pi-exclamation-triangle" [style]="{ 'width': '550px', 'height': '300px' }"></p-confirmDialog>
+<p-confirmDialog [header]="confirmationHeader" icon="pi pi-exclamation-triangle"
+  [style]="{ 'width': '550px', 'height': '300px' }"></p-confirmDialog>

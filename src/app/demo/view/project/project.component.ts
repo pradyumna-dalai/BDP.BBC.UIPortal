@@ -27,6 +27,8 @@ export class ProjectComponent {
   selectedStartDate: Date;
   selectedEndDate: Date;
   //selectedPredefinedDateRange: any; 
+  showDateRangeSelection = false;
+
   dateRange: Date[];
   endDateString: string;
   startDateString: string;
@@ -37,9 +39,9 @@ export class ProjectComponent {
     { label: 'Custom', value: 'custom' },
   ];
 
-  selectedPredefinedDateRange: SelectItem; 
+  selectedPredefinedDateRange: SelectItem;
   confirmationHeader: string;
-  onDateRangeSelect(event: any) {}
+  onDateRangeSelect(event: any) { }
 
   formatDate(date: Date): string {
     return dayjs(date).format('DD.MM.YY');
@@ -52,13 +54,16 @@ export class ProjectComponent {
 
   ngOnInit() {
     this.fetchAllProjectDetails();
-     this.selectedPredefinedDateRange = this.predefinedDateRanges[0];
+    this.selectedPredefinedDateRange = this.predefinedDateRanges[0];
   }
-  
-confirm(action: string, itemId?: string): void {
+
+  toggleDateRangeSelection(): void {
+    this.showDateRangeSelection = !this.showDateRangeSelection;
+  }
+  confirm(action: string, itemId?: string): void {
     let confirmationMessage: string;
     let header: string;
-  
+
     if (action === 'copy') {
       confirmationMessage = 'Are you sure that you want to copy this project?';
       header = 'Copy Project';
@@ -66,7 +71,7 @@ confirm(action: string, itemId?: string): void {
       confirmationMessage = 'Are you sure that you want to delete this project?';
       header = 'Delete Project';
     }
-  
+
     this.confirmationHeader = header;
     this.confirmationService.confirm({
       message: confirmationMessage,
@@ -80,7 +85,14 @@ confirm(action: string, itemId?: string): void {
       header: this.confirmationHeader,
     });
   }
-  
+
+  cancelDateRange() {
+    this.selectedStartDate = null;
+    this.selectedEndDate = null;
+    this.showDateRangeDialog();
+    this.showDateRangeSelection = false;
+  }
+
   setPredefinedDateRange(label: string) {
     switch (label) {
       case 'Last 1 Year':
@@ -98,14 +110,14 @@ confirm(action: string, itemId?: string): void {
         this.selectedStartDate = new Date(this.selectedEndDate);
         this.selectedStartDate.setFullYear(this.selectedStartDate.getFullYear() - 3);
         break;
-  
+
       default:
         break;
     }
-  
+
     this.selectedPredefinedDateRange = this.predefinedDateRanges.find((option) => option.label === label);
   }
-  
+
 
   fetchAllProjectDetails() {
     this.projectsService.getAllProjectDetails().subscribe((res: any) => {
@@ -138,7 +150,7 @@ confirm(action: string, itemId?: string): void {
   exportData() {
     this.startDateString = this.selectedStartDate.toISOString();
     this.endDateString = this.selectedEndDate.toISOString();
-  
+
     if (this.selectedStartDate && this.selectedEndDate) {
       this.projectsService.downloadProjectData(this.startDateString, this.endDateString).subscribe(
         (response: HttpResponse<Blob>) => {
@@ -159,33 +171,31 @@ confirm(action: string, itemId?: string): void {
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'BBC_Project_List.xlsx'; 
+            a.download = 'BBC_Project_List.xlsx';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             window.URL.revokeObjectURL(url);
-  
-            this.messageService.add({  key: 'successToast',severity: 'success', summary: 'Success', detail: 'File downloaded successfully!' });
+
+            this.messageService.add({ key: 'successToast', severity: 'success', summary: 'Success', detail: 'File downloaded successfully!' });
           }
         },
         (error) => {
           console.error('Download error', error);
-          this.messageService.add({  key: 'error',severity: 'error', summary: 'Error', detail: 'File download failed!' });
+          this.messageService.add({ key: 'error', severity: 'error', summary: 'Error', detail: 'File download failed!' });
         }
       );
       this.selectedStartDate = null;
       this.selectedEndDate = null;
+      this.showDateRangeSelection = false;
     } else {
       console.warn('Please select a date range before exporting.');
     }
   }
-  
-  
-  
-  
+
 
   showDateRangeDialog() {
-    this.selectedPredefinedDateRange = this.predefinedDateRanges[4]; // Set default to 'Last 1 Year'
+    this.selectedPredefinedDateRange = this.predefinedDateRanges[0]; // Set default to 'Last 1 Year'
     this.setPredefinedDateRange('1'); // Set the default date range
     this.displayDateRangeDialog = true;
   }
@@ -200,6 +210,12 @@ confirm(action: string, itemId?: string): void {
         summary: 'Warning',
         detail: 'Please select both start and end dates.',
       });
+    }
+  }
+  onPredefinedDateRangeChange() {
+    if (this.selectedPredefinedDateRange?.value !== 'custom') {
+      // Set the dates based on the predefined range
+      this.setPredefinedDateRange(this.selectedPredefinedDateRange?.label);
     }
   }
 
