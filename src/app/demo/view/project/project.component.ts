@@ -110,8 +110,8 @@ export class ProjectComponent {
           const formattedStartDate = this.datePipe.transform(item.projectInformation?.startDate, 'dd-MM-yyyy');
           const formattedEndDate = this.datePipe.transform(item.projectInformation?.endDate, 'dd-MM-yyyy');
           return {
-            comp_name: item.name,
-            proj_id: item.projectInformation?.customerCode,
+            comp_name: item.projectInformation?.company?.name,
+            proj_id: item?.id,
             proj_name: item.projectInformation?.projectName,
             oppourtunity_name: item.projectInformation?.opportunityName?.name,
             proj_stage: item.projectInformation?.projectStage?.name,
