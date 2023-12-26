@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AppBreadcrumbService } from '../../../app.breadcrumb.service';
-import { MessageService, ConfirmationService } from 'primeng/api';
+import { MessageService, ConfirmationService, SelectItem } from 'primeng/api';
 import { Router } from '@angular/router';
 import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
 import { DatePipe } from '@angular/common';
@@ -26,20 +26,21 @@ export class ProjectComponent {
   displayDateRangeDialog = false;
   selectedStartDate: Date;
   selectedEndDate: Date;
-  // ranges: any = {
-  //   'Today': [dayjs(), dayjs()],
-  //   'Last 7 Days': [dayjs().subtract(6, 'days'), dayjs()],
-  //   'Last 14 Days': [dayjs().subtract(13, 'days'), dayjs()],
-  //   'Last 30 Days': [dayjs().subtract(29, 'days'), dayjs()],
-  //   'Last 3 Months': [dayjs().subtract(3, 'months'), dayjs()],
-  //   // 'Last 12 Months': [dayjs().subtract(12, 'months').startOf('month'), dayjs().subtract(1, 'months').endOf('month')]
-  // };
+  
+  //selectedPredefinedDateRange: any; // You can change the type as needed
+  
   dateRange: Date[];
   endDateString: string;
   startDateString: string;
+  predefinedDateRanges: SelectItem[] = [
+    { label: 'Last 1 Year', value: 'last1Year' },
+    { label: 'Last 2 Years', value: 'last2Years' },
+    { label: 'Last 3 Years', value: 'last3Years' },
+    { label: 'Custom', value: 'custom' },
+  ];
 
-  onDateRangeSelect(event: any) {
-  }
+  selectedPredefinedDateRange: SelectItem; // You can change the type as needed
+  onDateRangeSelect(event: any) {}
 
   formatDate(date: Date): string {
     return dayjs(date).format('DD.MM.YY');
@@ -52,6 +53,7 @@ export class ProjectComponent {
 
   ngOnInit() {
     this.fetchAllProjectDetails();
+     this.selectedPredefinedDateRange = this.predefinedDateRanges[0];
   }
   confirm(val: string, itemId: string) {
     if (val == 'copy') {
@@ -73,7 +75,31 @@ export class ProjectComponent {
     }
 
   }
-
+  setPredefinedDateRange(label: string) {
+    switch (label) {
+      case 'Last 1 Year':
+        this.selectedStartDate = new Date(); // Set to the current date
+        this.selectedEndDate = new Date(this.selectedStartDate);
+        this.selectedEndDate.setFullYear(this.selectedEndDate.getFullYear() - 1);
+        break;
+      case 'Last 2 Years':
+        this.selectedStartDate = new Date(); // Set to the current date
+        this.selectedEndDate = new Date(this.selectedStartDate);
+        this.selectedEndDate.setFullYear(this.selectedEndDate.getFullYear() - 2);
+        break;
+      case 'Last 3 Years':
+        this.selectedStartDate = new Date(); // Set to the current date
+        this.selectedEndDate = new Date(this.selectedStartDate);
+        this.selectedEndDate.setFullYear(this.selectedEndDate.getFullYear() - 3);
+        break;
+      // Handle other predefined ranges as needed
+      default:
+        break;
+    }
+  
+    this.selectedPredefinedDateRange = this.predefinedDateRanges.find((option) => option.label === label);
+  }
+  
 
   fetchAllProjectDetails() {
     this.projectsService.getAllProjectDetails().subscribe((res: any) => {
@@ -153,7 +179,8 @@ export class ProjectComponent {
   
 
   showDateRangeDialog() {
-    console.log('calender calling');
+    this.selectedPredefinedDateRange = this.predefinedDateRanges[0]; // Set default to 'Last 1 Year'
+    this.setPredefinedDateRange('1'); // Set the default date range
     this.displayDateRangeDialog = true;
   }
 
@@ -162,7 +189,11 @@ export class ProjectComponent {
       this.exportData();
       this.displayDateRangeDialog = false;
     } else {
-      this.messageService.add({ severity: 'warn', summary: 'Warning', detail: 'Please select both start and end dates.' });
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Warning',
+        detail: 'Please select both start and end dates.',
+      });
     }
   }
 
