@@ -84,21 +84,21 @@ confirm(action: string, itemId?: string): void {
   setPredefinedDateRange(label: string) {
     switch (label) {
       case 'Last 1 Year':
-        this.selectedStartDate = new Date(); // Set to the current date
-        this.selectedEndDate = new Date(this.selectedStartDate);
-        this.selectedEndDate.setFullYear(this.selectedEndDate.getFullYear() - 1);
+        this.selectedEndDate = new Date(); // Set to the current date
+        this.selectedStartDate = new Date(this.selectedEndDate);
+        this.selectedStartDate.setFullYear(this.selectedStartDate.getFullYear() - 1);
         break;
       case 'Last 2 Years':
-        this.selectedStartDate = new Date(); // Set to the current date
-        this.selectedEndDate = new Date(this.selectedStartDate);
-        this.selectedEndDate.setFullYear(this.selectedEndDate.getFullYear() - 2);
+        this.selectedEndDate = new Date(); // Set to the current date
+        this.selectedStartDate = new Date(this.selectedEndDate);
+        this.selectedStartDate.setFullYear(this.selectedStartDate.getFullYear() - 2);
         break;
       case 'Last 3 Years':
-        this.selectedStartDate = new Date(); // Set to the current date
-        this.selectedEndDate = new Date(this.selectedStartDate);
-        this.selectedEndDate.setFullYear(this.selectedEndDate.getFullYear() - 3);
+        this.selectedEndDate = new Date(); // Set to the current date
+        this.selectedStartDate = new Date(this.selectedEndDate);
+        this.selectedStartDate.setFullYear(this.selectedStartDate.getFullYear() - 3);
         break;
-      // Handle other predefined ranges as needed
+  
       default:
         break;
     }
@@ -185,7 +185,7 @@ confirm(action: string, itemId?: string): void {
   
 
   showDateRangeDialog() {
-    this.selectedPredefinedDateRange = this.predefinedDateRanges[0]; // Set default to 'Last 1 Year'
+    this.selectedPredefinedDateRange = this.predefinedDateRanges[4]; // Set default to 'Last 1 Year'
     this.setPredefinedDateRange('1'); // Set the default date range
     this.displayDateRangeDialog = true;
   }

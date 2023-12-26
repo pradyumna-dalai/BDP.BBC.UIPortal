@@ -22,18 +22,18 @@ export class SearchFilterComponent {
   projectSuggestions: any[] = [];
   managerOptions: any[]
   opportunityManagers: any[];
-  projectStageOptions:any[];
+  projectStageOptions: any[];
   isCompanySelected: boolean = false;
-  isProjectStageSelected:boolean=false;
+  isProjectStageSelected: boolean = false;
   constructor(private filterService: FilterService, public MasterTableservice: MasterTableService) {
 
   }
 
   ngOnInit() {
-   // this.fetchProjectStatus();
+    // this.fetchProjectStatus();
     this.fetchOpportunityManagers();
     this.fetchProjectbyCompany();
-    this.getProjectStage();
+    this.fetchProjectStage();
   }
 
   searchProjects(query: string) {
@@ -53,27 +53,17 @@ export class SearchFilterComponent {
     this.managerOptions = null;
     this.opportunityManagers = null;
     console.log("Filters cleared.");
-    this.projectStageOptions=null;
-   // this.fetchProjectStatus();
+    this.projectStageOptions = null;
+    // this.fetchProjectStatus();
+    this.fetchProjectStage();
     this.fetchOpportunityManagers();
     this.fetchProjectbyCompany();
+    this.OnStageSelectProjectstatus(event);
+    this.fetchOpprNameOnCompanySelect(event)
   }
 
-  // fetchProjectStatus() {
-  //   this.selectedStatus = '';
-  //   this.filterService.getprojectStatus().subscribe((res: any) => {
-  //     if (res?.message === "success") {
-  //       this.statusOptions = res?.data.map((status: any) => ({
-  //         label: status.name,
-  //         value: status.id,
-  //       }));
-  //     } else {
-  //       this.statusOptions = [];
-  //     }
-  //   });
-  // }
 
-  getProjectStage() {
+  fetchProjectStage() {
     this.projectStageOptions = [];
     this.MasterTableservice.getProjectStage().subscribe((res: any) => {
       if (res?.message == "success") {
@@ -83,11 +73,11 @@ export class SearchFilterComponent {
       }
     })
   }
-   // ---------------get project status------------------------//
-   OnStageSelectProjectstatus(event) {
-   // this.projectStatusOptions = [];
+  // ---------------get project status------------------------//
+  OnStageSelectProjectstatus(event) {
+    // this.projectStatusOptions = [];
     const selectedStageId = event.value;
-    this.isProjectStageSelected=!! selectedStageId;
+    this.isProjectStageSelected = !!selectedStageId;
     this.MasterTableservice.getProjectStatus(selectedStageId).subscribe((res: any) => {
       if (res?.message == "success") {
         this.statusOptions = res?.data;
