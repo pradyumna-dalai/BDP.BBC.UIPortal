@@ -26,9 +26,7 @@ export class ProjectComponent {
   displayDateRangeDialog = false;
   selectedStartDate: Date;
   selectedEndDate: Date;
-  
-  //selectedPredefinedDateRange: any; // You can change the type as needed
-  
+  //selectedPredefinedDateRange: any; 
   dateRange: Date[];
   endDateString: string;
   startDateString: string;
@@ -39,7 +37,8 @@ export class ProjectComponent {
     { label: 'Custom', value: 'custom' },
   ];
 
-  selectedPredefinedDateRange: SelectItem; // You can change the type as needed
+  selectedPredefinedDateRange: SelectItem; 
+  confirmationHeader: string;
   onDateRangeSelect(event: any) {}
 
   formatDate(date: Date): string {
@@ -55,26 +54,33 @@ export class ProjectComponent {
     this.fetchAllProjectDetails();
      this.selectedPredefinedDateRange = this.predefinedDateRanges[0];
   }
-  confirm(val: string, itemId: string) {
-    if (val == 'copy') {
-      this.confirmationService.confirm({
-        message: 'Are you sure that you want to copy this project?',
-        accept: () => {
+  
+confirm(action: string, itemId?: string): void {
+    let confirmationMessage: string;
+    let header: string;
+  
+    if (action === 'copy') {
+      confirmationMessage = 'Are you sure that you want to copy this project?';
+      header = 'Copy Project';
+    } else if (action === 'delete') {
+      confirmationMessage = 'Are you sure that you want to delete this project?';
+      header = 'Delete Project';
+    }
+  
+    this.confirmationHeader = header;
+    this.confirmationService.confirm({
+      message: confirmationMessage,
+      accept: () => {
+        if (action === 'copy') {
           this.router.navigateByUrl('/create-project');
-        }
-      });
-    }
-    if (val == 'delete') {
-      this.confirmationService.confirm({
-        message: 'Are you sure that you want delete this project?',
-        accept: () => {
+        } else if (action === 'delete') {
           this.rowDisabledState[itemId] = true;
-
         }
-      });
-    }
-
+      },
+      header: this.confirmationHeader,
+    });
   }
+  
   setPredefinedDateRange(label: string) {
     switch (label) {
       case 'Last 1 Year':
@@ -105,7 +111,7 @@ export class ProjectComponent {
     this.projectsService.getAllProjectDetails().subscribe((res: any) => {
       if (res?.message == "success") {
         this.proejctdetails = res?.data.map((item: any) => {
-          const opportunityManagers = item.projectInformation.opportunityManager?.map(manager => manager.name).join(', ');
+          const opportunityManagers = item.projectInformation?.opportunityManager?.map(manager => manager?.name).join(', ');
           //console.log('opp',opportunityManagers);
           const formattedStartDate = this.datePipe.transform(item.projectInformation?.startDate, 'dd-MM-yyyy');
           const formattedEndDate = this.datePipe.transform(item.projectInformation?.endDate, 'dd-MM-yyyy');
@@ -115,7 +121,7 @@ export class ProjectComponent {
             proj_name: item.projectInformation?.projectName,
             oppourtunity_name: item.projectInformation?.opportunityName?.name,
             proj_stage: item.projectInformation?.projectStage?.name,
-            proj_status: item.status?.name,
+            proj_status: item.projectInformation?.projectStatus?.name,
             oppourtunity_manager: opportunityManagers,
             start_date: formattedStartDate,
             end_date: formattedEndDate,

@@ -11,6 +11,7 @@ import { MasterTableService } from 'src/app/services/master-table.service';
 export class SearchFilterComponent {
   sidebarVisible: boolean = false;
   showAdvancedSearch: boolean = false;
+  selectedStage: any;
   selectedStatus: string;
   selectedProject: any;
   selectedManager: any;
@@ -21,15 +22,18 @@ export class SearchFilterComponent {
   projectSuggestions: any[] = [];
   managerOptions: any[]
   opportunityManagers: any[];
+  projectStageOptions:any[];
   isCompanySelected: boolean = false;
+  isProjectStageSelected:boolean=false;
   constructor(private filterService: FilterService, public MasterTableservice: MasterTableService) {
 
   }
 
   ngOnInit() {
-    this.fetchProjectStatus();
+   // this.fetchProjectStatus();
     this.fetchOpportunityManagers();
     this.fetchProjectbyCompany();
+    this.getProjectStage();
   }
 
   searchProjects(query: string) {
@@ -49,25 +53,49 @@ export class SearchFilterComponent {
     this.managerOptions = null;
     this.opportunityManagers = null;
     console.log("Filters cleared.");
-    this.fetchProjectStatus();
+    this.projectStageOptions=null;
+   // this.fetchProjectStatus();
     this.fetchOpportunityManagers();
     this.fetchProjectbyCompany();
   }
 
-  fetchProjectStatus() {
-    this.selectedStatus = '';
-    this.filterService.getprojectStatus().subscribe((res: any) => {
-      if (res?.message === "success") {
-        this.statusOptions = res?.data.map((status: any) => ({
-          label: status.name,
-          value: status.id,
-        }));
+  // fetchProjectStatus() {
+  //   this.selectedStatus = '';
+  //   this.filterService.getprojectStatus().subscribe((res: any) => {
+  //     if (res?.message === "success") {
+  //       this.statusOptions = res?.data.map((status: any) => ({
+  //         label: status.name,
+  //         value: status.id,
+  //       }));
+  //     } else {
+  //       this.statusOptions = [];
+  //     }
+  //   });
+  // }
+
+  getProjectStage() {
+    this.projectStageOptions = [];
+    this.MasterTableservice.getProjectStage().subscribe((res: any) => {
+      if (res?.message == "success") {
+        this.projectStageOptions = res?.data;
+      } else {
+        this.projectStageOptions = [];
+      }
+    })
+  }
+   // ---------------get project status------------------------//
+   OnStageSelectProjectstatus(event) {
+   // this.projectStatusOptions = [];
+    const selectedStageId = event.value;
+    this.isProjectStageSelected=!! selectedStageId;
+    this.MasterTableservice.getProjectStatus(selectedStageId).subscribe((res: any) => {
+      if (res?.message == "success") {
+        this.statusOptions = res?.data;
       } else {
         this.statusOptions = [];
       }
-    });
+    })
   }
-
   fetchProjectbyCompany() {
     this.projectSuggestions = [];
     this.MasterTableservice.getCompany().subscribe((res: any) => {
