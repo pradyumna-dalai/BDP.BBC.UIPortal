@@ -65,6 +65,69 @@
                             ],
                             "outputHashing": "all"
                         },
+                        "test": {
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "3mb",
+                                    "maximumError": "5mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "6kb",
+                                    "maximumError": "10kb"
+                                }
+                            ],
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environments/environment.test.ts"
+                                }
+                            ],
+                            "outputHashing": "all"
+                        },
+                        "dev": {
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "3mb",
+                                    "maximumError": "5mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "6kb",
+                                    "maximumError": "10kb"
+                                }
+                            ],
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environments/environment.dev.ts"
+                                }
+                            ],
+                            "outputHashing": "all"
+                        },
+                        "demo": {
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "3mb",
+                                    "maximumError": "5mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "6kb",
+                                    "maximumError": "10kb"
+                                }
+                            ],
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environments/environment.demo.ts"
+                                }
+                            ],
+                            "outputHashing": "all"
+                        },
                         "development": {
                             "buildOptimizer": false,
                             "optimization": false,
@@ -79,11 +142,22 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "browserTarget": "poseidon-ng:build"
+                        "browserTarget": "poseidon-ng:build",
+                        "port":80
+
                     },
                     "configurations": {
                         "production": {
                             "browserTarget": "poseidon-ng:build:production"
+                        },
+                        "test": {
+                            "browserTarget": "poseidon-ng:build:test"
+                        },
+                        "dev": {
+                            "browserTarget": "poseidon-ng:build:dev"
+                        },
+                        "demo": {
+                            "browserTarget": "poseidon-ng:build:demo"
                         },
                         "development": {
                             "browserTarget": "poseidon-ng:build:development"

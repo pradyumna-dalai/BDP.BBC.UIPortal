@@ -1,5 +1,5 @@
 export const environment = {
-    production: false,
+   //demo: true,
   
     sessionInfoInterval: 25 * 60 * 1000,
     sessionTimeoutInterval: 5 * 60 * 1000,
