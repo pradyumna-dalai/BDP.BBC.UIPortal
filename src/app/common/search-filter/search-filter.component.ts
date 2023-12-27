@@ -125,4 +125,39 @@ export class SearchFilterComponent {
     })
   }
 
+  applyFilter(){
+    // const body ={
+      
+    //     "status": {
+    //         "id": this.selectedStatus
+    //     }
+    //     ,
+    //     "projectName": this.projectName,
+    //     "opportunityName": {
+    //         "id": this.selectedManager
+    //     }
+    
+    // }
+    const body = 
+      {
+        "status": {
+            "id": 1
+        }
+        ,
+        "projectName": "BBC",
+        "opportunityName": {
+            "id": 1
+        }
+    }
+    
+    console.log(body)
+    this.filterService.getFiltersSearchData(body).subscribe((res: any) => {
+      if (res?.message === "success") {
+     
+      } else {
+     
+      }
+    })
+  }
+
 }
