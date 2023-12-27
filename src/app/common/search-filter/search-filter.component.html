@@ -58,7 +58,10 @@
   </div>
 </p-sidebar>
 
-<p-button (click)="sidebarVisible = true" class="bdp-filter-button" label="Show filters"><img
-    src='assets/layout/images/filter.svg' style="width: 70px;
-        height: 25px;
-        margin-right: 1px;"></p-button>
+    <button pButton pRipple  (click)="sidebarVisible = true" class="mr-2 mb-2 filter-button">
+      <div class="centerContent">
+        <span style="margin-right: 8px;">Show Filters</span><i class="pi pi-filter icon-with-margin"></i>
+      </div>
+    </button>
+
+   

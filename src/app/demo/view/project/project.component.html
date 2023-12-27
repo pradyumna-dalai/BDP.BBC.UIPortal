@@ -17,7 +17,7 @@
     </div>
     <div class="col-6" style="display: flex;justify-content: flex-end;">
       <button type="button" pButton pRipple label="Export Excel" (click)="toggleDateRangeSelection()"
-        class="mr-2 mb-2"></button>
+        class="mr-2 mb-2 btnwidth"></button>
 
       <div *ngIf="showDateRangeSelection" class="custom-date-range-dropdown">
         <p-dropdown [options]="predefinedDateRanges" [(ngModel)]="selectedPredefinedDateRange" optionLabel="label"
