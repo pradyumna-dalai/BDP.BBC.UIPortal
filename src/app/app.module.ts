@@ -110,6 +110,8 @@ import { NodeService } from './demo/service/nodeservice';
 import { SearchFilterComponent } from './common/search-filter/search-filter.component';
 import { CreateProjectComponent } from './demo/view/project/create-project/create-project.component';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+import { ChargeCodeComponent } from './demo/master-data/charge-code/charge-code.component';
+
 
 
 
@@ -218,7 +220,8 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
         GlossaryComponent,
         CreateBbComponent,
         SearchFilterComponent,
-        CreateProjectComponent
+        CreateProjectComponent,
+        ChargeCodeComponent
 
     ],
     providers: [

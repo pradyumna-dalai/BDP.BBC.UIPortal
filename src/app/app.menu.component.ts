@@ -2,20 +2,28 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { MenuService } from './app.menu.service';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
     selector: 'app-menu',
     template: `
         <ul class="layout-menu">
-            <li *ngFor="let item of menuItems" app-menuitem [item]="item" [index]="item.id" [root]="true"></li>
+            <li *ngFor="let item of menuItems" app-menuitem [item]="item" [index]="item.id" [root]="true" [class.active]="isMenuItemActive(item.routerLink)"></li>
         </ul>
-    `
+    `,styles: [`
+        .active {
+            background-color: #007bff; /* Apply your active state styling here */
+            color: #fff; /* Text color for active state */
+        }
+    `]
 })
 export class AppMenuComponent implements OnInit {
 
     menuItems: MenuItem[] = [];
 
-    constructor(private menuService: MenuService) { }
+    constructor(private menuService: MenuService,private router: Router) { 
+        
+    }
 
     ngOnInit() {
         this.menuService.getMenuItems().subscribe(apiMenuItems => {
@@ -61,7 +69,7 @@ export class AppMenuComponent implements OnInit {
         }
         switch (name.toLowerCase()) {
             case 'building blocks':
-                return ['/'];
+                return ['/building-block'];
             case 'project':
                 return ['/project'];
             case 'administration':
@@ -72,5 +80,19 @@ export class AppMenuComponent implements OnInit {
                 return ['/uikit'];
         }
     }
+    isMenuItemActive(routerLink: any[]): boolean {
+        // Check if the current route is the same as the provided routerLink
+        if (this.router.isActive(this.router.createUrlTree(routerLink), true)) {
+            return true;
+        }
+    
+        // Check if the current route is the default route ('/') and the provided routerLink is ['/']
+        if (this.router.isActive('', true) && JSON.stringify(routerLink) === JSON.stringify(['/'])) {
+            return true;
+        }
+    
+        return false;
+    }
+    
 
 }
