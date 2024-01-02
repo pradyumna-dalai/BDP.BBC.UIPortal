@@ -524,7 +524,7 @@
 </div>
 
 <!-- import from excel dialog -->
-<p-dialog header="Import Excel" [(visible)]="visible" [style]="{width: '70vw'}">
+<p-dialog header="Import Excel" [(visible)]="visible" [style]="{width: '50vw'}">
     <!-- <div class="page-under-construction">
         <img src="assets/layout/images/page-under-construction.jpg" alt="No Building Blocks Found">
     </div> -->
@@ -536,22 +536,39 @@
     </ng-template>
     <hr>
     <div>
-        <div>
-            <h6><b>Instructions</b></h6>
-
-            <ul class="list">
+        <div class="p-fluid grid">
+            <!-- Left Column -->
+            <div class="col-12 md:col-12">
+            <div class="custom-container">
+                <h6><b>Instructions</b></h6>
+                <ul class="list">
                 <li>Maximum File Size: 5MB</li>
-                <li>File Format: 5MB: CSV(Shipments pushed through CSV will be available for tracking within 5 hours)
-                </li>
-            </ul>
-            <ol class="list" type="1">
+                <li>File Format: 5MB: CSV(Shipments pushed through CSV will be available for tracking within 5 hours)</li>
+                </ul>
+                <ol class="list" type="1">
                 <li>Make sure Data's are validated</li>
-                <li>Keep file name recognisable</li>
+                <li>Keep file name recognizable</li>
                 <li>Avoid uploading incomplete file</li>
-            </ol>
-
+                </ol>
+            </div>
+            </div>
+            <!-- Right Column -->
+            <div class="col-12 md:col-12">
+            <div class="custom-container">
+                <h6><b>Upload</b></h6>
+                <p-fileUpload name="demo[]" [multiple]="false" [showUploadButton]="false" (onSelect)="onUpload($event)"
+                accept=".xls, .xlsx" >
+                <ng-template pTemplate="content">
+                   
+                </ng-template>
+                </p-fileUpload>
+                <br>
+        <p-progressBar *ngIf="uploadInProgress" mode="indeterminate" [style]="{'height': '6px', 'marginBottom':'1rem'}">
+        </p-progressBar>
+            </div>
+            </div>
         </div>
-        <div style="display: flex; justify-content: center;">
+        <div class="">
             <!-- <div class="demo-container p-4">
                 <button pButton pRipple type="button" *ngIf="addDiv"
                     [disabled]="template_title?.length >255 || subject?.length >255 || email_to==''||template_title==''||template_type==''||message==''||subject==''"
