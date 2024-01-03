@@ -1,17 +1,136 @@
-.align{
-    margin-top: -9px;
-    border-top: 0.5px solid rgb(211, 208, 208);
+.align {
+  margin-top: -9px;
+  border-top: 0.5px solid rgb(211, 208, 208);
 }
+
+.custom-date-range-dropdown {
+  position: absolute;
+  top: 230px;
+  right: 50px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  z-index: 1000;
+  width: 250px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.custom-date-range-dropdown p-calendar,
+.custom-date-range-dropdown p-dropdown {
+  margin-bottom: 10px;
+  margin-left: 15px;
+}
+
+.custom-date-range-dropdown.active {
+  display: block;
+}
+
+.custom-date-range-dropdown button[type="button"][label="Cancel"] {
+  margin-left: 28px;
+  background-color: rgb(199, 196, 196);
+  color: white;
+}
+
+.custom-date-range-content {
+  margin-top: 10px;
+}
+
+.date-range-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 :host ::ng-deep .p-paginator {
-    justify-content: flex-end;
-  }
-  .disabled {
-    opacity: 0.5; /* You can adjust the opacity or use other styles to visually indicate the disabled state */
-    cursor: not-allowed;
-  }
-  .sticky-header {
-    position: sticky;
-    top: 0;
-    background-color: #f8f9fa; /* Adjust the background color as needed */
-    z-index: 100;
-  }
+  justify-content: flex-end;
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.sticky-header {
+  position: sticky;
+  top: 0;
+  background-color: #f8f9fa;
+  z-index: 100;
+}
+
+.date-range-display {
+  margin-left: 10px;
+  font-style: italic;
+  color: #555;
+}
+
+:host ::ng-deep .p-dialog {
+  height: 550px;
+  width: 550px;
+}
+
+.selected {
+  background-color: #e6e6e6;
+}
+
+.date-range-dialog-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.predefined-date-ranges {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 10px;
+}
+
+.predefined-date-ranges div {
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.predefined-date-ranges div:hover {
+  background-color: #e6e6e6;
+}
+
+.predefined-date-ranges .selected {
+  background-color: #4285f4;
+  color: #fff;
+}
+
+.custom-date-range {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+button {
+  background-color: #4285f4;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #3c78d8;
+}
+
+::ng-deep .p-datepicker {
+  //transform-origin: center top !important;
+  top: 1px !important;
+  left: -360px !important;
+  width: 200% !important;
+}
+
+.custom-date-range-dropdown p-calendar {
+  margin-left: 50px;
+}
+.btnwidth{
+  width: 126px;
+}

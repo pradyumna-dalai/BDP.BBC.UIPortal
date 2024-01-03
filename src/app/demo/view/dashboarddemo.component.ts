@@ -5,6 +5,8 @@ import { TreeNode } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { CreateBuildingBlockService } from 'src/app/services/create-buildingBlock/create-building-block.service';
 import { Accordion } from 'primeng/accordion';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
     templateUrl: './dashboard.component.html',
@@ -83,8 +85,49 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
 
 
     private filterTreeData(data: TreeNode[], searchText: string): TreeNode[] {
-        return data.filter(node => node.label.toLowerCase().includes(searchText.toLowerCase()));
+        if (!data) {
+            return [];
+        }
+    
+        return data
+            .map(node => this.filterNode(node, searchText))
+            .filter(filteredNode => filteredNode !== null);
     }
+    
+    private filterNode(node: TreeNode, searchText: string): TreeNode | null {
+        if (!node) {
+            return null;
+        }
+    
+        if (node.data?.type === 4 && node.label.toLowerCase().includes(searchText.toLowerCase())) {
+            return {
+                ...node,
+                children: this.filterChildNodes(node.children, searchText),
+            };
+        }
+    
+        const filteredChildren = this.filterChildNodes(node.children, searchText);
+    
+        if (filteredChildren.length > 0) {
+            return {
+                ...node,
+                children: filteredChildren,
+            };
+        }
+    
+        return null;
+    }
+    
+    private filterChildNodes(children: TreeNode[] | undefined, searchText: string): TreeNode[] {
+        if (!children) {
+            return [];
+        }
+    
+        return children
+            .map(childNode => this.filterNode(childNode, searchText))
+            .filter(filteredNode => filteredNode !== null);
+    }
+    
 
     onCardClick(val) {
         if (val == 'scoping') {

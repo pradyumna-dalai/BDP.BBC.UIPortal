@@ -35,9 +35,9 @@ export class MasterTableService {
   }
 
   // ********************master data:  Project *********************//
-  public getProjectStatus() {
+  public getProjectStatus(projectStageId:string) {
 
-    return this.http.get<any>(url+settings.AppRoutes.Auth.getProjectStatus);
+    return this.http.get<any>(url+projectStageId+`/`+settings.AppRoutes.Auth.getProjectStatus);
   }
   public getRegion() {
 

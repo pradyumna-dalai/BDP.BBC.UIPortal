@@ -26,6 +26,15 @@ export class CreateBuildingBlockService {
     return this.http.get<any>(`${url}${settings.AppRoutes.Auth.getbuildingBlockDetailsView}/${blockId}`);
 
   }
+  scopingCradImportExcel(body) {
+
+    return this.http.post<any>(url+settings.AppRoutes.Auth.scopingCradImportExcel,body);
+  }
+
+  commercialCradImportExcel(body) {
+
+    return this.http.post<any>(url+settings.AppRoutes.Auth.commercialCradImportExcel,body);
+  }
 
 
 
