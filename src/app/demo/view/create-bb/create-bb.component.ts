@@ -32,7 +32,8 @@ export class CreateBbComponent {
   showScopingCrad: boolean = true;
   showCommercialCrad: boolean = false;
   showOperationCrad: boolean = false;
-  visible: boolean = false;
+  visibleSC: boolean = false;
+  visibleCC: boolean = false;
   product_name: any;
   selected: boolean = true;
 
@@ -67,6 +68,8 @@ export class CreateBbComponent {
   uploadedFiles: any[] = [];
   uploadInProgress: boolean = false;
   excelData: any;
+  excelDataSheet2:any;
+  excelDataSheet1: any;
 
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
     public MasterTableservice: MasterTableService, private confirmationService: ConfirmationService,
@@ -103,18 +106,20 @@ export class CreateBbComponent {
     this.getModeOfTransport();
 
   }
-  uploadFile() {
-    // this.uploadModal = true;
-    this.uploadedFiles = []
-}
-onUpload(event: any) {
+ 
+onUploadSCExcel(event: any) {
   for (const file of event.files) {
     this.uploadedFiles.push(file);
   }
-
-  this.makeApiServiceCall();
+  this.makeScopingCardApiServiceCall();
 }
-makeApiServiceCall(){
+  onUploadCCExcel(event: any) {
+    for (const file of event.files) {
+      this.uploadedFiles.push(file);
+    }
+   this.makeCommercialCardApiServiceCall();
+}
+makeScopingCardApiServiceCall(){
   this.uploadInProgress = true;
   const formData: FormData = new FormData();
   formData.append('file', this.uploadedFiles[0]);
@@ -132,9 +137,21 @@ makeApiServiceCall(){
       this.configurables = this.excelData["Configurable"];
       this.stakeholders_audience = this.excelData["Stakeholders / Audience"];
       this.selectedMod = this.excelData["Mode of Transport"];
-      // console.log(this.selectedMod);
+     // Find the selected mode of transport from the existing data with case-insensitive search
+    //  const selectedModData = this.mot.find(item => 
+    //   item.name.toLowerCase() === this.excelData["Mode of Transport"].toLowerCase()
+    // );
 
-      this.visible = false;
+    // if (selectedModData) {
+    //   // Update the selected mode of transport
+    //   this.selectedMod = selectedModData.id;
+
+    // } else {
+    //   // Handle the case when the mode of transport is not found in the existing data
+    //   console.log("Mode of transport not found in the existing data");
+    // }
+
+      this.visibleSC = false;
       // Reset the upload screen
       this.resetUploadScreen();
       this.uploadInProgress = false;
@@ -144,15 +161,73 @@ makeApiServiceCall(){
     }
   })
 }
+makeCommercialCardApiServiceCall()
+{
+  this.uploadInProgress = true;
+  const formData: FormData = new FormData();
+  formData.append('file', this.uploadedFiles[0]);
+  this.createBuildingBlockservice.commercialCradImportExcel(formData).subscribe((res: any) => {
+  
+    if (res?.message == "Excel Upload Sucessfully") {
+      this.excelDataSheet2 = res?.data.Sheet2
+      this.excelDataSheet1 = res?.data.Sheet1
+
+       // Update UI variables with the response data
+      this.standard_service = this.excelDataSheet2["Standard Service"];
+      this.sow = this.excelDataSheet2["SOW"];
+      this.pre_requisite_info = this.excelDataSheet2["Pre-requsites information"];
+      this.combined_value = this.excelDataSheet2["Combined Value"];
+      this.do_s = this.excelDataSheet2["Dos"];
+      this.don_s = this.excelDataSheet2["Don'ts"];
+      this.cconfigurables = this.excelDataSheet2["Configurable"];
+
+      this.seervice_desc = this.excelDataSheet1["Service Description"];
+      this.customer_requirement = this.excelDataSheet1["Customer Requirements"];
+      this.cvalue_to_psa_bdp = this.excelDataSheet1["PSA BDP Value Statement"];
+       this.selectedMod = this.excelDataSheet1["Mode of Transport"];
+     
+
+      // this.selectedMod = this.excelDataSheet1["Mode of Transport"].map((item) => item.id);
+      // console.log(this.selectedMod);
+     
+  
+     // Find the selected mode of transport from the existing data with case-insensitive search
+    //  const selectedModData = this.mot.find(item => 
+    //   item.name.toLowerCase() === this.excelData["Mode of Transport"].toLowerCase()
+    // );
+
+    // if (selectedModData) {
+    //   // Update the selected mode of transport
+    //   this.selectedMod = selectedModData.id;
+
+    // } else {
+    //   // Handle the case when the mode of transport is not found in the existing data
+    //   console.log("Mode of transport not found in the existing data");
+    // }
+
+      this.visibleCC = false;
+      // Reset the upload screen
+      this.resetUploadScreen();
+      this.uploadInProgress = false;
+     
+    } else {
+      console.log("error");
+    }
+  }) 
+}
+
 resetUploadScreen() {
 
   this.uploadedFiles = [];
   
 }
 
-  showDialog() {
-    this.visible = true;
+showDialogScopingCard() {
+    this.visibleSC = true;
   }
+showDialogCommercialCard() {
+  this.visibleCC = true;
+}
   confirm() {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to cancel this page?',

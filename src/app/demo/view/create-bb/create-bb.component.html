@@ -58,7 +58,7 @@
             <h5>Scoping Card</h5>
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
-            <a (click)="showDialog()" style="text-decoration: underline;">Import From Excel</a>
+            <a (click)="showDialogScopingCard()" style="text-decoration: underline;">Import From Excel</a>
         </div>
     </div>
     <hr class="align">
@@ -260,7 +260,7 @@
             <h5>Commercial Card</h5>
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
-            <a (click)="showDialog()" style="text-decoration: underline;">Import From Excel</a>
+            <a (click)="showDialogCommercialCard()" style="text-decoration: underline;">Import From Excel</a>
         </div>
     </div>
     <hr class="align">
@@ -523,8 +523,8 @@
 
 </div>
 
-<!-- import from excel dialog -->
-<p-dialog header="Import Excel" [(visible)]="visible" [style]="{width: '50vw'}">
+<!-- import from excel dialog(Scoping Card) -->
+<p-dialog header="Import Excel" [(visible)]="visibleSC" [style]="{width: '50vw'}">
     <!-- <div class="page-under-construction">
         <img src="assets/layout/images/page-under-construction.jpg" alt="No Building Blocks Found">
     </div> -->
@@ -556,7 +556,7 @@
             <div class="col-12 md:col-12">
             <div class="custom-container">
                 <h6><b>Upload</b></h6>
-                <p-fileUpload name="demo[]" [multiple]="false" [showUploadButton]="false" (onSelect)="onUpload($event)"
+                <p-fileUpload name="demo[]" [multiple]="false" [showUploadButton]="false" (onSelect)="onUploadSCExcel($event)"
                 accept=".xls, .xlsx" >
                 <ng-template pTemplate="content">
                    
@@ -588,4 +588,71 @@
 
     </div>
 </p-dialog>
+<!-- import from excel dialog(Commercial Card) -->
+<p-dialog header="Import Excel" [(visible)]="visibleCC" [style]="{width: '50vw'}">
+    <!-- <div class="page-under-construction">
+        <img src="assets/layout/images/page-under-construction.jpg" alt="No Building Blocks Found">
+    </div> -->
+    <ng-template pTemplate="header">
+        <div style="width: 100%;">
+            <h5 style="display: contents;">Import From Excels</h5>&nbsp;&nbsp;&nbsp;
+            <h5 style="display: contents;"><a href="*" style="text-decoration: underline;">Download Sample File</a></h5>
+        </div>
+    </ng-template>
+    <hr>
+    <div>
+        <div class="p-fluid grid">
+            <!-- Left Column -->
+            <div class="col-12 md:col-12">
+            <div class="custom-container">
+                <h6><b>Instructions</b></h6>
+                <ul class="list">
+                <li>Maximum File Size: 5MB</li>
+                <li>File Format: 5MB: CSV(Shipments pushed through CSV will be available for tracking within 5 hours)</li>
+                </ul>
+                <ol class="list" type="1">
+                <li>Make sure Data's are validated</li>
+                <li>Keep file name recognizable</li>
+                <li>Avoid uploading incomplete file</li>
+                </ol>
+            </div>
+            </div>
+            <!-- Right Column -->
+            <div class="col-12 md:col-12">
+            <div class="custom-container">
+                <h6><b>Upload</b></h6>
+                <p-fileUpload name="demo[]" [multiple]="false" [showUploadButton]="false" (onSelect)="onUploadCCExcel($event)"
+                accept=".xls, .xlsx" >
+                <ng-template pTemplate="content">
+                   
+                </ng-template>
+                </p-fileUpload>
+                <br>
+        <p-progressBar *ngIf="uploadInProgress" mode="indeterminate" [style]="{'height': '6px', 'marginBottom':'1rem'}">
+        </p-progressBar>
+            </div>
+            </div>
+        </div>
+        <div class="">
+            <!-- <div class="demo-container p-4">
+                <button pButton pRipple type="button" *ngIf="addDiv"
+                    [disabled]="template_title?.length >255 || subject?.length >255 || email_to==''||template_title==''||template_type==''||message==''||subject==''"
+                    label="Save" (click)="addTemplate()" class="d-block mx-auto">
+                </button>
+                <button pButton pRipple type="button" label="Update" *ngIf="updateDiv"
+                    [disabled]="template_title?.length >255 || subject?.length >255 || email_to==''||template_title==''||template_type==''||message==''||subject==''"
+                    class="d-block mx-auto" (click)="updateTemplate()">
+                </button>
+            </div> -->
+            <!-- <div class="demo-container p-4">
+                <button pButton pRipple type="button" (click)="reset()" label="Reset"
+                    class="d-block mx-auto"></button>
+            </div> -->
+        </div>
+
+
+    </div>
+</p-dialog>
+
+
 <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
