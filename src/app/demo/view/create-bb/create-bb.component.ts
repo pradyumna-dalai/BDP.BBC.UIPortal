@@ -136,20 +136,6 @@ makeScopingCardApiServiceCall(){
       this.deliverables = this.excelData["Deliverables"];
       this.configurables = this.excelData["Configurable"];
       this.stakeholders_audience = this.excelData["Stakeholders / Audience"];
-      this.selectedMod = this.excelData["Mode of Transport"];
-     // Find the selected mode of transport from the existing data with case-insensitive search
-    //  const selectedModData = this.mot.find(item => 
-    //   item.name.toLowerCase() === this.excelData["Mode of Transport"].toLowerCase()
-    // );
-
-    // if (selectedModData) {
-    //   // Update the selected mode of transport
-    //   this.selectedMod = selectedModData.id;
-
-    // } else {
-    //   // Handle the case when the mode of transport is not found in the existing data
-    //   console.log("Mode of transport not found in the existing data");
-    // }
 
       this.visibleSC = false;
       // Reset the upload screen
@@ -184,7 +170,6 @@ makeCommercialCardApiServiceCall()
       this.seervice_desc = this.excelDataSheet1["Service Description"];
       this.customer_requirement = this.excelDataSheet1["Customer Requirements"];
       this.cvalue_to_psa_bdp = this.excelDataSheet1["PSA BDP Value Statement"];
-       this.selectedMod = this.excelDataSheet1["Mode of Transport"];
      
 
       // this.selectedMod = this.excelDataSheet1["Mode of Transport"].map((item) => item.id);
