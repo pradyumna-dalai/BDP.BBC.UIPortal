@@ -138,9 +138,20 @@ makeApiServiceCall(){
       // Reset the upload screen
       this.resetUploadScreen();
       this.uploadInProgress = false;
+      this.messageService.add({
+        key: 'successToast',
+        severity: 'success',
+        summary: 'Success!',
+        detail: 'Excel Uploaded Sucessfully.'
+      });
      
     } else {
-      console.log("error");
+      this.messageService.add({
+        key: 'errorToast',
+        severity: 'error',
+        summary: 'Error!',
+        detail: 'Something Went Wrong'
+      });
     }
   })
 }
