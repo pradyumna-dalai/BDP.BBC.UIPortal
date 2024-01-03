@@ -130,6 +130,7 @@ makeScopingCardApiServiceCall(){
 
        // Update UI variables with the response data
       this.seervice_desc = this.excelData["Service Description"];
+      
       this.value_to_psa_bdp = this.excelData["Value to PSA BDP"];
       this.customer_requirement = this.excelData["Customer Requirements"];
       this.parameters = this.excelData["Parameters"];
