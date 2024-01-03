@@ -1,6 +1,6 @@
 {
     "/api": {
-      "target": "ec2-54-86-49-91.compute-1.amazonaws.com:5000",
+      "target": "54.86.49.91:5000",
       "secure": false
     }
   }
