@@ -5,9 +5,7 @@ import { MasterTableService } from './../../../services/master-table.service';
 import { CreateBuildingBlockService } from './../../../services/create-buildingBlock/create-building-block.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { environment } from '../../../../environments/environment';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { FileUpload } from 'primeng/fileupload';
+import * as XLSX from 'xlsx';
 
 
 @Component({
@@ -64,6 +62,8 @@ export class CreateBbComponent {
   isEditMode: boolean = false;
   buildingBlockId: string | null = null;
   formattedErrors: any;
+  excelData: any[][] = null;
+  isDataUploaded = false;
 
   uploadedFiles: any[] = [];
   uploadInProgress: boolean = false;
@@ -635,7 +635,6 @@ showDialogCommercialCard() {
 
   saveAsBuildingBlock() {
     this.buildingBlockId = this.route.snapshot.paramMap.get('id');
- 
      if (this.selectedMod == "" || this.selectedMod == undefined || this.selectedMod == null) {
       var mod = []
     } else {
@@ -870,6 +869,33 @@ showDialogCommercialCard() {
 
   isSaveAsDraftDisabled(): boolean {
     return this.status === 2;
+  }
+
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.readExcelFile(file);
+    }
+    this.isDataUploaded = true;
+  }
+
+  readExcelFile(file: File) {
+    const reader: FileReader = new FileReader();
+    reader.onload = (e: any) => {
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, { type: 'array' });
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+      this.excelData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  uploadExcel() {
+    // You can handle the uploaded Excel data here as needed
+    console.log('Uploaded Excel Data:', this.excelData);
+    this.isDataUploaded = true;
   }
 
 }
