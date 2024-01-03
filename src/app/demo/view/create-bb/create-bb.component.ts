@@ -127,9 +127,10 @@ makeScopingCardApiServiceCall() {
   formData.append('file', this.uploadedFiles[0]);
   this.createBuildingBlockservice.scopingCradImportExcel(formData).subscribe(
     (res: any) => {
-      if (res?.message === 'Excel Upload Successfully') {
+      if (res?.message === 'Excel Upload Sucessfully') {
         // Process successful response
-
+console.log("hh");
+this.excelData = res?.data;
         // Update UI variables with the response data
         this.seervice_desc = this.excelData['Service Description'];
         this.value_to_psa_bdp = this.excelData["Value to PSA BDP"];
@@ -238,9 +239,8 @@ makeCommercialCardApiServiceCall() {
   formData.append('file', this.uploadedFiles[0]);
   this.createBuildingBlockservice.commercialCradImportExcel(formData).subscribe(
     (res: any) => {
-      if (res?.message === 'Excel Upload Successfully') {
+      if (res?.message === 'Excel Upload Sucessfully') {
         // Process successful response
-
         this.excelDataSheet2 = res?.data.Sheet2;
         this.excelDataSheet1 = res?.data.Sheet1;
 
