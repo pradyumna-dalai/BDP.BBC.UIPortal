@@ -38,6 +38,8 @@ export namespace AppRoutes {
 
         public static readonly scopingCradImportExcel = "upload-excel";
 
+        public static readonly commercialCradImportExcel = "upload-commercial-card";
+
 
 
         //--------------------Project filter--------//
