@@ -3,7 +3,7 @@
 
 # Trigger on all branches
 trigger:
-- 'dev'
+- 'demo'
 
 # Use latest Ubuntu image
 pool:
