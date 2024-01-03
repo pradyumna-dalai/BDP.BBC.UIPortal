@@ -119,86 +119,181 @@ onUploadSCExcel(event: any) {
     }
    this.makeCommercialCardApiServiceCall();
 }
-makeScopingCardApiServiceCall(){
+
+makeScopingCardApiServiceCall() {
   this.uploadInProgress = true;
   const formData: FormData = new FormData();
   formData.append('file', this.uploadedFiles[0]);
-  this.createBuildingBlockservice.scopingCradImportExcel(formData).subscribe((res: any) => {
-  
-    if (res?.message == "Excel Upload Sucessfully") {
-      this.excelData = res?.data
+  this.createBuildingBlockservice.scopingCradImportExcel(formData).subscribe(
+    (res: any) => {
+      if (res?.message === 'Excel Upload Successfully') {
+        // Process successful response
 
-       // Update UI variables with the response data
-      this.seervice_desc = this.excelData["Service Description"];
-      this.value_to_psa_bdp = this.excelData["Value to PSA BDP"];
-      this.customer_requirement = this.excelData["Customer Requirements"];
-      this.parameters = this.excelData["Parameters"];
-      this.deliverables = this.excelData["Deliverables"];
-      this.configurables = this.excelData["Configurable"];
-      this.stakeholders_audience = this.excelData["Stakeholders / Audience"];
+        // Update UI variables with the response data
+        this.seervice_desc = this.excelData['Service Description'];
+        this.value_to_psa_bdp = this.excelData["Value to PSA BDP"];
+        this.customer_requirement = this.excelData["Customer Requirements"];
+        this.parameters = this.excelData["Parameters"];
+        this.deliverables = this.excelData["Deliverables"];
+        this.configurables = this.excelData["Configurable"];
+        this.stakeholders_audience = this.excelData["Stakeholders / Audience"];
+        // ... (similar updates for other variables)
 
-      this.visibleSC = false;
+        this.visibleSC = false;
+        // Reset the upload screen
+        this.resetUploadScreen();
+        this.uploadInProgress = false;
+        this.messageService.add({
+          key: 'successToast',
+          severity: 'success',
+          summary: 'Success!',
+          detail: 'Excel Uploaded successfully.'
+        });
+      } else {
+        console.log('Unexpected response:', res);
+      }
+    },
+    (error) => {
+      // Handle HTTP errors here
+      if (error.status === 400) {
+        console.log('Bad Request Error:', error);
+        // Additional handling or user feedback for 400 errors
+        this.uploadInProgress = false;
+        this.messageService.add({
+          key: 'errorToast',
+          severity: 'error',
+          summary: 'Error!',
+          detail: 'Maximum field length exceeding 1000 character.'
+        });
+        return; 
+      } else {
+        console.log('Unexpected Error:', error);
+        // Handle other errors accordingly
+      }
+
       // Reset the upload screen
       this.resetUploadScreen();
       this.uploadInProgress = false;
-     
-    } else {
-      console.log("error");
     }
-  })
+  );
 }
-makeCommercialCardApiServiceCall()
-{
+// makeCommercialCardApiServiceCall()
+// {
+//   this.uploadInProgress = true;
+//   const formData: FormData = new FormData();
+//   formData.append('file', this.uploadedFiles[0]);
+//   this.createBuildingBlockservice.commercialCradImportExcel(formData).subscribe((res: any) => {
+  
+//     if (res?.message == "Excel Upload Sucessfully") {
+//       this.excelDataSheet2 = res?.data.Sheet2
+//       this.excelDataSheet1 = res?.data.Sheet1
+
+//        // Update UI variables with the response data
+//       this.standard_service = this.excelDataSheet2["Standard Service"];
+//       this.sow = this.excelDataSheet2["SOW"];
+//       this.pre_requisite_info = this.excelDataSheet2["Pre-requsites information"];
+//       this.combined_value = this.excelDataSheet2["Combined Value"];
+//       this.do_s = this.excelDataSheet2["Dos"];
+//       this.don_s = this.excelDataSheet2["Don'ts"];
+//       this.cconfigurables = this.excelDataSheet2["Configurable"];
+
+//       this.seervice_desc = this.excelDataSheet1["Service Description"];
+//       this.customer_requirement = this.excelDataSheet1["Customer Requirements"];
+//       this.cvalue_to_psa_bdp = this.excelDataSheet1["PSA BDP Value Statement"];
+     
+
+//       // this.selectedMod = this.excelDataSheet1["Mode of Transport"].map((item) => item.id);
+//       // console.log(this.selectedMod);
+     
+  
+//      // Find the selected mode of transport from the existing data with case-insensitive search
+//     //  const selectedModData = this.mot.find(item => 
+//     //   item.name.toLowerCase() === this.excelData["Mode of Transport"].toLowerCase()
+//     // );
+
+//     // if (selectedModData) {
+//     //   // Update the selected mode of transport
+//     //   this.selectedMod = selectedModData.id;
+
+//     // } else {
+//     //   // Handle the case when the mode of transport is not found in the existing data
+//     //   console.log("Mode of transport not found in the existing data");
+//     // }
+
+//       this.visibleCC = false;
+//       // Reset the upload screen
+//       this.resetUploadScreen();
+//       this.uploadInProgress = false;
+     
+//     } else {
+//       console.log("error");
+//     }
+//   }) 
+// }
+
+makeCommercialCardApiServiceCall() {
   this.uploadInProgress = true;
   const formData: FormData = new FormData();
   formData.append('file', this.uploadedFiles[0]);
-  this.createBuildingBlockservice.commercialCradImportExcel(formData).subscribe((res: any) => {
-  
-    if (res?.message == "Excel Upload Sucessfully") {
-      this.excelDataSheet2 = res?.data.Sheet2
-      this.excelDataSheet1 = res?.data.Sheet1
+  this.createBuildingBlockservice.commercialCradImportExcel(formData).subscribe(
+    (res: any) => {
+      if (res?.message === 'Excel Upload Successfully') {
+        // Process successful response
 
-       // Update UI variables with the response data
-      this.standard_service = this.excelDataSheet2["Standard Service"];
-      this.sow = this.excelDataSheet2["SOW"];
-      this.pre_requisite_info = this.excelDataSheet2["Pre-requsites information"];
-      this.combined_value = this.excelDataSheet2["Combined Value"];
-      this.do_s = this.excelDataSheet2["Dos"];
-      this.don_s = this.excelDataSheet2["Don'ts"];
-      this.cconfigurables = this.excelDataSheet2["Configurable"];
+        this.excelDataSheet2 = res?.data.Sheet2;
+        this.excelDataSheet1 = res?.data.Sheet1;
 
-      this.seervice_desc = this.excelDataSheet1["Service Description"];
-      this.customer_requirement = this.excelDataSheet1["Customer Requirements"];
-      this.cvalue_to_psa_bdp = this.excelDataSheet1["PSA BDP Value Statement"];
-     
+        // Update UI variables with the response data for Sheet2
+        this.standard_service = this.excelDataSheet2['Standard Service'];
+        this.sow = this.excelDataSheet2['SOW'];
+        this.pre_requisite_info = this.excelDataSheet2['Pre-requsites information'];
+        this.combined_value = this.excelDataSheet2['Combined Value'];
+        this.do_s = this.excelDataSheet2['Dos'];
+        this.don_s = this.excelDataSheet2["Don'ts"];
+        this.cconfigurables = this.excelDataSheet2['Configurable'];
 
-      // this.selectedMod = this.excelDataSheet1["Mode of Transport"].map((item) => item.id);
-      // console.log(this.selectedMod);
-     
-  
-     // Find the selected mode of transport from the existing data with case-insensitive search
-    //  const selectedModData = this.mot.find(item => 
-    //   item.name.toLowerCase() === this.excelData["Mode of Transport"].toLowerCase()
-    // );
+        // Update UI variables with the response data for Sheet1
+        this.seervice_desc = this.excelDataSheet1['Service Description'];
+        this.customer_requirement = this.excelDataSheet1['Customer Requirements'];
+        this.cvalue_to_psa_bdp = this.excelDataSheet1['PSA BDP Value Statement'];
 
-    // if (selectedModData) {
-    //   // Update the selected mode of transport
-    //   this.selectedMod = selectedModData.id;
+        this.visibleCC = false;
+        // Reset the upload screen
+        this.resetUploadScreen();
+        this.uploadInProgress = false;
+        this.messageService.add({
+          key: 'successToast',
+          severity: 'success',
+          summary: 'Success!',
+          detail: 'Excel Uploaded successfully.'
+        });
+      } else {
+        console.log('Unexpected response:', res);
+      }
+    },
+    (error) => {
+      // Handle HTTP errors here
+      if (error.status === 400) {
+        console.log('Bad Request Error:', error);
+        // Additional handling or user feedback for 400 errors
+        this.uploadInProgress = false;
+        this.messageService.add({
+          key: 'errorToast',
+          severity: 'error',
+          summary: 'Error!',
+          detail: 'Maximum field length exceeding 1000 character.'
+        });
+        return; 
+      } else {
+        console.log('Unexpected Error:', error);
+        // Handle other errors accordingly
+      }
 
-    // } else {
-    //   // Handle the case when the mode of transport is not found in the existing data
-    //   console.log("Mode of transport not found in the existing data");
-    // }
-
-      this.visibleCC = false;
       // Reset the upload screen
       this.resetUploadScreen();
       this.uploadInProgress = false;
-     
-    } else {
-      console.log("error");
     }
-  }) 
+  );
 }
 
 resetUploadScreen() {
