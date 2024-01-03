@@ -6,6 +6,7 @@ import { CreateBuildingBlockService } from './../../../services/create-buildingB
 import { ActivatedRoute, Router } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import * as XLSX from 'xlsx';
+import { HttpClient } from '@angular/common/http';
 
 
 @Component({
@@ -62,7 +63,7 @@ export class CreateBbComponent {
   isEditMode: boolean = false;
   buildingBlockId: string | null = null;
   formattedErrors: any;
-  excelData: any[][] = null;
+  excelDataOpration: any;
   isDataUploaded = false;
 
   uploadedFiles: any[] = [];
@@ -887,14 +888,14 @@ showDialogCommercialCard() {
       const workbook = XLSX.read(data, { type: 'array' });
       const sheetName = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[sheetName];
-      this.excelData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+      this.excelDataOpration = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
     };
     reader.readAsArrayBuffer(file);
   }
 
   uploadExcel() {
     // You can handle the uploaded Excel data here as needed
-    console.log('Uploaded Excel Data:', this.excelData);
+    console.log('Uploaded Excel Data:', this.excelDataOpration);
     this.isDataUploaded = true;
   }
 
