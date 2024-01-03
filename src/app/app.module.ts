@@ -111,7 +111,7 @@ import { SearchFilterComponent } from './common/search-filter/search-filter.comp
 import { CreateProjectComponent } from './demo/view/project/create-project/create-project.component';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { ChargeCodeComponent } from './demo/master-data/charge-code/charge-code.component';
-
+import { LocationsComponent } from './demo/master-data/locations/locations.component';
 
 
 
@@ -221,7 +221,8 @@ import { ChargeCodeComponent } from './demo/master-data/charge-code/charge-code.
         CreateBbComponent,
         SearchFilterComponent,
         CreateProjectComponent,
-        ChargeCodeComponent
+        ChargeCodeComponent,
+        LocationsComponent
 
     ],
     providers: [

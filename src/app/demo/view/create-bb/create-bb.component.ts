@@ -5,6 +5,9 @@ import { MasterTableService } from './../../../services/master-table.service';
 import { CreateBuildingBlockService } from './../../../services/create-buildingBlock/create-building-block.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { environment } from '../../../../environments/environment';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { FileUpload } from 'primeng/fileupload';
 
 
 @Component({
@@ -15,7 +18,6 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 })
 
 export class CreateBbComponent {
-
 
   isloading: boolean = false;
   routeItems: MenuItem[];
@@ -62,9 +64,13 @@ export class CreateBbComponent {
   buildingBlockId: string | null = null;
   formattedErrors: any;
 
+  uploadedFiles: any[] = [];
+  uploadInProgress: boolean = false;
+  excelData: any;
+
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
     public MasterTableservice: MasterTableService, private confirmationService: ConfirmationService,
-    public CreateBuildingBlockservice: CreateBuildingBlockService, private router: Router,
+    public CreateBuildingBlockservice: CreateBuildingBlockService, private router: Router,private httpClient: HttpClient,
     private route: ActivatedRoute, private createBuildingBlockservice: CreateBuildingBlockService, private sanitizer: DomSanitizer) {
       this.fetchBuildingBlockDetails('id');
     const id = this.route.snapshot.paramMap.get('id');
@@ -97,6 +103,52 @@ export class CreateBbComponent {
     this.getModeOfTransport();
 
   }
+  uploadFile() {
+    // this.uploadModal = true;
+    this.uploadedFiles = []
+}
+onUpload(event: any) {
+  for (const file of event.files) {
+    this.uploadedFiles.push(file);
+  }
+
+  this.makeApiServiceCall();
+}
+makeApiServiceCall(){
+  this.uploadInProgress = true;
+  const formData: FormData = new FormData();
+  formData.append('file', this.uploadedFiles[0]);
+  this.createBuildingBlockservice.scopingCradImportExcel(formData).subscribe((res: any) => {
+  
+    if (res?.message == "Excel Upload Sucessfully") {
+      this.excelData = res?.data
+
+       // Update UI variables with the response data
+      this.seervice_desc = this.excelData["Service Description"];
+      this.value_to_psa_bdp = this.excelData["Value to PSA BDP"];
+      this.customer_requirement = this.excelData["Customer Requirements"];
+      this.parameters = this.excelData["Parameters"];
+      this.deliverables = this.excelData["Deliverables"];
+      this.configurables = this.excelData["Configurable"];
+      this.stakeholders_audience = this.excelData["Stakeholders / Audience"];
+      this.selectedMod = this.excelData["Mode of Transport"];
+      // console.log(this.selectedMod);
+
+      this.visible = false;
+      // Reset the upload screen
+      this.resetUploadScreen();
+      this.uploadInProgress = false;
+     
+    } else {
+      console.log("error");
+    }
+  })
+}
+resetUploadScreen() {
+
+  this.uploadedFiles = [];
+  
+}
 
   showDialog() {
     this.visible = true;
@@ -497,60 +549,7 @@ export class CreateBbComponent {
 
   saveAsBuildingBlock() {
     this.buildingBlockId = this.route.snapshot.paramMap.get('id');
-    // if (this.product_name == '' || this.product_name == null || this.product_name == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Product name is a required field.`, detail: '' });
-    // }
-    // if (this.product_scope == '' || this.product_scope == null || this.product_scope == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Product scope is a required field.`, detail: '' });
-    // }
-    // if (this.product_category == '' || this.product_category == null || this.product_category == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Product category is a required field.`, detail: '' });
-    // }
-    // if (this.building_block_name == '' || this.building_block_name == null || this.building_block_name == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Building block is a required field.`, detail: '' });
-    // }
-    // if (this.seervice_desc == '' || this.seervice_desc == null || this.seervice_desc == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Service Description in Scoping Card is a required field.`, detail: '' });
-    // }
-    // if (this.customer_requirement == '' || this.customer_requirement == null || this.customer_requirement == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Customer Requirement  in Scoping Card is a required field.`, detail: '' });
-    // }
-    // if (this.deliverables == '' || this.deliverables == null || this.deliverables == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Deliverables in Scoping Card is a required field.`, detail: '' });
-    // }
-    // if (this.stakeholders_audience == '' || this.stakeholders_audience == null || this.stakeholders_audience == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Stakeholders Audience in Scoping Card is a required field.`, detail: '' });
-    // }
-    // if (this.value_to_psa_bdp == '' || this.value_to_psa_bdp == null || this.value_to_psa_bdp == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Value to PSA BDP in Scoping Card is a required field.`, detail: '' });
-    // }
-    // if (this.parameters == '' || this.parameters == null || this.parameters == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Parameter in Scoping Card  is a required field.`, detail: '' });
-    // }
-    // if (this.configurables == '' || this.configurables == null || this.configurables == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Configurables in Scoping Card is a required field.`, detail: '' });
-    // }
-    // if (this.standard_service == '' || this.standard_service == null || this.standard_service == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Standard Service in Commercial Card is a required field.`, detail: '' });
-    // }
-    // if (this.sow == '' || this.sow == null || this.sow == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Sow in Commercial Card is a required field.`, detail: '' });
-    // }
-    // if (this.pre_requisite_info == '' || this.pre_requisite_info == null || this.pre_requisite_info == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `PreRequisite Information in Commercial Card is a required field.`, detail: '' });
-    // }
-    // if (this.combined_value == '' || this.combined_value == null || this.combined_value == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Combined Value in Commercial Card is a required field.`, detail: '' });
-    // }
-    // if (this.do_s == '' || this.do_s == null || this.do_s == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Do in Commercial Card is a required field.`, detail: '' });
-    // }
-    // if (this.don_s == '' || this.don_s == null || this.don_s == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Dont's in Commercial Card is a required field.`, detail: '' });
-    // }
-    // if (this.cconfigurables == '' || this.cconfigurables == null || this.cconfigurables == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Configurables in Commercial Card is a required field.`, detail: '' });
-    // }
+ 
      if (this.selectedMod == "" || this.selectedMod == undefined || this.selectedMod == null) {
       var mod = []
     } else {

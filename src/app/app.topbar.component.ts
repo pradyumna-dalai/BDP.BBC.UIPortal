@@ -5,7 +5,7 @@ import {AppMainComponent} from './app.main.component';
 @Component({
     selector: 'app-topbar',
     template: `
-        <div class="layout-topbar">
+        <div class="layout-topbar" style="z-index:9000;">
             <div class="layout-topbar-wrapper">
                 <div class="layout-topbar-left">
                     <div class="layout-topbar-logo" id="logolink" style="cursor: pointer; outline: none;" routerLink="/">

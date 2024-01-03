@@ -36,6 +36,8 @@ export namespace AppRoutes {
 
         public static readonly getbuildingBlockDetailsView = "buildingblock";
 
+        public static readonly scopingCradImportExcel = "upload-excel";
+
 
 
         //--------------------Project filter--------//
