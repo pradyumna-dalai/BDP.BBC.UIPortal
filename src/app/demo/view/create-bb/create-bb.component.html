@@ -241,17 +241,17 @@
             class="p-button-outlined mr-2 mb-2"></button>
         </div>
       </div>
-    <div *ngIf="excelData">
+    <div *ngIf="excelDataOpration">
   <h3>Uploaded Excel Content</h3>
   <div class="excel-container">
     <table class="excel-table">
       <thead>
-        <tr *ngFor="let headerRow of excelData.slice(0, 1)">
+        <tr *ngFor="let headerRow of excelDataOpration.slice(0, 1)">
           <th *ngFor="let headerCell of headerRow">{{ headerCell }}</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let row of excelData.slice(1)">
+        <tr *ngFor="let row of excelDataOpration.slice(1)">
           <td *ngFor="let cell of row">{{ cell }}</td>
         </tr>
       </tbody>
