@@ -5,9 +5,8 @@ import { MasterTableService } from './../../../services/master-table.service';
 import { CreateBuildingBlockService } from './../../../services/create-buildingBlock/create-building-block.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { environment } from '../../../../environments/environment';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { FileUpload } from 'primeng/fileupload';
+import * as XLSX from 'xlsx';
+import { HttpClient } from '@angular/common/http';
 
 
 @Component({
@@ -64,6 +63,8 @@ export class CreateBbComponent {
   isEditMode: boolean = false;
   buildingBlockId: string | null = null;
   formattedErrors: any;
+  excelDataOpration: any;
+  isDataUploaded = false;
 
   uploadedFiles: any[] = [];
   uploadInProgress: boolean = false;
@@ -127,9 +128,10 @@ makeScopingCardApiServiceCall() {
   formData.append('file', this.uploadedFiles[0]);
   this.createBuildingBlockservice.scopingCradImportExcel(formData).subscribe(
     (res: any) => {
-      if (res?.message === 'Excel Upload Successfully') {
+      if (res?.message === 'Excel Upload Sucessfully') {
         // Process successful response
-
+console.log("hh");
+this.excelData = res?.data;
         // Update UI variables with the response data
         this.seervice_desc = this.excelData['Service Description'];
         this.value_to_psa_bdp = this.excelData["Value to PSA BDP"];
@@ -187,9 +189,8 @@ makeCommercialCardApiServiceCall() {
   formData.append('file', this.uploadedFiles[0]);
   this.createBuildingBlockservice.commercialCradImportExcel(formData).subscribe(
     (res: any) => {
-      if (res?.message === 'Excel Upload Successfully') {
+      if (res?.message === 'Excel Upload Sucessfully') {
         // Process successful response
-
         this.excelDataSheet2 = res?.data.Sheet2;
         this.excelDataSheet1 = res?.data.Sheet1;
 
@@ -433,132 +434,132 @@ showDialogCommercialCard() {
       }
 
     }
-    if (!this.isEditorContentValid(body.scopingCard.serviceDescription)) {                                                  
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Invalid service description. Please enter meaningful content.'
-      });
-      return; 
-    }
-    if (!this.isEditorContentValid(body.scopingCard.customerRequirement)) {                                                  
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Invalid Customer Requirement. Please enter meaningful content.'
-      });
-      return; 
-    }
-    if (!this.isEditorContentValid(body.scopingCard.deliverable)) {                                                  
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Invalid Deliverable. Please enter meaningful content.'
-      });
-      return; 
-    }
-    if (!this.isEditorContentValid(body.scopingCard.stakeHolder)) {                                                  
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Invalid StakeHolder. Please enter meaningful content.'
-      });
-      return; 
-    }
-    if (!this.isEditorContentValid(body.scopingCard.valueToPsaBdp)) {                                                  
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Invalid valueToPsaBdp. Please enter meaningful content.'
-      });
-      return; 
-    }
-    if (!this.isEditorContentValid(body.scopingCard.parameter)) {                                                  
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Invalid Parameter. Please enter meaningful content.'
-      });
-      return; 
-    }
-    if (!this.isEditorContentValid(body.scopingCard.configurable)) {                                                  
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Invalid Parameter. Please enter meaningful content.'
-      });
-      return; 
-    }
-    if (!this.isEditorContentValid(body.commercialCard.psaBdpValueStatement)) {                                                  
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Invalid PsaBdpValueStatement in Commercial Card. Please enter meaningful content.'
-      });
-      return; 
-    }
-    if (!this.isEditorContentValid(body.commercialCard.standardService)) {                                                  
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Invalid Standard Service in Commercial Card. Please enter meaningful content.'
-      });
-      return; 
-    }
-    if (!this.isEditorContentValid(body.commercialCard.sow)) {                                                  
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Invalid SOW in Commercial Card. Please enter meaningful content.'
-      });
-      return; 
-    }
-    if (!this.isEditorContentValid(body.commercialCard.prerequisiteInfo)) {                                                  
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Invalid PrerequisiteInfo in Commercial Card. Please enter meaningful content.'
-      });
-      return; 
-    }
-    if (!this.isEditorContentValid(body.commercialCard.combinedValue)) {                                                  
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Invalid CombinedValue in Commercial Card. Please enter meaningful content.'
-      });
-      return; 
-    }
-    if (!this.isEditorContentValid(body.commercialCard.dos)) {                                                  
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Invalid Dos in Commercial Card. Please enter meaningful content.'
-      });
-      return; 
-    }
-    if (!this.isEditorContentValid(body.commercialCard.donts)) {                                                  
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Invalid Donts in Commercial Card. Please enter meaningful content.'
-      });
-      return; 
-    }
+    // if (!this.isEditorContentValid(body.scopingCard.serviceDescription)) {                                                  
+    //   this.messageService.add({
+    //     key: 'errorToast',
+    //     severity: 'error',
+    //     summary: 'Error!',
+    //     detail: 'Invalid service description. Please enter meaningful content.'
+    //   });
+    //   return; 
+    // }
+    // if (!this.isEditorContentValid(body.scopingCard.customerRequirement)) {                                                  
+    //   this.messageService.add({
+    //     key: 'errorToast',
+    //     severity: 'error',
+    //     summary: 'Error!',
+    //     detail: 'Invalid Customer Requirement. Please enter meaningful content.'
+    //   });
+    //   return; 
+    // }
+    // if (!this.isEditorContentValid(body.scopingCard.deliverable)) {                                                  
+    //   this.messageService.add({
+    //     key: 'errorToast',
+    //     severity: 'error',
+    //     summary: 'Error!',
+    //     detail: 'Invalid Deliverable. Please enter meaningful content.'
+    //   });
+    //   return; 
+    // }
+    // if (!this.isEditorContentValid(body.scopingCard.stakeHolder)) {                                                  
+    //   this.messageService.add({
+    //     key: 'errorToast',
+    //     severity: 'error',
+    //     summary: 'Error!',
+    //     detail: 'Invalid StakeHolder. Please enter meaningful content.'
+    //   });
+    //   return; 
+    // }
+    // if (!this.isEditorContentValid(body.scopingCard.valueToPsaBdp)) {                                                  
+    //   this.messageService.add({
+    //     key: 'errorToast',
+    //     severity: 'error',
+    //     summary: 'Error!',
+    //     detail: 'Invalid valueToPsaBdp. Please enter meaningful content.'
+    //   });
+    //   return; 
+    // }
+    // if (!this.isEditorContentValid(body.scopingCard.parameter)) {                                                  
+    //   this.messageService.add({
+    //     key: 'errorToast',
+    //     severity: 'error',
+    //     summary: 'Error!',
+    //     detail: 'Invalid Parameter. Please enter meaningful content.'
+    //   });
+    //   return; 
+    // }
+    // if (!this.isEditorContentValid(body.scopingCard.configurable)) {                                                  
+    //   this.messageService.add({
+    //     key: 'errorToast',
+    //     severity: 'error',
+    //     summary: 'Error!',
+    //     detail: 'Invalid Parameter. Please enter meaningful content.'
+    //   });
+    //   return; 
+    // }
+    // if (!this.isEditorContentValid(body.commercialCard.psaBdpValueStatement)) {                                                  
+    //   this.messageService.add({
+    //     key: 'errorToast',
+    //     severity: 'error',
+    //     summary: 'Error!',
+    //     detail: 'Invalid PsaBdpValueStatement in Commercial Card. Please enter meaningful content.'
+    //   });
+    //   return; 
+    // }
+    // if (!this.isEditorContentValid(body.commercialCard.standardService)) {                                                  
+    //   this.messageService.add({
+    //     key: 'errorToast',
+    //     severity: 'error',
+    //     summary: 'Error!',
+    //     detail: 'Invalid Standard Service in Commercial Card. Please enter meaningful content.'
+    //   });
+    //   return; 
+    // }
+    // if (!this.isEditorContentValid(body.commercialCard.sow)) {                                                  
+    //   this.messageService.add({
+    //     key: 'errorToast',
+    //     severity: 'error',
+    //     summary: 'Error!',
+    //     detail: 'Invalid SOW in Commercial Card. Please enter meaningful content.'
+    //   });
+    //   return; 
+    // }
+    // if (!this.isEditorContentValid(body.commercialCard.prerequisiteInfo)) {                                                  
+    //   this.messageService.add({
+    //     key: 'errorToast',
+    //     severity: 'error',
+    //     summary: 'Error!',
+    //     detail: 'Invalid PrerequisiteInfo in Commercial Card. Please enter meaningful content.'
+    //   });
+    //   return; 
+    // }
+    // if (!this.isEditorContentValid(body.commercialCard.combinedValue)) {                                                  
+    //   this.messageService.add({
+    //     key: 'errorToast',
+    //     severity: 'error',
+    //     summary: 'Error!',
+    //     detail: 'Invalid CombinedValue in Commercial Card. Please enter meaningful content.'
+    //   });
+    //   return; 
+    // }
+    // if (!this.isEditorContentValid(body.commercialCard.dos)) {                                                  
+    //   this.messageService.add({
+    //     key: 'errorToast',
+    //     severity: 'error',
+    //     summary: 'Error!',
+    //     detail: 'Invalid Dos in Commercial Card. Please enter meaningful content.'
+    //   });
+    //   return; 
+    // }
+    // if (!this.isEditorContentValid(body.commercialCard.donts)) {                                                  
+    //   this.messageService.add({
+    //     key: 'errorToast',
+    //     severity: 'error',
+    //     summary: 'Error!',
+    //     detail: 'Invalid Donts in Commercial Card. Please enter meaningful content.'
+    //   });
+    //   return; 
+    // }
     this.CreateBuildingBlockservice.saveEditBuildingBlocks(1, body).subscribe(
       (res) => {
         console.log('Draft saved successfully:', res);
@@ -654,60 +655,6 @@ showDialogCommercialCard() {
 
   saveAsBuildingBlock() {
     this.buildingBlockId = this.route.snapshot.paramMap.get('id');
-    // if (this.product_name == '' || this.product_name == null || this.product_name == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Product name is a required field.`, detail: '' });
-    // }
-    // if (this.product_scope == '' || this.product_scope == null || this.product_scope == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Product scope is a required field.`, detail: '' });
-    // }
-    // if (this.product_category == '' || this.product_category == null || this.product_category == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Product category is a required field.`, detail: '' });
-    // }
-    // if (this.building_block_name == '' || this.building_block_name == null || this.building_block_name == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Building block is a required field.`, detail: '' });
-    // }
-    // if (this.seervice_desc == '' || this.seervice_desc == null || this.seervice_desc == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Service Description in Scoping Card is a required field.`, detail: '' });
-    // }
-    // if (this.customer_requirement == '' || this.customer_requirement == null || this.customer_requirement == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Customer Requirement  in Scoping Card is a required field.`, detail: '' });
-    // }
-    // if (this.deliverables == '' || this.deliverables == null || this.deliverables == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Deliverables in Scoping Card is a required field.`, detail: '' });
-    // }
-    // if (this.stakeholders_audience == '' || this.stakeholders_audience == null || this.stakeholders_audience == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Stakeholders Audience in Scoping Card is a required field.`, detail: '' });
-    // }
-    // if (this.value_to_psa_bdp == '' || this.value_to_psa_bdp == null || this.value_to_psa_bdp == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Value to PSA BDP in Scoping Card is a required field.`, detail: '' });
-    // }
-    // if (this.parameters == '' || this.parameters == null || this.parameters == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Parameter in Scoping Card  is a required field.`, detail: '' });
-    // }
-    // if (this.configurables == '' || this.configurables == null || this.configurables == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Configurables in Scoping Card is a required field.`, detail: '' });
-    // }
-    // if (this.standard_service == '' || this.standard_service == null || this.standard_service == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Standard Service in Commercial Card is a required field.`, detail: '' });
-    // }
-    // if (this.sow == '' || this.sow == null || this.sow == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Sow in Commercial Card is a required field.`, detail: '' });
-    // }
-    // if (this.pre_requisite_info == '' || this.pre_requisite_info == null || this.pre_requisite_info == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `PreRequisite Information in Commercial Card is a required field.`, detail: '' });
-    // }
-    // if (this.combined_value == '' || this.combined_value == null || this.combined_value == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Combined Value in Commercial Card is a required field.`, detail: '' });
-    // }
-    // if (this.do_s == '' || this.do_s == null || this.do_s == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Do in Commercial Card is a required field.`, detail: '' });
-    // }
-    // if (this.don_s == '' || this.don_s == null || this.don_s == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Dont's in Commercial Card is a required field.`, detail: '' });
-    // }
-    // if (this.cconfigurables == '' || this.cconfigurables == null || this.cconfigurables == undefined) {
-    //   return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Configurables in Commercial Card is a required field.`, detail: '' });
-    // }
      if (this.selectedMod == "" || this.selectedMod == undefined || this.selectedMod == null) {
       var mod = []
     } else {
@@ -942,6 +889,33 @@ showDialogCommercialCard() {
 
   isSaveAsDraftDisabled(): boolean {
     return this.status === 2;
+  }
+
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.readExcelFile(file);
+    }
+    this.isDataUploaded = true;
+  }
+
+  readExcelFile(file: File) {
+    const reader: FileReader = new FileReader();
+    reader.onload = (e: any) => {
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, { type: 'array' });
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+      this.excelDataOpration = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  uploadExcel() {
+    // You can handle the uploaded Excel data here as needed
+    console.log('Uploaded Excel Data:', this.excelDataOpration);
+    this.isDataUploaded = true;
   }
 
 }

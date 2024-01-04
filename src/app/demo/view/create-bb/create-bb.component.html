@@ -232,9 +232,32 @@
 
 </div>
 <div class="card" *ngIf="this.showOperationCrad==true">
-    <div class="page-under-construction">
-        <img src="assets/layout/images/page-under-construction.jpg" alt="No Building Blocks Found">
-    </div>
+    <div class="grid" >
+        <!-- ... your existing content ... -->
+        <div class="col-6" *ngIf="!isDataUploaded">
+          <!-- Add the file input and upload button -->
+          <input type="file" (change)="onFileSelected($event)" accept=".xlsx" />
+          <button pButton pRipple type="button" label="Upload Excel" (click)="uploadExcel()"
+            class="p-button-outlined mr-2 mb-2"></button>
+        </div>
+      </div>
+    <div *ngIf="excelData">
+  <h3>Uploaded Excel Content</h3>
+  <div class="excel-container">
+    <table class="excel-table">
+      <thead>
+        <tr *ngFor="let headerRow of excelData.slice(0, 1)">
+          <th *ngFor="let headerCell of headerRow">{{ headerCell }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of excelData.slice(1)">
+          <td *ngFor="let cell of row">{{ cell }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
     <div class="grid">
         <div class="col-6">
             <button pButton pRipple type="button" label="Cancel" (click)="confirm()"
@@ -250,7 +273,14 @@
         </div>
     </div>
 </div>
-
+<!-- <div *ngIf="excelData">
+    <h3>Uploaded Excel Content</h3>
+    <table border="1">
+      <tr *ngFor="let row of excelData">
+        <td *ngFor="let cell of row">{{ cell }}</td>
+      </tr>
+    </table>
+  </div> -->
 <div class="card" *ngIf="this.showCommercialCrad==true">
     <!-- <div class="page-under-construction">
         <img src="assets/layout/images/page-under-construction.jpg" alt="No Building Blocks Found">
@@ -586,8 +616,7 @@
                 <button pButton pRipple type="button" (click)="reset()" label="Reset"
                     class="d-block mx-auto"></button>
             </div> -->
-        </div>
-
+        </div>    
 
     </div>
 </p-dialog>
@@ -598,7 +627,7 @@
     </div> -->
     <ng-template pTemplate="header">
         <div style="width: 100%;">
-            <h5 style="display: contents;">Import From Excels</h5>&nbsp;&nbsp;&nbsp;
+            <h5 style="display: contents;">Import From Excel</h5>&nbsp;&nbsp;&nbsp;
             <h5 style="display: contents;"><a href="*" style="text-decoration: underline;">Download Sample File</a></h5>
         </div>
     </ng-template>
