@@ -115,12 +115,18 @@ onUploadSCExcel(event: any) {
   }
   this.makeScopingCardApiServiceCall();
 }
+
   onUploadCCExcel(event: any) {
     for (const file of event.files) {
       this.uploadedFiles.push(file);
     }
    this.makeCommercialCardApiServiceCall();
 }
+onCancelClick() {
+  alert("kk");
+  this.showUploaderror = false;
+}
+
 
 makeScopingCardApiServiceCall() {
   this.uploadInProgress = true;
@@ -146,6 +152,7 @@ this.excelData = res?.data;
         // Reset the upload screen
         this.resetUploadScreen();
         this.uploadInProgress = false;
+        this.showUploaderror = false;
         this.messageService.add({
           key: 'successToast',
           severity: 'success',
@@ -163,13 +170,7 @@ this.excelData = res?.data;
         // Additional handling or user feedback for 400 errors
         this.uploadInProgress = false;
         this.showUploaderror = true;
-        this.messageService.add({
-          key: 'errorToast',
-          severity: 'error',
-          summary: 'Error!',
-          detail: 'Maximum field length exceeding 1000 character.'
-        });
-        return; 
+       
       } else {
         console.log('Unexpected Error:', error);
         // Handle other errors accordingly
@@ -212,6 +213,7 @@ makeCommercialCardApiServiceCall() {
         // Reset the upload screen
         this.resetUploadScreen();
         this.uploadInProgress = false;
+        this.showUploaderror = false;
         this.messageService.add({
           key: 'successToast',
           severity: 'success',
@@ -227,14 +229,7 @@ makeCommercialCardApiServiceCall() {
       if (error.status === 400) {
         console.log('Bad Request Error:', error);
         // Additional handling or user feedback for 400 errors
-        this.uploadInProgress = false;
-        this.messageService.add({
-          key: 'errorToast',
-          severity: 'error',
-          summary: 'Error!',
-          detail: 'Maximum field length exceeding 1000 character.'
-        });
-        return; 
+       this.showUploaderror = true;
       } else {
         console.log('Unexpected Error:', error);
         // Handle other errors accordingly
