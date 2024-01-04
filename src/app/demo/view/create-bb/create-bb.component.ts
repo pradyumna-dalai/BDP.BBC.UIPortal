@@ -438,87 +438,87 @@ showDialogCommercialCard() {
       }
 
     }
-    // if (!this.isEditorContentValid(body.scopingCard.serviceDescription)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid service description. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    // if (!this.isEditorContentValid(body.scopingCard.customerRequirement)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid Customer Requirement. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    // if (!this.isEditorContentValid(body.scopingCard.deliverable)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid Deliverable. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    // if (!this.isEditorContentValid(body.scopingCard.stakeHolder)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid StakeHolder. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    // if (!this.isEditorContentValid(body.scopingCard.valueToPsaBdp)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid valueToPsaBdp. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    // if (!this.isEditorContentValid(body.scopingCard.parameter)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid Parameter. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    // if (!this.isEditorContentValid(body.scopingCard.configurable)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid Parameter. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    // if (!this.isEditorContentValid(body.commercialCard.psaBdpValueStatement)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid PsaBdpValueStatement in Commercial Card. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    // if (!this.isEditorContentValid(body.commercialCard.standardService)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid Standard Service in Commercial Card. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
+    if (!this.isEditorContentValid(body.scopingCard.serviceDescription)) {                                                  
+      this.messageService.add({
+        key: 'errorToast',
+        severity: 'error',
+        summary: 'Error!',
+        detail: 'Invalid service description. Please enter meaningful content.'
+      });
+      return; 
+    }
+    if (!this.isEditorContentValid(body.scopingCard.customerRequirement)) {                                                  
+      this.messageService.add({
+        key: 'errorToast',
+        severity: 'error',
+        summary: 'Error!',
+        detail: 'Invalid Customer Requirement. Please enter meaningful content.'
+      });
+      return; 
+    }
+    if (!this.isEditorContentValid(body.scopingCard.deliverable)) {                                                  
+      this.messageService.add({
+        key: 'errorToast',
+        severity: 'error',
+        summary: 'Error!',
+        detail: 'Invalid Deliverable. Please enter meaningful content.'
+      });
+      return; 
+    }
+    if (!this.isEditorContentValid(body.scopingCard.stakeHolder)) {                                                  
+      this.messageService.add({
+        key: 'errorToast',
+        severity: 'error',
+        summary: 'Error!',
+        detail: 'Invalid StakeHolder. Please enter meaningful content.'
+      });
+      return; 
+    }
+    if (!this.isEditorContentValid(body.scopingCard.valueToPsaBdp)) {                                                  
+      this.messageService.add({
+        key: 'errorToast',
+        severity: 'error',
+        summary: 'Error!',
+        detail: 'Invalid valueToPsaBdp. Please enter meaningful content.'
+      });
+      return; 
+    }
+    if (!this.isEditorContentValid(body.scopingCard.parameter)) {                                                  
+      this.messageService.add({
+        key: 'errorToast',
+        severity: 'error',
+        summary: 'Error!',
+        detail: 'Invalid Parameter. Please enter meaningful content.'
+      });
+      return; 
+    }
+    if (!this.isEditorContentValid(body.scopingCard.configurable)) {                                                  
+      this.messageService.add({
+        key: 'errorToast',
+        severity: 'error',
+        summary: 'Error!',
+        detail: 'Invalid Configurables. Please enter meaningful content.'
+      });
+      return; 
+    }
+    if (!this.isEditorContentValid(body.commercialCard.psaBdpValueStatement)) {                                                  
+      this.messageService.add({
+        key: 'errorToast',
+        severity: 'error',
+        summary: 'Error!',
+        detail: 'Invalid PsaBdpValueStatement in Commercial Card. Please enter meaningful content.'
+      });
+      return; 
+    }
+    if (!this.isEditorContentValid(body.commercialCard.standardService)) {                                                  
+      this.messageService.add({
+        key: 'errorToast',
+        severity: 'error',
+        summary: 'Error!',
+        detail: 'Invalid Standard Service in Commercial Card. Please enter meaningful content.'
+      });
+      return; 
+    }
     // if (!this.isEditorContentValid(body.commercialCard.sow)) {                                                  
     //   this.messageService.add({
     //     key: 'errorToast',
@@ -528,42 +528,42 @@ showDialogCommercialCard() {
     //   });
     //   return; 
     // }
-    // if (!this.isEditorContentValid(body.commercialCard.prerequisiteInfo)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid PrerequisiteInfo in Commercial Card. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    // if (!this.isEditorContentValid(body.commercialCard.combinedValue)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid CombinedValue in Commercial Card. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    // if (!this.isEditorContentValid(body.commercialCard.dos)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid Dos in Commercial Card. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    // if (!this.isEditorContentValid(body.commercialCard.donts)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid Donts in Commercial Card. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
+    if (!this.isEditorContentValid(body.commercialCard.prerequisiteInfo)) {                                                  
+      this.messageService.add({
+        key: 'errorToast',
+        severity: 'error',
+        summary: 'Error!',
+        detail: 'Invalid PrerequisiteInfo in Commercial Card. Please enter meaningful content.'
+      });
+      return; 
+    }
+    if (!this.isEditorContentValid(body.commercialCard.combinedValue)) {                                                  
+      this.messageService.add({
+        key: 'errorToast',
+        severity: 'error',
+        summary: 'Error!',
+        detail: 'Invalid CombinedValue in Commercial Card. Please enter meaningful content.'
+      });
+      return; 
+    }
+    if (!this.isEditorContentValid(body.commercialCard.dos)) {                                                  
+      this.messageService.add({
+        key: 'errorToast',
+        severity: 'error',
+        summary: 'Error!',
+        detail: 'Invalid Dos in Commercial Card. Please enter meaningful content.'
+      });
+      return; 
+    }
+    if (!this.isEditorContentValid(body.commercialCard.donts)) {                                                  
+      this.messageService.add({
+        key: 'errorToast',
+        severity: 'error',
+        summary: 'Error!',
+        detail: 'Invalid Donts in Commercial Card. Please enter meaningful content.'
+      });
+      return; 
+    }
     this.CreateBuildingBlockservice.saveEditBuildingBlocks(1, body).subscribe(
       (res) => {
         console.log('Draft saved successfully:', res);
@@ -917,7 +917,7 @@ showDialogCommercialCard() {
   }
 
   uploadExcel() {
-    // You can handle the uploaded Excel data here as needed
+
     console.log('Uploaded Excel Data:', this.excelDataOpration);
     this.isDataUploaded = true;
   }
