@@ -556,6 +556,9 @@
             <div class="col-12 md:col-12">
             <div class="custom-container">
                 <h6><b>Upload</b></h6>
+                <div *ngIf="showUploaderror" style="color: red;">
+                    Maximum field length exceeding 1000 character
+                </div>
                 <p-fileUpload name="demo[]" [multiple]="false" [showUploadButton]="false" (onSelect)="onUploadSCExcel($event)"
                 accept=".xls, .xlsx" >
                 <ng-template pTemplate="content">
@@ -621,6 +624,9 @@
             <div class="col-12 md:col-12">
             <div class="custom-container">
                 <h6><b>Upload</b></h6>
+                <div *ngIf="uploadInProgress">
+                    Hi BDP user, how are you? How is the project coming along?
+                </div>
                 <p-fileUpload name="demo[]" [multiple]="false" [showUploadButton]="false" (onSelect)="onUploadCCExcel($event)"
                 accept=".xls, .xlsx" >
                 <ng-template pTemplate="content">

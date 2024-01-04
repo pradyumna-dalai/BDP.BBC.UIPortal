@@ -70,6 +70,7 @@ export class CreateBbComponent {
   excelData: any;
   excelDataSheet2:any;
   excelDataSheet1: any;
+  showUploaderror: boolean = false;
 
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
     public MasterTableservice: MasterTableService, private confirmationService: ConfirmationService,
@@ -159,6 +160,7 @@ makeScopingCardApiServiceCall() {
         console.log('Bad Request Error:', error);
         // Additional handling or user feedback for 400 errors
         this.uploadInProgress = false;
+        this.showUploaderror = true;
         this.messageService.add({
           key: 'errorToast',
           severity: 'error',
@@ -177,59 +179,7 @@ makeScopingCardApiServiceCall() {
     }
   );
 }
-// makeCommercialCardApiServiceCall()
-// {
-//   this.uploadInProgress = true;
-//   const formData: FormData = new FormData();
-//   formData.append('file', this.uploadedFiles[0]);
-//   this.createBuildingBlockservice.commercialCradImportExcel(formData).subscribe((res: any) => {
-  
-//     if (res?.message == "Excel Upload Sucessfully") {
-//       this.excelDataSheet2 = res?.data.Sheet2
-//       this.excelDataSheet1 = res?.data.Sheet1
 
-//        // Update UI variables with the response data
-//       this.standard_service = this.excelDataSheet2["Standard Service"];
-//       this.sow = this.excelDataSheet2["SOW"];
-//       this.pre_requisite_info = this.excelDataSheet2["Pre-requsites information"];
-//       this.combined_value = this.excelDataSheet2["Combined Value"];
-//       this.do_s = this.excelDataSheet2["Dos"];
-//       this.don_s = this.excelDataSheet2["Don'ts"];
-//       this.cconfigurables = this.excelDataSheet2["Configurable"];
-
-//       this.seervice_desc = this.excelDataSheet1["Service Description"];
-//       this.customer_requirement = this.excelDataSheet1["Customer Requirements"];
-//       this.cvalue_to_psa_bdp = this.excelDataSheet1["PSA BDP Value Statement"];
-     
-
-//       // this.selectedMod = this.excelDataSheet1["Mode of Transport"].map((item) => item.id);
-//       // console.log(this.selectedMod);
-     
-  
-//      // Find the selected mode of transport from the existing data with case-insensitive search
-//     //  const selectedModData = this.mot.find(item => 
-//     //   item.name.toLowerCase() === this.excelData["Mode of Transport"].toLowerCase()
-//     // );
-
-//     // if (selectedModData) {
-//     //   // Update the selected mode of transport
-//     //   this.selectedMod = selectedModData.id;
-
-//     // } else {
-//     //   // Handle the case when the mode of transport is not found in the existing data
-//     //   console.log("Mode of transport not found in the existing data");
-//     // }
-
-//       this.visibleCC = false;
-//       // Reset the upload screen
-//       this.resetUploadScreen();
-//       this.uploadInProgress = false;
-     
-//     } else {
-//       console.log("error");
-//     }
-//   }) 
-// }
 
 makeCommercialCardApiServiceCall() {
   this.uploadInProgress = true;
