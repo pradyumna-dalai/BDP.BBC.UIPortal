@@ -379,6 +379,7 @@
                     <button type="button" pButton pRipple label="Continue" (click)="activeIndex = 1"
                         class="mr-2 mb-2"></button>
                     <p-toast key="successToast"></p-toast>
+                    <p-toast key="errorToast"></p-toast>
                 </div>
             </div>
         </p-tabPanel>
@@ -590,10 +591,10 @@
                     Maximum field length exceeding 1000 character
                 </div>
                 <p-fileUpload name="demo[]" [multiple]="false" [showUploadButton]="false" (onSelect)="onUploadSCExcel($event)"
-                accept=".xls, .xlsx" (onCancel)="onCancelClick()">
-                <ng-template pTemplate="content">
-                  
-                </ng-template>
+                accept=".xls, .xlsx">
+                    <ng-template pTemplate="content">
+                    
+                    </ng-template>
                 </p-fileUpload>
                 <br>
         <p-progressBar *ngIf="uploadInProgress" mode="indeterminate" [style]="{'height': '6px', 'marginBottom':'1rem'}">

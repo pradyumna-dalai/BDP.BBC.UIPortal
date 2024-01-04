@@ -113,7 +113,7 @@ onUploadSCExcel(event: any) {
   for (const file of event.files) {
     this.uploadedFiles.push(file);
   }
-  this.makeScopingCardApiServiceCall();
+   this.makeScopingCardApiServiceCall();
 }
 
   onUploadCCExcel(event: any) {
@@ -123,7 +123,6 @@ onUploadSCExcel(event: any) {
    this.makeCommercialCardApiServiceCall();
 }
 onCancelClick() {
-  alert("kk");
   this.showUploaderror = false;
 }
 
@@ -136,8 +135,7 @@ makeScopingCardApiServiceCall() {
     (res: any) => {
       if (res?.message === 'Excel Upload Sucessfully') {
         // Process successful response
-console.log("hh");
-this.excelData = res?.data;
+        this.excelData = res?.data;
         // Update UI variables with the response data
         this.seervice_desc = this.excelData['Service Description'];
         this.value_to_psa_bdp = this.excelData["Value to PSA BDP"];
@@ -169,7 +167,13 @@ this.excelData = res?.data;
         console.log('Bad Request Error:', error);
         // Additional handling or user feedback for 400 errors
         this.uploadInProgress = false;
-        this.showUploaderror = true;
+        // this.showUploaderror = true;
+        this.messageService.add({
+          key: 'errorToast',
+          severity: 'error',
+          summary: 'Error!',
+          detail: 'Maximum field length exceeding 1000 character.'
+        });
        
       } else {
         console.log('Unexpected Error:', error);
@@ -229,7 +233,12 @@ makeCommercialCardApiServiceCall() {
       if (error.status === 400) {
         console.log('Bad Request Error:', error);
         // Additional handling or user feedback for 400 errors
-       this.showUploaderror = true;
+        this.messageService.add({
+          key: 'errorToast',
+          severity: 'error',
+          summary: 'Error!',
+          detail: 'Maximum field length exceeding 1000 character.'
+        });
       } else {
         console.log('Unexpected Error:', error);
         // Handle other errors accordingly
