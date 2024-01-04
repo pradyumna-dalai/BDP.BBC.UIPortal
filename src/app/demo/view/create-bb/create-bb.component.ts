@@ -632,7 +632,7 @@ showDialogCommercialCard() {
         this.product_category = details.data.category.id;
         this.onProductSelect(details.data.product.id);
         this.onScopeSelect(details.data.scope.id);
-        this.charge_code = details.data?.chargeCode?.id;
+        this.charge_code = details.data.chargeCode.id;
         this.seervice_desc = details.data.scopingCard.serviceDescription;
         this.customer_requirement = details.data.scopingCard.customerRequirement;
         this.deliverables = details.data.scopingCard.deliverable;
