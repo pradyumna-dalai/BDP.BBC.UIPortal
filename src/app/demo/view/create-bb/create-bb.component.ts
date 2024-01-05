@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { AppBreadcrumbService } from '../../../app.breadcrumb.service';
 import { MenuItem, MessageService, ConfirmationService } from 'primeng/api';
 import { MasterTableService } from './../../../services/master-table.service';
@@ -20,7 +20,7 @@ export class CreateBbComponent {
 
   isloading: boolean = false;
   routeItems: MenuItem[];
-
+  @ViewChild('fileInput') fileInput: any;
   mot: any;
   selectedMod: any;
   product_category: any;
@@ -33,6 +33,7 @@ export class CreateBbComponent {
   showOperationCrad: boolean = false;
   visibleSC: boolean = false;
   visibleCC: boolean = false;
+  visibleOperationBox:boolean=false;
   product_name: any;
   selected: boolean = true;
 
@@ -72,6 +73,8 @@ export class CreateBbComponent {
   excelDataSheet2:any;
   excelDataSheet1: any;
   showUploaderror: boolean = false;
+  selectedFile: any;
+ 
 
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
     public MasterTableservice: MasterTableService, private confirmationService: ConfirmationService,
@@ -896,14 +899,27 @@ showDialogCommercialCard() {
   }
 
 
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.readExcelFile(file);
-    }
-    this.isDataUploaded = true;
-  }
+//operation Card Details
 
+  showDialogOperationCard() {
+    this.visibleOperationBox = true;
+  }
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+  }
+  onUploadClick() {
+    if (this.selectedFile) {
+      this.readExcelFile(this.selectedFile);
+      this.visibleOperationBox = false; 
+      console.log('Uploaded Excel Data:', this.excelDataOpration);
+      this.isDataUploaded = true;
+    } else {
+      console.log('No file selected.');
+    }
+  }
+  onOperarationCancelClick() {
+    this.visibleOperationBox = false;
+  }
   readExcelFile(file: File) {
     const reader: FileReader = new FileReader();
     reader.onload = (e: any) => {
@@ -915,11 +931,5 @@ showDialogCommercialCard() {
     };
     reader.readAsArrayBuffer(file);
   }
-
-  uploadExcel() {
-
-    console.log('Uploaded Excel Data:', this.excelDataOpration);
-    this.isDataUploaded = true;
-  }
-
+  
 }

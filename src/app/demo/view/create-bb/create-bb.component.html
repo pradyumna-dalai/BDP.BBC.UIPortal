@@ -232,17 +232,24 @@
 
 </div>
 <div class="card" *ngIf="this.showOperationCrad==true">
+   <br>
     <div class="grid" >
+        <div class="col-7" style="display: flex;justify-content: flex-end;">
+            <a (click)="showDialogOperationCard()" style="text-decoration: underline;">Import From Excel</a>
+        </div>
+<br>
         <!-- ... your existing content ... -->
-        <div class="col-6" *ngIf="!isDataUploaded">
-          <!-- Add the file input and upload button -->
+        <!-- <div class="col-6" *ngIf="!isDataUploaded">
+       
           <input type="file" (change)="onFileSelected($event)" accept=".xlsx" />
           <button pButton pRipple type="button" label="Upload Excel" (click)="uploadExcel()"
             class="p-button-outlined mr-2 mb-2"></button>
-        </div>
+        </div> -->
       </div>
     <div *ngIf="excelDataOpration">
-  <h3>Uploaded Excel Content</h3>
+<br>
+  <h3 style="text-align: center;">Uploaded Excel Content</h3>
+<br>
   <div class="excel-container">
     <table class="excel-table">
       <thead>
@@ -259,7 +266,9 @@
   </div>
 </div>
     <div class="grid">
+    
         <div class="col-6">
+         
             <button pButton pRipple type="button" label="Cancel" (click)="confirm()"
                 class="p-button-outlined mr-2 mb-2"></button>
         </div>
@@ -273,14 +282,6 @@
         </div>
     </div>
 </div>
-<!-- <div *ngIf="excelData">
-    <h3>Uploaded Excel Content</h3>
-    <table border="1">
-      <tr *ngFor="let row of excelData">
-        <td *ngFor="let cell of row">{{ cell }}</td>
-      </tr>
-    </table>
-  </div> -->
 <div class="card" *ngIf="this.showCommercialCrad==true">
     <!-- <div class="page-under-construction">
         <img src="assets/layout/images/page-under-construction.jpg" alt="No Building Blocks Found">
@@ -710,6 +711,52 @@
 
     </div>
 </p-dialog>
+<p-dialog header="Import Excel" [(visible)]="visibleOperationBox" [style]="{width: '50vw'}">
+    <ng-template pTemplate="header">
+        <div style="width: 100%;">
+            <h5 style="display: contents;">Import From Excel</h5>&nbsp;&nbsp;&nbsp;
+            <!-- <h5 style="display: contents;"><a href="*" style="text-decoration: underline;">Download Sample File</a></h5> -->
+        </div>
+    </ng-template>
+    <hr>
+    <div>
+        <div class="p-fluid grid">
+            <div class="col-12 md:col-12">
+            <div class="custom-container">
+                <h6><b>Instructions</b></h6>
+                <ul class="list">
+                <li>Maximum File Size: 5MB</li>
+                <li>File Format: 5MB: CSV(Shipments pushed through CSV will be available for tracking within 5 hours)</li>
+                </ul>
+                <ol class="list" type="1">
+                <li>Make sure Data's are validated</li>
+                <li>Keep file name recognizable</li>
+                <li>Avoid uploading incomplete file</li>
+                </ol>
+            </div>
+            </div>
+            <div class="col-12 md:col-12">
+              <div class="custom-container">
+                <h6><b>Upload</b></h6>
+                <div *ngIf="showUploaderror" style="color: red;">
+                    Maximum field length exceeding 1000 character
+                </div>
+                <div class="card box">
+                    <div class="card-title">
+                       <button type="submit" pButton pRipple  (click)="fileInput.click()"
+                        class="mr-2 mb-2 btn"><i class="pi pi-plus"></i>Choose</button>
+                        <input type="file" #fileInput accept=".xlsx" (change)="onFileSelected($event)" style="display: none;" />
 
+                         <button type="submit" pButton pRipple 
+                        class="mr-2 mb-2 btn" (click)="onUploadClick()"><i class="pi pi-upload" ></i>Upload</button>
+                        <button type="submit" pButton pRipple 
+                        class="mr-2 mb-2 btn" (click)="onOperarationCancelClick()"><i class="pi pi-times"></i>Cancel</button>
+                    </div>
+                </div>
+             </div>
+            </div>
+        </div>
+    </div>
+</p-dialog>
 
 <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
