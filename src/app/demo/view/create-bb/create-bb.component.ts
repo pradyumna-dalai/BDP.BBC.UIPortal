@@ -75,6 +75,7 @@ export class CreateBbComponent {
   showUploaderror: boolean = false;
   selectedFile: any;
  
+  fileName: string;
 
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
     public MasterTableservice: MasterTableService, private confirmationService: ConfirmationService,
@@ -112,28 +113,30 @@ export class CreateBbComponent {
 
   }
  
-onUploadSCExcel(event: any) {
-  for (const file of event.files) {
-    this.uploadedFiles.push(file);
-  }
-   this.makeScopingCardApiServiceCall();
-}
 
-  onUploadCCExcel(event: any) {
-    for (const file of event.files) {
-      this.uploadedFiles.push(file);
-    }
-   this.makeCommercialCardApiServiceCall();
-}
+
+
 onCancelClick() {
   this.showUploaderror = false;
+  this.fileName = "";
 }
 
-
-makeScopingCardApiServiceCall() {
+onUploadSCExcel(event: any) {
+  const file:File = event.target.files[0];
+  if (file) {
+      this.fileName = file.name;
+      const formData = new FormData();
+      formData.append("file", file);
+      this.uploadFilesc = file;
+  }
+}
+uploadFilesc: File | null = null;
+makeScopingCardApiServiceCall()
+ {
+  this.fileName = this.uploadFilesc.name;
+  const formData = new FormData();
+  formData.append("file", this.uploadFilesc);
   this.uploadInProgress = true;
-  const formData: FormData = new FormData();
-  formData.append('file', this.uploadedFiles[0]);
   this.createBuildingBlockservice.scopingCradImportExcel(formData).subscribe(
     (res: any) => {
       if (res?.message === 'Excel Upload Sucessfully') {
@@ -171,12 +174,7 @@ makeScopingCardApiServiceCall() {
         // Additional handling or user feedback for 400 errors
         this.uploadInProgress = false;
         // this.showUploaderror = true;
-        this.messageService.add({
-          key: 'errorToast',
-          severity: 'error',
-          summary: 'Error!',
-          detail: 'Maximum field length exceeding 1000 character.'
-        });
+        this.showUploaderror = true;
        
       } else {
         console.log('Unexpected Error:', error);
@@ -190,17 +188,31 @@ makeScopingCardApiServiceCall() {
   );
 }
 
+uploadFilecc: File | null = null;
+onUploadCCExcel(event) 
+{
 
+    const file:File = event.target.files[0];
+    if (file) {
+        this.fileName = file.name;
+        const formData = new FormData();
+        formData.append("file", file);
+        this.uploadFilecc = file;
+    }
+}
 makeCommercialCardApiServiceCall() {
+
+  this.fileName = this.uploadFilecc.name;
+  const formData = new FormData();
+  formData.append("file", this.uploadFilecc);
   this.uploadInProgress = true;
-  const formData: FormData = new FormData();
-  formData.append('file', this.uploadedFiles[0]);
+
   this.createBuildingBlockservice.commercialCradImportExcel(formData).subscribe(
     (res: any) => {
       if (res?.message === 'Excel Upload Sucessfully') {
         // Process successful response
-        this.excelDataSheet2 = res?.data.Sheet2;
-        this.excelDataSheet1 = res?.data.Sheet1;
+        this.excelDataSheet1 = res?.data.sheet1;
+        this.excelDataSheet2 = res?.data.sheet2;
 
         // Update UI variables with the response data for Sheet2
         this.standard_service = this.excelDataSheet2['Standard Service'];
