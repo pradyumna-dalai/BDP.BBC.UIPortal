@@ -573,50 +573,47 @@
             <div class="custom-container">
                 <h6><b>Instructions</b></h6>
                 <ul class="list">
-                <li>Maximum File Size: 5MB</li>
-                <li>File Format: 5MB: CSV(Shipments pushed through CSV will be available for tracking within 5 hours)</li>
+                <li>Maximum File Size: 2MB</li>
+                <li>File Format: CSV</li>
                 </ul>
                 <ol class="list" type="1">
-                <li>Make sure Data's are validated</li>
+                <li>Make sure to provide valid data</li>
                 <li>Keep file name recognizable</li>
-                <li>Avoid uploading incomplete file</li>
                 </ol>
             </div>
             </div>
             <!-- Right Column -->
             <div class="col-12 md:col-12">
-            <div class="custom-container">
-                <h6><b>Upload</b></h6>
+                    <div class="custom-container">
+                        <h6><b>Upload</b></h6>
                 <div *ngIf="showUploaderror" style="color: red;">
                     Maximum field length exceeding 1000 character
                 </div>
-                <p-fileUpload name="demo[]" [multiple]="false" [showUploadButton]="false" (onSelect)="onUploadSCExcel($event)"
-                accept=".xls, .xlsx">
-                    <ng-template pTemplate="content">
-                    
-                    </ng-template>
-                </p-fileUpload>
-                <br>
-        <p-progressBar *ngIf="uploadInProgress" mode="indeterminate" [style]="{'height': '6px', 'marginBottom':'1rem'}">
-        </p-progressBar>
-            </div>
+                <div class="card box">
+                    <div class="card-title">
+                        <label for="fileUpload" class="custom-file-input">
+                            <i class="pi pi-plus" style="padding-right: 4px;"></i>Upload
+                        </label>
+                        <input type="file" id="fileUpload" (change)="onUploadSCExcel($event)" style="display: none;">
+                        <button type="submit" pButton pRipple class="mr-2 mb-2 btn" 
+                            [disabled]="!uploadFilesc" (click)="makeScopingCardApiServiceCall()">
+                            <i class="pi pi-upload"></i>Submit
+                        </button>
+                        <button type="submit" pButton pRipple class="mr-2 mb-2 btn" 
+                            [disabled]="!uploadFilesc" (click)="onCancelClick()">
+                            <i class="pi pi-times"></i>Cancel
+                        </button>
+                    </div>
+                    <div class="card-body">
+                       <div class="container">
+                        <p style="margin-top: 13px;">{{fileName}}</p>
                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
         </div>
         <div class="">
-            <!-- <div class="demo-container p-4">
-                <button pButton pRipple type="button" *ngIf="addDiv"
-                    [disabled]="template_title?.length >255 || subject?.length >255 || email_to==''||template_title==''||template_type==''||message==''||subject==''"
-                    label="Save" (click)="addTemplate()" class="d-block mx-auto">
-                </button>
-                <button pButton pRipple type="button" label="Update" *ngIf="updateDiv"
-                    [disabled]="template_title?.length >255 || subject?.length >255 || email_to==''||template_title==''||template_type==''||message==''||subject==''"
-                    class="d-block mx-auto" (click)="updateTemplate()">
-                </button>
-            </div> -->
-            <!-- <div class="demo-container p-4">
-                <button pButton pRipple type="button" (click)="reset()" label="Reset"
-                    class="d-block mx-auto"></button>
-            </div> -->
         </div>    
 
     </div>
@@ -640,7 +637,7 @@
             <div class="custom-container">
                 <h6><b>Instructions</b></h6>
                 <ul class="list">
-                <li>Maximum File Size: 5MB</li>
+                <li>Maximum File Size: 2MB</li>
                 <li>File Format: 5MB: CSV(Shipments pushed through CSV will be available for tracking within 5 hours)</li>
                 </ul>
                 <ol class="list" type="1">
@@ -652,21 +649,6 @@
             </div>
             <!-- Right Column -->
             <div class="col-12 md:col-12">
-            <!-- <div class="custom-container">
-                <h6><b>Upload</b></h6>
-                <div *ngIf="showUploaderror" style="color: red;">
-                    Maximum field length exceeding 1000 character
-                </div>
-                <p-fileUpload name="demo[]" [multiple]="false" [showUploadButton]="false" (onSelect)="onUploadCCExcel($event)"
-                accept=".xls, .xlsx" >
-                <ng-template pTemplate="content">
-                   
-                </ng-template>
-                </p-fileUpload>
-                <br>
-        <p-progressBar *ngIf="uploadInProgress" mode="indeterminate" [style]="{'height': '6px', 'marginBottom':'1rem'}">
-        </p-progressBar>
-            </div> -->
               <div class="custom-container">
                 <h6><b>Upload</b></h6>
                 <div *ngIf="showUploaderror" style="color: red;">
@@ -674,16 +656,20 @@
                 </div>
                 <div class="card box">
                     <div class="card-title">
-                       <button type="submit" pButton pRipple 
-                        class="mr-2 mb-2 btn"><i class="pi pi-plus"></i>Choose</button>
+                       <!-- <button type="submit" pButton pRipple 
+                        class="mr-2 mb-2 btn"><i class="pi pi-plus"></i>Choose</button> -->
+                        <label for="fileUpload" class="custom-file-input">
+                            <i class="pi pi-plus"></i> Upload
+                          </label>
+                          <input type="file" id="fileUpload" (change)="onUploadCCExcel($event)" style="display: none;">
                          <button type="submit" pButton pRipple 
-                        class="mr-2 mb-2 btn" (click)="onCancelClick()"><i class="pi pi-upload"></i>Upload</button>
+                        class="mr-2 mb-2 btn" [disabled]="!uploadFilecc" (click)="makeCommercialCardApiServiceCall()"><i class="pi pi-upload"></i>Upload</button>
                         <button type="submit" pButton pRipple 
-                        class="mr-2 mb-2 btn" (click)="onCancelClick()"><i class="pi pi-times"></i>Cancel</button>
+                        class="mr-2 mb-2 btn" [disabled]="!uploadFilecc" (click)="onCancelClick()"><i class="pi pi-times"></i>Cancel</button>
                     </div>
                     <div class="card-body">
                        <div class="container">
-                        <h3>upload</h3>
+                        <p style="margin-top: 13px;">{{fileName}}</p>
                        </div>
                     </div>
                 </div>
@@ -691,20 +677,6 @@
             </div>
         </div>
         <div class="">
-            <!-- <div class="demo-container p-4">
-                <button pButton pRipple type="button" *ngIf="addDiv"
-                    [disabled]="template_title?.length >255 || subject?.length >255 || email_to==''||template_title==''||template_type==''||message==''||subject==''"
-                    label="Save" (click)="addTemplate()" class="d-block mx-auto">
-                </button>
-                <button pButton pRipple type="button" label="Update" *ngIf="updateDiv"
-                    [disabled]="template_title?.length >255 || subject?.length >255 || email_to==''||template_title==''||template_type==''||message==''||subject==''"
-                    class="d-block mx-auto" (click)="updateTemplate()">
-                </button>
-            </div> -->
-            <!-- <div class="demo-container p-4">
-                <button pButton pRipple type="button" (click)="reset()" label="Reset"
-                    class="d-block mx-auto"></button>
-            </div> -->
         </div>
 
 

@@ -78,4 +78,21 @@
  .container{
   padding: 6px;
   padding-left: 15px;
+  height: 60px;
  }
+
+ input[type="file"] {
+  display: none;
+}
+
+.custom-file-input {
+  background-color: #0d89ec; /* Customize the background color of the button */
+  color: #fff; /* Customize the text color of the button */
+  padding: 8px 12px; /* Adjust padding as needed */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: inline-block;
+  height: 33px;
+  margin-right: 8px;
+}
