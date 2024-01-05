@@ -825,7 +825,13 @@ onFileSelected(event: any) {
   this.selectedFile = event.target.files[0];
 
   if (this.selectedFile) {
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
       this.fileNameOC = this.selectedFile.name;
+    };
+    reader.readAsDataURL(this.selectedFile);
+  } else {
+    this.fileNameOC = ""; 
   }
 }
 
@@ -845,6 +851,7 @@ onRemoveOperationClick(){
   this.showUploaderror = false;
   this.fileNameOC = "";
  // this.uploadFileOC = null;
+ this.selectedFile = null;
 }
 showSuccessMessage(message: string) {
   this.messageService.add({ key: 'successToast', severity: 'success', summary: 'Success', detail: message });
