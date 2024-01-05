@@ -600,7 +600,7 @@
         <p-progressBar *ngIf="uploadInProgress" mode="indeterminate" [style]="{'height': '6px', 'marginBottom':'1rem'}">
         </p-progressBar>
             </div>
-            </div>
+                       </div>
         </div>
         <div class="">
             <!-- <div class="demo-container p-4">
@@ -652,7 +652,7 @@
             </div>
             <!-- Right Column -->
             <div class="col-12 md:col-12">
-            <div class="custom-container">
+            <!-- <div class="custom-container">
                 <h6><b>Upload</b></h6>
                 <div *ngIf="showUploaderror" style="color: red;">
                     Maximum field length exceeding 1000 character
@@ -666,7 +666,28 @@
                 <br>
         <p-progressBar *ngIf="uploadInProgress" mode="indeterminate" [style]="{'height': '6px', 'marginBottom':'1rem'}">
         </p-progressBar>
-            </div>
+            </div> -->
+              <div class="custom-container">
+                <h6><b>Upload</b></h6>
+                <div *ngIf="showUploaderror" style="color: red;">
+                    Maximum field length exceeding 1000 character
+                </div>
+                <div class="card box">
+                    <div class="card-title">
+                       <button type="submit" pButton pRipple 
+                        class="mr-2 mb-2 btn"><i class="pi pi-plus"></i>Choose</button>
+                         <button type="submit" pButton pRipple 
+                        class="mr-2 mb-2 btn" (click)="onCancelClick()"><i class="pi pi-upload"></i>Upload</button>
+                        <button type="submit" pButton pRipple 
+                        class="mr-2 mb-2 btn" (click)="onCancelClick()"><i class="pi pi-times"></i>Cancel</button>
+                    </div>
+                    <div class="card-body">
+                       <div class="container">
+                        <h3>upload</h3>
+                       </div>
+                    </div>
+                </div>
+             </div>
             </div>
         </div>
         <div class="">
