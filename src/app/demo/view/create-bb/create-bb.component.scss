@@ -56,24 +56,17 @@
   .excel-table th {
     background-color: #f2f2f2;
   }
-  .card{
+  .box{
     border: 1px solid gainsboro;
     padding: 0;
-    .card-title{
-      display: flex;
-      border-bottom: 1px solid #c5c5c5;
-      background: #f8f9fa;
-      padding-top: 12px;
-      padding-bottom: 6px;
-      padding-left: 15px;
-  
-    }
+    border-style: dashed;
+    height: 150px;
+
   }
  .btn{
-  width: 78px;
-  padding: 6px;
   display: flex;
   justify-content: space-between;
+  margin:2px
  }
  .container{
   padding: 6px;
@@ -86,13 +79,30 @@
 }
 
 .custom-file-input {
-  background-color: #0d89ec; /* Customize the background color of the button */
-  color: #fff; /* Customize the text color of the button */
-  padding: 8px 12px; /* Adjust padding as needed */
+  // background-color: #0d89ec; 
+  color: #495057;
+  padding: 8px 12px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   display: inline-block;
   height: 33px;
   margin-right: 8px;
+  margin-left: 46%;
+  margin-top: 6%;
+}
+.card_footer{
+  margin-top: 11px;
+  display: flex;
+  justify-content: space-between;
+}
+.uplodBtn_right{
+  display: flex;
+}
+.upload_name{
+  font-size: 16px;
+  font-weight: bold;
+  color: #2c83d7;
+  position: relative;
+  right: 10px;
 }
