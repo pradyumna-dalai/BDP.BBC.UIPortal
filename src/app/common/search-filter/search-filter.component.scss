@@ -12,6 +12,8 @@
 
 .field{
   padding: 5px !important;
+  padding-bottom: 0px !important;
+  font-size: 13px;
 }
   #bdpfilter .bdp-clear-filters {
     cursor: pointer;
@@ -77,4 +79,8 @@
 #bdpfilter .p-dropdown-label .p-dropdown-label-text {
   display: block;
   white-space: normal;
+}
+.filter_headline{
+  border-bottom: 1px solid lightgray;
+  text-align: center;
 }

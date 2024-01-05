@@ -18,11 +18,16 @@ $gutter: 1rem; //for primeflex grid system
   }
   
   /* Break long option labels into multiple lines */
-  .p-dropdown .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
-    white-space: normal;
-  }
+  // .p-dropdown .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+  //   white-space: normal;
+  // }
   .p-toast-top-right {
     top: 122px !important;
     right: 20px;
 }
-  
+.p-dropdown-items-wrapper {
+  overflow: hidden !important;
+}
+.p-sidebar .p-sidebar-header {
+  padding: 0 !important;
+}

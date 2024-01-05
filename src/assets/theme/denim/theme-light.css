@@ -857,6 +857,7 @@ p-chips.p-chips-clearable .p-chips-clear-icon {
   background: transparent;
   transition: box-shadow 0.2s;
   border-radius: 0;
+  min-width: 400px !important;
 }
 .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
   color: #f8fafc;
