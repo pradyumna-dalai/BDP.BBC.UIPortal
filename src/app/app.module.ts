@@ -112,9 +112,7 @@ import { CreateProjectComponent } from './demo/view/project/create-project/creat
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { ChargeCodeComponent } from './demo/master-data/charge-code/charge-code.component';
 import { LocationsComponent } from './demo/master-data/locations/locations.component';
-import { ExcelExportModule } from '@progress/kendo-angular-excel-export';
-import { ButtonsModule } from '@progress/kendo-angular-buttons';
-import { PopupModule } from '@progress/kendo-angular-popup';
+
 
 
 @NgModule({
@@ -207,9 +205,7 @@ import { PopupModule } from '@progress/kendo-angular-popup';
         DatePipe,
         NgxDaterangepickerMd.forRoot(),
         CalendarModule,
-        ExcelExportModule,
-        ButtonsModule,
-        PopupModule
+    
     ],
     declarations: [
         AppComponent,
