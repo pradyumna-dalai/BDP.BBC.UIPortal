@@ -241,9 +241,23 @@
     </div>
       </div>
       <hr class="align">
+      <div *ngIf="!excelDataOpration" style="min-height: 669px;">
+            <div style="margin-top: 90px;">
+                <div style="display: flex;justify-content: center;">
+                    <img src="assets/layout/images/no-bb-found.svg" alt="No Building Blocks Found">
+                </div><br>
+                <div style="display: flex;justify-content: center;">
+                    <h4>No Preview To Show</h4>
+                </div>
+                <div style="display: flex;justify-content: center;">
+                    <h6>Select Import From Excel to Upload the details</h6>
+                </div>
+        </div>
+     </div>
+     
     <div *ngIf="excelDataOpration">
   <h4 style="text-align: center;">Excel Preview</h4>
-  <div class="excel-container">
+  <div class="excel-container" [style.min-height]="excelDataOpration.length ? '200px' : '100px'" >
     <table class="excel-table">
       <thead>
         <tr *ngFor="let headerRow of excelDataOpration.slice(0, 1)">
@@ -258,6 +272,8 @@
     </table>
   </div>
 </div>
+<br>
+<hr class="align">
     <div class="grid">
     
         <div class="col-6">

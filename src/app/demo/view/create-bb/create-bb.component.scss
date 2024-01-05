@@ -106,3 +106,9 @@
   position: relative;
   right: 10px;
 }
+@media only screen and (max-width: 600px) {
+  /* Add styles for small screens */
+  .excel-container {
+     overflow-x: auto; /* Enable horizontal scrolling if needed */
+  }
+}
