@@ -232,12 +232,20 @@
 
 </div>
 <div class="card" *ngIf="this.showOperationCrad==true">
-   <br>
+   <!-- <br>
     <div class="grid" >
         <div class="col-7" style="display: flex;justify-content: flex-end;">
             <a (click)="showDialogOperationCard()" style="text-decoration: underline;">Import From Excel</a>
         </div>
-<br>
+<br> -->
+<div class="grid">
+    <div class="col-6">
+        <h5>Operation Card</h5>
+    </div>
+    <div class="col-6" style="display: flex;justify-content: flex-end;">
+        <a (click)="showDialogOperationCard()" style="text-decoration: underline;">Import From Excel</a>
+    </div>
+
         <!-- ... your existing content ... -->
         <!-- <div class="col-6" *ngIf="!isDataUploaded">
        
@@ -246,6 +254,7 @@
             class="p-button-outlined mr-2 mb-2"></button>
         </div> -->
       </div>
+      <hr class="align">
     <div *ngIf="excelDataOpration">
 <br>
   <h3 style="text-align: center;">Uploaded Excel Content</h3>

@@ -60,6 +60,11 @@ export namespace AppRoutes {
 
         public static readonly exportProjectsinExcel = "export-project";
 
+
+        //---------------------master-data----------------//
+
+        public static readonly  getallLocations = "location";
+
     }
 
 }
