@@ -149,6 +149,7 @@ makeScopingCardApiServiceCall()
   this.uploadInProgress = true;
   this.createBuildingBlockservice.scopingCradImportExcel(formData).subscribe(
     (res: any) => {
+      console.log(res);
       if (res?.message === 'Excel Upload Sucessfully') {
         // Process successful response
         this.excelData = res?.data;
@@ -260,12 +261,7 @@ makeCommercialCardApiServiceCall() {
       if (error.status === 400) {
         console.log('Bad Request Error:', error);
         // Additional handling or user feedback for 400 errors
-        this.messageService.add({
-          key: 'errorToast',
-          severity: 'error',
-          summary: 'Error!',
-          detail: 'Maximum field length exceeding 1000 character.'
-        });
+        this.showUploaderror = true;
       } else {
         console.log('Unexpected Error:', error);
         // Handle other errors accordingly
