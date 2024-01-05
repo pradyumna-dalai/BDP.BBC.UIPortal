@@ -77,6 +77,8 @@ export class CreateBbComponent {
  
   fileNameSC: string;
   fileNameCC: string;
+  fileNameOC: string;
+  uploadFileOC: null;
 
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
     public MasterTableservice: MasterTableService, private confirmationService: ConfirmationService,
@@ -799,35 +801,54 @@ showDialogCommercialCard() {
 
 //--------------------operation Card Details----------------//
 
-  showDialogOperationCard() {
-    this.visibleOperationBox = true;
-  }
-  onFileSelected(event: any) {
-    this.selectedFile = event.target.files[0];
-  }
-  onUploadClick() {
-    if (this.selectedFile) {
-      this.readExcelFile(this.selectedFile);
-      this.visibleOperationBox = false; 
-      console.log('Uploaded Excel Data:', this.excelDataOpration);
-      this.isDataUploaded = true;
-    } else {
-      console.log('No file selected.');
-    }
-  }
-  onOperarationCancelClick() {
-    this.visibleOperationBox = false;
-  }
-  readExcelFile(file: File) {
-    const reader: FileReader = new FileReader();
-    reader.onload = (e: any) => {
+showDialogOperationCard() {
+  this.visibleOperationBox = true;
+}
+
+onOperarationCancelClick() {
+  this.visibleOperationBox = false;
+}
+
+readExcelFile(file: File) {
+  const reader: FileReader = new FileReader();
+  reader.onload = (e: any) => {
       const data = new Uint8Array(e.target.result);
       const workbook = XLSX.read(data, { type: 'array' });
       const sheetName = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[sheetName];
       this.excelDataOpration = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-    };
-    reader.readAsArrayBuffer(file);
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+onFileSelected(event: any) {
+  this.selectedFile = event.target.files[0];
+
+  if (this.selectedFile) {
+      this.fileNameOC = this.selectedFile.name;
   }
+}
+
+onUploadClick() {
+  if (this.selectedFile) {
+      this.readExcelFile(this.selectedFile);
+      this.visibleOperationBox = false;
+      console.log('Uploaded Excel Data:', this.excelDataOpration);
+      this.isDataUploaded = true;
+      this.fileNameOC = "";
+      this.showSuccessMessage('File uploaded successfully!');
+  } else {
+      console.log('No file selected.');
+  }
+}
+onRemoveOperationClick(){
+  this.showUploaderror = false;
+  this.fileNameOC = "";
+ // this.uploadFileOC = null;
+}
+showSuccessMessage(message: string) {
+  this.messageService.add({ key: 'successToast', severity: 'success', summary: 'Success', detail: message });
+}
+
   //---end-----------------------------------------------//
 }

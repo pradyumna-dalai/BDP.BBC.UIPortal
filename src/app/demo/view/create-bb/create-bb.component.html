@@ -231,13 +231,7 @@
     </div>
 
 </div>
-<div class="card" *ngIf="this.showOperationCrad==true">
-   <!-- <br>
-    <div class="grid" >
-        <div class="col-7" style="display: flex;justify-content: flex-end;">
-            <a (click)="showDialogOperationCard()" style="text-decoration: underline;">Import From Excel</a>
-        </div>
-<br> -->
+<div class="card" *ngIf="this.showOperationCrad==true" style="height:auto;">
 <div class="grid">
     <div class="col-6">
         <h5>Operation Card</h5>
@@ -245,20 +239,10 @@
     <div class="col-6" style="display: flex;justify-content: flex-end;">
         <a (click)="showDialogOperationCard()" style="text-decoration: underline;">Import From Excel</a>
     </div>
-
-        <!-- ... your existing content ... -->
-        <!-- <div class="col-6" *ngIf="!isDataUploaded">
-       
-          <input type="file" (change)="onFileSelected($event)" accept=".xlsx" />
-          <button pButton pRipple type="button" label="Upload Excel" (click)="uploadExcel()"
-            class="p-button-outlined mr-2 mb-2"></button>
-        </div> -->
       </div>
       <hr class="align">
     <div *ngIf="excelDataOpration">
-<br>
   <h3 style="text-align: center;">Uploaded Excel Content</h3>
-<br>
   <div class="excel-container">
     <table class="excel-table">
       <thead>
@@ -291,6 +275,7 @@
         </div>
     </div>
 </div>
+
 <div class="card" *ngIf="this.showCommercialCrad==true">
     <!-- <div class="page-under-construction">
         <img src="assets/layout/images/page-under-construction.jpg" alt="No Building Blocks Found">
@@ -712,7 +697,6 @@
     <ng-template pTemplate="header">
         <div style="width: 100%;">
             <h5 style="display: contents;">Import From Excel</h5>&nbsp;&nbsp;&nbsp;
-            <!-- <h5 style="display: contents;"><a href="*" style="text-decoration: underline;">Download Sample File</a></h5> -->
         </div>
     </ng-template>
     <hr>
@@ -722,37 +706,52 @@
                 <div class="custom-container">
                     <h6><b>Instructions</b></h6>
                     <ul class="list">
-                    <li>Maximum File Size: 2MB</li>
-                    <li>File Format: CSV</li>
+                        <li>Maximum File Size: 2MB</li>
+                        <li>File Format: CSV</li>
                     </ul>
                     <ol class="list" type="1">
-                    <li>Make sure to provide valid data</li>
-                    <li>Keep file name recognizable</li>
+                        <li>Make sure to provide valid data</li>
+                        <li>Keep file name recognizable</li>
                     </ol>
                 </div>
             </div>
             <div class="col-12 md:col-12">
-              <div class="custom-container">
-                <h6><b>Upload</b></h6>
-                <div *ngIf="showUploaderror" style="color: red;">
-                    Maximum field length exceeding 1000 character
-                </div>
-                <div class="card box">
-                    <div class="card-title">
-                       <button type="submit" pButton pRipple  (click)="fileInput.click()"
-                        class="mr-2 mb-2 btn"><i class="pi pi-plus"></i>Choose</button>
-                        <input type="file" #fileInput accept=".xlsx" (change)="onFileSelected($event)" style="display: none;" />
-
-                         <button type="submit" pButton pRipple 
-                        class="mr-2 mb-2 btn" (click)="onUploadClick()"><i class="pi pi-upload" ></i>Upload</button>
-                        <button type="submit" pButton pRipple 
-                        class="mr-2 mb-2 btn" (click)="onOperarationCancelClick()"><i class="pi pi-times"></i>Cancel</button>
+                <div class="custom-container">
+                    <h6><b>Upload</b></h6>
+                    <div *ngIf="showUploaderror" style="color: red;">
+                        Maximum field length exceeding 1000 characters
+                    </div>
+                    <div class="box">
+                        <div class="card-body">
+                            <div class="container">
+                                <label for="fileInput" class="custom-file-input">
+                                    <i class="pi pi-upload" style="font-size: 30px;display: block;"></i>
+                                    <div class="upload_name">Upload</div>
+                                </label>
+                                <p style="text-align: center;">{{fileNameOC}}</p>
+                                <input type="file" id="fileInput" (change)="onFileSelected($event)" style="display: none;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card_footer">
+                        <div>
+                            <button type="submit" pButton pRipple class="btn"  (click)="onRemoveOperationClick()">
+                                Remove File
+                            </button>
+                        </div>
+                        <div class="uplodBtn_right">
+                            <button type="submit" pButton pRipple class="btn"  (click)="onUploadClick()">
+                                Submit
+                            </button>
+                            <button type="submit" (click)="onOperarationCancelClick()" pButton pRipple class="btn">Cancel</button>
+                        </div>
                     </div>
                 </div>
-             </div>
             </div>
         </div>
     </div>
-</p-dialog>
+    <!-- Add this inside your p-dialog or any suitable place -->
+<p-toast key="successToast" position="top-right"></p-toast>
 
+</p-dialog>
 <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
