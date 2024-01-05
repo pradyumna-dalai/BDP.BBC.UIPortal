@@ -582,7 +582,7 @@
                 <div class="custom-container">
                     <h6><b>Upload</b></h6>
                     <div *ngIf="showUploaderror" style="color: red;">
-                        Maximum field length exceeding 1000 character
+                        Upload error: All fields empty or exceeds 1000 characters. Review the file before uploading.
                     </div>
                     <div class="box">
                         <div class="card-body">
@@ -654,7 +654,7 @@
               <div class="custom-container">
                 <h6><b>Upload</b></h6>
                 <div *ngIf="showUploaderror" style="color: red;">
-                    Maximum field length exceeding 1000 character
+                    Upload error: All fields empty or exceeds 1000 characters. Review the file before uploading.
                 </div>
                 <div class="box">
                     <div class="card-body">
@@ -693,6 +693,7 @@
 
     </div>
 </p-dialog>
+<!-- import from excel dialog(Operation Card) -->
 <p-dialog header="Import Excel" [(visible)]="visibleOperationBox" [style]="{width: '50vw'}">
     <ng-template pTemplate="header">
         <div style="width: 100%;">
@@ -719,7 +720,7 @@
                 <div class="custom-container">
                     <h6><b>Upload</b></h6>
                     <div *ngIf="showUploaderror" style="color: red;">
-                        Maximum field length exceeding 1000 characters
+                        Upload error: All fields empty or exceeds 1000 characters. Review the file before uploading.
                     </div>
                     <div class="box">
                         <div class="card-body">
