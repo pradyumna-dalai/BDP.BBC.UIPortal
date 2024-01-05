@@ -585,42 +585,40 @@
             </div>
             <!-- Right Column -->
             <div class="col-12 md:col-12">
-                    <div class="custom-container">
-                        <h6><b>Upload</b></h6>
-                <div *ngIf="showUploaderror" style="color: red;">
-                    Maximum field length exceeding 1000 character
-                </div>
-                <div class="box">
-                    <div class="card-body">
-                       <div class="container">
-                        <!-- <p style="margin-top: 13px;">{{fileName}}</p> -->
-                        <label for="fileUpload" class="custom-file-input">
-                            <i class="pi pi-upload" style="font-size: 30px;display: block;"></i>
-                            <div class="upload_name">Upload</div>
-                        </label>
-                        <input type="file" id="fileUpload" (change)="onUploadSCExcel($event)" style="display: none;">
-                       </div>
+                <div class="custom-container">
+                    <h6><b>Upload</b></h6>
+                    <div *ngIf="showUploaderror" style="color: red;">
+                        Maximum field length exceeding 1000 character
                     </div>
-                </div>
-                <div class="card_footer">
-                    <div>
+                    <div class="box">
+                        <div class="card-body">
+                        <div class="container">
+                            
+                            <label for="fileUpload" class="custom-file-input">
+                                <i class="pi pi-upload" style="font-size: 30px;display: block;"></i>
+                                <div class="upload_name">Upload</div>
+                            </label>
+                            <p style="text-align: center;">{{fileNameSC}}</p>
+                            <input type="file" id="fileUpload" (change)="onUploadSCExcel($event)" style="display: none;">
+                        </div>
+                        </div>
+                    </div>
+                    <div class="card_footer">
+                        <div>
+                            <button type="submit" pButton pRipple class=" btn" 
+                            [disabled]="!uploadFilesc" (click)="onCancelClickSC()">
+                            Remove File
+                        </button> 
+                        </div>
+                        <div class="uplodBtn_right">
                         <button type="submit" pButton pRipple class=" btn" 
-                        [disabled]="!uploadFilesc" (click)="makeScopingCardApiServiceCall()">
-                        Remove File
-                    </button> 
+                            [disabled]="!uploadFilesc" (click)="makeScopingCardApiServiceCall()">
+                            Submit
+                        </button>
+                        <button type="submit" (click)="onPopupCancelSCClick()" pButton pRipple class=" btn">Cancel</button>
+                        </div>
                     </div>
-                    <div class="uplodBtn_right">
-                    <button type="submit" pButton pRipple class=" btn" 
-                        [disabled]="!uploadFilesc" (click)="makeScopingCardApiServiceCall()">
-                        Submit
-                    </button>
-                    <button type="submit" pButton pRipple class=" btn" 
-                        [disabled]="!uploadFilesc" (click)="onCancelClick()">
-                        Cancel
-                    </button>
                     </div>
-                </div>
-                </div>
             </div>
         </div>
         <div class="">
@@ -664,23 +662,32 @@
                 <div *ngIf="showUploaderror" style="color: red;">
                     Maximum field length exceeding 1000 character
                 </div>
-                <div class="card box">
-                    <div class="card-title">
-                       <!-- <button type="submit" pButton pRipple 
-                        class="mr-2 mb-2 btn"><i class="pi pi-plus"></i>Choose</button> -->
-                        <label for="fileUpload" class="custom-file-input">
-                            <i class="pi pi-plus"></i> Upload
-                          </label>
-                          <input type="file" id="fileUpload" (change)="onUploadCCExcel($event)" style="display: none;">
-                         <button type="submit" pButton pRipple 
-                        class="mr-2 mb-2 btn" [disabled]="!uploadFilecc" (click)="makeCommercialCardApiServiceCall()"><i class="pi pi-upload"></i>Upload</button>
-                        <button type="submit" pButton pRipple 
-                        class="mr-2 mb-2 btn" [disabled]="!uploadFilecc" (click)="onCancelClick()"><i class="pi pi-times"></i>Cancel</button>
-                    </div>
+                <div class="box">
                     <div class="card-body">
-                       <div class="container">
-                        <p style="margin-top: 13px;">{{fileName}}</p>
-                       </div>
+                    <div class="container">
+                        
+                        <label for="fileUpload" class="custom-file-input">
+                            <i class="pi pi-upload" style="font-size: 30px;display: block;"></i>
+                            <div class="upload_name">Upload</div>
+                        </label>
+                        <p style="text-align: center;">{{fileNameCC}}</p>
+                        <input type="file" id="fileUpload" (change)="onUploadCCExcel($event)" style="display: none;">
+                    </div>
+                    </div>
+                </div>
+                <div class="card_footer">
+                    <div>
+                        <button type="submit" pButton pRipple class=" btn" 
+                        [disabled]="!uploadFilecc" (click)="onCancelClickCC()">
+                        Remove File
+                    </button> 
+                    </div>
+                    <div class="uplodBtn_right">
+                    <button type="submit" pButton pRipple class=" btn" 
+                        [disabled]="!uploadFilecc" (click)="makeCommercialCardApiServiceCall()">
+                        Submit
+                    </button>
+                    <button type="submit" (click)="onPopupCancelCClick()" pButton pRipple class=" btn">Cancel</button>
                     </div>
                 </div>
              </div>
@@ -703,18 +710,17 @@
     <div>
         <div class="p-fluid grid">
             <div class="col-12 md:col-12">
-            <div class="custom-container">
-                <h6><b>Instructions</b></h6>
-                <ul class="list">
-                <li>Maximum File Size: 5MB</li>
-                <li>File Format: 5MB: CSV(Shipments pushed through CSV will be available for tracking within 5 hours)</li>
-                </ul>
-                <ol class="list" type="1">
-                <li>Make sure Data's are validated</li>
-                <li>Keep file name recognizable</li>
-                <li>Avoid uploading incomplete file</li>
-                </ol>
-            </div>
+                <div class="custom-container">
+                    <h6><b>Instructions</b></h6>
+                    <ul class="list">
+                    <li>Maximum File Size: 2MB</li>
+                    <li>File Format: CSV</li>
+                    </ul>
+                    <ol class="list" type="1">
+                    <li>Make sure to provide valid data</li>
+                    <li>Keep file name recognizable</li>
+                    </ol>
+                </div>
             </div>
             <div class="col-12 md:col-12">
               <div class="custom-container">

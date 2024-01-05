@@ -75,7 +75,8 @@ export class CreateBbComponent {
   showUploaderror: boolean = false;
   selectedFile: any;
  
-  fileName: string;
+  fileNameSC: string;
+  fileNameCC: string;
 
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
     public MasterTableservice: MasterTableService, private confirmationService: ConfirmationService,
@@ -116,15 +117,22 @@ export class CreateBbComponent {
 
 
 
-onCancelClick() {
+onCancelClickSC() {
   this.showUploaderror = false;
-  this.fileName = "";
+  this.fileNameSC = "";
+  this.uploadFilesc = null;
+  
+}
+onCancelClickCC(){
+  this.showUploaderror = false;
+  this.fileNameCC = "";
+  this.uploadFilecc = null;
 }
 
 onUploadSCExcel(event: any) {
   const file:File = event.target.files[0];
   if (file) {
-      this.fileName = file.name;
+      this.fileNameSC = file.name;
       const formData = new FormData();
       formData.append("file", file);
       this.uploadFilesc = file;
@@ -133,7 +141,7 @@ onUploadSCExcel(event: any) {
 uploadFilesc: File | null = null;
 makeScopingCardApiServiceCall()
  {
-  this.fileName = this.uploadFilesc.name;
+  this.fileNameSC = this.uploadFilesc.name;
   const formData = new FormData();
   formData.append("file", this.uploadFilesc);
   this.uploadInProgress = true;
@@ -187,14 +195,16 @@ makeScopingCardApiServiceCall()
     }
   );
 }
-
+onPopupCancelSCClick(){
+  this.visibleSC = false;
+}
 uploadFilecc: File | null = null;
 onUploadCCExcel(event) 
 {
 
     const file:File = event.target.files[0];
     if (file) {
-        this.fileName = file.name;
+        this.fileNameCC = file.name;
         const formData = new FormData();
         formData.append("file", file);
         this.uploadFilecc = file;
@@ -202,7 +212,7 @@ onUploadCCExcel(event)
 }
 makeCommercialCardApiServiceCall() {
 
-  this.fileName = this.uploadFilecc.name;
+  this.fileNameCC = this.uploadFilecc.name;
   const formData = new FormData();
   formData.append("file", this.uploadFilecc);
   this.uploadInProgress = true;
@@ -264,6 +274,9 @@ makeCommercialCardApiServiceCall() {
       this.uploadInProgress = false;
     }
   );
+}
+onPopupCancelCClick(){
+  this.visibleCC = false;
 }
 
 resetUploadScreen() {
