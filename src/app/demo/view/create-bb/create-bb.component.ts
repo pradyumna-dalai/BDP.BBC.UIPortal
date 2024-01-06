@@ -473,6 +473,9 @@ showDialogCommercialCard() {
           summary: 'Success!',
           detail: 'Building block draft is saved successfully.'
         });
+        setTimeout(() => {
+          this.router.navigateByUrl('/building-block');
+        }, 1000); 
       },
       (error) => {
         console.error('Error saving draft:', error);
@@ -531,8 +534,9 @@ showDialogCommercialCard() {
         this.product_category = details.data.category.id;
         this.onProductSelect(details.data.product.id);
         this.onScopeSelect(details.data.scope.id);
-        this.charge_code = details.data.chargeCode.id;
+        this.charge_code = details.data.chargeCode?.id;
         this.seervice_desc = details.data.scopingCard.serviceDescription;
+    //    console.log("service",this.seervice_desc);
         this.customer_requirement = details.data.scopingCard.customerRequirement;
         this.deliverables = details.data.scopingCard.deliverable;
         this.stakeholders_audience = details.data.scopingCard.stakeHolder;
@@ -550,9 +554,9 @@ showDialogCommercialCard() {
         this.selectedMod = details.data.modeOfTransport.map((item) => item.id);
 
       },
-      (error) => {
-        console.error('Error fetching building block details:', error);
-      }
+      // (error) => {
+      //   console.error('Error fetching building block details:', error);
+      // }
     );
   }
 
@@ -610,6 +614,30 @@ showDialogCommercialCard() {
       },
 
     }
+    if (!this.isEditorContentValid(body.scopingCard.serviceDescription) ||
+    !this.isEditorContentValid(body.scopingCard.customerRequirement) ||
+    !this.isEditorContentValid(body.scopingCard.deliverable) ||
+    !this.isEditorContentValid(body.scopingCard.stakeHolder) ||
+    !this.isEditorContentValid(body.scopingCard.valueToPsaBdp) ||
+    !this.isEditorContentValid(body.scopingCard.parameter) ||
+    !this.isEditorContentValid(body.scopingCard.configurable) ||
+    !this.isEditorContentValid(body.commercialCard.psaBdpValueStatement) ||
+    !this.isEditorContentValid(body.commercialCard.standardService) ||
+    !this.isEditorContentValid(body.commercialCard.sow) ||
+    !this.isEditorContentValid(body.commercialCard.prerequisiteInfo) ||
+    !this.isEditorContentValid(body.commercialCard.combinedValue) ||
+    !this.isEditorContentValid(body.commercialCard.dos) ||
+    !this.isEditorContentValid(body.commercialCard.donts)) {
+  
+  this.messageService.add({
+    key: 'errorToast',
+    severity: 'error',
+    summary: 'Error!',
+    detail: 'Invalid content. Please enter meaningful content for all fields.'
+  });
+  return;
+}
+
    
     this.CreateBuildingBlockservice.saveEditBuildingBlocks(2, body).subscribe(
       (res) => {
@@ -621,6 +649,10 @@ showDialogCommercialCard() {
           summary: 'Success!',
           detail: 'New Building block is saved successfully.'
         });
+        setTimeout(() => {
+          this.router.navigateByUrl('/building-block');
+        }, 1000); 
+     
       },
       (error) => {
         console.error('Error saving draft:', error);
@@ -661,132 +693,132 @@ showDialogCommercialCard() {
         } 
       }
     );
-    if (!this.isEditorContentValid(body.scopingCard.serviceDescription)) {                                                  
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Invalid service description. Please enter meaningful content.'
-      });
-      return; 
-    }
-     if (!this.isEditorContentValid(body.scopingCard.customerRequirement)) {                                                  
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Invalid Customer Requirement. Please enter meaningful content.'
-      });
-      return; 
-    }
-     if (!this.isEditorContentValid(body.scopingCard.deliverable)) {                                                  
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Invalid Deliverable. Please enter meaningful content.'
-      });
-      return; 
-    }
-     if (!this.isEditorContentValid(body.scopingCard.stakeHolder)) {                                                  
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Invalid StakeHolder. Please enter meaningful content.'
-      });
-      return; 
-    }
-     if (!this.isEditorContentValid(body.scopingCard.valueToPsaBdp)) {                                                  
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Invalid valueToPsaBdp. Please enter meaningful content.'
-      });
-      return; 
-    }
-    if (!this.isEditorContentValid(body.scopingCard.parameter)) {                                                  
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Invalid Parameter. Please enter meaningful content.'
-      });
-      return; 
-    }
-     if (!this.isEditorContentValid(body.scopingCard.configurable)) {                                                  
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Invalid Parameter. Please enter meaningful content.'
-      });
-      return; 
-    }
-     if (!this.isEditorContentValid(body.commercialCard.psaBdpValueStatement)) {                                                  
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Invalid PsaBdpValueStatement in Commercial Card. Please enter meaningful content.'
-      });
-      return; 
-    }
-     if (!this.isEditorContentValid(body.commercialCard.standardService)) {                                                  
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Invalid Standard Service in Commercial Card. Please enter meaningful content.'
-      });
-      return; 
-    }
-    if (!this.isEditorContentValid(body.commercialCard.sow)) {                                                  
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Invalid SOW in Commercial Card. Please enter meaningful content.'
-      });
-      return; 
-    }
-     if (!this.isEditorContentValid(body.commercialCard.prerequisiteInfo)) {                                                  
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Invalid PrerequisiteInfo in Commercial Card. Please enter meaningful content.'
-      });
-      return; 
-    }
-     if (!this.isEditorContentValid(body.commercialCard.combinedValue)) {                                                  
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Invalid CombinedValue in Commercial Card. Please enter meaningful content.'
-      });
-      return; 
-    }
-     if (!this.isEditorContentValid(body.commercialCard.dos)) {                                                  
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Invalid Dos in Commercial Card. Please enter meaningful content.'
-      });
-      return; 
-    }
-    if (!this.isEditorContentValid(body.commercialCard.donts)) {                                                  
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Invalid Donts in Commercial Card. Please enter meaningful content.'
-      });
-      return; 
-    };
+    // if (!this.isEditorContentValid(body.scopingCard.serviceDescription)) {                                                  
+    //   this.messageService.add({
+    //     key: 'errorToast',
+    //     severity: 'error',
+    //     summary: 'Error!',
+    //     detail: 'Invalid service description. Please enter meaningful content.'
+    //   });
+    //   return; 
+    // }
+    //  if (!this.isEditorContentValid(body.scopingCard.customerRequirement)) {                                                  
+    //   this.messageService.add({
+    //     key: 'errorToast',
+    //     severity: 'error',
+    //     summary: 'Error!',
+    //     detail: 'Invalid Customer Requirement. Please enter meaningful content.'
+    //   });
+    //   return; 
+    // }
+    //  if (!this.isEditorContentValid(body.scopingCard.deliverable)) {                                                  
+    //   this.messageService.add({
+    //     key: 'errorToast',
+    //     severity: 'error',
+    //     summary: 'Error!',
+    //     detail: 'Invalid Deliverable. Please enter meaningful content.'
+    //   });
+    //   return; 
+    // }
+    //  if (!this.isEditorContentValid(body.scopingCard.stakeHolder)) {                                                  
+    //   this.messageService.add({
+    //     key: 'errorToast',
+    //     severity: 'error',
+    //     summary: 'Error!',
+    //     detail: 'Invalid StakeHolder. Please enter meaningful content.'
+    //   });
+    //   return; 
+    // }
+    //  if (!this.isEditorContentValid(body.scopingCard.valueToPsaBdp)) {                                                  
+    //   this.messageService.add({
+    //     key: 'errorToast',
+    //     severity: 'error',
+    //     summary: 'Error!',
+    //     detail: 'Invalid valueToPsaBdp. Please enter meaningful content.'
+    //   });
+    //   return; 
+    // }
+    // if (!this.isEditorContentValid(body.scopingCard.parameter)) {                                                  
+    //   this.messageService.add({
+    //     key: 'errorToast',
+    //     severity: 'error',
+    //     summary: 'Error!',
+    //     detail: 'Invalid Parameter. Please enter meaningful content.'
+    //   });
+    //   return; 
+    // }
+    //  if (!this.isEditorContentValid(body.scopingCard.configurable)) {                                                  
+    //   this.messageService.add({
+    //     key: 'errorToast',
+    //     severity: 'error',
+    //     summary: 'Error!',
+    //     detail: 'Invalid Parameter. Please enter meaningful content.'
+    //   });
+    //   return; 
+    // }
+    //  if (!this.isEditorContentValid(body.commercialCard.psaBdpValueStatement)) {                                                  
+    //   this.messageService.add({
+    //     key: 'errorToast',
+    //     severity: 'error',
+    //     summary: 'Error!',
+    //     detail: 'Invalid PsaBdpValueStatement in Commercial Card. Please enter meaningful content.'
+    //   });
+    //   return; 
+    // }
+    //  if (!this.isEditorContentValid(body.commercialCard.standardService)) {                                                  
+    //   this.messageService.add({
+    //     key: 'errorToast',
+    //     severity: 'error',
+    //     summary: 'Error!',
+    //     detail: 'Invalid Standard Service in Commercial Card. Please enter meaningful content.'
+    //   });
+    //   return; 
+    // }
+    // if (!this.isEditorContentValid(body.commercialCard.sow)) {                                                  
+    //   this.messageService.add({
+    //     key: 'errorToast',
+    //     severity: 'error',
+    //     summary: 'Error!',
+    //     detail: 'Invalid SOW in Commercial Card. Please enter meaningful content.'
+    //   });
+    //   return; 
+    // }
+    //  if (!this.isEditorContentValid(body.commercialCard.prerequisiteInfo)) {                                                  
+    //   this.messageService.add({
+    //     key: 'errorToast',
+    //     severity: 'error',
+    //     summary: 'Error!',
+    //     detail: 'Invalid PrerequisiteInfo in Commercial Card. Please enter meaningful content.'
+    //   });
+    //   return; 
+    // }
+    //  if (!this.isEditorContentValid(body.commercialCard.combinedValue)) {                                                  
+    //   this.messageService.add({
+    //     key: 'errorToast',
+    //     severity: 'error',
+    //     summary: 'Error!',
+    //     detail: 'Invalid CombinedValue in Commercial Card. Please enter meaningful content.'
+    //   });
+    //   return; 
+    // }
+    //  if (!this.isEditorContentValid(body.commercialCard.dos)) {                                                  
+    //   this.messageService.add({
+    //     key: 'errorToast',
+    //     severity: 'error',
+    //     summary: 'Error!',
+    //     detail: 'Invalid Dos in Commercial Card. Please enter meaningful content.'
+    //   });
+    //   return; 
+    // }
+    // if (!this.isEditorContentValid(body.commercialCard.donts)) {                                                  
+    //   this.messageService.add({
+    //     key: 'errorToast',
+    //     severity: 'error',
+    //     summary: 'Error!',
+    //     detail: 'Invalid Donts in Commercial Card. Please enter meaningful content.'
+    //   });
+    //   return; 
+    // };
   }
 
   isSaveAsDraftDisabled(): boolean {
