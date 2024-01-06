@@ -598,8 +598,22 @@
                 <div class="custom-container">
                     <h6><b>Upload</b></h6>
                     <div *ngIf="showUploaderror" style="color: red;">
-                        Upload error: All fields empty or exceeds 1000 characters. Review the file before uploading.
-                    </div>
+                        <b>Upload error: Review the file before uploading.</b>
+                        <div *ngIf="!uploadError">
+                            <div *ngIf="deliverablesError">{{ deliverablesError }}</div>
+                        <div *ngIf="valueToPSABDPError">{{ valueToPSABDPError }}</div>
+                        <div *ngIf="parametersError">{{ parametersError }}</div>
+                        <div *ngIf="serviceDescriptionError">{{ serviceDescriptionError }}</div>
+                        <div *ngIf="stakeholdersAudienceError">{{ stakeholdersAudienceError }}</div>
+                        <div *ngIf="customerRequirementsError">{{ customerRequirementsError }}</div>
+                        <div *ngIf="configurableError">{{ configurableError }}</div> 
+                        </div>
+                       
+                        <!-- Add similar divs for other fields -->
+                      </div>
+                      <div *ngIf="uploadError" style="color: red;">
+                        {{ uploadError }}
+                      </div>
                     <div class="box">
                         <div class="card-body">
                         <div class="container">
@@ -613,6 +627,8 @@
                         </div>
                         </div>
                     </div>
+                    <p-progressBar *ngIf="uploadInProgress" mode="indeterminate" [style]="{'height': '6px', 'marginBottom':'1rem'}">
+                    </p-progressBar>
                     <div class="card_footer">
                         <div>
                             <button type="submit" pButton pRipple class=" btn" 
@@ -685,6 +701,8 @@
                     </div>
                     </div>
                 </div>
+                <p-progressBar *ngIf="uploadInProgress" mode="indeterminate" [style]="{'height': '6px', 'marginBottom':'1rem'}">
+                </p-progressBar>
                 <div class="card_footer">
                     <div>
                         <button type="submit" pButton pRipple class=" btn" 

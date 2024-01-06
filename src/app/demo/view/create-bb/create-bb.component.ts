@@ -79,6 +79,14 @@ export class CreateBbComponent {
   fileNameCC: string;
   fileNameOC: string;
   uploadFileOC: null;
+  deliverablesError: string;
+  valueToPSABDPError: string;
+  parametersError: string;
+  serviceDescriptionError: string;
+  stakeholdersAudienceError: string;
+  customerRequirementsError: string;
+  configurableError: string;
+  uploadError: string;
 
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
     public MasterTableservice: MasterTableService, private confirmationService: ConfirmationService,
@@ -121,12 +129,14 @@ export class CreateBbComponent {
 
 onCancelClickSC() {
   this.showUploaderror = false;
+  this.uploadError = "";
   this.fileNameSC = "";
   this.uploadFilesc = null;
   
 }
 onCancelClickCC(){
   this.showUploaderror = false;
+  this.uploadError = "";
   this.fileNameCC = "";
   this.uploadFilecc = null;
 }
@@ -149,7 +159,7 @@ makeScopingCardApiServiceCall()
   this.uploadInProgress = true;
   this.createBuildingBlockservice.scopingCradImportExcel(formData).subscribe(
     (res: any) => {
-      console.log(res);
+      
       if (res?.message === 'Excel Upload Sucessfully') {
         // Process successful response
         this.excelData = res?.data;
@@ -174,17 +184,55 @@ makeScopingCardApiServiceCall()
           summary: 'Success!',
           detail: 'Excel Uploaded successfully.'
         });
-      } else {
+      }
+       else {
         console.log('Unexpected response:', res);
       }
     },
     (error) => {
       // Handle HTTP errors here
       if (error.status === 400) {
-        console.log('Bad Request Error:', error);
-        // Additional handling or user feedback for 400 errors
-        this.uploadInProgress = false;
-        // this.showUploaderror = true;
+
+      console.log('Bad Request Error:', error);
+       if (error.error?.data?.message === 'All Field Are Empty') {
+          // Handle case where all fields are empty in the uploaded Excel file
+          this.showUploaderror = true;
+          this.uploadInProgress = false;
+          this.uploadError = 'All fields are empty.';
+        } else if (error.error?.data) {
+          Object.keys(error.error.data).forEach((key) => {
+            const maxLength = error.error.data[key];
+            switch (key) {
+              case 'Deliverables':
+                this.deliverablesError = `Deliverables: ${maxLength}`;
+                break;
+              case 'Value to PSA BDP':
+                this.valueToPSABDPError = `Value to PSA BDP: ${maxLength}`;
+                break;
+              case 'Parameters':
+                this.parametersError = `Parameters: ${maxLength}`;
+                break;
+              case 'Service Description':
+                this.serviceDescriptionError = `Service Description: ${maxLength}`;
+                break;
+              case 'Stakeholders / Audience':
+                this.stakeholdersAudienceError = `Stakeholders / Audience: ${maxLength}`;
+                break;
+              case 'Customer Requirements':
+                this.customerRequirementsError = `Customer Requirements: ${maxLength}`;
+                break;
+              case 'Configurable':
+                this.configurableError = `Configurable: ${maxLength}`;
+                break;
+              // Add additional cases for other fields as needed
+              default:
+                console.log(`Unhandled field: ${key}`);
+                break;
+            }
+          });
+        }
+
+        // Set flag to show error message
         this.showUploaderror = true;
        
       } else {
