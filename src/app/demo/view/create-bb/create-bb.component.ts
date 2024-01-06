@@ -375,16 +375,15 @@ showDialogCommercialCard() {
 
   }
   // ---------------get charge code data------------------------//
+  
   getChargeCode() {
     this.MasterTableservice.getChargeCode().subscribe((res: any) => {
-      if (res?.message == "success") {
-        this.chargecodeOptions = res?.data;
-      }
-      else {
+      if (res?.message === "success") {
+        this.chargecodeOptions = res?.data.chargeCode; // Assign the chargeCode array
+      } else {
         this.chargecodeOptions = [];
       }
-    })
-
+    });
   }
   // ---------------get mode of transport data------------------------//
   getModeOfTransport() {
