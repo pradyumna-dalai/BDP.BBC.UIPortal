@@ -247,6 +247,10 @@ makeScopingCardApiServiceCall()
 }
 onPopupCancelSCClick(){
   this.visibleSC = false;
+  this.showUploaderror = false;
+  this.uploadError = "";
+  this.fileNameSC = "";
+  this.uploadFilesc = null;
 }
 uploadFilecc: File | null = null;
 onUploadCCExcel(event) 
@@ -322,6 +326,10 @@ makeCommercialCardApiServiceCall() {
 }
 onPopupCancelCClick(){
   this.visibleCC = false;
+  this.showUploaderror = false;
+  this.uploadError = "";
+  this.fileNameCC = "";
+  this.uploadFilecc = null;
 }
 downloadSampleSCExcel(event: Event) {
   event.preventDefault();
