@@ -21,4 +21,9 @@ $gutter: 1rem; //for primeflex grid system
   .p-dropdown .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
     white-space: normal;
   }
+
+  .p-toast-top-right {
+    top: 122px !important;
+    right: 20px;
+}
   

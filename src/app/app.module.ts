@@ -204,7 +204,8 @@ import { LocationsComponent } from './demo/master-data/locations/locations.compo
         ReactiveFormsModule,
         DatePipe,
         NgxDaterangepickerMd.forRoot(),
-        CalendarModule
+        CalendarModule,
+    
     ],
     declarations: [
         AppComponent,
@@ -222,7 +223,7 @@ import { LocationsComponent } from './demo/master-data/locations/locations.compo
         SearchFilterComponent,
         CreateProjectComponent,
         ChargeCodeComponent,
-        LocationsComponent
+        LocationsComponent,
 
     ],
     providers: [

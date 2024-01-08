@@ -58,6 +58,8 @@ export class AppMenuComponent implements OnInit {
                 return 'pi pi-fw pi-cog';
             case 'master data management':
                 return 'pi pi-fw pi-database';
+            case 'locations':
+                return 'pi pi-fw pi-file';
             default:
                 return 'pi pi-fw pi-desktop'; // Default icon if not matched
         }
@@ -76,6 +78,8 @@ export class AppMenuComponent implements OnInit {
                 return ['/uikit'];
             case 'master data management':
                 return ['/master-data'];
+            case 'locations':
+                return ['/locations'];
             default:
                 return ['/uikit'];
         }
