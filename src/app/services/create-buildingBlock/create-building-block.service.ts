@@ -45,6 +45,16 @@ export class CreateBuildingBlockService {
       })
     );
   }
+  downloadSamplescExcel()
+  {
+   
+    return this.http.get(`${url}${settings.AppRoutes.Auth.downloadSampleSCExcel}`, { responseType: 'arraybuffer' as 'json' });
+  }
+  downloadSampleCCExcel()
+  {
+   
+    return this.http.get(`${url}${settings.AppRoutes.Auth.downloadSampleCCExcel}`, { responseType: 'arraybuffer' as 'json' });
+  }
 
 
 

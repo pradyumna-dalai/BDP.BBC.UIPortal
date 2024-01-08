@@ -42,8 +42,7 @@ export class CreateBbComponent {
   value_to_psa_bdp: any;
   customer_requirement: any;
   cvalue_to_psa_bdp: any;
-  cconfigurables: any;
-  parameters: any;
+   parameters: any;
   deliverables: any;
   stakeholders_audience: any;
   configurables: any;
@@ -282,7 +281,7 @@ makeCommercialCardApiServiceCall() {
         this.combined_value = this.excelDataSheet2['Combined Value'];
         this.do_s = this.excelDataSheet2['Dos'];
         this.don_s = this.excelDataSheet2["Don'ts"];
-        this.cconfigurables = this.excelDataSheet2['Configurable'];
+        this.configurables = this.excelDataSheet2['Configurable'];
 
         // Update UI variables with the response data for Sheet1
         this.seervice_desc = this.excelDataSheet1['Service Description'];
@@ -323,6 +322,58 @@ makeCommercialCardApiServiceCall() {
 }
 onPopupCancelCClick(){
   this.visibleCC = false;
+}
+downloadSampleSCExcel(event: Event) {
+  event.preventDefault();
+
+  this.createBuildingBlockservice.downloadSamplescExcel().subscribe((res: any) => {
+    // Assuming the response contains the file content
+    const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+    // Creating an anchor element to trigger the download
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = 'sample-file(Scoping Card).xlsx';
+    document.body.appendChild(link);
+
+    // Triggering the download
+    link.click();
+
+    // Removing the anchor element
+    document.body.removeChild(link);
+    this.messageService.add({
+      key: 'successToast',
+      severity: 'success',
+      summary: 'Success!',
+      detail: 'Sample Excel Downloaded successfully.'
+    });
+  });
+}
+downloadSampleCCExcel(event: Event){
+  event.preventDefault();
+
+  this.createBuildingBlockservice.downloadSampleCCExcel().subscribe((res: any) => {
+    // Assuming the response contains the file content
+    const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+    // Creating an anchor element to trigger the download
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = 'sample-file(Commercial Card).xlsx';
+    document.body.appendChild(link);
+
+    // Triggering the download
+    link.click();
+
+    // Removing the anchor element
+    document.body.removeChild(link);
+    this.messageService.add({
+      key: 'successToast',
+      severity: 'success',
+      summary: 'Success!',
+      detail: 'Sample Excel Downloaded successfully.'
+    });
+  });
 }
 
 resetUploadScreen() {
@@ -507,7 +558,7 @@ showDialogCommercialCard() {
         combinedValue: this.combined_value,
         dos: this.do_s,
         donts: this.don_s,
-        configurable: this.cconfigurables
+        configurable: this.configurables
       }
 
     }
@@ -598,7 +649,7 @@ showDialogCommercialCard() {
         this.combined_value = details.data.commercialCard.combinedValue;
         this.do_s = details.data.commercialCard.dos;
         this.don_s = details.data.commercialCard.donts;
-        this.cconfigurables = details.data.commercialCard.configurable;
+        this.configurables = details.data.commercialCard.configurable;
         this.selectedMod = details.data.modeOfTransport.map((item) => item.id);
 
       },
@@ -658,7 +709,7 @@ showDialogCommercialCard() {
         combinedValue: this.combined_value || '',
         dos: this.do_s || '',
         donts: this.don_s || '',
-        configurable: this.cconfigurables || ''
+        configurable: this.configurables || ''
       },
 
     }

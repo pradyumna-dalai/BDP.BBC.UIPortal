@@ -525,7 +525,7 @@
                 </div>
                 <div class="field col-12 md:col-6">
                     <div class="heading"><label>Configurable</label></div><br>
-                    <p-editor placeholder="Add Your Description Here...." [(ngModel)]="cconfigurables"
+                    <p-editor placeholder="Add Your Description Here...." [(ngModel)]="configurables"
                         [style]="{'height':'220px'}">
                         <ng-template pTemplate="header">
                             <span class="ql-formats">
@@ -573,7 +573,9 @@
     <ng-template pTemplate="header">
         <div style="width: 100%;">
             <h5 style="display: contents;">Import From Excel</h5>&nbsp;&nbsp;&nbsp;
-            <h5 style="display: contents;"><a href="*" style="text-decoration: underline;">Download Sample File</a></h5>
+            <h5 style="display: contents;">
+                <a href="#" (click)="downloadSampleSCExcel($event)" style="text-decoration: underline;">Download Sample File</a>
+              </h5>
         </div>
     </ng-template>
     <hr>
@@ -660,7 +662,9 @@
     <ng-template pTemplate="header">
         <div style="width: 100%;">
             <h5 style="display: contents;">Import From Excel</h5>&nbsp;&nbsp;&nbsp;
-            <h5 style="display: contents;"><a href="*" style="text-decoration: underline;">Download Sample File</a></h5>
+            <h5 style="display: contents;">
+                <a href="#" (click)="downloadSampleCCExcel($event)" style="text-decoration: underline;">Download Sample File</a>
+              </h5>
         </div>
     </ng-template>
     <hr>

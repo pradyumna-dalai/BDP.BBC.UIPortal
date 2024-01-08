@@ -40,6 +40,10 @@ export namespace AppRoutes {
 
         public static readonly commercialCradImportExcel = "upload-commercial-card";
 
+        public static readonly downloadSampleSCExcel = "download-file?file=sc";
+
+        public static readonly downloadSampleCCExcel = "download-file?file=com";
+
 
 
         //--------------------Project filter--------//
