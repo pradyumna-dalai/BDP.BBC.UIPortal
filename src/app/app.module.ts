@@ -210,6 +210,7 @@ import { MaterialsModule } from './common/modules/materials/materials.module';
         CalendarModule,
         MaterialsModule,
         NgxDaterangepickerMd.forRoot()
+    
     ],
     declarations: [
         AppComponent,
@@ -227,7 +228,7 @@ import { MaterialsModule } from './common/modules/materials/materials.module';
         SearchFilterComponent,
         CreateProjectComponent,
         ChargeCodeComponent,
-        LocationsComponent,
+        LocationsComponent,,
     ],
     providers: [
      MenuService, AppBreadcrumbService, DatePipe,
