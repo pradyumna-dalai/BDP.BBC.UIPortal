@@ -40,10 +40,6 @@ export namespace AppRoutes {
 
         public static readonly commercialCradImportExcel = "upload-commercial-card";
 
-        public static readonly downloadSampleSCExcel = "download-file?file=sc";
-
-        public static readonly downloadSampleCCExcel = "download-file?file=com";
-
 
 
         //--------------------Project filter--------//
@@ -65,11 +61,6 @@ export namespace AppRoutes {
         public static readonly exportProjectsinExcel = "export-project";
 
         public static readonly filterProjectDetails = "project-search";
-
-
-        //---------------------master-data----------------//
-
-        public static readonly  getallLocations = "location";
 
     }
 
