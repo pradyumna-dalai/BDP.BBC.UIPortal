@@ -21,6 +21,7 @@ export class ProjectComponent {
   data: any = {};
   rowDisabledState: { [key: string]: boolean } = {};
   proejctdetails = [];
+  updateTable=[]
   startDate: string;
   endDate: string;
   displayDateRangeDialog = false;
@@ -56,6 +57,38 @@ export class ProjectComponent {
     this.fetchAllProjectDetails();
     this.selectedPredefinedDateRange = this.predefinedDateRanges[0];
   }
+
+
+  ngDoCheck() {
+    this.projectsService.data$.subscribe((res:any)=>{
+      if(res.length >0){
+
+      }
+      this.updateTable =res?.map((item: any) => {
+        const opportunityManagers = item.projectInformation?.opportunityManager?.map(manager => manager?.name).join(', ');
+        //console.log('opp',opportunityManagers);
+        const formattedStartDate = this.datePipe.transform(item.projectInformation?.startDate, 'dd-MM-yyyy');
+        const formattedEndDate = this.datePipe.transform(item.projectInformation?.endDate, 'dd-MM-yyyy');
+        return {
+          comp_name: item.projectInformation?.company?.name,
+          proj_id: item?.id,
+          proj_name: item.projectInformation?.projectName,
+          oppourtunity_name: item.projectInformation?.opportunityName?.name,
+          proj_stage: item.projectInformation?.projectStage?.name,
+          proj_status: item.projectInformation?.projectStatus?.name,
+          oppourtunity_manager: opportunityManagers,
+          start_date: formattedStartDate,
+          end_date: formattedEndDate,
+        };
+      });
+      if(res.length >0){
+        this.proejctdetails = this.updateTable
+      }else{
+        this.proejctdetails
+      }
+  })
+}
+
 
   toggleDateRangeSelection(): void {
     this.showDateRangeSelection = !this.showDateRangeSelection;

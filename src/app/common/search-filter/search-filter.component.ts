@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FilterService } from '../filter/filter.service';
 import { MasterTableService } from 'src/app/services/master-table.service';
+import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
+import dayjs from 'dayjs';
 
 
 @Component({
@@ -25,7 +27,11 @@ export class SearchFilterComponent {
   projectStageOptions: any[];
   isCompanySelected: boolean = false;
   isProjectStageSelected: boolean = false;
-  constructor(private filterService: FilterService, public MasterTableservice: MasterTableService) {
+  visible: boolean = false;
+  isapply: boolean = false;
+  newSearchfilter:[]
+  constructor(private filterService: FilterService, public MasterTableservice: MasterTableService, 
+   private projectService:ProjectsService) {
 
   }
 
@@ -43,6 +49,9 @@ export class SearchFilterComponent {
   onSearchClick() {
     // Implement search logic 
   }
+    formatDate(date: Date): string {
+      return dayjs(date).format('YYYY-MM-DD');
+    }
 
   onClearFilterClick() {
     console.log("Clearing filters...");
@@ -59,7 +68,10 @@ export class SearchFilterComponent {
     this.fetchOpportunityManagers();
     this.fetchProjectbyCompany();
     this.OnStageSelectProjectstatus(event);
-    this.fetchOpprNameOnCompanySelect(event)
+    this.fetchOpprNameOnCompanySelect(event);
+    this.selected = null;
+    this.newSearchfilter = null;
+    this.isapply = false;
   }
 
 
@@ -124,5 +136,50 @@ export class SearchFilterComponent {
       }
     })
   }
+managerId:any;
+  fecthOppManager(){
+    let managerId = this.opportunityManagers.map((ele) => ele.value);
+    console.log("id",managerId)
+  }
+  oppourtunity_name:any;
+  opportunity_manager:any;
+    selected: {startDate: Date, endDate: Date};
+  getProjectFilter(){
+    let payload= {
+      "status": {
+          "id": this.selectedStatus
+      },
+      // "projectName": null,
+      "opportunityName": {
+          "id": this.oppourtunity_name
+      },
+      "opportunityManager": {
+          "id": this.opportunity_manager
+      },
+      "startDate":this.formatDate(this.selected.startDate),
+      "endDate":this.formatDate(this.selected.endDate),
+      // "startDate": "2023-08-27",
+      // "endDate": "2023-08-28"
+  }
+  console.log("payload",payload)
+  this.projectService.advanceSearchFilter(payload).subscribe(
+    (response) => {
+      console.log('Response:', response);
+      this.newSearchfilter = response
+      this.projectService.updateData(this.newSearchfilter);
+    },
+    (error) => {
+      console.error('Error:', error);
+    }
+  );
+    this.visible = false;
+    this.isapply = true;
 
+  }
+
+  
+  onclickShow()
+  {
+    this.visible = !this.visible
+  }
 }
