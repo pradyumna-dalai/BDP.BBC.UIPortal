@@ -151,12 +151,11 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
     }
 
     onNodeSelect(event: any): void {
-        if (event.node && event.node.data && event.node.data.id) {
+        if (event.node && !event.node.children?.length) {
             this.selectedNode = event.node;
             this.onDraftItemClick();
         }
     }
-
     onDraftItemClick(): void {
         if (this.selectedNode) {
             const itemId = this.selectedNode.data.id;
