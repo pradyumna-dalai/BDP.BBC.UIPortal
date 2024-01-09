@@ -275,8 +275,8 @@ makeCommercialCardApiServiceCall() {
     (res: any) => {
       if (res?.message === 'Excel Upload Sucessfully') {
         // Process successful response
-        this.excelDataSheet1 = res?.data.sheet1;
-        this.excelDataSheet2 = res?.data.sheet2;
+        this.excelDataSheet1 = res?.data?.['General Information']
+        this.excelDataSheet2 = res?.data?.['Commercial Reference']
 
         // Update UI variables with the response data for Sheet2
         this.standard_service = this.excelDataSheet2['Standard Service'];
