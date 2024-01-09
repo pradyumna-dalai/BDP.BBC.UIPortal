@@ -229,12 +229,17 @@ makeScopingCardApiServiceCall()
                 break;
             }
           });
+          if(error.error?.data == 'please upload scoping card excel file'){
+            this.uploadError = 'Please upload scoping card excel file';
+          }
         }
 
         // Set flag to show error message
         this.showUploaderror = true;
        
-      } else {
+      } 
+
+      else {
         console.log('Unexpected Error:', error);
         // Handle other errors accordingly
       }
@@ -275,8 +280,8 @@ makeCommercialCardApiServiceCall() {
     (res: any) => {
       if (res?.message === 'Excel Upload Sucessfully') {
         // Process successful response
-        this.excelDataSheet1 = res?.data.sheet1;
-        this.excelDataSheet2 = res?.data.sheet2;
+        this.excelDataSheet1 = res?.data?.['General Information']
+        this.excelDataSheet2 = res?.data?.['Commercial Reference']
 
         // Update UI variables with the response data for Sheet2
         this.standard_service = this.excelDataSheet2['Standard Service'];
@@ -341,7 +346,7 @@ downloadSampleSCExcel(event: Event) {
     // Creating an anchor element to trigger the download
     const link = document.createElement('a');
     link.href = window.URL.createObjectURL(blob);
-    link.download = 'sample-file(Scoping Card).xlsx';
+    link.download = 'ScopingCard.xlsx';
     document.body.appendChild(link);
 
     // Triggering the download
@@ -367,7 +372,7 @@ downloadSampleCCExcel(event: Event){
     // Creating an anchor element to trigger the download
     const link = document.createElement('a');
     link.href = window.URL.createObjectURL(blob);
-    link.download = 'sample-file(Commercial Card).xlsx';
+    link.download = 'CommercialCard.xlsx';
     document.body.appendChild(link);
 
     // Triggering the download
