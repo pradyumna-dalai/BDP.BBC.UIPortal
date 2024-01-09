@@ -37,15 +37,14 @@
                           "node_modules/quill/dist/quill.core.css",
                           "node_modules/quill/dist/quill.snow.css",
                           "node_modules/primeng/resources/themes/saga-blue/theme.css",
-                          "node_modules/primeng/resources/primeng.min.css",
-                          "node_modules/bootstrap/dist/css/bootstrap.min.css"
+                          "node_modules/primeng/resources/primeng.min.css"
+
                         ],
                         "scripts": [
                           "node_modules/prismjs/prism.js",
                           "node_modules/prismjs/components/prism-typescript.js",
-                          "node_modules/quill/dist/quill.js",
-                          "node_modules/jquery/dist/jquery.min.js",
-                          "node_modules/bootstrap/dist/js/bootstrap.min.js"
+                          "node_modules/quill/dist/quill.js"
+
                         ]
                     },
                     "configurations": {
