@@ -587,7 +587,7 @@
                 <h6><b>Instructions</b></h6>
                 <ul class="list">
                 <li>Maximum File Size: 2MB</li>
-                <li>File Format: CSV</li>
+                <li>File Format: CSV,xlsx</li>
                 </ul>
                 <ol class="list" type="1">
                 <li>Make sure to provide valid data</li>
@@ -676,7 +676,7 @@
                 <h6><b>Instructions</b></h6>
                 <ul class="list">
                 <li>Maximum File Size: 2MB</li>
-                <li>File Format: 5MB: CSV(Shipments pushed through CSV will be available for tracking within 5 hours)</li>
+                <li>File Format: CSV,xlsx</li>
                 </ul>
                 <ol class="list" type="1">
                 <li>Make sure Data's are validated</li>
@@ -701,7 +701,7 @@
                             <div class="upload_name">Upload</div>
                         </label>
                         <p style="text-align: center;">{{fileNameCC}}</p>
-                        <input type="file" id="fileUpload" (change)="onUploadCCExcel($event)" style="display: none;">
+                        <input type="file" id="fileUpload" (change)="onUploadCCExcel($event)" style="display: none;" accept=".xlsx, .csv">
                     </div>
                     </div>
                 </div>
@@ -746,7 +746,7 @@
                     <h6><b>Instructions</b></h6>
                     <ul class="list">
                         <li>Maximum File Size: 2MB</li>
-                        <li>File Format: CSV</li>
+                        <li>File Format: CSV,xlsx</li>
                     </ul>
                     <ol class="list" type="1">
                         <li>Make sure to provide valid data</li>
@@ -768,7 +768,7 @@
                                     <div class="upload_name">Upload</div>
                                 </label>
                                 <p style="text-align: center;">{{fileNameOC}}</p>
-                                <input type="file" id="fileInput" (change)="onFileSelected($event)" style="display: none;">
+                                <input type="file" id="fileInput" (change)="onFileSelected($event)" style="display: none;" accept=".xlsx, .csv">
                             </div>
                         </div>
                     </div>
