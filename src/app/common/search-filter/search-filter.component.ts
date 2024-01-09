@@ -187,24 +187,43 @@ managerId:any;
   }
 
   getProjectFilter(){
-    let payload= {
-      "status": {
-          "id": this.selectedStatus
-      },
-      "projectName": "proj7",
-      "opportunityName": {
-          "id": this.oppourtunity_name
-      },
-      "opportunityManager": {
-          "id": this.opportunity_manager
-      },
-      "startDate":this.formatDate(this.selected.startDate),
-      "endDate":this.formatDate(this.selected.endDate),
-  }
+  //   let payload= {
+  //     "status": {
+  //         "id": this.selectedStatus
+  //     },
+  //     "projectName": null,
+  //     "opportunityName": {
+  //         "id": this.oppourtunity_name
+  //     },
+  //     "opportunityManager": {
+  //         "id": this.opportunity_manager
+  //     },
+  //     "startDate":this.formatDate(this.selected.startDate),
+  //     "endDate":this.formatDate(this.selected.endDate),
+  // }
+  let payload={
+    "status": {
+    "id": 2
+    }
+    // "projectName": "BBC",
+    // "opportunityName": {
+    //     "id": 1
+    // },
+    // "opportunityManager": {
+    //     "id": 1
+    // },
+    // "startDate":"2023-12-15",
+    // "endDate":"2023-12-20"
+}
   console.log("payload",payload)
-    this.projectService.advanceSearchFilter(payload).subscribe((res)=>{
-      // console.log(res);
-    });
+  this.projectService.advanceSearchFilter(payload).subscribe(
+    (response) => {
+      console.log('Response:', response);
+    },
+    (error) => {
+      console.error('Error:', error);
+    }
+  );
     this.visible = false;
     this.isapply = true;
     this.projectService.updateData(this.sendData);

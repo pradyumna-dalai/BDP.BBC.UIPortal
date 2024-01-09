@@ -3,6 +3,8 @@ import { Observable } from 'rxjs/internal/Observable';
 import * as settings from "../../../app/common/lib/api-constants";
 import { HttpClient, HttpContext, HttpHeaders, HttpParams, HttpResponse } from "@angular/common/http";
 import { BehaviorSubject } from 'rxjs';
+// import {Http, Headers} from '@angular/http';
+
 
 var url = "/buildingblocks/api/v1/"
 
@@ -42,8 +44,18 @@ downloadProjectData(startDate: string, endDate: string): Observable<HttpResponse
   return this.http.get<Blob>(url + settings.AppRoutes.Auth.exportProjectsinExcel, options);
 }
 
-advanceSearchFilter(data:any){
-  return this.http.get<any>(url + settings.AppRoutes.Auth.filterProjectDetails,data);
+advanceSearchFilter(body: any) {
+  const headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer YourAccessToken',
+  });
+
+  // Assuming 'params' is an object representing the search parameters
+  const options = {
+    headers: headers,
+  };
+
+  return this.http.get<any>('http://ec2-34-205-39-55.compute-1.amazonaws.com/buildingblocks/api/v1/project-search',body);
 }
 
 }

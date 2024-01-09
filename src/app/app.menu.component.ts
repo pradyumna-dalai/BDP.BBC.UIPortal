@@ -6,9 +6,9 @@ import { MenuService } from './app.menu.service';
 @Component({
     selector: 'app-menu',
     template: `
-        <ul class="layout-menu">
-            <li *ngFor="let item of menuItems; let i = index" app-menuitem [item]="item" [index]="item.id" [root]="true"  [class.active]="selectedIndex === i" (click)="setIndex(i)"></li>
-        </ul>
+    <ul class="layout-menu">
+    <li *ngFor="let item of menuItems" app-menuitem [item]="item" [index]="item.id" [root]="true"></li>
+     </ul>
     `
 })
 export class AppMenuComponent implements OnInit {
@@ -25,7 +25,7 @@ export class AppMenuComponent implements OnInit {
 
     setIndex(index: number) {
         this.selectedIndex = index;
-     }
+    }
 
     convertToMenuItems(apiItems: any[]): MenuItem[] {
         return apiItems.map(item => {
