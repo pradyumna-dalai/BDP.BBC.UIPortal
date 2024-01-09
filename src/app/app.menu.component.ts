@@ -7,14 +7,14 @@ import { MenuService } from './app.menu.service';
     selector: 'app-menu',
     template: `
         <ul class="layout-menu">
-            <li *ngFor="let item of menuItems" app-menuitem [item]="item" [index]="item.id" [root]="true"></li>
+            <li *ngFor="let item of menuItems; let i = index" app-menuitem [item]="item" [index]="item.id" [root]="true"  [class.active]="selectedIndex === i" (click)="setIndex(i)"></li>
         </ul>
     `
 })
 export class AppMenuComponent implements OnInit {
 
     menuItems: MenuItem[] = [];
-
+    selectedIndex: number = null;
     constructor(private menuService: MenuService) { }
 
     ngOnInit() {
@@ -22,6 +22,10 @@ export class AppMenuComponent implements OnInit {
             this.menuItems = this.convertToMenuItems(apiMenuItems.data);
         });
     }
+
+    setIndex(index: number) {
+        this.selectedIndex = index;
+     }
 
     convertToMenuItems(apiItems: any[]): MenuItem[] {
         return apiItems.map(item => {

@@ -60,6 +60,8 @@ export namespace AppRoutes {
 
         public static readonly exportProjectsinExcel = "export-project";
 
+        public static readonly filterProjectDetails = "project-search";
+
     }
 
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { AppBreadcrumbService } from '../../../app.breadcrumb.service';
 import { MessageService, ConfirmationService, SelectItem } from 'primeng/api';
 import { Router } from '@angular/router';
@@ -10,6 +10,7 @@ import { CalendarModule } from 'primeng/calendar';
 //import moment from "moment";
 import dayjs from 'dayjs';
 import { HttpResponse } from '@angular/common/http';
+import { SearchFilterComponent } from 'src/app/common/search-filter/search-filter.component';
 @Component({
   selector: 'app-project',
   templateUrl: './project.component.html',
@@ -28,7 +29,7 @@ export class ProjectComponent {
   selectedEndDate: Date;
   //selectedPredefinedDateRange: any; 
   showDateRangeSelection = false;
-
+  parentData:any;
   dateRange: Date[];
   endDateString: string;
   startDateString: string;
@@ -55,7 +56,20 @@ export class ProjectComponent {
   ngOnInit() {
     this.fetchAllProjectDetails();
     this.selectedPredefinedDateRange = this.predefinedDateRanges[0];
+
   }
+  // ngAfterViewInit(){
+  //   this.projectsService.data$.subscribe((res:any)=>{
+  //     console.log("data",res)
+  //   })
+  // }
+
+  ngDoCheck() {
+        this.projectsService.data$.subscribe((res:any)=>{
+      console.log("data-behaver",res)
+    })
+  }
+
 
   toggleDateRangeSelection(): void {
     this.showDateRangeSelection = !this.showDateRangeSelection;

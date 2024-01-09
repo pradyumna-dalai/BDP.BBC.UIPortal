@@ -1,67 +1,70 @@
-<p-sidebar [(visible)]="sidebarVisible" id="bdpfilter" styleClass="w-30rem" style="z-index: 1101;height: 400px;">
-  <div class="bdp-filter-panel">
-    <div class="panel-header">
-      <h6 class="filter_headline">Advanced Search</h6>
-    </div>
-    <div class="p-fluid bdp-filter-wrapper">
-      <div class="p-fluid grid">
-        <br>
-        <div class="field col-12">
-          <div class="p-d-block"><label>Project Stage :</label></div>
-          <p-dropdown optionLabel="name" optionValue="id" [(ngModel)]="selectedStage" [options]="projectStageOptions" (onChange)="OnStageSelectProjectstatus($event)"
-            placeholder="Select Stage" [filter]="true" filterBy="name"></p-dropdown>
-        </div>
-        <div class="field col-12">
-          <div class="p-d-block"><label>Project Status :</label></div>
-          <p-dropdown optionLabel="name" optionValue="id" [(ngModel)]="selectedStatus" [options]="statusOptions"
-          [disabled]="!isProjectStageSelected"  placeholder="Select Status" [filter]="true" filterBy="name"></p-dropdown>
-        </div>
-        <div class="field col-12">
-          <div class="p-d-block"><label>Project Name :</label></div>
-          <p-dropdown optionLabel="name" optionValue="id" placeholder="Select Project" [filter]="true"
-            filterBy="name"></p-dropdown>
-        </div>
-        <div class="field col-12">
-          <div class="p-d-block"><label>Company Name:</label></div>
-          <p-dropdown [options]="projectSuggestions" (onChange)="fetchOpprNameOnCompanySelect($event)"
-            optionLabel="name" optionValue="id" [(ngModel)]="selectedProject" placeholder="Select Company"
-            [filter]="true" filterBy="name"></p-dropdown>
-        </div>
-        <div class="field col-12">
-          <div class="p-d-block"><label>Date Range :</label></div>
-          <p-calendar [(ngModel)]="startDate" placeholder="Start Date"></p-calendar>
-          <p-calendar [(ngModel)]="endDate" placeholder="End Date"></p-calendar>
-        </div>
-        <div class="field col-12">
-          <div class="p-d-block"><label>Opportunity Name :</label></div>
-          <p-dropdown [options]="managerOptions" optionLabel="name" optionValue="id" [(ngModel)]="selectedManager"
-            placeholder="Select Opportunity Name" [filter]="true" filterBy="name"
-            [disabled]="!isCompanySelected"></p-dropdown>
-        </div>
-        <div class="field col-12">
-          <div class="p-d-block"><label>Opportunity Manager :</label></div>
-          <p-dropdown [options]="opportunityManagers" optionLabel="label" optionValue="id"
-            [(ngModel)]="selectedOpportunityManagers" placeholder="Select Opportunity Managers" [filter]="true"
-            filterBy="label"></p-dropdown>
-        </div>
-      </div>
 
-      <!-- end here -->
-    </div>
-    <div class="bdp-sticky-header">
-      <div class="sidebar-header">
-        <p-button label="Apply" class="sidebar-button"></p-button>
-        <span class="bdp-clear-filters"><a style="cursor: pointer;" (click)="onClearFilterClick()">Clear
-            Filters</a></span>
-      </div>
-    </div>
-  </div>
-</p-sidebar>
 
-    <button pButton pRipple  (click)="sidebarVisible = true" class="mr-2 mb-2 filter-button">
-      <div class="centerContent">
-        <span style="margin-right: 8px;">Show Filters</span><i class="pi pi-filter icon-with-margin"></i>
-      </div>
-    </button>
+<div>
+  <button pButton pRipple  (click)="onclickShow()" class="mr-2 mb-2 filter-button">
+    <div class="centerContent">
+      <span style="margin-right: 8px;">Show Filters</span><i class="pi pi-filter icon-with-margin" [ngStyle]="{'color': isapply ? 'red' : 'white'}"></i>
+    </div>
+  </button>
+</div>
+<div>
+ 
+</div>
+    <div class="tt" *ngIf="visible">
+            <div class="field">
+              <div class="p-d-block"><label>Project Stage :</label></div>
+              <p-dropdown optionLabel="name" optionValue="id" [(ngModel)]="selectedStage" [options]="projectStageOptions" (onChange)="OnStageSelectProjectstatus($event)"
+                placeholder="Select Stage" [filter]="true" filterBy="name"></p-dropdown>
+            </div>
+            <div class="field">
+              <div class="p-d-block"><label>Project Status :</label></div>
+              <p-dropdown optionLabel="name" optionValue="id" [(ngModel)]="selectedStatus" [options]="statusOptions"
+              [disabled]="!isProjectStageSelected"  placeholder="Select Status" [filter]="true" filterBy="name"></p-dropdown>
+            </div>
+            <div class="field">
+              <div class="p-d-block"><label>Project Name :</label></div>
+              <p-dropdown optionLabel="name" optionValue="id" [(ngModel)]="projectName" placeholder="Select Project" [filter]="true"
+                filterBy="name"></p-dropdown>
+            </div>
+            <div class="field">
+              <div class="p-d-block"><label>Company Name:</label></div>
+              <p-dropdown [options]="projectSuggestions" (onChange)="fetchOpprNameOnCompanySelect($event)"
+                optionLabel="name" optionValue="id" [(ngModel)]="selectedProject" placeholder="Select Company"
+                [filter]="true" filterBy="name"></p-dropdown>
+            </div>
+            <div class="field">
+              <div class="p-d-block"><label>Date Range :</label></div>
+              <input type="text" ngxDaterangepickerMd
+              [lockStartDate]="false"
+        [(ngModel)]="selected" placeholder="Start-End"
+        (ngModelChange)="ngModelChange($event)" style=" width: 77px; height: 35px;border: 1px solid gainsboro;border-radius: 3px;" />
+            </div>
+            <div class="field">
+              <div class="p-d-block"><label>Opportunity Name :</label></div>
+              <p-dropdown [options]="managerOptions" optionLabel="name" optionValue="id" [(ngModel)]="oppourtunity_name"
+                placeholder="Select Opportunity Name" [filter]="true" filterBy="name"
+                [disabled]="!isCompanySelected"></p-dropdown>
+            </div>
+            <div class="field">
+              <div class="p-d-block"><label>Opportunity Manager :</label></div>
+              <p-dropdown [options]="opportunityManagers" optionLabel="label" optionValue="value"
+                [(ngModel)]="opportunity_manager" placeholder="Select Opportunity Managers" [filter]="true"
+                filterBy="name"></p-dropdown>
+                <!-- <p-dropdown [options]="managerOptions" optionLabel="name" optionValue="id" [(ngModel)]="oppourtunity_name"
+                placeholder="Select Opportunity Name" [filter]="true" filterBy="name"
+                [disabled]="!isCompanySelected"></p-dropdown> -->
+            </div>
+            <div class="field">
+              <div class="bdp-sticky-header">
+                <div class="sidebar-header filter_btn_group">
+                  <p-button label="Apply" class="sidebar-button" (click)="getProjectFilter()"></p-button>
+                  <span class="bdp-clear-filters" style="padding-left: 5px !important;"><a style="cursor: pointer;" (click)="onClearFilterClick()">Clear</a></span>
+                </div>
+              </div>
+            </div>
+          </div>
+    
+          <!-- end here -->
+     
 
    

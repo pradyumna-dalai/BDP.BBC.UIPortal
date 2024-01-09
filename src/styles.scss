@@ -8,7 +8,7 @@ $gutter: 1rem; //for primeflex grid system
 @import "assets/demo/flags/flags.css";
 @import "assets/demo/documentation.scss";
 @import "~@fortawesome/fontawesome-free/css/all.css";
-
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 
 
 
@@ -31,3 +31,43 @@ $gutter: 1rem; //for primeflex grid system
 .p-sidebar .p-sidebar-header {
   padding: 0 !important;
 }
+.active {
+  background-color: #515C66;
+  color: white;
+}
+::ng-deep .md-drppicker {
+  position: absolute;
+  font-family: Roboto,sans-serif;
+  color: inherit;
+  border-radius: 4px;
+  width: 499px !important;
+  padding: 4px;
+  margin-top: -10px;
+  overflow: hidden;
+  z-index: 1000;
+  font-size: 10px !important;
+  background-color: #fff;
+  box-shadow: 0 2px 4px #00000029, 0 2px 8px #0000001f;
+  /* height: 231px; */
+}
+::ng-deep .md-drppicker .btn {
+  position: relative;
+  overflow: hidden;
+  border-width: 0;
+  outline: none;
+  padding: 0px !important;
+  cursor: pointer;
+  border-radius: 2px;
+  box-shadow: 0 1px 4px #0009;
+  background-color: #3f51b5;
+  color: #ecf0f1;
+  transition: background-color .4s;
+  height: auto;
+  text-transform: uppercase;
+  line-height: 8px;
+  border: none;
+  padding-left: 3px !important;
+  padding-right: 1px !important;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

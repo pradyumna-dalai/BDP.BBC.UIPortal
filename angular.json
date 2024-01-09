@@ -32,18 +32,20 @@
                             "src/upload.php"
                         ],
                         "styles": [
-                            "src/styles.scss",
-                            "node_modules/quill/dist/quill.core.css",
-                            "node_modules/quill/dist/quill.snow.css",
-                            "node_modules/primeng/resources/themes/saga-blue/theme.css",
-                            "node_modules/primeng/resources/primeng.min.css"
-
+                          "@angular/material/prebuilt-themes/indigo-pink.css",
+                          "src/styles.scss",
+                          "node_modules/quill/dist/quill.core.css",
+                          "node_modules/quill/dist/quill.snow.css",
+                          "node_modules/primeng/resources/themes/saga-blue/theme.css",
+                          "node_modules/primeng/resources/primeng.min.css",
+                          "node_modules/bootstrap/dist/css/bootstrap.min.css"
                         ],
                         "scripts": [
-                            "node_modules/prismjs/prism.js",
-                            "node_modules/prismjs/components/prism-typescript.js",
-                            "node_modules/quill/dist/quill.js"
-
+                          "node_modules/prismjs/prism.js",
+                          "node_modules/prismjs/components/prism-typescript.js",
+                          "node_modules/quill/dist/quill.js",
+                          "node_modules/jquery/dist/jquery.min.js",
+                          "node_modules/bootstrap/dist/js/bootstrap.min.js"
                         ]
                     },
                     "configurations": {
@@ -112,7 +114,8 @@
                         "karmaConfig": "karma.conf.js",
                         "scripts": [],
                         "styles": [
-                            "src/styles.scss"
+                          "@angular/material/prebuilt-themes/indigo-pink.css",
+                          "src/styles.scss"
                         ],
                         "assets": [
                             "src/favicon.ico",
@@ -137,6 +140,6 @@
         }
     },
     "cli": {
-      "analytics": false
+        "analytics": false
     }
 }

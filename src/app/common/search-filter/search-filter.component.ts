@@ -1,6 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FilterService } from '../filter/filter.service';
 import { MasterTableService } from 'src/app/services/master-table.service';
+import dayjs, { Dayjs } from 'dayjs';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -9,6 +13,7 @@ import { MasterTableService } from 'src/app/services/master-table.service';
   styleUrls: ['./search-filter.component.scss']
 })
 export class SearchFilterComponent {
+  sendData='kabir'
   sidebarVisible: boolean = false;
   showAdvancedSearch: boolean = false;
   selectedStage: any;
@@ -17,6 +22,8 @@ export class SearchFilterComponent {
   selectedManager: any;
   startDate: Date;
   endDate: Date;
+  // filterResultValue:any;
+  // selected:{startDate: Dayjs, endDate: Dayjs};
   selectedOpportunityManagers: any[] = [];
   statusOptions: any[]
   projectSuggestions: any[] = [];
@@ -25,16 +32,59 @@ export class SearchFilterComponent {
   projectStageOptions: any[];
   isCompanySelected: boolean = false;
   isProjectStageSelected: boolean = false;
-  constructor(private filterService: FilterService, public MasterTableservice: MasterTableService) {
+    //hiding info box
+    visible:boolean = false;
+
+    isapply:boolean = false;
+    range = new FormGroup({
+      start: new FormControl(),
+      end: new FormControl()
+    });
+
+    es: any;
+
+    invalidDates: Array<Date>
+    selected: {startDate: Date, endDate: Date};
+    formatDate(date: Date): string {
+      return dayjs(date).format('DD.MM.YY');
+    }
+
+/**@project forms */
+
+projectName:any;
+oppourtunity_name:any;
+opportunity_manager:any;
+
+  constructor(private datePipe: DatePipe,private filterService: FilterService, public MasterTableservice: MasterTableService, private projectService:ProjectsService) {
 
   }
-
+  date = new Date();
+  control = new FormControl(
+    {
+      from: this.date,
+      to: new Date(this.date.getTime() + 1 * 24 * 60 * 60 * 1000),
+    },
+    Validators.required
+  );
   ngOnInit() {
     // this.fetchProjectStatus();
     this.fetchOpportunityManagers();
     this.fetchProjectbyCompany();
     this.fetchProjectStage();
+
   }
+
+  getOpportunityManagerId(event:any){
+    console.log(event)
+  }
+
+
+
+
+
+
+
+
 
   searchProjects(query: string) {
     // Implement project search 
@@ -42,6 +92,10 @@ export class SearchFilterComponent {
 
   onSearchClick() {
     // Implement search logic 
+  }
+  onclickShow()
+  {
+    this.visible = !this.visible
   }
 
   onClearFilterClick() {
@@ -59,7 +113,8 @@ export class SearchFilterComponent {
     this.fetchOpportunityManagers();
     this.fetchProjectbyCompany();
     this.OnStageSelectProjectstatus(event);
-    this.fetchOpprNameOnCompanySelect(event)
+    this.fetchOpprNameOnCompanySelect(event);
+    this.isapply = false;
   }
 
 
@@ -119,10 +174,40 @@ export class SearchFilterComponent {
           label: manager.name,
           value: manager.id,
         }));
+        this.managerId = res?.data.map((manager: any) => manager.id);
       } else {
         this.opportunityManagers = [];
       }
     })
+  }
+managerId:any;
+  fecthOppManager(){
+    let managerId = this.opportunityManagers.map((ele) => ele.value);
+    console.log("id",managerId)
+  }
+
+  getProjectFilter(){
+    let payload= {
+      "status": {
+          "id": this.selectedStatus
+      },
+      "projectName": "proj7",
+      "opportunityName": {
+          "id": this.oppourtunity_name
+      },
+      "opportunityManager": {
+          "id": this.opportunity_manager
+      },
+      "startDate":this.formatDate(this.selected.startDate),
+      "endDate":this.formatDate(this.selected.endDate),
+  }
+  console.log("payload",payload)
+    this.projectService.advanceSearchFilter(payload).subscribe((res)=>{
+      // console.log(res);
+    });
+    this.visible = false;
+    this.isapply = true;
+    this.projectService.updateData(this.sendData);
   }
 
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import * as settings from "../../../app/common/lib/api-constants";
 import { HttpClient, HttpContext, HttpHeaders, HttpParams, HttpResponse } from "@angular/common/http";
+import { BehaviorSubject } from 'rxjs';
 
 var url = "/buildingblocks/api/v1/"
 
@@ -12,8 +13,11 @@ var url = "/buildingblocks/api/v1/"
 export class ProjectsService {
 
   constructor(protected http: HttpClient) { }
-
-
+  private dataSubject = new BehaviorSubject<any>(''); 
+  public data$ = this.dataSubject.asObservable();
+  updateData(newData: any) {
+    this.dataSubject.next(newData);
+  }
 saveAsDraftProject(body: any){
   // const params = new HttpParams().set('status', status.toString());
   return this.http.post<any>(url + settings.AppRoutes.Auth.saveProjectDraft, body);
@@ -37,4 +41,9 @@ downloadProjectData(startDate: string, endDate: string): Observable<HttpResponse
 
   return this.http.get<Blob>(url + settings.AppRoutes.Auth.exportProjectsinExcel, options);
 }
+
+advanceSearchFilter(data:any){
+  return this.http.get<any>(url + settings.AppRoutes.Auth.filterProjectDetails,data);
+}
+
 }

@@ -4,21 +4,6 @@
       <h4>Project</h4>
     </div>
     <div class="col-6" style="display: flex;justify-content: flex-end;">
-      <button type="button" pButton pRipple label="Create Project" [routerLink]="['/create-project']"
-        class="mr-2 mb-2"></button>
-    </div>
-  </div>
-  <hr class="align">
-  <div class="grid">
-    <div class="col-6">
-      <div class="sidebar-container">
-        <app-search-filter></app-search-filter>
-      </div>
-    </div>
-    <div class="col-6" style="display: flex;justify-content: flex-end;">
-      <button type="button" pButton pRipple label="Export Excel" (click)="toggleDateRangeSelection()"
-        class="mr-2 mb-2 btnwidth"></button>
-
       <div *ngIf="showDateRangeSelection" class="custom-date-range-dropdown">
         <p-dropdown [options]="predefinedDateRanges" [(ngModel)]="selectedPredefinedDateRange" optionLabel="label"
           placeholder="Select Date Range" [style]="{'width': '200px'}"
@@ -36,11 +21,23 @@
 
         <button pButton type="button" label="Apply" (click)="applyDateRange()" class="mr-2 mb-2"></button>
       </div>
-
-
-      <p-toast key="successToast"></p-toast>
+      <button type="button" pButton pRipple label="Create Project" [routerLink]="['/create-project']"
+        class="mr-2 mb-2"></button>
+        <button type="button" pButton pRipple label="Export Excel" (click)="toggleDateRangeSelection()"
+        class="mr-2 mb-2 btnwidth"></button>
+        
+  
+  
+        <p-toast key="successToast"></p-toast>
     </div>
   </div>
+  <hr class="align">
+    <div>
+      <div class="sidebar-container">
+        <app-search-filter></app-search-filter>
+      </div>
+    </div>
+
   <p-table #dt1 [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [value]="proejctdetails"
     selectionMode="single" dataKey="id" styleClass="p-datatable-gridlines" responsiveLayout="scroll" [rows]="10"

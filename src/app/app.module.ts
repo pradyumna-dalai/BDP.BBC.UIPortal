@@ -112,6 +112,9 @@ import { CreateProjectComponent } from './demo/view/project/create-project/creat
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { ChargeCodeComponent } from './demo/master-data/charge-code/charge-code.component';
 import { LocationsComponent } from './demo/master-data/locations/locations.component';
+import { MaterialsModule } from './common/modules/materials/materials.module';
+
+
 
 
 
@@ -204,7 +207,9 @@ import { LocationsComponent } from './demo/master-data/locations/locations.compo
         ReactiveFormsModule,
         DatePipe,
         NgxDaterangepickerMd.forRoot(),
-        CalendarModule
+        CalendarModule,
+        MaterialsModule,
+        NgxDaterangepickerMd.forRoot()
     ],
     declarations: [
         AppComponent,
@@ -222,8 +227,7 @@ import { LocationsComponent } from './demo/master-data/locations/locations.compo
         SearchFilterComponent,
         CreateProjectComponent,
         ChargeCodeComponent,
-        LocationsComponent
-
+        LocationsComponent,
     ],
     providers: [
      MenuService, AppBreadcrumbService, DatePipe,
