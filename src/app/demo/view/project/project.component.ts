@@ -56,8 +56,22 @@ export class ProjectComponent {
   ngOnInit() {
     this.fetchAllProjectDetails();
     this.selectedPredefinedDateRange = this.predefinedDateRanges[0];
+    this.projectsService.data$.subscribe((res)=>{
+      
+      if(res > 0){
+        this.isloader = true;
+        this.getDataFromFilter();
+
+      }
+    })
+    this.getDataFromFilter()
+  }
+  isloader:boolean= false;
+  getDataFromFilter(){
+
     this.projectsService.data$.subscribe((res:any)=>{
       this.updateTable =res?.map((item: any) => {
+        this.isloader = true;
         const opportunityManagers = item.projectInformation?.opportunityManager?.map(manager => manager?.name).join(', ');
         //console.log('opp',opportunityManagers);
         const formattedStartDate = this.datePipe.transform(item.projectInformation?.startDate, 'dd-MM-yyyy');
@@ -75,7 +89,9 @@ export class ProjectComponent {
         };
       });
       if(res.length >0){
-        console.log("dataUpdate",res)
+       
+        console.log("dataUpdate",res);
+        this.isloader= false;
         this.proejctdetails = this.updateTable
       }else{
         this.proejctdetails;
@@ -83,6 +99,7 @@ export class ProjectComponent {
       }
   })
   }
+
 
   toggleDateRangeSelection(): void {
     this.showDateRangeSelection = !this.showDateRangeSelection;
