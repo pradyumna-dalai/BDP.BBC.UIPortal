@@ -9,6 +9,8 @@ import { CreateBbComponent } from './demo/view/create-bb/create-bb.component';
 import { CreateProjectComponent } from './demo/view/project/create-project/create-project.component';
 import { LocationsComponent } from './demo/master-data/locations/locations.component';
 import { ChargeCodeComponent } from './demo/master-data/charge-code/charge-code.component';
+import { CategoryComponent } from './demo/master-data/category/category.component';
+import { ScopeComponent } from './demo/master-data/scope/scope.component';
 
 
 
@@ -44,6 +46,8 @@ import { ChargeCodeComponent } from './demo/master-data/charge-code/charge-code.
                     { path: '', redirectTo: 'building-block', pathMatch: 'full' },
                     { path: 'locations', component: LocationsComponent },
                     { path: 'charge-code', component: ChargeCodeComponent },
+                    { path: 'scope', component: ScopeComponent },
+                    { path: 'category', component: CategoryComponent },
                 ]
             },
             { path: 'notfound', component: AppNotfoundComponent },
