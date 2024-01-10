@@ -24,6 +24,7 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
     selectedNode: TreeNode;
     buildingBlockDetails: any;
     private _isExpanded = false;
+    loading: boolean = false;
 
     constructor(private breadcrumbService: AppBreadcrumbService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
         this.breadcrumbService.setItems([
@@ -151,12 +152,14 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
     }
 
     onNodeSelect(event: any): void {
-        if (event.node && event.node.data && event.node.data.id) {
+        if (event.node && !event.node.children?.length) {
+            this.loading = true; 
             this.selectedNode = event.node;
             this.onDraftItemClick();
+        }else{
+            this.selectedNode = null;  
         }
     }
-
     onDraftItemClick(): void {
         if (this.selectedNode) {
             const itemId = this.selectedNode.data.id;
@@ -164,9 +167,11 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
                 (data: any) => {
                     this.buildingBlockDetails = data;
                     console.log('Building Block Details for explore view:', this.buildingBlockDetails);
+                    this.loading = false;
                 },
                 (error) => {
                     console.error('Error loading building block details:', error);
+                    this.loading = false;
                 }
             );
         }
