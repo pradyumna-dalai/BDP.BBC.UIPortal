@@ -69,6 +69,10 @@ export namespace AppRoutes {
 
         public static readonly  getallLocations = "location";
 
+        public static readonly deleteLocations ="location";
+
+        public static readonly addLocations ="location";
+
     }
 
 }

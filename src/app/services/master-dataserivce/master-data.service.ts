@@ -16,4 +16,13 @@ export class MasterDataService {
     return this.http.get<any>(url + settings.AppRoutes.Auth.getallLocations);
   }
   
+  deleteLocationDetails(locationId: number){
+    const payload = { id: locationId, isDeleted: true };
+    return this.http.delete<any>(url + settings.AppRoutes.Auth.deleteLocations,{ body: payload });
+  }
+
+  addLocations(body: any){
+    return this.http.post<any>(url + settings.AppRoutes.Auth.addLocations,body);
+  }
+
 }

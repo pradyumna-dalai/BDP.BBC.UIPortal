@@ -134,3 +134,55 @@
   .btnwidth{
     width: 126px;
   }
+
+  .p-field-radiobutton {
+    flex-direction: column;
+    align-items: flex-start;                
+    .p-card{
+        width: 100%;
+    }
+    ul {
+        list-style-type: none;
+        padding: 0px;
+        margin: 0px;
+        width: 100%;
+
+        li {
+            display: inline-block;
+            width: 20%;
+            // float: left;
+            margin-top: -10px;
+            &:nth-child(1) {
+                width: 75%;                            
+            }
+            
+        }
+
+        label {
+            margin-left: 5px;
+            line-height: 1.3;
+        }
+    }
+
+    .p-dialog-footer {
+      .p-button {
+          width: 100px;
+          // background-color: #2d74ff;
+          float: right;
+      }
+  }  }
+
+  ::ng-deep {
+    .tr-divider {
+        width: 100%;
+        float: left;
+        border-bottom: 1px solid #d3cece;
+        margin-bottom: 25px;
+        margin-top: 18px;
+    }
+}
+i {
+  font-style: italic;
+  color: rgb(104, 103, 103);
+  font-size: 15px;
+}
