@@ -7,6 +7,7 @@ import { ProjectComponent } from './demo/view/project/project.component';
 import { GlossaryComponent } from './demo/view/glossary/glossary.component';
 import { CreateBbComponent } from './demo/view/create-bb/create-bb.component';
 import { CreateProjectComponent } from './demo/view/project/create-project/create-project.component';
+import { LocationsComponent } from './demo/master-data/locations/locations.component';
 
 
 
@@ -34,6 +35,13 @@ import { CreateProjectComponent } from './demo/view/project/create-project/creat
 
                     { path: 'building-block', component: DashboardDemoComponent },
                     { path: 'create-project', component: CreateProjectComponent } 
+                ]
+            },
+            {
+                path: '', component: AppMainComponent,
+                children: [
+                    { path: '', redirectTo: 'building-block', pathMatch: 'full' },
+                    { path: 'locations', component: LocationsComponent }
                 ]
             },
             { path: 'notfound', component: AppNotfoundComponent },

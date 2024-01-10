@@ -231,12 +231,53 @@
     </div>
 
 </div>
-<div class="card" *ngIf="this.showOperationCrad==true">
-    <div class="page-under-construction">
-        <img src="assets/layout/images/page-under-construction.jpg" alt="No Building Blocks Found">
+<div class="card" *ngIf="this.showOperationCrad==true" style="height:auto;">
+<div class="grid">
+    <div class="col-6">
+        <h5>Operation Card</h5>
     </div>
+    <div class="col-6" style="display: flex;justify-content: flex-end;">
+        <a (click)="showDialogOperationCard()" style="text-decoration: underline;">Import From Excel</a>
+    </div>
+      </div>
+      <hr class="align">
+      <div *ngIf="!excelDataOpration" style="min-height: 669px;">
+            <div style="margin-top: 90px;">
+                <div style="display: flex;justify-content: center;">
+                    <img src="assets/layout/images/no-bb-found.svg" alt="No Building Blocks Found">
+                </div><br>
+                <div style="display: flex;justify-content: center;">
+                    <h4>No Preview To Show</h4>
+                </div>
+                <div style="display: flex;justify-content: center;">
+                    <h6>Select Import From Excel to Upload the details</h6>
+                </div>
+        </div>
+     </div>
+     
+    <div *ngIf="excelDataOpration">
+  <h4 style="text-align: center;">Excel Preview</h4>
+  <div class="excel-container" [style.min-height]="excelDataOpration.length ? '200px' : '100px'" >
+    <table class="excel-table">
+      <thead>
+        <tr *ngFor="let headerRow of excelDataOpration.slice(0, 1)">
+          <th *ngFor="let headerCell of headerRow">{{ headerCell }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of excelDataOpration.slice(1)">
+          <td *ngFor="let cell of row">{{ cell }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<br>
+<hr class="align">
     <div class="grid">
+    
         <div class="col-6">
+         
             <button pButton pRipple type="button" label="Cancel" (click)="confirm()"
                 class="p-button-outlined mr-2 mb-2"></button>
         </div>
@@ -349,6 +390,7 @@
                     <button type="button" pButton pRipple label="Continue" (click)="activeIndex = 1"
                         class="mr-2 mb-2"></button>
                     <p-toast key="successToast"></p-toast>
+                    <p-toast key="errorToast"></p-toast>
                 </div>
             </div>
         </p-tabPanel>
@@ -524,14 +566,16 @@
 </div>
 
 <!-- import from excel dialog(Scoping Card) -->
-<p-dialog header="Import Excel" [(visible)]="visibleSC" [style]="{width: '50vw'}">
+<p-dialog header="Import Excel" [(visible)]="visibleSC" [style]="{width: '50vw'}" >
     <!-- <div class="page-under-construction">
         <img src="assets/layout/images/page-under-construction.jpg" alt="No Building Blocks Found">
     </div> -->
     <ng-template pTemplate="header">
         <div style="width: 100%;">
             <h5 style="display: contents;">Import From Excel</h5>&nbsp;&nbsp;&nbsp;
-            <h5 style="display: contents;"><a href="*" style="text-decoration: underline;">Download Sample File</a></h5>
+            <h5 style="display: contents;">
+                <a href="#" (click)="downloadSampleSCExcel($event)" style="text-decoration: underline;">Download Sample File</a>
+              </h5>
         </div>
     </ng-template>
     <hr>
@@ -542,47 +586,70 @@
             <div class="custom-container">
                 <h6><b>Instructions</b></h6>
                 <ul class="list">
-                <li>Maximum File Size: 5MB</li>
-                <li>File Format: 5MB: CSV(Shipments pushed through CSV will be available for tracking within 5 hours)</li>
+                <li>Maximum File Size: 2MB</li>
+                <li>File Format: CSV,xlsx</li>
                 </ul>
                 <ol class="list" type="1">
-                <li>Make sure Data's are validated</li>
+                <li>Make sure to provide valid data</li>
                 <li>Keep file name recognizable</li>
-                <li>Avoid uploading incomplete file</li>
                 </ol>
             </div>
             </div>
             <!-- Right Column -->
             <div class="col-12 md:col-12">
-            <div class="custom-container">
-                <h6><b>Upload</b></h6>
-                <p-fileUpload name="demo[]" [multiple]="false" [showUploadButton]="false" (onSelect)="onUploadSCExcel($event)"
-                accept=".xls, .xlsx" >
-                <ng-template pTemplate="content">
-                   
-                </ng-template>
-                </p-fileUpload>
-                <br>
-        <p-progressBar *ngIf="uploadInProgress" mode="indeterminate" [style]="{'height': '6px', 'marginBottom':'1rem'}">
-        </p-progressBar>
-            </div>
+                <div class="custom-container">
+                    <h6><b>Upload</b></h6>
+                    <div *ngIf="showUploaderror" style="color: red;">
+                        <b>Upload error: Review the file before uploading.</b>
+                        <div *ngIf="!uploadError">
+                            <div *ngIf="deliverablesError">{{ deliverablesError }}</div>
+                        <div *ngIf="valueToPSABDPError">{{ valueToPSABDPError }}</div>
+                        <div *ngIf="parametersError">{{ parametersError }}</div>
+                        <div *ngIf="serviceDescriptionError">{{ serviceDescriptionError }}</div>
+                        <div *ngIf="stakeholdersAudienceError">{{ stakeholdersAudienceError }}</div>
+                        <div *ngIf="customerRequirementsError">{{ customerRequirementsError }}</div>
+                        <div *ngIf="configurableError">{{ configurableError }}</div> 
+                        </div>
+                       
+                        <!-- Add similar divs for other fields -->
+                      </div>
+                      <div *ngIf="uploadError" style="color: red;">
+                        {{ uploadError }}
+                      </div>
+                    <div class="box">
+                        <div class="card-body">
+                        <div class="container">
+                            
+                            <label for="fileUpload" class="custom-file-input">
+                                <i class="pi pi-upload" style="font-size: 30px;display: block;"></i>
+                                <div class="upload_name">Upload</div>
+                            </label>
+                            <p style="text-align: center;">{{fileNameSC}}</p>
+                            <input type="file" id="fileUpload" (change)="onUploadSCExcel($event)" style="display: none;" accept=".xlsx, .csv">
+                        </div>
+                        </div>
+                    </div>
+                    <p-progressBar *ngIf="uploadInProgress" mode="indeterminate" [style]="{'height': '6px', 'marginBottom':'1rem'}">
+                    </p-progressBar>
+                    <div class="card_footer">
+                        <div>
+                            <button type="submit" pButton pRipple class=" btn" 
+                            [disabled]="!uploadFilesc" (click)="onCancelClickSC()">
+                            Remove File
+                        </button> 
+                        </div>
+                        <div class="uplodBtn_right">
+                        <button type="submit" pButton pRipple class=" btn" 
+                            [disabled]="!uploadFilesc" (click)="makeScopingCardApiServiceCall()">
+                            Submit
+                        </button>
+                        <button type="submit" (click)="onPopupCancelSCClick()" pButton pRipple class=" btn">Cancel</button>
+                        </div>
+                    </div>
+                    </div>
             </div>
         </div>
         <div class="">
-            <!-- <div class="demo-container p-4">
-                <button pButton pRipple type="button" *ngIf="addDiv"
-                    [disabled]="template_title?.length >255 || subject?.length >255 || email_to==''||template_title==''||template_type==''||message==''||subject==''"
-                    label="Save" (click)="addTemplate()" class="d-block mx-auto">
-                </button>
-                <button pButton pRipple type="button" label="Update" *ngIf="updateDiv"
-                    [disabled]="template_title?.length >255 || subject?.length >255 || email_to==''||template_title==''||template_type==''||message==''||subject==''"
-                    class="d-block mx-auto" (click)="updateTemplate()">
-                </button>
-            </div> -->
-            <!-- <div class="demo-container p-4">
-                <button pButton pRipple type="button" (click)="reset()" label="Reset"
-                    class="d-block mx-auto"></button>
-            </div> -->
         </div>    
 
     </div>
@@ -595,7 +662,9 @@
     <ng-template pTemplate="header">
         <div style="width: 100%;">
             <h5 style="display: contents;">Import From Excel</h5>&nbsp;&nbsp;&nbsp;
-            <h5 style="display: contents;"><a href="*" style="text-decoration: underline;">Download Sample File</a></h5>
+            <h5 style="display: contents;">
+                <a href="#" (click)="downloadSampleCCExcel($event)" style="text-decoration: underline;">Download Sample File</a>
+              </h5>
         </div>
     </ng-template>
     <hr>
@@ -606,8 +675,8 @@
             <div class="custom-container">
                 <h6><b>Instructions</b></h6>
                 <ul class="list">
-                <li>Maximum File Size: 5MB</li>
-                <li>File Format: 5MB: CSV(Shipments pushed through CSV will be available for tracking within 5 hours)</li>
+                <li>Maximum File Size: 2MB</li>
+                <li>File Format: CSV,xlsx</li>
                 </ul>
                 <ol class="list" type="1">
                 <li>Make sure Data's are validated</li>
@@ -618,40 +687,110 @@
             </div>
             <!-- Right Column -->
             <div class="col-12 md:col-12">
-            <div class="custom-container">
+              <div class="custom-container">
                 <h6><b>Upload</b></h6>
-                <p-fileUpload name="demo[]" [multiple]="false" [showUploadButton]="false" (onSelect)="onUploadCCExcel($event)"
-                accept=".xls, .xlsx" >
-                <ng-template pTemplate="content">
-                   
-                </ng-template>
-                </p-fileUpload>
-                <br>
-        <p-progressBar *ngIf="uploadInProgress" mode="indeterminate" [style]="{'height': '6px', 'marginBottom':'1rem'}">
-        </p-progressBar>
-            </div>
+                <div *ngIf="showUploaderror" style="color: red;">
+                    Upload error: All fields empty or exceeds 1000 characters. Review the file before uploading.
+                </div>
+                <div class="box">
+                    <div class="card-body">
+                    <div class="container">
+                        
+                        <label for="fileUpload" class="custom-file-input">
+                            <i class="pi pi-upload" style="font-size: 30px;display: block;"></i>
+                            <div class="upload_name">Upload</div>
+                        </label>
+                        <p style="text-align: center;">{{fileNameCC}}</p>
+                        <input type="file" id="fileUpload" (change)="onUploadCCExcel($event)" style="display: none;" accept=".xlsx, .csv">
+                    </div>
+                    </div>
+                </div>
+                <p-progressBar *ngIf="uploadInProgress" mode="indeterminate" [style]="{'height': '6px', 'marginBottom':'1rem'}">
+                </p-progressBar>
+                <div class="card_footer">
+                    <div>
+                        <button type="submit" pButton pRipple class=" btn" 
+                        [disabled]="!uploadFilecc" (click)="onCancelClickCC()">
+                        Remove File
+                    </button> 
+                    </div>
+                    <div class="uplodBtn_right">
+                    <button type="submit" pButton pRipple class=" btn" 
+                        [disabled]="!uploadFilecc" (click)="makeCommercialCardApiServiceCall()">
+                        Submit
+                    </button>
+                    <button type="submit" (click)="onPopupCancelCClick()" pButton pRipple class=" btn">Cancel</button>
+                    </div>
+                </div>
+             </div>
             </div>
         </div>
         <div class="">
-            <!-- <div class="demo-container p-4">
-                <button pButton pRipple type="button" *ngIf="addDiv"
-                    [disabled]="template_title?.length >255 || subject?.length >255 || email_to==''||template_title==''||template_type==''||message==''||subject==''"
-                    label="Save" (click)="addTemplate()" class="d-block mx-auto">
-                </button>
-                <button pButton pRipple type="button" label="Update" *ngIf="updateDiv"
-                    [disabled]="template_title?.length >255 || subject?.length >255 || email_to==''||template_title==''||template_type==''||message==''||subject==''"
-                    class="d-block mx-auto" (click)="updateTemplate()">
-                </button>
-            </div> -->
-            <!-- <div class="demo-container p-4">
-                <button pButton pRipple type="button" (click)="reset()" label="Reset"
-                    class="d-block mx-auto"></button>
-            </div> -->
         </div>
 
 
     </div>
 </p-dialog>
+<!-- import from excel dialog(Operation Card) -->
+<p-dialog header="Import Excel" [(visible)]="visibleOperationBox" [style]="{width: '50vw'}">
+    <ng-template pTemplate="header">
+        <div style="width: 100%;">
+            <h5 style="display: contents;">Import From Excel</h5>&nbsp;&nbsp;&nbsp;
+        </div>
+    </ng-template>
+    <hr>
+    <div>
+        <div class="p-fluid grid">
+            <div class="col-12 md:col-12">
+                <div class="custom-container">
+                    <h6><b>Instructions</b></h6>
+                    <ul class="list">
+                        <li>Maximum File Size: 2MB</li>
+                        <li>File Format: CSV,xlsx</li>
+                    </ul>
+                    <ol class="list" type="1">
+                        <li>Make sure to provide valid data</li>
+                        <li>Keep file name recognizable</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="col-12 md:col-12">
+                <div class="custom-container">
+                    <h6><b>Upload</b></h6>
+                    <div *ngIf="showUploaderror" style="color: red;">
+                        Upload error: All fields empty or exceeds 1000 characters. Review the file before uploading.
+                    </div>
+                    <div class="box">
+                        <div class="card-body">
+                            <div class="container">
+                                <label for="fileInput" class="custom-file-input">
+                                    <i class="pi pi-upload" style="font-size: 30px;display: block;"></i>
+                                    <div class="upload_name">Upload</div>
+                                </label>
+                                <p style="text-align: center;">{{fileNameOC}}</p>
+                                <input type="file" id="fileInput" (change)="onFileSelected($event)" style="display: none;" accept=".xlsx, .csv">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card_footer">
+                        <div>
+                            <button type="submit" pButton pRipple class="btn"  [disabled]="!selectedFile" (click)="onRemoveOperationClick()">
+                                Remove File
+                            </button>
+                        </div>
+                        <div class="uplodBtn_right">
+                            <button type="submit" pButton pRipple class="btn"    [disabled]="!selectedFile" (click)="onUploadClick()">
+                                Submit
+                            </button>
+                            <button type="submit" (click)="onOperarationCancelClick()" pButton pRipple class="btn">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Add this inside your p-dialog or any suitable place -->
+<p-toast key="successToast" position="top-right"></p-toast>
 
-
+</p-dialog>
 <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
