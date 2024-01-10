@@ -10,12 +10,13 @@ import { NavigationEnd, Router } from '@angular/router';
         <ul class="layout-menu">
             <li *ngFor="let item of menuItems" app-menuitem [item]="item" [index]="item.id" [root]="true" [class.active]="isMenuItemActive(item.routerLink)"></li>
         </ul>
-    `,styles: [`
-        .active {
-            background-color: #007bff; /* Apply your active state styling here */
-            color: #fff; /* Text color for active state */
-        }
-    `]
+    `
+    // ,styles: [`
+    //     .active {
+    //         background-color: #007bff; /* Apply your active state styling here */
+    //         color: #fff; /* Text color for active state */
+    //     }
+    // `]
 })
 export class AppMenuComponent implements OnInit {
 
