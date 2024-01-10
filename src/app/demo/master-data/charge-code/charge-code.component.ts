@@ -11,11 +11,15 @@ import { MasterDataService } from 'src/app/services/master-dataserivce/master-da
   styleUrls: ['./charge-code.component.scss']
 })
 export class ChargeCodeComponent {
+  // visibleChargeCode:boolean=false;
 
-  // constructor(private datePipe: DatePipe, private breadcrumbService: AppBreadcrumbService, private messageService: MessageService, private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService) {
+  // constructor(private datePipe: DatePipe, private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
+  //    private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService) {
   //   this.breadcrumbService.setItems([
-  //     { label: 'Location' }
+  //     { label: 'Chrage code' }
   //   ]);
   // }
-
+  // showDialogChargeCode(){
+  //   this.visibleChargeCode = true;
+  // }
 }
