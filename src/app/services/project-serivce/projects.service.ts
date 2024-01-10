@@ -62,7 +62,7 @@ advanceSearchFilter(body: any): Observable<any> {
   };
 
   // Use http.post instead of http.get for a POST request
-  return this.http.post<any>('http://ec2-34-205-39-55.compute-1.amazonaws.com/buildingblocks/api/v1/project-search', body, options);
+  return this.http.post<any>(url + settings.AppRoutes.Auth.searchProject, body, options);
 }
 }
 

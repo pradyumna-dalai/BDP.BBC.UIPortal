@@ -61,9 +61,6 @@ export class ProjectComponent {
 
   ngDoCheck() {
     this.projectsService.data$.subscribe((res:any)=>{
-      if(res.length >0){
-
-      }
       this.updateTable =res?.map((item: any) => {
         const opportunityManagers = item.projectInformation?.opportunityManager?.map(manager => manager?.name).join(', ');
         //console.log('opp',opportunityManagers);
@@ -81,10 +78,12 @@ export class ProjectComponent {
           end_date: formattedEndDate,
         };
       });
+
       if(res.length >0){
         this.proejctdetails = this.updateTable
       }else{
-        this.proejctdetails
+        this.proejctdetails;
+        this.fetchAllProjectDetails()
       }
   })
 }

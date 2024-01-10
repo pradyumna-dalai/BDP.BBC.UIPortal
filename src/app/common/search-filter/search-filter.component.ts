@@ -63,6 +63,7 @@ export class SearchFilterComponent {
     this.opportunityManagers = null;
     console.log("Filters cleared.");
     this.projectStageOptions = null;
+    this.opportunity_manager = '';
     // this.fetchProjectStatus();
     this.fetchProjectStage();
     this.fetchOpportunityManagers();
@@ -158,8 +159,6 @@ managerId:any;
       },
       "startDate":this.formatDate(this.selected.startDate),
       "endDate":this.formatDate(this.selected.endDate),
-      // "startDate": "2023-08-27",
-      // "endDate": "2023-08-28"
   }
   console.log("payload",payload)
   this.projectService.advanceSearchFilter(payload).subscribe(
