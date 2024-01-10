@@ -21,7 +21,7 @@ export class ProjectComponent {
   data: any = {};
   rowDisabledState: { [key: string]: boolean } = {};
   proejctdetails = [];
-  updateTable=[]
+  updateTable:any[]
   startDate: string;
   endDate: string;
   displayDateRangeDialog = false;
@@ -56,12 +56,8 @@ export class ProjectComponent {
   ngOnInit() {
     this.fetchAllProjectDetails();
     this.selectedPredefinedDateRange = this.predefinedDateRanges[0];
-  }
-
-
-  ngDoCheck() {
     this.projectsService.data$.subscribe((res:any)=>{
-      this.updateTable =res?.map((item: any) => {
+      this.updateTable =res.map((item: any) => {
         const opportunityManagers = item.projectInformation?.opportunityManager?.map(manager => manager?.name).join(', ');
         //console.log('opp',opportunityManagers);
         const formattedStartDate = this.datePipe.transform(item.projectInformation?.startDate, 'dd-MM-yyyy');
@@ -86,8 +82,7 @@ export class ProjectComponent {
         this.fetchAllProjectDetails()
       }
   })
-}
-
+  }
 
   toggleDateRangeSelection(): void {
     this.showDateRangeSelection = !this.showDateRangeSelection;
