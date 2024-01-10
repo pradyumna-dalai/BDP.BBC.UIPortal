@@ -26,7 +26,7 @@
         <button type="button" pButton pRipple label="Export Excel" (click)="toggleDateRangeSelection()"
         class="mr-2 mb-2 btnwidth"></button>
         
-  
+       
   
         <p-toast key="successToast"></p-toast>
     </div>
@@ -37,7 +37,7 @@
         <app-search-filter></app-search-filter>
       </div>
     </div>
-
+   
   <p-table #dt1 [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [value]="proejctdetails"
     selectionMode="single" dataKey="id" styleClass="p-datatable-gridlines" responsiveLayout="scroll" [rows]="10"
@@ -137,7 +137,10 @@
     </ng-template>
     <ng-template pTemplate="emptymessage">
       <tr>
-        <td style="text-align: center;" colspan="18">No Data found.</td>
+        <td style="text-align: center;" colspan="18"> 
+          <div class="dataLoaders">
+          <div class="loaders"></div>
+        </div></td>
       </tr>
     </ng-template>
   </p-table>
