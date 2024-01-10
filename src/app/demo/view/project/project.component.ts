@@ -57,7 +57,7 @@ export class ProjectComponent {
     this.fetchAllProjectDetails();
     this.selectedPredefinedDateRange = this.predefinedDateRanges[0];
     this.projectsService.data$.subscribe((res:any)=>{
-      this.updateTable =res.map((item: any) => {
+      this.updateTable =res?.map((item: any) => {
         const opportunityManagers = item.projectInformation?.opportunityManager?.map(manager => manager?.name).join(', ');
         //console.log('opp',opportunityManagers);
         const formattedStartDate = this.datePipe.transform(item.projectInformation?.startDate, 'dd-MM-yyyy');
@@ -74,8 +74,8 @@ export class ProjectComponent {
           end_date: formattedEndDate,
         };
       });
-
       if(res.length >0){
+        console.log("dataUpdate",res)
         this.proejctdetails = this.updateTable
       }else{
         this.proejctdetails;

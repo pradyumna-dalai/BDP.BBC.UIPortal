@@ -160,6 +160,22 @@ managerId:any;
       "startDate":this.formatDate(this.selected.startDate),
       "endDate":this.formatDate(this.selected.endDate),
   }
+  if (payload.status.id === 'Invalid Date') {
+    payload.status = null;
+  }
+  if (payload.opportunityName.id === undefined ) {
+    payload.opportunityName = null;
+  }
+  if (payload.opportunityManager.id === undefined || payload.opportunityManager.id === '') {
+    payload.opportunityManager = null;
+  }
+ 
+  if (payload.startDate === 'Invalid Date') {
+    payload.startDate = null;
+  }
+  if (payload.endDate === 'Invalid Date') {
+    payload.endDate = null;
+  }
   console.log("payload",payload)
   this.projectService.advanceSearchFilter(payload).subscribe(
     (response) => {
