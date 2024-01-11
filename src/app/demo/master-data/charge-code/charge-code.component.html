@@ -4,52 +4,50 @@
             <h4>Charge Code</h4>
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
-            <button type="button" pButton pRipple label="Add" class="mr-2 mb-2"></button>
+            <button type="button" pButton pRipple label="Export" class="mr-2 mb-2"></button>
+            <button type="button" pButton pRipple label="Add" (click)="showDialog()" class="mr-2 mb-2"></button>
         </div>
     </div>
-    <!-- <hr class="align"> -->
-    <p-table  
-        selectionMode="single"  styleClass="p-datatable-gridlines" responsiveLayout="scroll" [rows]="10"
-        [paginator]="true" scrollHeight="530px"  [resizableColumns]="true">
+<p-table #dt1 [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" 
+        selectionMode="single" dataKey="id" styleClass="p-datatable-gridlines" responsiveLayout="scroll" [rows]="10"
+        [paginator]="true" scrollHeight="530px" scrollDirection="both" [resizableColumns]="true">
         <ng-template pTemplate="header">
             <tr>
                 <th style="text-align: center;width: 50px" [frozen]="true" class="sticky-header">Actions</th>
                 <th style="text-align: center; width: 200px" pSortableColumn="loc_name" [frozen]="true"
                     class="sticky-header">
-                    Chrage Code<p-sortIcon field="loc_name"></p-sortIcon>
+                    Charge Code<p-sortIcon field="loc_name"></p-sortIcon>
                 </th>
-                <th style="text-align: center; width: 200px" pSortableColumn="region" [frozen]="true"
+                <th style="text-align: center; width: 200px"  [frozen]="true"
                     class="sticky-header">
-                    Description<p-sortIcon field="region"></p-sortIcon>
+                    Description
                 </th>
                 <th style="text-align: center; width: 200px" pSortableColumn="country" [frozen]="true"
                     class="sticky-header">
                     Created By<p-sortIcon field="country"></p-sortIcon>
                 </th>
                 <th style="text-align: center; width: 200px" pSortableColumn="country_code" [frozen]="true"
-                    class="sticky-header">Country Code<p-sortIcon field="country_code"></p-sortIcon>
+                    class="sticky-header">Created At<p-sortIcon field="country_code"></p-sortIcon>
                 </th>
                 <th style="text-align: center; width: 200px" pSortableColumn="description" [frozen]="true"
                     class="sticky-header">
-                    Created At<p-sortIcon field="description"></p-sortIcon>
+                    Updated By<p-sortIcon field="description"></p-sortIcon>
                 </th>
                 <th style="text-align: center; width: 200px" pSortableColumn="location_code" [frozen]="true"
-                    class="sticky-header">Updated Bye<p-sortIcon field="location_code"></p-sortIcon>
+                    class="sticky-header">Updated At<p-sortIcon field="location_code"></p-sortIcon>
                 </th>
                 <th style="text-align: center; width: 200px" pSortableColumn="status" [frozen]="true"
-                    class="sticky-header">Updated At<p-sortIcon field="status"></p-sortIcon>
+                    class="sticky-header">Status<p-sortIcon field="status"></p-sortIcon>
                 </th>
-                <th style="text-align: center; width: 200px" pSortableColumn="status" [frozen]="true"
-                class="sticky-header">Status<p-sortIcon field="status"></p-sortIcon>
-            </th>
 
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-item>
             <tr>
                 <td style="text-align: center;">
-                    <span style="cursor: pointer;" ><i class="pi pi-pencil"></i></span>&nbsp;
-                    <span style="cursor: pointer;" >
+                    <span style="cursor: pointer;" (click)="confirm('edit')"><i class="pi pi-pencil"></i></span>&nbsp;
+                    <span style="cursor: pointer;" (click)="confirm('delete', item.id)">
                         <i class="pi pi-trash"></i>
                     </span>
                 </td>
@@ -83,6 +81,28 @@
         </ng-template>
     </p-table>
 </div>
-<!-- <p-confirmDialog [header]="confirmationHeader" icon="pi pi-exclamation-triangle"
-    [style]="{ 'width': '550px', 'height': '300px' }"></p-confirmDialog> -->
-    
+<p-dialog
+      header="Add Charge Code"
+      [(visible)]="display"
+      [modal]="true"
+      [closable]="false"
+      [responsive]="true"
+      [contentStyle]="{ 'max-height': '400px', 'overflow': 'auto' }"
+    >
+      <div>
+        <label for="chargeCode">Charge Code:</label>
+        <input type="text" id="chargeCode"  />
+
+        <label for="description">Description:</label>
+        <input type="text" id="description"  />
+
+        <label>Status:</label>
+        <p-radioButton name="status" label="Active"  value="Active"></p-radioButton>
+        <p-radioButton name="status" label="Inactive" value="Inactive"></p-radioButton>
+      </div>
+
+      <div class="ui-dialog-buttonpane p-clearfix">
+        <button pButton type="button" label="Add"  class="ui-button-success"></button>
+        <button pButton type="button" label="Cancel"  class="ui-button-secondary"></button>
+      </div>
+    </p-dialog>
