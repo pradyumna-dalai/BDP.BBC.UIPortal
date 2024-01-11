@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { AppBreadcrumbService } from 'src/app/app.breadcrumb.service';
 import { MasterDataService } from 'src/app/services/master-dataserivce/master-data.service';
+import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+
 
 @Component({
   selector: 'app-charge-code',
@@ -12,17 +14,30 @@ import { MasterDataService } from 'src/app/services/master-dataserivce/master-da
 })
 export class ChargeCodeComponent {
 
-  display: boolean = false;
+  visibleDialog: boolean = false;
   chargeCode: string = '';
   description: string = '';
   status: string = '';
-
-  constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService, private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService) {
+  myForm: FormGroup;
+  constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,private fb: FormBuilder,
+     private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService) {
     this.breadcrumbService.setItems([
       { label: 'ChargeCode' }
     ]);
   }
+  ngOnInit() {
+    this.myForm = this.fb.group({
+      // Define your form controls here
+      chargeCode: new FormControl(''),
+    description: new FormControl(''),
+      // Add more fields as needed
+
+    });
+  }
   showDialog() {
-    this.display = true;
+    this.visibleDialog = true;
+  }
+  onCancel(){
+    this.visibleDialog = false;
   }
 }

@@ -81,28 +81,53 @@
         </ng-template>
     </p-table>
 </div>
-<p-dialog
-      header="Add Charge Code"
-      [(visible)]="display"
-      [modal]="true"
-      [closable]="false"
-      [responsive]="true"
-      [contentStyle]="{ 'max-height': '400px', 'overflow': 'auto' }"
-    >
-      <div>
-        <label for="chargeCode">Charge Code:</label>
-        <input type="text" id="chargeCode"  />
+<p-dialog header="Import Excel" [(visible)]="visibleDialog" [style]="{width: '30vw',height: '35rem'}">
+    <ng-template pTemplate="header">
+        <div style="width: 100%;">
+            <h5 style="display: contents;">Import From Excel</h5>
+        </div>
+    </ng-template>
+    <hr class="alignhr">
+    <div>
+        <form [formGroup]="myForm">
+            <div class="p-fluid grid">
+                <div class="field col-12 md:col-12">
+                    <div class="p-d-block"><label>Charge Code<span class="requiredField">*</span></label></div>
+                    <input placeholder="Enter Charge Code" formControlName="chargeCode" type="text" pInputText>
+                </div>
+                <div class="field col-12 md:col-12 customCSS" >
+                    <div class="p-d-block"><label>Description</label></div>
+                    <textarea rows="4" cols="30" pInputTextarea formControlName="description"
+                    placeholder="Description" id="inputtext"></textarea>
+                </div>
+                <div class="field col-12 md:col-12 customCSS">
+                    <div class="p-d-flex p-flex-row align-center">
+                        <div class="p-mr-2">
+                            <div class="p-d-block"><label>Status<span class="requiredField">*</span></label></div>
+                        </div>
+                        <div class="contentRadio">
+                            <div class="p-d-flex p-flex-row align-center">
+                                <p-radioButton name="city" value="Active"></p-radioButton>
+                                <label  class="p-mr-2" style="margin-left: 5px;">Active</label>
+                            </div>
+                            <div class="p-d-flex p-flex-row align-center" style="margin-left: 29px;">
+                                <p-radioButton name="city" value="Inactive"></p-radioButton>
+                                <label  class="p-mr-2">Inactive</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12" style="display: flex;justify-content: flex-end;">
+                <button pButton pRipple type="button" (click)="onCancel()" label="Cancel" [disabled]="!myForm.valid"
+                     class="p-button-outlined mr-2 mb-2"></button>
+                <button type="submit" pButton pRipple label="Add"
+                    class="mr-2 mb-2"></button>
+            </div>
+            <p-toast key="successToast"></p-toast>
+        </form>
+    </div>
+    <!-- Add this inside your p-dialog or any suitable place -->
+<p-toast key="successToast" position="top-right"></p-toast>
 
-        <label for="description">Description:</label>
-        <input type="text" id="description"  />
-
-        <label>Status:</label>
-        <p-radioButton name="status" label="Active"  value="Active"></p-radioButton>
-        <p-radioButton name="status" label="Inactive" value="Inactive"></p-radioButton>
-      </div>
-
-      <div class="ui-dialog-buttonpane p-clearfix">
-        <button pButton type="button" label="Add"  class="ui-button-success"></button>
-        <button pButton type="button" label="Cancel"  class="ui-button-secondary"></button>
-      </div>
-    </p-dialog>
+</p-dialog>
