@@ -1,10 +1,100 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { AppBreadcrumbService } from 'src/app/app.breadcrumb.service';
+import { MasterDataService } from 'src/app/services/master-dataserivce/master-data.service';
+import { MasterTableService } from 'src/app/services/master-table.service';
 
 @Component({
   selector: 'app-scope',
   templateUrl: './scope.component.html',
-  styleUrls: ['./scope.component.scss']
+  styleUrls: ['./scope.component.scss'],
+  providers: [MessageService, ConfirmationService]
 })
 export class ScopeComponent {
+  loading: boolean = true;
+  displayCreateScopeDialog: boolean;
+  procuctCategoryOptions: any[];
+  procuctNamesOptions: any;
+  ScopeForm: FormGroup;;
 
+
+  constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
+    private confirmationService: ConfirmationService, private router: Router, public MasterTableservice: MasterTableService,
+    private fb: FormBuilder, private masterDataService: MasterDataService) {
+    this.breadcrumbService.setItems([
+      { label: 'Scope' }
+    ]);
+    this.ScopeForm = this.fb.group({
+      productid: ['', Validators.required],
+      productScope: ['', Validators.required],
+      description: [''],
+      status: ['', Validators.required],
+    });
+    this.createForm();
+
+  }
+  ngOnInit() {
+    this.getProdname();
+  }
+
+  createForm() {
+    this.ScopeForm = this.fb.group({
+      productid: ['', Validators.required],
+      productScope: ['', Validators.required],
+      description: [''],
+      status: ['', Validators.required],
+    });
+  }
+  showCreateScopeDialoge() {
+
+    this.displayCreateScopeDialog = true;
+  }
+
+  getProdname() {
+    this.procuctCategoryOptions = [];
+    this.MasterTableservice.getProductName().subscribe((res: any) => {
+      if (res?.message == "success") {
+        this.procuctNamesOptions = res?.data;
+      } else {
+        this.procuctNamesOptions = [];
+      }
+    })
+  }
+
+
+  createProductScope() {
+    if (this.ScopeForm.valid) {
+      const body = {
+        name: this.ScopeForm.value.productScope,
+        description: this.ScopeForm.value.description,
+        status: this.ScopeForm.value.status,
+        isDeleted: false,
+        productid: this.ScopeForm.value.productid,
+      };
+
+      this.masterDataService.addScopeDetails(body).subscribe(
+        (response) => {
+
+          console.log(response);
+          this.displayCreateScopeDialog = false;
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Scope added successfully!' });
+          this.createForm();
+        },
+        (error) => {
+          console.error(error);
+          if (error.status === 400 && error.error?.message === 'Fill required field(s)') {
+            const errorMessage = error.error.data?.join(', ') || 'Error in adding scope';
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: errorMessage });
+          } else {
+
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error in adding scope' });
+          }
+        }
+      );
+    } else {
+      this.messageService.add({ severity: 'error', summary: 'Validation Error', detail: 'Form is invalid!' });
+    }
+  }
 }

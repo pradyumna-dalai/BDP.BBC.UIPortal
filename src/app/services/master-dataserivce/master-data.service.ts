@@ -25,4 +25,10 @@ export class MasterDataService {
     return this.http.post<any>(url + settings.AppRoutes.Auth.addLocations,body);
   }
 
+  //----------------------------For Scope-------------------------------------//
+  addScopeDetails(body: any){
+    return this.http.post<any>(url + settings.AppRoutes.Auth.addScope,body);
+  }
+
+
 }

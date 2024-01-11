@@ -74,7 +74,8 @@ export namespace AppRoutes {
         public static readonly deleteLocations ="location";
 
         public static readonly addLocations ="location";
-
+        //--------------------------Scope ---------------//
+        public static readonly addScope ="scope";
     }
 
 }
