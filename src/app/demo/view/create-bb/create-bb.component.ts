@@ -86,12 +86,22 @@ export class CreateBbComponent {
   customerRequirementsError: string;
   configurableError: string;
   uploadError: string;
+  standard_service_error: any;
+  dos_error: any;
+  sow_error: any;
+  combined_value_error: any;
+  donts_error: any;
+  configurables_error: any;
+  pre_requisite_info_error: any;
+  service_desc_error: any;
+  customer_requirement_error: any;
+  cvalue_to_psa_bdp_error: any;
 
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
     public MasterTableservice: MasterTableService, private confirmationService: ConfirmationService,
     public CreateBuildingBlockservice: CreateBuildingBlockService, private router: Router,private httpClient: HttpClient,
     private route: ActivatedRoute, private createBuildingBlockservice: CreateBuildingBlockService, private sanitizer: DomSanitizer) {
-      this.fetchBuildingBlockDetails('id');
+    //  this.fetchBuildingBlockDetails('id');
     const id = this.route.snapshot.paramMap.get('id');
     if (id !== null && id !== undefined) {
       this.breadcrumbService.setItems([
@@ -313,14 +323,69 @@ makeCommercialCardApiServiceCall() {
       }
     },
     (error) => {
+      
       // Handle HTTP errors here
       if (error.status === 400) {
         console.log('Bad Request Error:', error);
-        // Additional handling or user feedback for 400 errors
-        this.showUploaderror = true;
+        if(error.error.data == 'please upload commercial card excel file'){
+          this.uploadError = 'Please upload commercial card excel file';
+        }
+        // Map the error response to UI variables
+        if (error.error?.data) {
+          const commercialReferenceErrors = error.error.data['Commercial Reference'];
+          const generalInformationErrors = error.error.data['General Information'];
+          if (
+            commercialReferenceErrors?.message === 'All Field Are Empty' &&
+            generalInformationErrors?.message === 'All Field Are Empty'
+          ) {
+            this.uploadError = 'All fields are empty.';
+          } 
+          // Map errors to UI variables for Commercial Reference
+          if(commercialReferenceErrors?.['Standard Service'] == 'maximum length 1000'){
+            this.standard_service_error = commercialReferenceErrors?.['Standard Service'];
+          }
+          
+          if(commercialReferenceErrors?.['Dos'] == 'maximum length 1000'){
+            this.dos_error = commercialReferenceErrors?.['Dos'];
+          }
+          if(commercialReferenceErrors?.['SOW'] == 'maximum length 1000'){
+            this.sow_error = commercialReferenceErrors?.['SOW'];
+          }
+          
+          if(commercialReferenceErrors?.["Combined Value"] == 'maximum length 1000'){
+            this.combined_value_error = commercialReferenceErrors?.['Combined Value'];
+          }
+       
+          if(commercialReferenceErrors?.["Don'ts"] == 'maximum length 1000'){
+            this.donts_error = commercialReferenceErrors?.["Don'ts"];
+          }
+          
+          if(commercialReferenceErrors?.['Configurable'] == 'maximum length 1000'){
+            this.configurables_error = commercialReferenceErrors?.['Configurable'];
+          }
+          
+          if(commercialReferenceErrors?.['Pre-requsites information'] == 'maximum length 1000'){
+            this.pre_requisite_info_error = commercialReferenceErrors?.['Pre-requsites information'];
+          }
+         
+
+          // Map errors to UI variables for General Information
+          if(generalInformationErrors?.['Service Description'] == 'maximum length 1000'){
+            this.service_desc_error = generalInformationErrors?.['Service Description'];
+          }
+          if(generalInformationErrors?.['Customer Requirements'] == 'maximum length 1000'){
+            this.customer_requirement_error = generalInformationErrors?.['Customer Requirements'];
+          }
+          if(generalInformationErrors?.['PSA BDP Value Statement'] == 'maximum length 1000'){
+            this.cvalue_to_psa_bdp_error = generalInformationErrors?.['PSA BDP Value Statement'];
+          }
+
+          // Set showUploaderror to true to display the error in the UI
+          this.showUploaderror = true;
+        
+        }
       } else {
         console.log('Unexpected Error:', error);
-        // Handle other errors accordingly
       }
 
       // Reset the upload screen
@@ -328,6 +393,7 @@ makeCommercialCardApiServiceCall() {
       this.uploadInProgress = false;
     }
   );
+  
 }
 onPopupCancelCClick(){
   this.visibleCC = false;

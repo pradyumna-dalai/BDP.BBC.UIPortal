@@ -11,6 +11,7 @@ import { LocationsComponent } from './demo/master-data/locations/locations.compo
 import { ChargeCodeComponent } from './demo/master-data/charge-code/charge-code.component';
 import { CategoryComponent } from './demo/master-data/category/category.component';
 import { ScopeComponent } from './demo/master-data/scope/scope.component';
+import { ProductComponent } from './demo/master-data/product/product.component';
 
 
 
@@ -48,6 +49,7 @@ import { ScopeComponent } from './demo/master-data/scope/scope.component';
                     { path: 'charge-code', component: ChargeCodeComponent },
                     { path: 'scope', component: ScopeComponent },
                     { path: 'category', component: CategoryComponent },
+                    { path: 'product', component: ProductComponent },
                 ]
             },
             { path: 'notfound', component: AppNotfoundComponent },
