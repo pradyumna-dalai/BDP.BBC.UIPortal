@@ -114,6 +114,7 @@ import { ChargeCodeComponent } from './demo/master-data/charge-code/charge-code.
 import { LocationsComponent } from './demo/master-data/locations/locations.component';
 import { ScopeComponent } from './demo/master-data/scope/scope.component';
 import { CategoryComponent } from './demo/master-data/category/category.component';
+import { ProductComponent } from './demo/master-data/product/product.component';
 
 
 
@@ -227,6 +228,7 @@ import { CategoryComponent } from './demo/master-data/category/category.componen
         LocationsComponent,
         ScopeComponent,
         CategoryComponent,
+        ProductComponent,
 
     ],
     providers: [
