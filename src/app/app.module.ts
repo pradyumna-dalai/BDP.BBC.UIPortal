@@ -112,6 +112,8 @@ import { CreateProjectComponent } from './demo/view/project/create-project/creat
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { ChargeCodeComponent } from './demo/master-data/charge-code/charge-code.component';
 import { LocationsComponent } from './demo/master-data/locations/locations.component';
+import { ScopeComponent } from './demo/master-data/scope/scope.component';
+import { CategoryComponent } from './demo/master-data/category/category.component';
 
 
 
@@ -223,6 +225,8 @@ import { LocationsComponent } from './demo/master-data/locations/locations.compo
         CreateProjectComponent,
         ChargeCodeComponent,
         LocationsComponent,
+        ScopeComponent,
+        CategoryComponent,
 
     ],
     providers: [

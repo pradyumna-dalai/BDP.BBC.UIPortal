@@ -21,6 +21,7 @@ export class ProjectComponent {
   data: any = {};
   rowDisabledState: { [key: string]: boolean } = {};
   proejctdetails = [];
+  updateTable:any[]
   startDate: string;
   endDate: string;
   displayDateRangeDialog = false;
@@ -55,7 +56,50 @@ export class ProjectComponent {
   ngOnInit() {
     this.fetchAllProjectDetails();
     this.selectedPredefinedDateRange = this.predefinedDateRanges[0];
+    this.projectsService.data$.subscribe((res)=>{
+      
+      if(res > 0){
+        this.isloader = true;
+        this.getDataFromFilter();
+
+      }
+    })
+    this.getDataFromFilter()
   }
+  isloader:boolean= false;
+  getDataFromFilter(){
+
+    this.projectsService.data$.subscribe((res:any)=>{
+      this.updateTable =res?.map((item: any) => {
+        this.isloader = true;
+        const opportunityManagers = item.projectInformation?.opportunityManager?.map(manager => manager?.name).join(', ');
+        //console.log('opp',opportunityManagers);
+        const formattedStartDate = this.datePipe.transform(item.projectInformation?.startDate, 'dd-MM-yyyy');
+        const formattedEndDate = this.datePipe.transform(item.projectInformation?.endDate, 'dd-MM-yyyy');
+        return {
+          comp_name: item.projectInformation?.company?.name,
+          proj_id: item?.id,
+          proj_name: item.projectInformation?.projectName,
+          oppourtunity_name: item.projectInformation?.opportunityName?.name,
+          proj_stage: item.projectInformation?.projectStage?.name,
+          proj_status: item.projectInformation?.projectStatus?.name,
+          oppourtunity_manager: opportunityManagers,
+          start_date: formattedStartDate,
+          end_date: formattedEndDate,
+        };
+      });
+      if(res.length >0){
+       
+        console.log("dataUpdate",res);
+        this.isloader= false;
+        this.proejctdetails = this.updateTable
+      }else{
+        this.proejctdetails;
+        this.fetchAllProjectDetails()
+      }
+  })
+  }
+
 
   toggleDateRangeSelection(): void {
     this.showDateRangeSelection = !this.showDateRangeSelection;
