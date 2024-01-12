@@ -21,6 +21,9 @@ export class ChargeCodeComponent {
   myForm: FormGroup;
   ingredient!: string;
   chargeCodedetails: any;
+  editMode: boolean = false;
+  modeTitle: string = 'Add';
+
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,private fb: FormBuilder,
      private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService) {
     this.breadcrumbService.setItems([
@@ -30,9 +33,10 @@ export class ChargeCodeComponent {
   ngOnInit() {
     this.myForm = this.fb.group({
       // Define your form controls here
+      id: [''],
       chargeCode: ['', Validators.required],
       description: [''],
-      status: ['', Validators.required],
+      status: ['inactive', Validators.required],
     });
     this.fetchAllChargeCodeDetails();
   }
@@ -61,52 +65,95 @@ export class ChargeCodeComponent {
     });
   }
 
-  SaveChargecode() { 
-    const body = 
-    {
-      id: "",
-      name: this.myForm.get('chargeCode').value,
-      description: this.myForm.get('description').value, 
-      status: this.myForm.get('status').value,
-      isDeleted: false
-    }
-      this.masterDataService.addChargecode(body).subscribe(
-      (res) => {
-        this.visibleDialog = false;
-        this.messageService.add({
-          key: 'successToast',
-          severity: 'success',
-          summary: 'Success!',
-          detail: 'Charge Code is saved Successfully.'
-        });
-      },
-      (error) => {
-        console.error('Error saving draft:', error);
-
-        this.messageService.add({
-          key: 'errorToast',
-          severity: 'error',
-          summary: 'Error!',
-          detail: 'Failed to save Charge Code.'
-        });
-      }
-    );
-  }
+ 
   editChargecode(editId) {
-    // Retrieve details of the selected item using editId
     const selectedItem = this.chargeCodedetails.find(item => item.id === editId);
   
-    // Check if the item is found
     if (selectedItem) {
-      // Populate form fields with retrieved values
       this.myForm.setValue({
+        id: selectedItem.id,
         chargeCode: selectedItem.chargeCode_name,
         description: selectedItem.description,
-        status: selectedItem.status
+        status: selectedItem.status,
       });
   
-      // Open the dialog
+      // Check the 'status' value and set the corresponding radio button
+      const statusControl = this.myForm.get('status');
+      if (statusControl.value === 'active') {
+        statusControl.setValue('active');
+      } else if (statusControl.value === 'inactive') {
+        statusControl.setValue('inactive');
+      }
+  
+      this.editMode = true;
       this.visibleDialog = true;
+      // Set the mode and title for Edit
+      this.modeTitle = 'Edit';
     }
   }
+  SaveChargecode() {
+    const body = {
+      id: this.myForm.get('id').value || '',
+      name: this.myForm.get('chargeCode').value,
+      description: this.myForm.get('description').value,
+      status: this.myForm.get('status').value,
+      isDeleted: false
+    };
+
+    if (this.editMode) {
+      // Editing an existing charge code
+      this.masterDataService.editChargecode(body).subscribe(
+        (res) => {
+          this.visibleDialog = false;
+          this.messageService.add({
+            key: 'successToast',
+            severity: 'success',
+            summary: 'Success!',
+            detail: 'Charge Code is edited Successfully.'
+          });
+           // Reset the form on success
+            this.myForm.reset();
+        },
+        (error) => {
+          console.error('Error saving draft:', error);
+
+          this.messageService.add({
+            key: 'errorToast',
+            severity: 'error',
+            summary: 'Error!',
+            detail: 'Failed to edit Charge Code.'
+          });
+        }
+      );
+    } else {
+      // Adding a new charge code
+      this.masterDataService.addChargecode(body).subscribe(
+        (res) => {
+          this.visibleDialog = false;
+          this.messageService.add({
+            key: 'successToast',
+            severity: 'success',
+            summary: 'Success!',
+            detail: 'Charge Code is saved Successfully.'
+          });
+           // Reset the form on success
+          this.myForm.reset();
+        },
+        (error) => {
+          console.error('Error saving draft:', error);
+
+          this.messageService.add({
+            key: 'errorToast',
+            severity: 'error',
+            summary: 'Error!',
+            detail: 'Failed to save Charge Code.'
+          });
+        }
+      );
+    }
+
+    this.editMode = false;
+  }
+
+  // ... Other methods in your component
 }

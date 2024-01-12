@@ -1,7 +1,7 @@
 <div class="card">
     <div class="grid">
         <div class="col-6">
-            <h4>Charge Code</h4>
+            <h4> Charge Code</h4>
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
             <button type="button" pButton pRipple label="Export" class="mr-2 mb-2"></button>
@@ -47,9 +47,9 @@
             <tr>
                 <td style="text-align: center;">
                     <span style="cursor: pointer;" (click)="editChargecode(item.id)"><i class="pi pi-pencil"></i></span>&nbsp;
-                    <span style="cursor: pointer;" (click)="confirm('delete', item.id)">
+                    <!-- <span style="cursor: pointer;" (click)="confirm('delete', item.id)">
                         <i class="pi pi-trash"></i>
-                    </span>
+                    </span> -->
                 </td>
                 <td style="text-align: center; word-wrap: break-word;">
                     <span>{{item.chargeCode_name}}</span>
@@ -84,13 +84,17 @@
 <p-dialog header="Charge Code" [(visible)]="visibleDialog" [style]="{width: '30vw',height: '35rem'}">
     <ng-template pTemplate="header">
         <div style="width: 100%;">
-            <h5 style="display: contents;">Charge Code</h5>
+            <h5 style="display: contents;">{{ modeTitle }}&nbsp;Charge Code</h5>
         </div>
     </ng-template>
     <hr class="alignhr">
     <div>
         <form [formGroup]="myForm">
             <div class="p-fluid grid">
+                <div class="col-12" style="display: none;">
+                    <label>ID</label>
+                    <input type="text" formControlName="id" pInputText />
+                </div>
                 <div class="field col-12 md:col-12">
                     <div class="p-d-block"><label>Charge Code<span class="requiredField">*</span></label></div>
                     <input placeholder="Enter Charge Code" formControlName="chargeCode" type="text" pInputText>
@@ -107,14 +111,14 @@
                         </div>
                         <div class="flex flex-wrap gap-3">
                             <div class="flex align-items-center">
-                                <p-radioButton name="status" value="active" formControlName="status" ></p-radioButton>
+                                <p-radioButton name="status" value="active" formControlName="status"></p-radioButton>
                                 <label for="ingredient1" class="ml-2">Active</label>
-                            </div>
-                            
-                            <div class="flex align-items-center">
-                                <p-radioButton name="status" value="inactive" formControlName="status" ></p-radioButton>
+                              </div>
+                              
+                              <div class="flex align-items-center">
+                                <p-radioButton name="status" value="inactive" formControlName="status"></p-radioButton>
                                 <label for="ingredient2" class="ml-2">Inactive</label>
-                            </div>
+                              </div>
                         </div>
                     </div>
                 </div>
@@ -128,9 +132,10 @@
             
         </form>
     </div>
-    <p-toast key="successToast"></p-toast>
-    <p-toast key="errorToast"></p-toast>
-    <!-- Add this inside your p-dialog or any suitable place -->
-<p-toast key="successToast" position="top-right"></p-toast>
+  
 
 </p-dialog>
+
+<!-- Add this inside your p-dialog or any suitable place -->
+<p-toast key="successToast" position="top-right"></p-toast>
+<p-toast key="errorToast" position="top-right"></p-toast>
