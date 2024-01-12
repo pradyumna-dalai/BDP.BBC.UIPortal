@@ -134,3 +134,27 @@
   .btnwidth{
     width: 126px;
   }
+  .contentRadio{
+    display: flex;
+  }
+  ::ng-deep .p-dialog-content{
+    overflow: hidden !important;
+  }
+  .alignhr{
+    margin-top: 0px;
+    
+}
+label{
+    font-size: 15px;
+}
+.customCSS{
+    margin-top: -15px;
+}
+.p-d-block{
+    margin-bottom: 3px;
+}
+.p-mr-2{
+    margin-left: 5px; 
+}
+  
+  

@@ -16,6 +16,7 @@ import { ProductComponent } from './demo/master-data/product/product.component';
 
 
 
+
 @NgModule({
     imports: [
         RouterModule.forRoot([
@@ -50,6 +51,7 @@ import { ProductComponent } from './demo/master-data/product/product.component';
                     { path: 'scope', component: ScopeComponent },
                     { path: 'category', component: CategoryComponent },
                     { path: 'product', component: ProductComponent },
+                    { path: 'charge-code', component: ChargeCodeComponent }
                 ]
             },
             { path: 'notfound', component: AppNotfoundComponent },
