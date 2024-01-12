@@ -69,6 +69,8 @@ export namespace AppRoutes {
 
         public static readonly  getallLocations = "location";
 
+        public static readonly  chargecode = "charge-code";
+
     }
 
 }
