@@ -101,7 +101,7 @@ export class CreateBbComponent {
     public MasterTableservice: MasterTableService, private confirmationService: ConfirmationService,
     public CreateBuildingBlockservice: CreateBuildingBlockService, private router: Router,private httpClient: HttpClient,
     private route: ActivatedRoute, private createBuildingBlockservice: CreateBuildingBlockService, private sanitizer: DomSanitizer) {
-      this.fetchBuildingBlockDetails('id');
+    //  this.fetchBuildingBlockDetails('id');
     const id = this.route.snapshot.paramMap.get('id');
     if (id !== null && id !== undefined) {
       this.breadcrumbService.setItems([
