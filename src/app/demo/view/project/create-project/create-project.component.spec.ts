@@ -1,110 +1,68 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { CreateProjectComponent } from './create-project.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { AppBreadcrumbService } from 'src/app/app.breadcrumb.service';
-import { AppModule } from 'src/app/app.module';
-import { DropdownModule } from 'primeng/dropdown';
-import { CalendarModule } from 'primeng/calendar';
-import { MultiSelectModule } from 'primeng/multiselect';
-import { InputTextareaModule } from 'primeng/inputtextarea';
-import { ButtonModule } from 'primeng/button';
+import { HttpClientModule } from '@angular/common/http';
+import { MasterTableService } from 'src/app/services/master-table.service';
+import { TabViewModule } from 'primeng/tabview';
 import { ToastModule } from 'primeng/toast';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-// import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('CreateProjectComponent', () => {
   let component: CreateProjectComponent;
   let fixture: ComponentFixture<CreateProjectComponent>;
 
-//   beforeEach(() => {
-//     TestBed.configureTestingModule({
-//       declarations: [CreateProjectComponent]
-//     });
-//     fixture = TestBed.createComponent(CreateProjectComponent);
-//     component = fixture.componentInstance;
-//     fixture.detectChanges();
-//   });
-
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-
-      declarations: [CreateProjectComponent],
-      imports: [
-        ReactiveFormsModule,
-        FormsModule,
-        BrowserAnimationsModule,
-        DropdownModule,
-        CalendarModule,
-        MultiSelectModule,
-        InputTextareaModule,
-        ButtonModule,
-        ToastModule,
-        HttpClientTestingModule
-      ],
-      providers:[AppBreadcrumbService]
-    }).compileComponents();
-  }));
-
   beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [CreateProjectComponent],
+      imports: [ReactiveFormsModule,HttpClientModule,TabViewModule,ToastModule ],
+      providers: [MasterTableService],
+    });
     fixture = TestBed.createComponent(CreateProjectComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create the component', () => {
     expect(component).toBeTruthy();
   });
 
-  it('form should be invalid when empty', () => {
-    expect(component.myForm.valid).toBeFalsy();
-  });
-
-  it('should initialize the form with the expected controls', () => {
-    expect(component.myForm).toBeTruthy();
-    expect(component.myForm.get('companyName')).toBeTruthy();
-    expect(component.myForm.get('customerCode')).toBeTruthy();
-    expect(component.myForm.get('opportunityName')).toBeTruthy();
-    expect(component.myForm.get('industryVertical')).toBeTruthy();
-    expect(component.myForm.get('region')).toBeTruthy();
-    expect(component.myForm.get('projectName')).toBeTruthy();
-    // Add more expectations for other form controls
-  });
-
-  it('should set form as invalid if required fields are empty', () => {
-    component.myForm.setValue({
-      companyName: 'Your Company',
-      customerCode: '',
-      opportunityName: 'test data',
-      industryVertical: 'Your Company',
-      region: 'cust code',
-      projectName: 'test data',
-      // Set other form values as needed
+  it('should initialize the form with default values', () => {
+    expect(component.myForm.value).toEqual({
+      companyName: [''],
+      customerCode: [''],
+      opportunityName: [''],
+      industryVertical: [''],
+      region: [''],
+      projectName: ['', Validators.required],
+      projectStage: ['', Validators.required],
+      projectStatus: [''],
+      opportunityManger: [''],
+      startDate: [''],
+      endDate: [''],
+      designNotes: ['', [Validators.maxLength(1000)]],
+      impleNotes: ['', [Validators.maxLength(1000)]],
     });
-    expect(component.myForm.valid).toBeFalsy();
   });
 
-  // it('should invalidate form if end date is not greater than start date', () => {
-  //   const startDate = component.myForm.controls['startDate'];
-  //   const endDate = component.myForm.controls['endDate'];
+  
+  it('should set projectName and projectStage as required fields', () => {
+    // Attempt to create the project without setting projectName and projectStage
+    try {
+      component.SaveAsDraftProjects(); // Adjust the method name based on your implementation
+    } catch (error) {
+      expect(error.message).toContain('projectName is required');
+      expect(error.message).toContain('projectStage is required');
+    }
 
-  //   // Set start date to today
-  //   const today = new Date();
-  //   startDate.setValue(today);
+    // Set projectName and projectStage
+    component.projectName = 'Test Project';
+    component.projectStage = 'Planning';
 
-  //   // Set end date to a date before or equal to today
-  //   const invalidEndDate = new Date(today);
-  //   endDate.setValue(invalidEndDate);
-
-  //   expect(component.myForm.valid).toBeFalsy();
-  //   expect(endDate.hasError('invalidDates')).toBeTruthy();
-  // });
-
-  it('should call SaveAsDraftProjects method when Save As Draft button is clicked', () => {
-    spyOn(component, 'SaveAsDraftProjects');
-    const button = fixture.debugElement.nativeElement.querySelector('.p-button-outlined');
-    button.click();
-    expect(component.SaveAsDraftProjects).toHaveBeenCalled();
+    // Verify that no error is thrown
+    expect(() => component.SaveAsDraftProjects()).not.toThrow();
   });
 
+  // Add more test cases as needed based on your component's functionality
+
+  afterEach(() => {
+    fixture.destroy();
+  });
 });

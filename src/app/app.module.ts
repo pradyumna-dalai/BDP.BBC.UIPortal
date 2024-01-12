@@ -114,6 +114,7 @@ import { ChargeCodeComponent } from './demo/master-data/charge-code/charge-code.
 import { LocationsComponent } from './demo/master-data/locations/locations.component';
 import { ScopeComponent } from './demo/master-data/scope/scope.component';
 import { CategoryComponent } from './demo/master-data/category/category.component';
+import { MasterDataService } from './services/master-dataserivce/master-data.service';
 
 
 
@@ -207,7 +208,7 @@ import { CategoryComponent } from './demo/master-data/category/category.componen
         DatePipe,
         NgxDaterangepickerMd.forRoot(),
         CalendarModule,
-    
+        TabViewModule
     ],
     declarations: [
         AppComponent,
@@ -228,10 +229,9 @@ import { CategoryComponent } from './demo/master-data/category/category.componen
         LocationsComponent,
         ScopeComponent,
         CategoryComponent,
-
     ],
     providers: [
-     MenuService, AppBreadcrumbService, DatePipe,
+     MenuService, AppBreadcrumbService, DatePipe,  MasterDataService,
      {
         provide: HTTP_INTERCEPTORS,
         useClass: ApiRequestInterceptor,
@@ -243,6 +243,7 @@ import { CategoryComponent } from './demo/master-data/category/category.componen
         multi: true
     },
     ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
     bootstrap: [AppComponent]
 })
 export class AppModule {
