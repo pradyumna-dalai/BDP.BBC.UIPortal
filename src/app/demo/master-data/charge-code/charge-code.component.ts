@@ -70,27 +70,27 @@ export class ChargeCodeComponent {
     const selectedItem = this.chargeCodedetails.find(item => item.id === editId);
   
     if (selectedItem) {
-      this.myForm.setValue({
-        id: selectedItem.id,
-        chargeCode: selectedItem.chargeCode_name,
-        description: selectedItem.description,
-        status: selectedItem.status,
-      });
+        this.myForm.setValue({
+            id: selectedItem.id,
+            chargeCode: selectedItem.chargeCode_name,
+            description: selectedItem.description,
+            status: selectedItem.status,
+        });
   
-      // Check the 'status' value and set the corresponding radio button
-      const statusControl = this.myForm.get('status');
-      if (statusControl.value === 'active') {
-        statusControl.setValue('active');
-      } else if (statusControl.value === 'inactive') {
-        statusControl.setValue('inactive');
-      }
+        // Check the 'status' value and set the corresponding radio button
+        const statusControl = this.myForm.get('status');
+        if (statusControl.value === 'active') {
+            statusControl.setValue('active');
+        } else if (statusControl.value === 'inactive') {
+            statusControl.setValue('inactive');
+        }
   
-      this.editMode = true;
-      this.visibleDialog = true;
-      // Set the mode and title for Edit
-      this.modeTitle = 'Edit';
+        this.editMode = true;
+        this.visibleDialog = true;
+        // Set the mode and title for Edit
+        this.modeTitle = 'Edit';
     }
-  }
+}
   SaveChargecode() {
     const body = {
       id: this.myForm.get('id').value || '',
@@ -116,7 +116,7 @@ export class ChargeCodeComponent {
             this.fetchAllChargeCodeDetails(); // Fetch updated data
         },
         (error) => {
-
+          this.editMode = true;
           this.messageService.add({
             key: 'errorToast',
             severity: 'error',
@@ -140,7 +140,7 @@ export class ChargeCodeComponent {
           this.fetchAllChargeCodeDetails(); // Fetch updated data
         },
         (error) => {
-          console.error('Error saving draft:', error);
+          this.editMode = false;
 
           this.messageService.add({
             key: 'errorToast',
