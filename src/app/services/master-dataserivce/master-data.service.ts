@@ -15,5 +15,14 @@ export class MasterDataService {
   getAllLocationDetails(){
     return this.http.get<any>(url + settings.AppRoutes.Auth.getallLocations);
   }
+  addChargecode(body: any){
+    return this.http.post<any>(url + settings.AppRoutes.Auth.chargecode, body);
+  }
+  getAllChargecode(){
+    return this.http.get<any>(url + settings.AppRoutes.Auth.chargecode);
+  }
+  editChargecode(body: any){
+    return this.http.put<any>(url + settings.AppRoutes.Auth.chargecode, body);
+  }
   
 }
