@@ -15,6 +15,7 @@ export class ProductComponent {
 
   visibleDialog: boolean = false;
   myForm: FormGroup;
+  productdetails: any;
 
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
     private fb: FormBuilder, private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService) {
@@ -30,6 +31,7 @@ export class ProductComponent {
       description: [''],
       status: ['inactive', Validators.required],
     });
+    this.fetchAllProdcutDetails();
   }
   showDialog(){
     this.visibleDialog = true;
@@ -39,5 +41,23 @@ export class ProductComponent {
   }
   SaveChargecode(){
 
+  }
+  fetchAllProdcutDetails() {
+    this.masterDataService.getAllProdcut().subscribe((res: any) => {
+      if (res?.message == "success") {
+        this.productdetails = res.data.product.map((item: any) => {
+          return {
+            id: item.id, 
+            product_name: item.name,
+            description: item.description,
+            status: item.status
+
+          };
+        });
+       // console.log("djdsf",this.locationdetails);
+      } else {
+        this.productdetails = [];
+      }
+    });
   }
 }

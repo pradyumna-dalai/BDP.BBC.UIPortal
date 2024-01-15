@@ -9,7 +9,7 @@
         </div>
     </div>
 <p-table #dt1 [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" 
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [value]="productdetails"
         selectionMode="single" dataKey="id" styleClass="p-datatable-gridlines" responsiveLayout="scroll" [rows]="10"
         [paginator]="true" scrollHeight="530px" scrollDirection="both" [resizableColumns]="true">
         <ng-template pTemplate="header">
@@ -52,7 +52,10 @@
                     </span> -->
                 </td>
                 <td style="text-align: center; word-wrap: break-word;">
-                    <span></span>
+                    <span>{{item.product_name}}</span>
+                </td>
+                <td style="text-align: center; word-wrap: break-word;">
+                    <span>{{item.description}}</span>
                 </td>
                 <td style="text-align: center; word-wrap: break-word;">
                     <span></span>
@@ -67,10 +70,7 @@
                     <span></span>
                 </td>
                 <td style="text-align: center; word-wrap: break-word;">
-                    <span></span>
-                </td>
-                <td style="text-align: center; word-wrap: break-word;">
-                    <span></span>
+                    <span>{{item.status}}</span>
                 </td>
             </tr>
         </ng-template>

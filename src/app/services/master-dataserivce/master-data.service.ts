@@ -15,6 +15,7 @@ export class MasterDataService {
   getAllLocationDetails(){
     return this.http.get<any>(url + settings.AppRoutes.Auth.getallLocations);
   }
+   //---------------------Charge Code----------------//
   addChargecode(body: any){
     return this.http.post<any>(url + settings.AppRoutes.Auth.chargecode, body);
   }
@@ -24,5 +25,14 @@ export class MasterDataService {
   editChargecode(body: any){
     return this.http.put<any>(url + settings.AppRoutes.Auth.chargecode, body);
   }
-  
+   //---------------------Charge Code----------------//
+   addProdcut(body: any){
+    return this.http.post<any>(url + settings.AppRoutes.Auth.product, body);
+  }
+  getAllProdcut(){
+    return this.http.get<any>(url + settings.AppRoutes.Auth.product);
+  }
+  editProduct(body: any){
+    return this.http.put<any>(url + settings.AppRoutes.Auth.product, body);
+  }
 }
