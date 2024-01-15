@@ -17,7 +17,14 @@ export class ScopeComponent {
   displayCreateScopeDialog: boolean;
   procuctCategoryOptions: any[];
   procuctNamesOptions: any;
-  ScopeForm: FormGroup;;
+  ScopeForm: FormGroup;
+  scopeDetails: any[] = [];
+  totalRecords: number = 0;
+  pageSize: number = 10;
+  currentPage: number = 1;
+  sortField: string = 'id';
+  sortOrder: number = 1;
+
 
 
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
@@ -37,6 +44,7 @@ export class ScopeComponent {
   }
   ngOnInit() {
     this.getProdname();
+    this.fetchProductScope();
   }
 
   createForm() {
@@ -48,7 +56,6 @@ export class ScopeComponent {
     });
   }
   showCreateScopeDialoge() {
-
     this.displayCreateScopeDialog = true;
   }
 
@@ -63,7 +70,7 @@ export class ScopeComponent {
     })
   }
 
-
+// -----------------------------------create scope --------------------------------------//
   createProductScope() {
     if (this.ScopeForm.valid) {
       const body = {
@@ -97,4 +104,40 @@ export class ScopeComponent {
       this.messageService.add({ severity: 'error', summary: 'Validation Error', detail: 'Form is invalid!' });
     }
   }
+
+//-----------------------fetch scope details-------------------------------------------//
+getSeverity(status: boolean): string {
+  return status ? 'success' : 'danger'; 
 }
+
+onPageChange(event: any) {
+  this.currentPage = event.page + 1;
+  this.fetchProductScope();
+}
+
+onSortChange(event: any) {
+  this.sortField = event.field;
+  this.sortOrder = event.order;
+  this.fetchProductScope();
+}
+  fetchProductScope(){
+    const params = {
+      pageNo: this.currentPage - 1,
+      pageSize: this.pageSize,
+      sortBy: this.sortField,
+      sortDir: this.sortOrder === 1 ? 'asc' : 'desc',
+    };
+    this.masterDataService.getScopeDetails(params).subscribe((res:any) =>{
+      if (res?.message === 'success'){
+        this.scopeDetails = res.data.scope;  
+        this.totalRecords = res.data.totalElements;
+        console.log('fetch scope details:',   this.scopeDetails);
+      } else {
+        console.error('Failed to fetch scope details:', res);
+      }
+    });
+  }
+
+  //-----------------------------end ----------------------------------------------------//
+}
+

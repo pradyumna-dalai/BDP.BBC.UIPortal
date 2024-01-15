@@ -4,11 +4,12 @@
             <h5>Product Scope</h5>
         </div>
     </div>
-    <p-table #dt2 dataKey="id" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]"
-        [paginator]="true" responsiveLayout="scroll" scrollHeight="830px" scrollDirection="both"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    <p-table #dt2 [value]="scopeDetails" dataKey="id" [rows]="pageSize" [totalRecords]="totalRecords"
+        [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true" responsiveLayout="scroll" scrollHeight="830px"
+        scrollDirection="both" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
         [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
-        [tableStyle]="{ 'min-width': '55rem' , 'overflow-x': 'auto' }" style="overflow-x: auto;">
+        [tableStyle]="{ 'min-width': '55rem' , 'overflow-x': 'auto' }" style="overflow-x: auto;"
+        (onPage)="onPageChange($event)" (onSort)="onSortChange($event)">
         <ng-template pTemplate="caption">
             <div class="row">
                 <div class="col-12" style="display: flex;">
@@ -32,14 +33,14 @@
         <ng-template pTemplate="header">
             <tr>
                 <th style="width:10%">Actions</th>
-                <th style="width:10%">Status </th>
-                <th style="width:25%">Product Name </th>
-                <th style="width:25%">Product Scope </th>
-                <th style="width:25%">Description </th>
-                <th style="width:25%">Created By </th>
-                <th style="width:35%">Created At </th>
-                <th style="width:35%">Updated By </th>
-                <th style="width:35%">Updated At </th>
+                <th style="width:15%">Status</th>
+                <th style="width:25%">Product Name</th>
+                <th style="width:25%">Product Scope</th>
+                <th style="width:20%">Description</th>
+                <th style="width:20%">CreatedBy</th>
+                <th style="width:20%">CreatedAt</th>
+                <th style="width:20%">UpdatedBy</th>
+                <th style="width:20%">UpdatedAt</th>
             </tr>
             <tr>
                 <th></th>
@@ -57,27 +58,23 @@
                 <th></th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-customer>
+        <ng-template pTemplate="body" let-scope>
             <tr>
-
                 <td style="text-align: center;">
                     <span style="cursor: pointer;"><i class="pi pi-pencil"></i></span>&nbsp;
-                    <span style="cursor: pointer;">
-                        <i class="pi pi-trash"></i>
-                    </span>
-
+                    <!-- <span style="cursor: pointer;"><i class="pi pi-trash"></i></span> -->
                 </td>
                 <td>
-                    <p-tag [value]="customer.status" [severity]="getSeverity(customer.status)"></p-tag>
+                    <p-tag [value]="scope.status" [severity]="getSeverity(scope.status)"></p-tag>
                 </td>
-                <td>
-                    <span class="ml-1 vertical-align-middle">Name</span>
-                </td>
-                <td>
-                    <span class="ml-1 vertical-align-middle">Name</span>
-                </td>
+                <td>{{ scope.productName }}</td>
+                <td>{{ scope.name }}</td>
+                <td>{{ scope.description }}</td>
+                <td>{{ scope.createdBy }}</td>
+                <td>{{ scope.createdAt }}</td>
+                <td>{{ scope.updatedBy }}</td>
+                <td>{{ scope.updatedAt }}</td>
             </tr>
-
         </ng-template>
         <ng-template pTemplate="emptymessage">
             <tr>
@@ -86,6 +83,8 @@
         </ng-template>
     </p-table>
 </div>
+
+
 <p-dialog [(visible)]="displayCreateScopeDialog" [style]="{width: '50vw'}" [draggable]="false" [resizable]="false"
     closable='true'>
     <ng-template pTemplate="header">
