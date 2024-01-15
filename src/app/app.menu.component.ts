@@ -67,6 +67,8 @@ export class AppMenuComponent implements OnInit {
                 return 'pi pi-fw pi-file';
             case 'product':
                     return 'pi pi-fw pi-file';
+            case 'UOM':
+                return 'pi pi-fw pi-file';
             default:
                 return 'pi pi-fw pi-desktop'; // Default icon if not matched
         }
@@ -95,6 +97,8 @@ export class AppMenuComponent implements OnInit {
                 return ['/category'];
             case 'product':
                 return ['/product'];
+            case 'UOM':
+                return ['/UOM'];
             default:
                 return ['/uikit'];
         }
