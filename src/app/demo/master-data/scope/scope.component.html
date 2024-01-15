@@ -65,7 +65,7 @@
                     <!-- <span style="cursor: pointer;"><i class="pi pi-trash"></i></span> -->
                 </td>
                 <td>
-                    <p-tag [value]="scope.status" [severity]="getSeverity(scope.status)"></p-tag>
+                    <p-tag [value]="getSeverityLabel(scope.status)" [severity]="getSeverity(scope.status)"></p-tag>
                 </td>
                 <td>{{ scope.productName }}</td>
                 <td>{{ scope.name }}</td>

@@ -109,7 +109,9 @@ export class ScopeComponent {
 getSeverity(status: boolean): string {
   return status ? 'success' : 'danger'; 
 }
-
+getSeverityLabel(status: boolean): string {
+  return status ? 'Active' : 'Inactive';
+}
 onPageChange(event: any) {
   this.currentPage = event.page + 1;
   this.fetchProductScope();
@@ -129,7 +131,7 @@ onSortChange(event: any) {
     };
     this.masterDataService.getScopeDetails(params).subscribe((res:any) =>{
       if (res?.message === 'success'){
-        this.scopeDetails = res.data.scope;  
+        this.scopeDetails = res.data.scope.filter(scope => scope.status === true); 
         this.totalRecords = res.data.totalElements;
         console.log('fetch scope details:',   this.scopeDetails);
       } else {

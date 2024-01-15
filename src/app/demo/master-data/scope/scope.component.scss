@@ -52,3 +52,19 @@ i {
     color: red;
     margin-left: 5px; 
 }
+
+.tag-success,
+.tag-danger {
+  font-size: 12px;
+  padding: 4px 8px;
+}
+
+.tag-success {
+  background-color: #0ca03e;
+  color: #ffffff;
+}
+
+.tag-danger {
+  background-color: #f44336;
+  color: #ffffff;
+}
