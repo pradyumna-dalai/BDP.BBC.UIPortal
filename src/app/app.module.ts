@@ -85,6 +85,7 @@ import {VirtualScrollerModule} from 'primeng/virtualscroller';
 import {FullCalendarModule} from '@fullcalendar/angular';
 import { ReactiveFormsModule } from '@angular/forms';
 
+
 import { ApiErrorInterceptor, ApiRequestInterceptor } from '../app/common/index';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
@@ -115,6 +116,8 @@ import { LocationsComponent } from './demo/master-data/locations/locations.compo
 import { ScopeComponent } from './demo/master-data/scope/scope.component';
 import { CategoryComponent } from './demo/master-data/category/category.component';
 import { MasterDataService } from './services/master-dataserivce/master-data.service';
+import { ProductComponent } from './demo/master-data/product/product.component';
+import { UOMComponent } from './demo/master-data/uom/uom.component';
 
 
 
@@ -229,6 +232,9 @@ import { MasterDataService } from './services/master-dataserivce/master-data.ser
         LocationsComponent,
         ScopeComponent,
         CategoryComponent,
+        ProductComponent,
+        UOMComponent,
+
     ],
     providers: [
      MenuService, AppBreadcrumbService, DatePipe,  MasterDataService,

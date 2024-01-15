@@ -101,7 +101,7 @@ export class CreateBbComponent {
     public MasterTableservice: MasterTableService, private confirmationService: ConfirmationService,
     public CreateBuildingBlockservice: CreateBuildingBlockService, private router: Router,private httpClient: HttpClient,
     private route: ActivatedRoute, private createBuildingBlockservice: CreateBuildingBlockService, private sanitizer: DomSanitizer) {
-      this.fetchBuildingBlockDetails('id');
+    //  this.fetchBuildingBlockDetails('id');
     const id = this.route.snapshot.paramMap.get('id');
     if (id !== null && id !== undefined) {
       this.breadcrumbService.setItems([
@@ -183,6 +183,7 @@ makeScopingCardApiServiceCall()
         // ... (similar updates for other variables)
 
         this.visibleSC = false;
+        this.onPopupCancelSCClick();
         // Reset the upload screen
         this.resetUploadScreen();
         this.uploadInProgress = false;
@@ -308,6 +309,7 @@ makeCommercialCardApiServiceCall() {
         this.cvalue_to_psa_bdp = this.excelDataSheet1['PSA BDP Value Statement'];
 
         this.visibleCC = false;
+        this.onPopupCancelCClick();
         // Reset the upload screen
         this.resetUploadScreen();
         this.uploadInProgress = false;

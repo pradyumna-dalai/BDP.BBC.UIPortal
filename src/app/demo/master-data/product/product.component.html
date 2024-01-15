@@ -1,7 +1,7 @@
 <div class="card">
     <div class="grid">
         <div class="col-6">
-            <h4> Charge Code</h4>
+            <h4>Product</h4>
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
             <button type="button" pButton pRipple label="Export" class="mr-2 mb-2"></button>
@@ -9,7 +9,7 @@
         </div>
     </div>
 <p-table #dt1 [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [value]="chargeCodedetails"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" 
         selectionMode="single" dataKey="id" styleClass="p-datatable-gridlines" responsiveLayout="scroll" [rows]="10"
         [paginator]="true" scrollHeight="530px" scrollDirection="both" [resizableColumns]="true">
         <ng-template pTemplate="header">
@@ -17,7 +17,7 @@
                 <th style="text-align: center;width: 50px" [frozen]="true" class="sticky-header">Actions</th>
                 <th style="text-align: center; width: 200px" pSortableColumn="loc_name" [frozen]="true"
                     class="sticky-header">
-                    Charge Code<p-sortIcon field="loc_name"></p-sortIcon>
+                    Product Name<p-sortIcon field="loc_name"></p-sortIcon>
                 </th>
                 <th style="text-align: center; width: 200px"  [frozen]="true"
                     class="sticky-header">
@@ -52,12 +52,6 @@
                     </span> -->
                 </td>
                 <td style="text-align: center; word-wrap: break-word;">
-                    <span>{{item.chargeCode_name}}</span>
-                </td>
-                <td style="text-align: center; word-wrap: break-word;">
-                    <span>{{item.description}}</span>
-                </td>
-                <td style="text-align: center; word-wrap: break-word;">
                     <span></span>
                 </td>
                 <td style="text-align: center; word-wrap: break-word;">
@@ -70,7 +64,13 @@
                     <span></span>
                 </td>
                 <td style="text-align: center; word-wrap: break-word;">
-                    <span>{{item.status}}</span>
+                    <span></span>
+                </td>
+                <td style="text-align: center; word-wrap: break-word;">
+                    <span></span>
+                </td>
+                <td style="text-align: center; word-wrap: break-word;">
+                    <span></span>
                 </td>
             </tr>
         </ng-template>
@@ -84,7 +84,7 @@
 <p-dialog header="Charge Code" [(visible)]="visibleDialog" [style]="{width: '30vw',height: '35rem'}">
     <ng-template pTemplate="header">
         <div style="width: 100%;">
-            <h5 style="display: contents;">{{ modeTitle }}&nbsp;Charge Code</h5>
+            <h5 style="display: contents;">Product</h5>
         </div>
     </ng-template>
     <hr class="alignhr">
@@ -96,8 +96,8 @@
                     <input type="text" formControlName="id" pInputText />
                 </div>
                 <div class="field col-12 md:col-12">
-                    <div class="p-d-block"><label>Charge Code<span class="requiredField">*</span></label></div>
-                    <input placeholder="Enter Charge Code" formControlName="chargeCode" type="text" pInputText>
+                    <div class="p-d-block"><label>Product Name<span class="requiredField">*</span></label></div>
+                    <input placeholder="Enter Charge Code" formControlName="prodcut_name" type="text" pInputText>
                 </div>
                 <div class="field col-12 md:col-12 customCSS" >
                     <div class="p-d-block"><label>Description</label></div>
@@ -135,7 +135,3 @@
   
 
 </p-dialog>
-
-<!-- Add this inside your p-dialog or any suitable place -->
-<p-toast key="successToast" position="top-right"></p-toast>
-<p-toast key="errorToast" position="top-right"></p-toast>
