@@ -42,9 +42,18 @@ export class ChargeCodeComponent {
   }
   showDialog() {
     this.visibleDialog = true;
+    this.myForm.reset({
+      status: 'inactive' // Set default value for 'status' on form reset
+  });
+    this.editMode= false;
+    this.modeTitle = 'Add';
   }
   onCancel(){
     this.visibleDialog = false;
+    this.myForm.reset({
+      status: 'inactive' // Set default value for 'status' on form reset
+  });
+    this.editMode= false;
   }
   fetchAllChargeCodeDetails() {
     this.masterDataService.getAllChargecode().subscribe((res: any) => {
@@ -68,92 +77,88 @@ export class ChargeCodeComponent {
  
   editChargecode(editId) {
     const selectedItem = this.chargeCodedetails.find(item => item.id === editId);
-  
+
     if (selectedItem) {
-      this.myForm.setValue({
-        id: selectedItem.id,
-        chargeCode: selectedItem.chargeCode_name,
-        description: selectedItem.description,
-        status: selectedItem.status,
-      });
-  
-      // Check the 'status' value and set the corresponding radio button
-      const statusControl = this.myForm.get('status');
-      if (statusControl.value === 'active') {
-        statusControl.setValue('active');
-      } else if (statusControl.value === 'inactive') {
-        statusControl.setValue('inactive');
-      }
-  
-      this.editMode = true;
-      this.visibleDialog = true;
-      // Set the mode and title for Edit
-      this.modeTitle = 'Edit';
+        this.myForm.setValue({
+            id: selectedItem.id,
+            chargeCode: selectedItem.chargeCode_name,
+            description: selectedItem.description,
+            status: selectedItem.status ? 'active' : 'inactive',
+        });
+
+        // Set the mode and title for Edit
+        this.modeTitle = 'Edit';
+
+        // Set editMode to true before opening the dialog
+        this.editMode = true;
+
+        // Use a timeout to ensure that the form value is set before opening the dialog
+        setTimeout(() => {
+            this.visibleDialog = true;
+        });
     }
-  }
-  SaveChargecode() {
-    const body = {
+}
+SaveChargecode() {
+  const statusValue = this.myForm.get('status').value;
+  const isStatusActive = statusValue === 'active';
+  const body = {
       id: this.myForm.get('id').value || '',
       name: this.myForm.get('chargeCode').value,
       description: this.myForm.get('description').value,
-      status: this.myForm.get('status').value,
+      status: isStatusActive,
       isDeleted: false
-    };
+  };
 
-    if (this.editMode) {
+  if (this.editMode) {
       // Editing an existing charge code
       this.masterDataService.editChargecode(body).subscribe(
-        (res) => {
-          this.visibleDialog = false;
-          this.messageService.add({
-            key: 'successToast',
-            severity: 'success',
-            summary: 'Success!',
-            detail: 'Charge Code Is Updated Successfully.'
-          });
-          
-            this.myForm.reset(); // Reset the form on success
-            this.fetchAllChargeCodeDetails(); // Fetch updated data
-        },
-        (error) => {
-
-          this.messageService.add({
-            key: 'errorToast',
-            severity: 'error',
-            summary: 'Error!',
-            detail: 'Failed To Update Charge Code.'
-          });
-        }
+          (res) => {
+              this.handleSuccess();
+          },
+          (error) => {
+              this.handleError();
+          }
       );
-    } else {
+  } else {
+    this.modeTitle = 'Add';
       // Adding a new charge code
       this.masterDataService.addChargecode(body).subscribe(
-        (res) => {
-          this.visibleDialog = false;
-          this.messageService.add({
-            key: 'successToast',
-            severity: 'success',
-            summary: 'Success!',
-            detail: 'Charge Code is saved Successfully.'
-          });
-          this.myForm.reset(); // Reset the form on success
-          this.fetchAllChargeCodeDetails(); // Fetch updated data
-        },
-        (error) => {
-          console.error('Error saving draft:', error);
-
-          this.messageService.add({
-            key: 'errorToast',
-            severity: 'error',
-            summary: 'Error!',
-            detail: 'Failed to save Charge Code.'
-          });
-        }
+          (res) => {
+              this.handleSuccess();
+          },
+          (error) => {
+              this.handleError();
+          }
       );
-    }
-
-    this.editMode = false;
   }
+}
+private handleSuccess() {
+  const successMessage = this.editMode ? 'Charge Code Updated Successfully.' : 'Charge Code Added Successfully.';
+  
+  this.messageService.add({
+      key: 'successToast',
+      severity: 'success',
+      summary: 'Success!',
+      detail: successMessage
+  });
+
+  this.myForm.reset({
+      status: 'inactive' // Set default value for 'status' on form reset
+  });
+  this.editMode= false;
+
+  this.visibleDialog = false;
+  this.fetchAllChargeCodeDetails(); // Fetch updated data
+}
+
+private handleError() {
+  this.messageService.add({
+      key: 'errorToast',
+      severity: 'error',
+      summary: 'Error!',
+      detail: this.editMode ? 'Failed To Update Charge Code.' : 'Failed to save Charge Code.'
+  });
+}
 
   // ... Other methods in your component
 }

@@ -54,6 +54,11 @@ export class CreateBuildingBlockService {
    
     return this.http.get(`${url}${settings.AppRoutes.Auth.downloadSampleCCExcel}`, { responseType: 'arraybuffer' as 'json' });
   }
+  downloadSampleOPExcel()
+  {
+   
+    return this.http.get(`${url}${settings.AppRoutes.Auth.downloadSampleOPExcel}`, { responseType: 'arraybuffer' as 'json' });
+  }
 
 
 

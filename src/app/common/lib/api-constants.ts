@@ -44,6 +44,8 @@ export namespace AppRoutes {
 
         public static readonly downloadSampleCCExcel = "download-file?file=com";
 
+        public static readonly downloadSampleOPExcel = "download-file?file=op";
+
 
 
         //--------------------Project filter--------//

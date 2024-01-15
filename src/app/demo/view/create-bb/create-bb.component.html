@@ -753,6 +753,9 @@
     <ng-template pTemplate="header">
         <div style="width: 100%;">
             <h5 style="display: contents;">Import From Excel</h5>&nbsp;&nbsp;&nbsp;
+            <h5 style="display: contents;">
+                <a href="#" (click)="downloadSampleOpExcel($event)" style="text-decoration: underline;">Download Sample File</a>
+              </h5>
         </div>
     </ng-template>
     <hr>
@@ -807,7 +810,7 @@
         </div>
     </div>
     <!-- Add this inside your p-dialog or any suitable place -->
-<p-toast key="successToast" position="top-right"></p-toast>
+
 
 </p-dialog>
 <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
