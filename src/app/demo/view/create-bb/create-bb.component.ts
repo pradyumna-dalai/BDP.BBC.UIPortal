@@ -910,132 +910,7 @@ showDialogCommercialCard() {
         } 
       }
     );
-    // if (!this.isEditorContentValid(body.scopingCard.serviceDescription)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid service description. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    //  if (!this.isEditorContentValid(body.scopingCard.customerRequirement)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid Customer Requirement. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    //  if (!this.isEditorContentValid(body.scopingCard.deliverable)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid Deliverable. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    //  if (!this.isEditorContentValid(body.scopingCard.stakeHolder)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid StakeHolder. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    //  if (!this.isEditorContentValid(body.scopingCard.valueToPsaBdp)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid valueToPsaBdp. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    // if (!this.isEditorContentValid(body.scopingCard.parameter)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid Parameter. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    //  if (!this.isEditorContentValid(body.scopingCard.configurable)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid Parameter. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    //  if (!this.isEditorContentValid(body.commercialCard.psaBdpValueStatement)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid PsaBdpValueStatement in Commercial Card. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    //  if (!this.isEditorContentValid(body.commercialCard.standardService)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid Standard Service in Commercial Card. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    // if (!this.isEditorContentValid(body.commercialCard.sow)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid SOW in Commercial Card. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    //  if (!this.isEditorContentValid(body.commercialCard.prerequisiteInfo)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid PrerequisiteInfo in Commercial Card. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    //  if (!this.isEditorContentValid(body.commercialCard.combinedValue)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid CombinedValue in Commercial Card. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    //  if (!this.isEditorContentValid(body.commercialCard.dos)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid Dos in Commercial Card. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    // if (!this.isEditorContentValid(body.commercialCard.donts)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid Donts in Commercial Card. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // };
+ 
   }
 
   isSaveAsDraftDisabled(): boolean {
@@ -1044,7 +919,32 @@ showDialogCommercialCard() {
 
 
 //--------------------operation Card Details----------------//
+downloadSampleOpExcel(event: Event) {
+  event.preventDefault();
 
+  this.createBuildingBlockservice.downloadSampleOPExcel().subscribe((res: any) => {
+    // Assuming the response contains the file content
+    const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+    // Creating an anchor element to trigger the download
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = 'OperationCard.xlsx';
+    document.body.appendChild(link);
+
+    // Triggering the download
+    link.click();
+
+    // Removing the anchor element
+    document.body.removeChild(link);
+    this.messageService.add({
+      key: 'successToast',
+      severity: 'success',
+      summary: 'Success!',
+      detail: 'Sample Excel Downloaded successfully.'
+    });
+  });
+}
 showDialogOperationCard() {
   this.visibleOperationBox = true;
 }
