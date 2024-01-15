@@ -81,6 +81,8 @@ export namespace AppRoutes {
 
         public static readonly getscope = "scope";
 
+        public static readonly  chargecode = "charge-code";
+
     }
 
 }
