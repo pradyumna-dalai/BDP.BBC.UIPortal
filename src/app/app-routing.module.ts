@@ -52,7 +52,7 @@ import { UOMComponent } from './demo/master-data/uom/uom.component';
                     { path: 'category', component: CategoryComponent },
                     { path: 'product', component: ProductComponent },
                     { path: 'charge-code', component: ChargeCodeComponent },
-                    { path: 'UOM', component: UOMComponent }
+                    { path: 'uom', component: UOMComponent }
                 ]
             },
             { path: 'notfound', component: AppNotfoundComponent },

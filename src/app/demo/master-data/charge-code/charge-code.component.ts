@@ -109,19 +109,19 @@ export class ChargeCodeComponent {
             key: 'successToast',
             severity: 'success',
             summary: 'Success!',
-            detail: 'Charge Code is edited Successfully.'
+            detail: 'Charge Code Is Updated Successfully.'
           });
-           // Reset the form on success
-            this.myForm.reset();
+          
+            this.myForm.reset(); // Reset the form on success
+            this.fetchAllChargeCodeDetails(); // Fetch updated data
         },
         (error) => {
-          console.error('Error saving draft:', error);
 
           this.messageService.add({
             key: 'errorToast',
             severity: 'error',
             summary: 'Error!',
-            detail: 'Failed to edit Charge Code.'
+            detail: 'Failed To Update Charge Code.'
           });
         }
       );
@@ -136,8 +136,8 @@ export class ChargeCodeComponent {
             summary: 'Success!',
             detail: 'Charge Code is saved Successfully.'
           });
-           // Reset the form on success
-          this.myForm.reset();
+          this.myForm.reset(); // Reset the form on success
+          this.fetchAllChargeCodeDetails(); // Fetch updated data
         },
         (error) => {
           console.error('Error saving draft:', error);

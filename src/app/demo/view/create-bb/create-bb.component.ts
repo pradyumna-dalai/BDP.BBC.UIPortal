@@ -523,7 +523,7 @@ showDialogCommercialCard() {
     this.procuctCategoryOptions = [];
     this.MasterTableservice.getProductName().subscribe((res: any) => {
       if (res?.message == "success") {
-        this.procuctNamesOptions = res?.data;
+        this.procuctNamesOptions = res?.data.product;
       } else {
         this.procuctNamesOptions = [];
       }
