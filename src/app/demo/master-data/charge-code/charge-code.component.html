@@ -8,11 +8,13 @@
             <button type="button" pButton pRipple label="Add" (click)="showDialog()" class="mr-2 mb-2"></button>
         </div>
     </div>
-<p-table #dt1 [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [value]="chargeCodedetails"
-        selectionMode="single" dataKey="id" styleClass="p-datatable-gridlines" responsiveLayout="scroll" [rows]="10"
-        [paginator]="true" scrollHeight="530px" scrollDirection="both" [resizableColumns]="true">
+<p-table  #dt1 [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]"
+currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [value]="chargeCodedetails"
+selectionMode="single" dataKey="id" styleClass="p-datatable-gridlines" responsiveLayout="scroll" [rows]="pageSize"
+[paginator]="true"  [totalRecords]="totalPages * pageSize"
+(onPage)="onPageChange($event)" scrollHeight="530px" scrollDirection="both" [resizableColumns]="true">
         <ng-template pTemplate="header">
+
             <tr>
                 <th style="text-align: center;width: 50px" [frozen]="true" class="sticky-header">Actions</th>
                 <th style="text-align: center; width: 200px" pSortableColumn="chargeCode_name" [frozen]="true"

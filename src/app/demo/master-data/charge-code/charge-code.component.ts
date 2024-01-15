@@ -23,6 +23,10 @@ export class ChargeCodeComponent {
   chargeCodedetails: any;
   editMode: boolean = false;
   modeTitle: string = 'Add';
+  //pagination//
+  currentPage: number = 1;
+  pageSize: number = 10;
+  totalPages: number;
 
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,private fb: FormBuilder,
      private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService) {
@@ -55,19 +59,41 @@ export class ChargeCodeComponent {
   });
     this.editMode= false;
   }
+  //pagination//
+  onPageChange(event) {
+    let newPage: number;
+  
+    // Check if the event object contains information about the new page
+    if (event.page) {
+      newPage = parseInt(event.page, 10);
+    } else if (event.rows) {
+      // If the event object contains 'rows' instead of 'page'
+      newPage = Math.floor(event.first / event.rows);
+      this.pageSize = event.rows;
+    } else {
+      // Handle other scenarios or log a message
+      console.error('Invalid event object:', event);
+      return;
+    }
+  
+    if (!isNaN(newPage)) {
+      this.currentPage = newPage + 1;
+      this.fetchAllChargeCodeDetails();
+    }
+  }
   fetchAllChargeCodeDetails() {
-    this.masterDataService.getAllChargecode().subscribe((res: any) => {
-      if (res?.message == "success") {
+    this.masterDataService.getAllChargecode(this.currentPage - 1, this.pageSize).subscribe((res: any) => {
+      if (res?.message === "success") {
         this.chargeCodedetails = res.data.chargeCode.map((item: any) => {
           return {
             id: item.id, 
             chargeCode_name: item.name,
             description: item.description,
             status: item.status
-
           };
         });
-       // console.log("djdsf",this.locationdetails);
+  
+        this.totalPages = res.data.totalPages;
       } else {
         this.chargeCodedetails = [];
       }
