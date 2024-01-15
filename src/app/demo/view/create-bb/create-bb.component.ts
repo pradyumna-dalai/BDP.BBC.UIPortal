@@ -617,7 +617,7 @@ showDialogCommercialCard() {
     ];
 
     for (const { field, message } of maxlengthFields) {
-      if (field && field.length > 1000) {
+      if (field && field.length > 993) {
         errorMessages.push(message);
       }
     }
@@ -625,7 +625,7 @@ showDialogCommercialCard() {
       for (const errorMessage of errorMessages) {
         this.messageService.add({
           key: 'errorToast',
-          life: 2000,
+          life: 2500,
           severity: 'error',
           summary: errorMessage,
           detail: '',
