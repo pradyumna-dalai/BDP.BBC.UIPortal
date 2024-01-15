@@ -12,6 +12,7 @@ import { ChargeCodeComponent } from './demo/master-data/charge-code/charge-code.
 import { CategoryComponent } from './demo/master-data/category/category.component';
 import { ScopeComponent } from './demo/master-data/scope/scope.component';
 import { ProductComponent } from './demo/master-data/product/product.component';
+import { UOMComponent } from './demo/master-data/uom/uom.component';
 
 
 
@@ -47,11 +48,11 @@ import { ProductComponent } from './demo/master-data/product/product.component';
                 children: [
                     { path: '', redirectTo: 'building-block', pathMatch: 'full' },
                     { path: 'locations', component: LocationsComponent },
-                    { path: 'charge-code', component: ChargeCodeComponent },
                     { path: 'scope', component: ScopeComponent },
                     { path: 'category', component: CategoryComponent },
                     { path: 'product', component: ProductComponent },
-                    { path: 'charge-code', component: ChargeCodeComponent }
+                    { path: 'charge-code', component: ChargeCodeComponent },
+                    { path: 'UOM', component: UOMComponent }
                 ]
             },
             { path: 'notfound', component: AppNotfoundComponent },
