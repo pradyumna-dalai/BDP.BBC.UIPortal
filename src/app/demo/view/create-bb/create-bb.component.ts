@@ -523,7 +523,7 @@ showDialogCommercialCard() {
     this.procuctCategoryOptions = [];
     this.MasterTableservice.getProductName().subscribe((res: any) => {
       if (res?.message == "success") {
-        this.procuctNamesOptions = res?.data.product;
+        this.procuctNamesOptions = res?.data?.product;
       } else {
         this.procuctNamesOptions = [];
       }
@@ -581,6 +581,7 @@ showDialogCommercialCard() {
 
   saveAsDraft() {
     this.buildingBlockId = this.route.snapshot.paramMap.get('id');
+    let errorMessages: string[] = [];
     if (this.product_name == '' || this.product_name == null || this.product_name == undefined) {
       return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Product name is a required field.`, detail: '' });
     }
@@ -597,6 +598,41 @@ showDialogCommercialCard() {
       var mod = []
     } else {
       mod = this.selectedMod.map(id => ({ id }))
+    }
+    const maxlengthFields = [
+      { field: this.seervice_desc, message: 'Service Description cannot exceed 1000 characters.' },
+      { field: this.customer_requirement, message: 'Customer Requirement cannot exceed 1000 characters.' },
+      { field: this.deliverables, message: 'Deliverables cannot exceed 1000 characters.' },
+      { field: this.stakeholders_audience, message: 'Stakeholders audience cannot exceed 1000 characters.' },
+      { field: this.value_to_psa_bdp, message: 'Value to PSA BDP cannot exceed 1000 characters.' },
+      { field: this.parameters, message: 'Parameters cannot exceed 1000 characters.' },
+      { field: this.configurables, message: 'Configurables cannot exceed 1000 characters.' },
+      { field: this.cvalue_to_psa_bdp, message: 'Value to PSA BDP cannot exceed 1000 characters.' },
+      { field: this.sow, message: 'Sow cannot exceed 1000 characters.' },
+      { field: this.standard_service, message: 'Standard Service cannot exceed 1000 characters.' },
+      { field: this.pre_requisite_info, message: 'Pre requisiteiInfo cannot exceed 1000 characters.' },
+      { field: this.combined_value, message: 'Combined value cannot exceed 1000 characters.' },
+      { field: this.don_s, message: 'Dons value cannot exceed 1000 characters.' },
+      { field: this.do_s, message: 'Dos value cannot exceed 1000 characters.' },
+     
+    ];
+
+    for (const { field, message } of maxlengthFields) {
+      if (field && field.length > 1000) {
+        errorMessages.push(message);
+      }
+    }
+    if (errorMessages.length > 0) {
+      for (const errorMessage of errorMessages) {
+        this.messageService.add({
+          key: 'errorToast',
+          life: 2000,
+          severity: 'error',
+          summary: errorMessage,
+          detail: '',
+        });
+      }
+      return; 
     }
     this.isloading = true
     const body =
@@ -689,7 +725,8 @@ showDialogCommercialCard() {
               detail: 'Failed to save building block draft.'
             });
           }
-        } else {
+        }
+        else {
           this.messageService.add({
             key: 'errorToast',
             severity: 'error',
