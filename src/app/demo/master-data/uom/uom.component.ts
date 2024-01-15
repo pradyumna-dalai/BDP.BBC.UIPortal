@@ -6,38 +6,37 @@ import { MasterDataService } from 'src/app/services/master-dataserivce/master-da
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 @Component({
-  selector: 'app-product',
-  templateUrl: './product.component.html',
-  styleUrls: ['./product.component.scss'],
+  selector: 'app-uom',
+  templateUrl: './uom.component.html',
+  styleUrls: ['./uom.component.scss'],
   providers: [MessageService, ConfirmationService]
 })
-export class ProductComponent {
-
+export class UOMComponent {
   visibleDialog: boolean = false;
   myForm: FormGroup;
 
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
     private fb: FormBuilder, private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService) {
     this.breadcrumbService.setItems([
-      { label: 'ProductName' }
+      { label: 'UOM' }
     ]);
   }
-  ngOnInit() {
-    this.myForm = this.fb.group({
-      // Define your form controls here
-      id: [''],
-      prodcut_name: ['', Validators.required],
-      description: [''],
-      status: ['inactive', Validators.required],
-    });
-  }
-  showDialog(){
-    this.visibleDialog = true;
-  }
-  onCancel(){
-    this.visibleDialog = false;
-  }
-  SaveChargecode(){
+  // ngOnInit() {
+  //   this.myForm = this.fb.group({
+  //     id: [''],
+  //     prodcut_name: ['', Validators.required],
+  //     description: [''],
+  //     status: ['inactive', Validators.required],
+  //   });
+  // }
+  // showDialog(){
+  //   this.visibleDialog = true;
+  // }
+  // onCancel(){
+  //   this.visibleDialog = false;
+  // }
+  // SaveChargecode(){
 
-  }
+  // }
+
 }
