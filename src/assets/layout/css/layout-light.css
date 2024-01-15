@@ -1391,10 +1391,10 @@ p:last-child {
 }
 .layout-topbar-dark .layout-topbar .layout-topbar-wrapper .layout-topbar-right .layout-topbar-actions > li > ul {
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.06);
-  background-color: #434B54;
+  background-color: #2a384c;
 }
 .layout-topbar-dark .layout-topbar .layout-topbar-wrapper .layout-topbar-right .layout-topbar-actions > li > ul .layout-submenu-header {
-  background-color: #434B54;
+  background-color: #2a384c;
 }
 .layout-topbar-dark .layout-topbar .layout-topbar-wrapper .layout-topbar-right .layout-topbar-actions > li > ul .layout-submenu-header h6 {
   color: #CACFDB;
@@ -2369,7 +2369,7 @@ p:last-child {
 }
 @media (min-width: 993px) {
   .layout-menu-dark.layout-horizontal .menu-wrapper .layout-menu-container .layout-menu > li > ul {
-    background-color: #434B54;
+    background-color: #2a384c;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.06);
   }
   .layout-menu-dark.layout-horizontal .menu-wrapper .layout-menu-container .layout-menu > li > ul li > a {
@@ -2379,7 +2379,7 @@ p:last-child {
     background-color: #676E77;
   }
   .layout-menu-dark.layout-horizontal .menu-wrapper .layout-menu-container .layout-menu > li > ul li.active-menuitem {
-    background-color: #434B54;
+    background-color: #2a384c;
   }
   .layout-menu-dark.layout-horizontal .menu-wrapper .layout-menu-container .layout-menu > li > ul li.active-menuitem > a {
     color: #ffffff;
