@@ -87,6 +87,9 @@ export namespace AppRoutes {
 
         public static readonly  product = "product";
 
+        public static readonly  uom = "uom";
+
+
     }
 
 }
