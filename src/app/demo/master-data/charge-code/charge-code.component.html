@@ -8,13 +8,16 @@
             <button type="button" pButton pRipple label="Add" (click)="showDialog()" class="mr-2 mb-2"></button>
         </div>
     </div>
-<p-table #dt1 [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [value]="chargeCodedetails"
-        selectionMode="single" dataKey="id" styleClass="p-datatable-gridlines" responsiveLayout="scroll" [rows]="10"
-        [paginator]="true" scrollHeight="530px" scrollDirection="both" [resizableColumns]="true">
+<p-table  #dt1 [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]"
+currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [value]="chargeCodedetails"
+selectionMode="single" dataKey="id" styleClass="p-datatable-gridlines" responsiveLayout="scroll" [rows]="10"
+[paginator]="true"  [totalRecords]="totalPages * pageSize" scrollHeight="530px" scrollDirection="both" [resizableColumns]="true">
         <ng-template pTemplate="header">
             <tr>
                 <th style="text-align: center;width: 50px" [frozen]="true" class="sticky-header">Actions</th>
+                <th style="text-align: center; width: 200px" pSortableColumn="status" [frozen]="true"
+                    class="sticky-header">Status<p-sortIcon field="status"></p-sortIcon>
+                </th>
                 <th style="text-align: center; width: 200px" pSortableColumn="chargeCode_name" [frozen]="true"
                     class="sticky-header">
                     Charge Code<p-sortIcon field="chargeCode_name"></p-sortIcon>
@@ -23,24 +26,33 @@
                     class="sticky-header">
                     Description
                 </th>
-                <th style="text-align: center; width: 200px" pSortableColumn="country" [frozen]="true"
+                <th style="text-align: center; width: 200px" pSortableColumn="createdBy" [frozen]="true"
                     class="sticky-header">
-                    Created By<p-sortIcon field="country"></p-sortIcon>
+                    Created By<p-sortIcon field="createdBy"></p-sortIcon>
                 </th>
-                <th style="text-align: center; width: 200px" pSortableColumn="country_code" [frozen]="true"
-                    class="sticky-header">Created At<p-sortIcon field="country_code"></p-sortIcon>
+                <th style="text-align: center; width: 200px" pSortableColumn="createdDate" [frozen]="true"
+                    class="sticky-header">Created At<p-sortIcon field="createdDate"></p-sortIcon>
                 </th>
-                <th style="text-align: center; width: 200px" pSortableColumn="description" [frozen]="true"
+                <th style="text-align: center; width: 200px" pSortableColumn="updatedBy" [frozen]="true"
                     class="sticky-header">
-                    Updated By<p-sortIcon field="description"></p-sortIcon>
+                    Updated By<p-sortIcon field="updatedBy"></p-sortIcon>
                 </th>
-                <th style="text-align: center; width: 200px" pSortableColumn="location_code" [frozen]="true"
-                    class="sticky-header">Updated At<p-sortIcon field="location_code"></p-sortIcon>
+                <th style="text-align: center; width: 200px" pSortableColumn="updatedDate" [frozen]="true"
+                    class="sticky-header">Updated At<p-sortIcon field="updatedDate"></p-sortIcon>
                 </th>
-                <th style="text-align: center; width: 200px" pSortableColumn="status" [frozen]="true"
-                    class="sticky-header">Status<p-sortIcon field="status"></p-sortIcon>
-                </th>
+                
 
+            </tr>
+            <tr><th></th>
+                <th></th>
+                <th>
+                    <p-columnFilter type="text" field="name"></p-columnFilter>
+                </th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-item>
@@ -52,26 +64,27 @@
                     </span> -->
                 </td>
                 <td style="text-align: center; word-wrap: break-word;">
+                    <p-tag [value]="getSeverityLabel(item.status)" [severity]="getSeverity(item.status)"></p-tag>
+                </td>
+                <td style="text-align: center; word-wrap: break-word;">
                     <span>{{item.chargeCode_name}}</span>
                 </td>
                 <td style="text-align: center; word-wrap: break-word;">
                     <span>{{item.description}}</span>
                 </td>
                 <td style="text-align: center; word-wrap: break-word;">
-                    <span></span>
+                    <span>{{item.createdBy}}</span>
                 </td>
                 <td style="text-align: center; word-wrap: break-word;">
-                    <span></span>
+                    <span>{{item.createdDate | date:'dd MMM yyyy'}}</span>
                 </td>
                 <td style="text-align: center; word-wrap: break-word;">
-                    <span></span>
+                    <span>{{item.updatedBy}}</span>
                 </td>
                 <td style="text-align: center; word-wrap: break-word;">
-                    <span></span>
+                    <span>{{item.updatedDate | date:'dd MMM yyyy'}}</span>
                 </td>
-                <td style="text-align: center; word-wrap: break-word;">
-                    <span>{{item.status ? 'Active' : 'Inactive'}}</span>
-                </td>
+              
             </tr>
         </ng-template>
         <ng-template pTemplate="emptymessage">

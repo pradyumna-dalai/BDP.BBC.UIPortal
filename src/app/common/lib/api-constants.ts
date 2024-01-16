@@ -85,6 +85,8 @@ export namespace AppRoutes {
 
         public static readonly  chargecode = "charge-code";
 
+        public static readonly  product = "product";
+
     }
 
 }
