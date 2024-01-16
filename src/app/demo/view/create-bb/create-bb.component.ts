@@ -136,19 +136,29 @@ export class CreateBbComponent {
 
 
 
-onCancelClickSC() {
-  this.showUploaderror = false;
-  this.uploadError = "";
-  this.fileNameSC = "";
-  this.uploadFilesc = null;
+  onCancelClickSC() {
+    this.showUploaderror = false;
+    this.uploadError = "";
+    this.fileNameSC = "";
+    this.uploadFilesc = null;
   
-}
-onCancelClickCC(){
-  this.showUploaderror = false;
-  this.uploadError = "";
-  this.fileNameCC = "";
-  this.uploadFilecc = null;
-}
+    // Add the following line to reset the file input
+    const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = ''; // Clear the file input value
+    }
+  }
+  onCancelClickCC() {
+    this.showUploaderror = false;
+    this.uploadError = "";
+    this.fileNameCC = "";
+    this.uploadFilecc = null;
+    // Reset the file input value
+    const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
+    }
+  }
 
 onUploadSCExcel(event: any) {
   const file:File = event.target.files[0];
@@ -194,6 +204,11 @@ makeScopingCardApiServiceCall()
           summary: 'Success!',
           detail: 'Excel Uploaded successfully.'
         });
+         // Reset the file input value
+        const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
+        if (fileInput) {
+          fileInput.value = '';
+        }
       }
        else {
         console.log('Unexpected response:', res);
@@ -267,6 +282,11 @@ onPopupCancelSCClick(){
   this.uploadError = "";
   this.fileNameSC = "";
   this.uploadFilesc = null;
+  // Add the following line to reset the file input
+  const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
+  if (fileInput) {
+    fileInput.value = ''; // Clear the file input value
+  }
 }
 uploadFilecc: File | null = null;
 onUploadCCExcel(event) 
@@ -320,6 +340,16 @@ makeCommercialCardApiServiceCall() {
           summary: 'Success!',
           detail: 'Excel Uploaded successfully.'
         });
+  //        // Reset the file input value
+  // const fileInput = document.getElementById('fileUploadCC') as HTMLInputElement;
+  // if (fileInput) {
+  //   fileInput.value = ''; // Clear the file input value
+  // }
+  // Reset the file input value
+  const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
+  if (fileInput) {
+    fileInput.value = '';
+  }
       } else {
         console.log('Unexpected response:', res);
       }
@@ -403,6 +433,11 @@ onPopupCancelCClick(){
   this.uploadError = "";
   this.fileNameCC = "";
   this.uploadFilecc = null;
+  // Reset the file input value
+  const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
+  if (fileInput) {
+    fileInput.value = '';
+  }
 }
 downloadSampleSCExcel(event: Event) {
   event.preventDefault();
