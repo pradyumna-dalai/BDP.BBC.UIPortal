@@ -60,17 +60,19 @@ export class AppMenuComponent implements OnInit {
             case 'master data management':
                 return 'pi pi-fw pi-database';
             case 'locations':
-                return 'pi pi-fw pi-file';
+                return 'pi pi-fw pi-map-marker'; 
             case 'charge code':
-                return 'pi pi-fw pi-file';
+                return 'pi pi-fw pi-code';
             case 'scope':
-                return 'pi pi-fw pi-file';
+                return 'pi pi-fw pi-map'; 
             case 'product':
-                return 'pi pi-fw pi-file';
+                return 'pi pi-fw pi-inbox';
             case 'uom':
-                return 'pi pi-fw pi-file';
+                return 'pi pi-arrow-right-arrow-left';
+            case 'category':
+                return 'pi pi-bars';
             default:
-                return 'pi pi-fw pi-desktop'; // Default icon if not matched
+                return 'pi pi-fw pi-desktop';
         }
     }
 
