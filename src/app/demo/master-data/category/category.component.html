@@ -1,1 +1,161 @@
-<p>category works!</p>
+<div class="card">
+    <div class="grid">
+        <div class="col-6">
+            <h5>Product Category</h5>
+        </div>
+    </div>
+    <p-table #dt2 dataKey="id" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]"
+        [paginator]="true" responsiveLayout="scroll" scrollHeight="830px" scrollDirection="both"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
+        [tableStyle]="{ 'min-width': '55rem' , 'overflow-x': 'auto' }"   style="overflow-x: auto;">
+        <ng-template pTemplate="caption">
+            <div class="row">
+                <div class="col-12" style="display: flex;">
+                    <div class="col-6">
+                        <span class="p-input-icon-right">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="dt2.filterGlobal($event.target.value, 'contains')"
+                                placeholder="Search keyword" />
+                        </span>
+                    </div>
+                    <div class="col-6" style="display: flex;justify-content: end;">
+                        <button type="button" pButton pRipple label="Clear" class="mr-2 mb-2"></button>
+                        <button type="button" pButton pRipple label="Export" class="mr-2 mb-2"></button>
+                        <button type="button" pButton pRipple label="Add Category" (click)="showCreateCategoryDialog()"
+                            icon="pi pi-plus" class="mr-2 mb-2"></button>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width:10%">Actions</th>
+                <th style="width:10%">Status </th>
+                <th style="width:25%">Product Name </th>
+                <th style="width:25%">Product Scope </th>
+                <th style="width:25%">Product Category </th>
+                <th style="width:25%">Description </th>
+                <th style="width:25%">Created By </th>
+                <th style="width:35%">Created At </th>
+                <th style="width:35%">Updated By </th>
+                <th style="width:35%">Updated At </th>
+            </tr>
+            <tr>
+                <th></th>
+                <th></th>
+                <th>
+                    <p-columnFilter type="text" field="product"></p-columnFilter>
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="scope"></p-columnFilter>
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="Category"></p-columnFilter>
+                </th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-customer>
+            <tr>
+
+                <td style="text-align: center;">
+                    <span style="cursor: pointer;"><i class="pi pi-pencil"></i></span>&nbsp;
+                    <span style="cursor: pointer;">
+                        <i class="pi pi-trash"></i>
+                    </span>
+
+                </td>
+                <td>
+                    <p-tag [value]="customer.status" [severity]="getSeverity(customer.status)"></p-tag>
+                </td>
+                <td>
+                    <span class="ml-1 vertical-align-middle">Name</span>
+                </td>
+                <td>
+                    <span class="ml-1 vertical-align-middle">Name</span>
+                </td>
+            </tr>
+
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="5">No customers found.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+<p-dialog [(visible)]="displayCreateCategoryDialog" [style]="{width: '50vw'}" [draggable]="false" [resizable]="false"
+    closable='true'>
+    <ng-template pTemplate="header">
+        <h5 style="display: contents;">Add New Category :</h5>&nbsp;
+    </ng-template>
+    <hr>
+    <p>Please complete all required fields to create a new Category.</p>
+    <br>
+    <div class="tr-divider"></div>
+    <form [formGroup]="">
+        <div class="p-grid p-field">
+            <div class="formgrid grid">
+                <div class="field col-12 md:col-4">
+                    <label>Product Name<span class="required">*</span></label>
+                    <p-dropdown placeholder="Select Product" optionLabel="name" optionValue="name" [filter]="true"
+                        filterBy="name" [style]="{ 'width': '100%' }">
+                    </p-dropdown>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label>Product Scope<span class="required">*</span></label>
+                    <p-dropdown placeholder="Select Scope" optionLabel="name" optionValue="name" [filter]="true"
+                        filterBy="name" [style]="{ 'width': '100%' }">
+                    </p-dropdown>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label>Product Category<span class="required">*</span></label>
+                    <p-dropdown placeholder="Select Category" optionLabel="name" optionValue="name" [filter]="true"
+                        filterBy="name" [style]="{ 'width': '100%' }">
+                    </p-dropdown>
+                </div>
+                <div class="field col-12 md:col-6 ">
+                    <label>Description</label>
+                    <textarea id="description" type="text" rows="4"
+                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"></textarea>
+                </div>
+
+                <div class="field col-12 md:col-6" style="display: flex; flex-direction: column; align-items: flex-start;margin-top: 10px;">
+                    <label>Status is Active?<span class="required">*</span></label>
+                    <div class="p-field-radiobutton" style="margin-left: 5px;margin-top: 15px;">
+                        <div class="p-radio">
+                            <p-radioButton name="status" value="1" label="Active" ></p-radioButton>
+                    
+                            <p-radioButton name="status" value="0" label="Inactive" [ngStyle]="{'margin-left': '25px'}"></p-radioButton>
+                        </div>
+                    </div>
+                </div>
+                <!-- <p-card class="p-field-radiobutton p-mb-0">						
+						<ul>
+							<li class="p-card-label"> Status is Active ? </li>
+							<li class="p-card-value">
+								<p-inputSwitch value="1"  ></p-inputSwitch>
+							</li>
+						</ul>
+					</p-card> -->
+
+            </div>
+
+
+
+
+        </div>
+    </form>
+    <ng-template pTemplate="footer">
+        <p-button label=" Add " [disabled]="true"></p-button>&nbsp;&nbsp;
+        <p-button label="Cancel"></p-button>
+    </ng-template>
+
+
+</p-dialog>
