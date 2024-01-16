@@ -78,7 +78,9 @@ export class ScopeComponent {
         description: this.ScopeForm.value.description,
         status: this.ScopeForm.value.status,
         isDeleted: false,
-        productid: this.ScopeForm.value.productid,
+        product: {
+          id: this.ScopeForm.value.productid
+        }
       };
 
       this.masterDataService.addScopeDetails(body).subscribe(
@@ -135,7 +137,8 @@ onSortChange(event: any) {
     };
     this.masterDataService.getScopeDetails(params).subscribe((res:any) =>{
       if (res?.message === 'success'){
-        this.scopeDetails = res.data.scope.filter(scope => scope.status === true); 
+        this.scopeDetails = res.data.scope;
+      //  filter(scope => scope.status === true); 
         this.totalRecords = res.data.totalElements;
         console.log('fetch scope details:',   this.totalRecords);
       } else {
