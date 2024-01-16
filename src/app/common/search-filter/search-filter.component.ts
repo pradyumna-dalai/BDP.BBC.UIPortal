@@ -151,8 +151,14 @@ managerId:any;
           "id": this.selectedStatus
       },
       // "projectName": null,
+      "projectStage": {
+        "id": this.selectedStage
+    },
+      "company": {
+        "id": this.selectedProject
+    },
       "opportunityName": {
-          "id": this.oppourtunity_name
+          "id": this.selectedProject
       },
       "opportunityManager": {
           "id": this.opportunity_manager
@@ -179,7 +185,6 @@ managerId:any;
   console.log("payload",payload)
   this.projectService.advanceSearchFilter(payload).subscribe(
     (response) => {
-      console.log('Response:', response);
       this.newSearchfilter = response
       this.projectService.updateData(this.newSearchfilter);
     },
