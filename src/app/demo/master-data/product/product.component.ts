@@ -35,6 +35,13 @@ export class ProductComponent {
     });
     this.fetchAllProdcutDetails();
   }
+  getSeverity(status: boolean): string {
+    return status ? 'success' : 'danger'; 
+  }
+  getSeverityLabel(status: boolean): string {
+    return status ? 'Active' : 'Inactive';
+  }
+  
   showDialog(){
     this.visibleDialog = true;
     this.myForm.reset({
@@ -59,7 +66,12 @@ export class ProductComponent {
             id: item.id, 
             productName: item.name,
             description: item.description,
-            status: item.status
+            status: item.status,
+
+            createdBy: item.createdBy,
+            updatedBy: item.updatedBy,
+            createdDate: item.createdDate,
+            updatedDate: item.updatedDate,
 
           };
         });

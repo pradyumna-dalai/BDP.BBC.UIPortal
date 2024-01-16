@@ -44,6 +44,13 @@ export class ChargeCodeComponent {
     });
     this.fetchAllChargeCodeDetails();
   }
+  getSeverity(status: boolean): string {
+    return status ? 'success' : 'danger'; 
+  }
+  getSeverityLabel(status: boolean): string {
+    return status ? 'Active' : 'Inactive';
+  }
+  
   showDialog() {
     this.visibleDialog = true;
     this.myForm.reset({
@@ -82,14 +89,18 @@ export class ChargeCodeComponent {
     }
   }
   fetchAllChargeCodeDetails() {
-    this.masterDataService.getAllChargecode(this.currentPage - 1, this.pageSize).subscribe((res: any) => {
+    this.masterDataService.getAllChargecode().subscribe((res: any) => {
       if (res?.message === "success") {
         this.chargeCodedetails = res.data.chargeCode.map((item: any) => {
           return {
             id: item.id, 
             chargeCode_name: item.name,
             description: item.description,
-            status: item.status
+            status: item.status,
+            createdBy: item.createdBy,
+            updatedBy: item.updatedBy,
+            createdDate: item.createdDate,
+            updatedDate: item.updatedDate,
           };
         });
   

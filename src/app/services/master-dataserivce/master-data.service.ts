@@ -19,12 +19,9 @@ export class MasterDataService {
   addChargecode(body: any){
     return this.http.post<any>(url + settings.AppRoutes.Auth.chargecode, body);
   }
-  getAllChargecode(pageNumber: number, pageSize: number) {
-    const params = new HttpParams()
-      .set('pageNo', pageNumber.toString())
-      .set('pageSize', pageSize.toString());
+  getAllChargecode() {
   
-    return this.http.get<any>(url + settings.AppRoutes.Auth.chargecode, { params });
+    return this.http.get<any>(url + settings.AppRoutes.Auth.chargecode);
   }
   editChargecode(body: any){
     return this.http.put<any>(url + settings.AppRoutes.Auth.chargecode, body);
