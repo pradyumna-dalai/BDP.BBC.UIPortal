@@ -1,9 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ApiRequestInterceptor } from './api-request.interceptor';
 
 describe('ApiRequestInterceptor', () => {
   beforeEach(() => TestBed.configureTestingModule({
+    imports:[HttpClientTestingModule],
     providers: [
       ApiRequestInterceptor
       ]
