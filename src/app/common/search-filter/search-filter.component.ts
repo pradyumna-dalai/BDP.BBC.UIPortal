@@ -185,7 +185,6 @@ managerId:any;
   console.log("payload",payload)
   this.projectService.advanceSearchFilter(payload).subscribe(
     (response) => {
-      console.log('Response:', response);
       this.newSearchfilter = response
       this.projectService.updateData(this.newSearchfilter);
     },
