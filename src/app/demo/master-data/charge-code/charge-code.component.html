@@ -70,7 +70,7 @@
                     <span></span>
                 </td>
                 <td style="text-align: center; word-wrap: break-word;">
-                    <span>{{item.status}}</span>
+                    <span>{{item.status ? 'Active' : 'Inactive'}}</span>
                 </td>
             </tr>
         </ng-template>
@@ -125,9 +125,9 @@
             </div>
             <div class="col-12" style="display: flex;justify-content: flex-end;">
                 <button pButton pRipple type="button" (click)="onCancel()" label="Cancel" 
-                     class="p-button-outlined mr-2 mb-2"></button>
-                <button type="submit" pButton pRipple label="Add" [disabled]="!myForm.valid" (click)="SaveChargecode()"
-                    class="mr-2 mb-2"></button>
+                        class="p-button-outlined mr-2 mb-2"></button>
+                <button type="submit" pButton pRipple [label]="editMode ? 'Update' : 'Add'" [disabled]="!myForm.valid"
+                        (click)="SaveChargecode()" class="mr-2 mb-2"></button>
             </div>
             
         </form>

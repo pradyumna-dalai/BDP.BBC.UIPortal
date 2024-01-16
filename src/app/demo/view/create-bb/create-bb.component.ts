@@ -617,7 +617,7 @@ showDialogCommercialCard() {
     ];
 
     for (const { field, message } of maxlengthFields) {
-      if (field && field.length > 1000) {
+      if (field && field.length > 993) {
         errorMessages.push(message);
       }
     }
@@ -625,7 +625,7 @@ showDialogCommercialCard() {
       for (const errorMessage of errorMessages) {
         this.messageService.add({
           key: 'errorToast',
-          life: 2000,
+          life: 2500,
           severity: 'error',
           summary: errorMessage,
           detail: '',
@@ -910,7 +910,8 @@ showDialogCommercialCard() {
         } 
       }
     );
-    }
+ 
+  }
 
   isSaveAsDraftDisabled(): boolean {
     return this.status === 2;
@@ -918,7 +919,32 @@ showDialogCommercialCard() {
 
 
 //--------------------operation Card Details----------------//
+downloadSampleOpExcel(event: Event) {
+  event.preventDefault();
 
+  this.createBuildingBlockservice.downloadSampleOPExcel().subscribe((res: any) => {
+    // Assuming the response contains the file content
+    const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+    // Creating an anchor element to trigger the download
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = 'OperationCard.xlsx';
+    document.body.appendChild(link);
+
+    // Triggering the download
+    link.click();
+
+    // Removing the anchor element
+    document.body.removeChild(link);
+    this.messageService.add({
+      key: 'successToast',
+      severity: 'success',
+      summary: 'Success!',
+      detail: 'Sample Excel Downloaded successfully.'
+    });
+  });
+}
 showDialogOperationCard() {
   this.visibleOperationBox = true;
 }
