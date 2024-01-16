@@ -63,7 +63,7 @@ export class ScopeComponent {
     this.procuctCategoryOptions = [];
     this.MasterTableservice.getProductName().subscribe((res: any) => {
       if (res?.message == "success") {
-        this.procuctNamesOptions = res?.data;
+        this.procuctNamesOptions = res?.data?.product;
       } else {
         this.procuctNamesOptions = [];
       }
@@ -113,8 +113,12 @@ getSeverityLabel(status: boolean): string {
   return status ? 'Active' : 'Inactive';
 }
 onPageChange(event: any) {
-  this.currentPage = event.page + 1;
-  this.fetchProductScope();
+  const newPage = event.page + 1;
+
+  if (!isNaN(newPage)) {
+    this.currentPage = newPage;
+    this.fetchProductScope();
+  }
 }
 
 onSortChange(event: any) {
@@ -133,7 +137,7 @@ onSortChange(event: any) {
       if (res?.message === 'success'){
         this.scopeDetails = res.data.scope.filter(scope => scope.status === true); 
         this.totalRecords = res.data.totalElements;
-        console.log('fetch scope details:',   this.scopeDetails);
+        console.log('fetch scope details:',   this.totalRecords);
       } else {
         console.error('Failed to fetch scope details:', res);
       }
