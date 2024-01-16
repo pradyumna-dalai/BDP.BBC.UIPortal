@@ -1,16 +1,12 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { MasterTableService } from './master-table.service';
 
+import { MasterTableService } from './master-table.service';
 
 describe('MasterTableService', () => {
   let service: MasterTableService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports:[HttpClientTestingModule]
-    });
-    
+    TestBed.configureTestingModule({});
     service = TestBed.inject(MasterTableService);
   });
 

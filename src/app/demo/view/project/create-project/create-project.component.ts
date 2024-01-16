@@ -50,7 +50,6 @@ export class CreateProjectComponent implements OnInit {
     ]);
   }
   ngOnInit() {
-
     this.myForm = this.fb.group({
       // Define your form controls here
       companyName: [''],
@@ -59,7 +58,7 @@ export class CreateProjectComponent implements OnInit {
       industryVertical: [''],
       region: [''],
       projectName: ['', Validators.required],
-      projectStage: ['', Validators.required],
+      projectStage: [''],
       projectStatus: [''],
       opportunityManger: [''],
       startDate: [''],
@@ -70,7 +69,6 @@ export class CreateProjectComponent implements OnInit {
 
     });
     //this.getProjectStatus();
-    this.myForm.get('projectStage').value;
     this.getRegion();
     this.getCompany();
     this.getProjectStage();
@@ -178,29 +176,29 @@ export class CreateProjectComponent implements OnInit {
 const body = {
   description: "",
   projectInformation: {
-      customerCode: this.myForm?.get('customerCode').value,
-      projectName: this.myForm?.get('projectName').value,
-      startDate: this.myForm?.get('startDate').value,
-      endDate: this.myForm?.get('endDate').value,
-      designNote: this.myForm?.get('designNotes').value,
+      customerCode: this.myForm.get('customerCode').value,
+      projectName: this.myForm.get('projectName').value,
+      startDate: this.myForm.get('startDate').value,
+      endDate: this.myForm.get('endDate').value,
+      designNote: this.myForm.get('designNotes').value,
       implementationNote: this.myForm.get('impleNotes').value,
       company: {
-          "id": this.myForm?.get('companyName').value,
+          "id": this.myForm.get('companyName').value,
       },
       opportunityName: {
-        "id": this.myForm?.get('opportunityName').value,
+        "id": this.myForm.get('opportunityName').value,
     },
     industryVertical: {
-        "id":this.myForm?.get('industryVertical').value,
+        "id":this.myForm.get('industryVertical').value,
     },
     region: {
-        "id": this.myForm?.get('region').value,
+        "id": this.myForm.get('region').value,
     },
     projectStage: {
-        "id": this.myForm?.get('projectStage').value,
+        "id": this.myForm.get('projectStage').value,
     },
     projectStatus: {
-        "id": this.myForm?.get('projectStatus').value,
+        "id": this.myForm.get('projectStatus').value,
     },
     opportunityManager: opportunityMangers
   }

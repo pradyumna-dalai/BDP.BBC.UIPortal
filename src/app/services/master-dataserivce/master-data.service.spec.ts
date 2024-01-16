@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { FilterService } from './filter.service';
+import { MasterDataService } from './master-data.service';
 
-describe('FilterService', () => {
-  let service: FilterService;
+describe('MasterDataService', () => {
+  let service: MasterDataService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(FilterService);
+    service = TestBed.inject(MasterDataService);
   });
 
   it('should be created', () => {
