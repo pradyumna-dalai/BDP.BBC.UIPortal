@@ -29,27 +29,24 @@ export class MasterDataService {
   editChargecode(body: any){
     return this.http.put<any>(url + settings.AppRoutes.Auth.chargecode, body);
   }
-  
-  deleteLocationDetails(locationId: number){
+   //---------------------Prodcut----------------//
+   addProdcut(body: any){
+    return this.http.post<any>(url + settings.AppRoutes.Auth.product, body);
+  }
+  getAllProdcut(){
+    return this.http.get<any>(url + settings.AppRoutes.Auth.product);
+  }
+  editProduct(body: any){
+    return this.http.put<any>(url + settings.AppRoutes.Auth.product, body);
+  }  deleteLocationDetails(locationId: number){
     const payload = { id: locationId, isDeleted: true };
     return this.http.delete<any>(url + settings.AppRoutes.Auth.deleteLocations,{ body: payload });
   }
 
+   //---------------------Locations----------------//
   addLocations(body: any){
     return this.http.post<any>(url + settings.AppRoutes.Auth.addLocations,body);
   }
-
-  //----------------------------For Scope-------------------------------------//
-
-
-
-
-  
-  
-
-
-
-  
 
   //----------------------------For Scope-------------------------------------//
   addScopeDetails(body: any) {
