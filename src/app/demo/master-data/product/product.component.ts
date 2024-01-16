@@ -22,7 +22,7 @@ export class ProductComponent {
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
     private fb: FormBuilder, private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService) {
     this.breadcrumbService.setItems([
-      { label: 'ProductName' }
+      { label: 'Product Name' }
     ]);
   }
   ngOnInit() {
