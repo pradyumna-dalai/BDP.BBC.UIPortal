@@ -24,7 +24,13 @@
   .custom-date-range-dropdown.active {
     display: block;
   }
+  .success {
+    color: green;
+  }
   
+  .danger {
+    color: red;
+  }
   .custom-date-range-dropdown button[type="button"][label="Cancel"] {
     margin-left: 28px;
     background-color: rgb(199, 196, 196);

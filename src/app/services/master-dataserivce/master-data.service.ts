@@ -15,36 +15,45 @@ export class MasterDataService {
   getAllLocationDetails() {
     return this.http.get<any>(url + settings.AppRoutes.Auth.getallLocations);
   }
+   //---------------------Charge Code----------------//
   addChargecode(body: any){
     return this.http.post<any>(url + settings.AppRoutes.Auth.chargecode, body);
   }
-  getAllChargecode(){
+  getAllChargecode() {
+  
     return this.http.get<any>(url + settings.AppRoutes.Auth.chargecode);
   }
   editChargecode(body: any){
     return this.http.put<any>(url + settings.AppRoutes.Auth.chargecode, body);
   }
-  
-  deleteLocationDetails(locationId: number){
+   //---------------------Prodcut----------------//
+   addProdcut(body: any){
+    return this.http.post<any>(url + settings.AppRoutes.Auth.product, body);
+  }
+  getAllProdcut(){
+    return this.http.get<any>(url + settings.AppRoutes.Auth.product);
+  }
+  editProduct(body: any){
+    return this.http.put<any>(url + settings.AppRoutes.Auth.product, body);
+  }  deleteLocationDetails(locationId: number){
     const payload = { id: locationId, isDeleted: true };
     return this.http.delete<any>(url + settings.AppRoutes.Auth.deleteLocations,{ body: payload });
   }
 
+  //---------------------uom----------------//
+  addUom(body: any){
+    return this.http.post<any>(url + settings.AppRoutes.Auth.uom, body);
+  }
+  getAllUom(){
+    return this.http.get<any>(url + settings.AppRoutes.Auth.uom);
+  }
+  editUom(body: any){
+    return this.http.put<any>(url + settings.AppRoutes.Auth.uom, body);
+  }
+   //---------------------Locations----------------//
   addLocations(body: any){
     return this.http.post<any>(url + settings.AppRoutes.Auth.addLocations,body);
   }
-
-  //----------------------------For Scope-------------------------------------//
-
-
-
-
-  
-  
-
-
-
-  
 
   //----------------------------For Scope-------------------------------------//
   addScopeDetails(body: any) {
