@@ -137,19 +137,29 @@ export class CreateBbComponent {
 
 
 
-onCancelClickSC() {
-  this.showUploaderror = false;
-  this.uploadError = "";
-  this.fileNameSC = "";
-  this.uploadFilesc = null;
+  onCancelClickSC() {
+    this.showUploaderror = false;
+    this.uploadError = "";
+    this.fileNameSC = "";
+    this.uploadFilesc = null;
   
-}
-onCancelClickCC(){
-  this.showUploaderror = false;
-  this.uploadError = "";
-  this.fileNameCC = "";
-  this.uploadFilecc = null;
-}
+    // Add the following line to reset the file input
+    const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = ''; // Clear the file input value
+    }
+  }
+  onCancelClickCC() {
+    this.showUploaderror = false;
+    this.uploadError = "";
+    this.fileNameCC = "";
+    this.uploadFilecc = null;
+    // Reset the file input value
+    const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
+    }
+  }
 
 onUploadSCExcel(event: any) {
   const file:File = event.target.files[0];
@@ -195,6 +205,11 @@ makeScopingCardApiServiceCall()
           summary: 'Success!',
           detail: 'Excel Uploaded successfully.'
         });
+         // Reset the file input value
+        const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
+        if (fileInput) {
+          fileInput.value = '';
+        }
       }
        else {
         console.log('Unexpected response:', res);
@@ -268,6 +283,11 @@ onPopupCancelSCClick(){
   this.uploadError = "";
   this.fileNameSC = "";
   this.uploadFilesc = null;
+  // Add the following line to reset the file input
+  const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
+  if (fileInput) {
+    fileInput.value = ''; // Clear the file input value
+  }
 }
 uploadFilecc: File | null = null;
 onUploadCCExcel(event) 
@@ -321,6 +341,16 @@ makeCommercialCardApiServiceCall() {
           summary: 'Success!',
           detail: 'Excel Uploaded successfully.'
         });
+  //        // Reset the file input value
+  // const fileInput = document.getElementById('fileUploadCC') as HTMLInputElement;
+  // if (fileInput) {
+  //   fileInput.value = ''; // Clear the file input value
+  // }
+  // Reset the file input value
+  const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
+  if (fileInput) {
+    fileInput.value = '';
+  }
       } else {
         console.log('Unexpected response:', res);
       }
@@ -404,6 +434,11 @@ onPopupCancelCClick(){
   this.uploadError = "";
   this.fileNameCC = "";
   this.uploadFilecc = null;
+  // Reset the file input value
+  const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
+  if (fileInput) {
+    fileInput.value = '';
+  }
 }
 downloadSampleSCExcel(event: Event) {
   event.preventDefault();
@@ -599,85 +634,50 @@ showDialogCommercialCard() {
     } else {
       mod = this.selectedMod.map(id => ({ id }))
     }
-    const maxlengthFields = [
-      { field: this.seervice_desc, message: 'Service Description cannot exceed 1000 characters.' },
-      { field: this.customer_requirement, message: 'Customer Requirement cannot exceed 1000 characters.' },
-      { field: this.deliverables, message: 'Deliverables cannot exceed 1000 characters.' },
-      { field: this.stakeholders_audience, message: 'Stakeholders audience cannot exceed 1000 characters.' },
-      { field: this.value_to_psa_bdp, message: 'Value to PSA BDP cannot exceed 1000 characters.' },
-      { field: this.parameters, message: 'Parameters cannot exceed 1000 characters.' },
-      { field: this.configurables, message: 'Configurables cannot exceed 1000 characters.' },
-      { field: this.cvalue_to_psa_bdp, message: 'Value to PSA BDP cannot exceed 1000 characters.' },
-      { field: this.sow, message: 'Sow cannot exceed 1000 characters.' },
-      { field: this.standard_service, message: 'Standard Service cannot exceed 1000 characters.' },
-      { field: this.pre_requisite_info, message: 'Pre requisiteiInfo cannot exceed 1000 characters.' },
-      { field: this.combined_value, message: 'Combined value cannot exceed 1000 characters.' },
-      { field: this.don_s, message: 'Dons value cannot exceed 1000 characters.' },
-      { field: this.do_s, message: 'Dos value cannot exceed 1000 characters.' },
-     
-    ];
-
-    for (const { field, message } of maxlengthFields) {
-      if (field && field.length > 1000) {
-        errorMessages.push(message);
-      }
-    }
-    if (errorMessages.length > 0) {
-      for (const errorMessage of errorMessages) {
-        this.messageService.add({
-          key: 'errorToast',
-          life: 2000,
-          severity: 'error',
-          summary: errorMessage,
-          detail: '',
-        });
-      }
-      return; 
-    }
     this.isloading = true
     const body =
 
     {
       id: this.buildingBlockId,
-      name: this.building_block_name,
+      name: this.building_block_name || '',
       product: {
-        id: this.product_name
+        id: this.product_name || ''
       },
       scope: {
-        id: this.product_scope
+        id: this.product_scope || ''
       },
       category: {
-        id: this.product_category
+        id: this.product_category || ''
       },
       chargeCode: {
-        id: this.charge_code
+        id: this.charge_code || ''
       },
-      modeOfTransport: mod
+      modeOfTransport: mod || []
       ,
       scopingCard: {
-        serviceDescription: this.seervice_desc,
-        customerRequirement: this.customer_requirement,
-        deliverable: this.deliverables,
-        stakeHolder: this.stakeholders_audience,
-        valueToPsaBdp: this.value_to_psa_bdp,
-        parameter: this.parameters,
-        configurable: this.configurables,
+        serviceDescription: this.seervice_desc || '',
+        customerRequirement: this.customer_requirement || '',
+        deliverable: this.deliverables || '',
+        stakeHolder: this.stakeholders_audience || '',
+        valueToPsaBdp: this.value_to_psa_bdp || '',
+        parameter: this.parameters || '',
+        configurable: this.configurables || '',
       },
-      operationsCard: {
-        card: ""
-      },
+      // operationsCard: {
+      //   card: ""
+      // },
       commercialCard: {
-        serviceDescription: this.seervice_desc,
-        customerRequirement: this.customer_requirement,
-        psaBdpValueStatement: this.cvalue_to_psa_bdp,
-        standardService: this.standard_service,
-        sow: this.sow,
-        prerequisiteInfo: this.pre_requisite_info,
-        combinedValue: this.combined_value,
-        dos: this.do_s,
-        donts: this.don_s,
-        configurable: this.cconfigurables
-      }
+        serviceDescription: this.seervice_desc || '',
+        customerRequirement: this.customer_requirement || '',
+        psaBdpValueStatement: this.cvalue_to_psa_bdp || '',
+        standardService: this.standard_service || '',
+        sow: this.sow || '',
+        prerequisiteInfo: this.pre_requisite_info || '',
+        combinedValue: this.combined_value || '',
+        dos: this.do_s || '',
+        donts: this.don_s || '',
+        configurable: this.configurables || ''
+      },
 
     }
     this.CreateBuildingBlockservice.saveEditBuildingBlocks(1, body).subscribe(
@@ -695,13 +695,15 @@ showDialogCommercialCard() {
         }, 1000); 
       },
       (error) => {
-        console.error('Error saving draft:', error);
-
+       // console.error('Error saving draft:', error);
         if (error && error.status === 400) {
           const errorMessage = error.error?.message;
           const data = error.error?.data;
-          console.log('error', errorMessage)
-          console.log('error', data)
+        //  console.log('error', errorMessage)
+        //  console.log('error', data)
+          if (data && data.length > 0) {
+            this.formattedErrors = data.join('\n');
+          }
           if (data && data.includes('Block name exist')) {
             // Handle the case where the block name already exists
             this.messageService.add({
@@ -715,25 +717,19 @@ showDialogCommercialCard() {
               key: 'errorToast',
               severity: 'error',
               summary: 'Error!',
-              detail: 'Fill required field(s).'
+              detail: this.formattedErrors 
             });
           } else {
             this.messageService.add({
               key: 'errorToast',
               severity: 'error',
               summary: 'Error!',
-              detail: 'Failed to save building block draft.'
+              detail: data || 'Failed to save building block Draft.'
+             
             });
           }
-        }
-        else {
-          this.messageService.add({
-            key: 'errorToast',
-            severity: 'error',
-            summary: 'Error!',
-            detail: 'Failed to save building block draft.'
-          });
-        }
+      //    console.log('d',data);
+        } 
       }
     );
 

@@ -1,1 +1,167 @@
-<p>scope works!</p>
+<div class="card">
+    <div class="grid">
+        <div class="col-6">
+            <h5>Product Scope</h5>
+        </div>
+    </div>
+    <p-table #dt2 [value]="scopeDetails" dataKey="id" [rows]="pageSize" [totalRecords]="totalRecords"
+    [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true" responsiveLayout="scroll" scrollHeight="830px"
+    scrollDirection="both" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
+    [tableStyle]="{ 'min-width': '55rem' , 'overflow-x': 'auto' }"
+    (onPage)="onPageChange($event)" (onSort)="onSortChange($event)">
+        <ng-template pTemplate="caption">
+            <div class="row">
+                <div class="col-12" style="display: flex;">
+                    <div class="col-6">
+                        <span class="p-input-icon-right">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="dt2.filterGlobal($event.target.value, 'contains')"
+                                placeholder="Search keyword" />
+                        </span>
+                    </div>
+                    <div class="col-6" style="display: flex;justify-content: end;">
+                        <button type="button" pButton pRipple label="Clear" class="mr-2 mb-2"></button>
+                        <button type="button" pButton pRipple label="Export" class="mr-2 mb-2"></button>
+                        <button type="button" pButton pRipple label="Add Scope" (click)="showCreateScopeDialoge()"
+                            icon="pi pi-plus" class="mr-2 mb-2"></button>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width:10%">Actions</th>
+                <th style="width:15%">Status</th>
+                <th style="width:25%">Product Name</th>
+                <th style="width:25%">Product Scope</th>
+                <th style="width:20%">Description</th>
+                <th style="width:20%">CreatedBy</th>
+                <th style="width:20%">CreatedAt</th>
+                <th style="width:20%">UpdatedBy</th>
+                <th style="width:20%">UpdatedAt</th>
+            </tr>
+            <tr>
+                <th></th>
+                <th></th>
+                <th>
+                    <p-columnFilter type="text" field="product"></p-columnFilter>
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="name"></p-columnFilter>
+                </th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-scope>
+            <tr>
+                <td style="text-align: center;">
+                    <span style="cursor: pointer;"><i class="pi pi-pencil"></i></span>&nbsp;
+                    <!-- <span style="cursor: pointer;"><i class="pi pi-trash"></i></span> -->
+                </td>
+                <td>
+                    <p-tag [value]="getSeverityLabel(scope.status)" [severity]="getSeverity(scope.status)"></p-tag>
+                </td>
+                <td>{{ scope.productName }}</td>
+                <td>{{ scope.name }}</td>
+                <td>{{ scope.description }}</td>
+                <td>{{ scope.createdBy }}</td>
+                <td>{{ scope.createdAt }}</td>
+                <td>{{ scope.updatedBy }}</td>
+                <td>{{ scope.updatedAt }}</td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="5">No customers found.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+
+<p-dialog [(visible)]="displayCreateScopeDialog" [style]="{width: '50vw'}" [draggable]="false" [resizable]="false"
+    closable='true'>
+    <ng-template pTemplate="header">
+        <h5 style="display: contents;">Add New Scope :</h5>&nbsp;
+    </ng-template>
+    <hr>
+    <p>Please complete all required fields to create a new Scope.</p>
+    <br>
+    <div class="tr-divider"></div>
+    <form [formGroup]="ScopeForm">
+        <div class="p-grid p-field">
+            <div class="formgrid grid">
+                <div class="field col-12 md:col-5">
+                    <label>Product Name<span class="required">*</span></label>
+                    <p-dropdown placeholder="Select Product" optionLabel="name" placeholder="Select Product Name"
+                        [options]="procuctNamesOptions" optionValue="id" [filter]="true" filterBy="name"
+                        [style]="{ 'width': '100%' }" formControlName="productid">
+                    </p-dropdown>
+                    <div
+                        *ngIf="ScopeForm.get('productid')?.hasError('required') && ScopeForm.get('productid')?.touched">
+                        Product Name is required.
+                    </div>
+                </div>
+                <div class="field col-12 md:col-4" style="margin-left: 70px;">
+                    <label>Product Scope<span class="required">*</span></label>
+
+                    <input id="productScope" type="text"
+                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+                        formControlName="productScope">
+                    <div
+                        *ngIf="ScopeForm.get('productScope')?.hasError('required') && ScopeForm.get('productScope')?.touched">
+                        Product Scope is required.
+                    </div>
+                </div>
+                <!-- <div class="field col-12 md:col-4">
+                    <label>Product Category<span class="required">*</span></label>
+                    <p-dropdown placeholder="Select Category" optionLabel="name" optionValue="name" [filter]="true"
+                        filterBy="name" [style]="{ 'width': '100%' }">
+                    </p-dropdown>
+                </div> -->
+                <div class="field col-12 md:col-6 ">
+                    <label>Description</label>
+                    <textarea id="description" type="text" rows="4"
+                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+                        formControlName="description"></textarea>
+                </div>
+
+                <div class="field col-12 md:col-6"
+                    style="display: flex; flex-direction: column; align-items: flex-start;margin-top: 10px;">
+                    <label>Status is Active?<span class="required">*</span></label>
+                    <div class="p-field-radiobutton" style="margin-left: 5px; margin-top: 15px;">
+                        <div class="p-radio">
+                            <p-radioButton name="status" value="true" label="Active"
+                                formControlName="status"></p-radioButton>
+                            <p-radioButton name="status" value="false" label="Inactive" formControlName="status"
+                                style="margin-left: 25px;"></p-radioButton>
+                        </div>
+                    </div>
+                    <div *ngIf="ScopeForm.get('status').hasError('required') && ScopeForm.get('status').touched">
+                        Status is required.
+                    </div>
+                </div>
+                <!-- <p-card class="p-field-radiobutton p-mb-0">						
+						<ul>
+							<li class="p-card-label"> Status is Active ? </li>
+							<li class="p-card-value">
+								<p-inputSwitch value="1"  ></p-inputSwitch>
+							</li>
+						</ul>
+					</p-card> -->
+
+            </div>
+        </div>
+    </form>
+    <ng-template pTemplate="footer">
+        <p-button label=" Add " (click)="createProductScope()" [disabled]="!ScopeForm.valid"></p-button>&nbsp;&nbsp;
+        <p-button label="Cancel" (click)="displayCreateScopeDialog = false"></p-button>
+    </ng-template>
+</p-dialog>
+<p-toast></p-toast>
