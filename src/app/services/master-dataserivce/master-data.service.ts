@@ -40,6 +40,16 @@ export class MasterDataService {
     return this.http.delete<any>(url + settings.AppRoutes.Auth.deleteLocations,{ body: payload });
   }
 
+  //---------------------uom----------------//
+  addUom(body: any){
+    return this.http.post<any>(url + settings.AppRoutes.Auth.uom, body);
+  }
+  getAllUom(){
+    return this.http.get<any>(url + settings.AppRoutes.Auth.uom);
+  }
+  editUom(body: any){
+    return this.http.put<any>(url + settings.AppRoutes.Auth.uom, body);
+  }
    //---------------------Locations----------------//
   addLocations(body: any){
     return this.http.post<any>(url + settings.AppRoutes.Auth.addLocations,body);
