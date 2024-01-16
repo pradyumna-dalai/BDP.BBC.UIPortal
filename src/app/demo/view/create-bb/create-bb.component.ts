@@ -522,7 +522,7 @@ showDialogCommercialCard() {
     this.procuctCategoryOptions = [];
     this.MasterTableservice.getProductName().subscribe((res: any) => {
       if (res?.message == "success") {
-        this.procuctNamesOptions = res?.data;
+        this.procuctNamesOptions = res?.data?.product;
       } else {
         this.procuctNamesOptions = [];
       }
@@ -580,6 +580,7 @@ showDialogCommercialCard() {
 
   saveAsDraft() {
     this.buildingBlockId = this.route.snapshot.paramMap.get('id');
+    let errorMessages: string[] = [];
     if (this.product_name == '' || this.product_name == null || this.product_name == undefined) {
       return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Product name is a required field.`, detail: '' });
     }
@@ -596,6 +597,41 @@ showDialogCommercialCard() {
       var mod = []
     } else {
       mod = this.selectedMod.map(id => ({ id }))
+    }
+    const maxlengthFields = [
+      { field: this.seervice_desc, message: 'Service Description cannot exceed 1000 characters.' },
+      { field: this.customer_requirement, message: 'Customer Requirement cannot exceed 1000 characters.' },
+      { field: this.deliverables, message: 'Deliverables cannot exceed 1000 characters.' },
+      { field: this.stakeholders_audience, message: 'Stakeholders audience cannot exceed 1000 characters.' },
+      { field: this.value_to_psa_bdp, message: 'Value to PSA BDP cannot exceed 1000 characters.' },
+      { field: this.parameters, message: 'Parameters cannot exceed 1000 characters.' },
+      { field: this.configurables, message: 'Configurables cannot exceed 1000 characters.' },
+      { field: this.cvalue_to_psa_bdp, message: 'Value to PSA BDP cannot exceed 1000 characters.' },
+      { field: this.sow, message: 'Sow cannot exceed 1000 characters.' },
+      { field: this.standard_service, message: 'Standard Service cannot exceed 1000 characters.' },
+      { field: this.pre_requisite_info, message: 'Pre requisiteiInfo cannot exceed 1000 characters.' },
+      { field: this.combined_value, message: 'Combined value cannot exceed 1000 characters.' },
+      { field: this.don_s, message: 'Dons value cannot exceed 1000 characters.' },
+      { field: this.do_s, message: 'Dos value cannot exceed 1000 characters.' },
+     
+    ];
+
+    for (const { field, message } of maxlengthFields) {
+      if (field && field.length > 993) {
+        errorMessages.push(message);
+      }
+    }
+    if (errorMessages.length > 0) {
+      for (const errorMessage of errorMessages) {
+        this.messageService.add({
+          key: 'errorToast',
+          life: 2500,
+          severity: 'error',
+          summary: errorMessage,
+          detail: '',
+        });
+      }
+      return; 
     }
     this.isloading = true
     const body =
@@ -688,7 +724,8 @@ showDialogCommercialCard() {
               detail: 'Failed to save building block draft.'
             });
           }
-        } else {
+        }
+        else {
           this.messageService.add({
             key: 'errorToast',
             severity: 'error',
@@ -873,132 +910,7 @@ showDialogCommercialCard() {
         } 
       }
     );
-    // if (!this.isEditorContentValid(body.scopingCard.serviceDescription)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid service description. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    //  if (!this.isEditorContentValid(body.scopingCard.customerRequirement)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid Customer Requirement. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    //  if (!this.isEditorContentValid(body.scopingCard.deliverable)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid Deliverable. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    //  if (!this.isEditorContentValid(body.scopingCard.stakeHolder)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid StakeHolder. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    //  if (!this.isEditorContentValid(body.scopingCard.valueToPsaBdp)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid valueToPsaBdp. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    // if (!this.isEditorContentValid(body.scopingCard.parameter)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid Parameter. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    //  if (!this.isEditorContentValid(body.scopingCard.configurable)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid Parameter. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    //  if (!this.isEditorContentValid(body.commercialCard.psaBdpValueStatement)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid PsaBdpValueStatement in Commercial Card. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    //  if (!this.isEditorContentValid(body.commercialCard.standardService)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid Standard Service in Commercial Card. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    // if (!this.isEditorContentValid(body.commercialCard.sow)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid SOW in Commercial Card. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    //  if (!this.isEditorContentValid(body.commercialCard.prerequisiteInfo)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid PrerequisiteInfo in Commercial Card. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    //  if (!this.isEditorContentValid(body.commercialCard.combinedValue)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid CombinedValue in Commercial Card. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    //  if (!this.isEditorContentValid(body.commercialCard.dos)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid Dos in Commercial Card. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    // if (!this.isEditorContentValid(body.commercialCard.donts)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid Donts in Commercial Card. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // };
+ 
   }
 
   isSaveAsDraftDisabled(): boolean {
@@ -1007,7 +919,32 @@ showDialogCommercialCard() {
 
 
 //--------------------operation Card Details----------------//
+downloadSampleOpExcel(event: Event) {
+  event.preventDefault();
 
+  this.createBuildingBlockservice.downloadSampleOPExcel().subscribe((res: any) => {
+    // Assuming the response contains the file content
+    const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+    // Creating an anchor element to trigger the download
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = 'OperationCard.xlsx';
+    document.body.appendChild(link);
+
+    // Triggering the download
+    link.click();
+
+    // Removing the anchor element
+    document.body.removeChild(link);
+    this.messageService.add({
+      key: 'successToast',
+      severity: 'success',
+      summary: 'Success!',
+      detail: 'Sample Excel Downloaded successfully.'
+    });
+  });
+}
 showDialogOperationCard() {
   this.visibleOperationBox = true;
 }

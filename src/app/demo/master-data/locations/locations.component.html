@@ -4,7 +4,8 @@
             <h4>Location</h4>
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
-            <button type="button" pButton pRipple label="Create Location" class="mr-2 mb-2"></button>
+            <button type="button" pButton pRipple label="Create Location" (click)="showCreateLocationDialog()"
+                class="mr-2 mb-2"></button>
         </div>
     </div>
     <!-- <hr class="align"> -->
@@ -44,10 +45,10 @@
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-item>
-            <tr>
+            <tr *ngFor="let item of locationdetails">
                 <td style="text-align: center;">
                     <span style="cursor: pointer;" (click)="confirm('edit')"><i class="pi pi-pencil"></i></span>&nbsp;
-                    <span style="cursor: pointer;" (click)="confirm('delete', item.id)">
+                    <span style="cursor: pointer;" (click)="item.id ? confirmDelete(item.id) : null">
                         <i class="pi pi-trash"></i>
                     </span>
                 </td>
@@ -81,5 +82,77 @@
         </ng-template>
     </p-table>
 </div>
+
+<p-dialog [(visible)]="displayCreateLocationDialog" [style]="{width: '50vw'}" [draggable]="false"
+    [resizable]="false" closable='true'>
+    <ng-template pTemplate="header">
+        <h5 style="display: contents;">Add New Location :</h5>&nbsp;
+    </ng-template>
+    <hr>
+    <i>Please complete all required fields to create a new location.</i>
+  <br>
+    <div class="tr-divider"></div>
+    <form [formGroup]="locationForm" >
+        <div class="p-grid p-field">
+            <div class="formgrid grid">
+                <div class="field col-12 md:col-6">
+                    <label for="name">Locaton Name</label>
+                    <input id="name" type="text"  formControlName="name"
+                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                </div>
+                <div class="field col-12 md:col-6">
+                    <label for="locationCode">Location Code</label>
+                    <input id="locationCode" type="text" formControlName="locationCode"
+                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                </div>
+                <div class="field col-12 md:col-6">
+                    <label for="region">Region</label>
+                    <p-dropdown [options]="regionOptions" formControlName="region" placeholder="Select Region"
+                    optionLabel="name" optionValue="name" [filter]="true" filterBy="name"
+                    [style]="{ 'width': '100%' }">
+        </p-dropdown>
+                </div>
+                <div class="field col-12 md:col-6">
+                    <label for="state">Country</label>
+                    <select id="state"
+                        class="w-full text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round outline-none focus:border-primary"
+                        style="appearance: auto">
+                        <option>Arizona</option>
+                        <option>California</option>
+                        <option>Florida</option>
+                        <option>Ohio</option>
+                        <option>Washington</option>
+                    </select>
+                </div>
+                <div class="field col-12">
+                    <label for="description">Discription</label>
+                    <textarea id="description" type="text" rows="4" formControlName="description"
+                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"></textarea>
+                </div>
+                <div class="field col-12 md:col-3">
+                    <p-card class="p-field-radiobutton p-mb-0">						
+						<ul>
+							<li class="p-card-label"> Status is Active ? </li>
+							<li class="p-card-value">
+								<p-inputSwitch value="1" formControlName="status"  ></p-inputSwitch>
+							</li>
+						</ul>
+					</p-card>
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </form>
+    <ng-template pTemplate="footer">
+        <p-button label=" Add " (click)="addLocationsDetails()"></p-button>&nbsp;&nbsp;
+        <p-button  label="Cancel" (click)="cancelCreateLocationDialog()"></p-button>
+    </ng-template>
+
+
+</p-dialog>
+<p-toast key="successToast" position="top-right"></p-toast>
 <p-confirmDialog [header]="confirmationHeader" icon="pi pi-exclamation-triangle"
     [style]="{ 'width': '550px', 'height': '300px' }"></p-confirmDialog>

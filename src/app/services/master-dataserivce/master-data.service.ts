@@ -12,7 +12,7 @@ export class MasterDataService {
 
   constructor(protected http: HttpClient) { }
 
-  getAllLocationDetails(){
+  getAllLocationDetails() {
     return this.http.get<any>(url + settings.AppRoutes.Auth.getallLocations);
   }
    //---------------------Charge Code----------------//
@@ -29,14 +29,40 @@ export class MasterDataService {
   editChargecode(body: any){
     return this.http.put<any>(url + settings.AppRoutes.Auth.chargecode, body);
   }
-   //---------------------Charge Code----------------//
-   addProdcut(body: any){
-    return this.http.post<any>(url + settings.AppRoutes.Auth.product, body);
+  
+  deleteLocationDetails(locationId: number){
+    const payload = { id: locationId, isDeleted: true };
+    return this.http.delete<any>(url + settings.AppRoutes.Auth.deleteLocations,{ body: payload });
   }
-  getAllProdcut(){
-    return this.http.get<any>(url + settings.AppRoutes.Auth.product);
+
+  addLocations(body: any){
+    return this.http.post<any>(url + settings.AppRoutes.Auth.addLocations,body);
   }
-  editProduct(body: any){
-    return this.http.put<any>(url + settings.AppRoutes.Auth.product, body);
+
+  //----------------------------For Scope-------------------------------------//
+
+
+
+
+  
+  
+
+
+
+  
+
+  //----------------------------For Scope-------------------------------------//
+  addScopeDetails(body: any) {
+    return this.http.post<any>(url + settings.AppRoutes.Auth.addScope, body);
+  }
+
+  getScopeDetails(params: any): Observable<any> {
+    let httpParams = new HttpParams();
+    Object.keys(params).forEach((key) => {
+      if (params[key] !== null && params[key] !== undefined) {
+        httpParams = httpParams.append(key, params[key]);
+      }
+    });
+    return this.http.get<any>(url + settings.AppRoutes.Auth.getscope,{ params: httpParams});
   }
 }

@@ -120,6 +120,7 @@ import { UOMComponent } from './demo/master-data/uom/uom.component';
 
 
 
+
 @NgModule({
     imports: [
         BrowserModule,

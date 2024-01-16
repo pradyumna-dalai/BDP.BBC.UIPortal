@@ -44,6 +44,8 @@ export namespace AppRoutes {
 
         public static readonly downloadSampleCCExcel = "download-file?file=com";
 
+        public static readonly downloadSampleOPExcel = "download-file?file=op";
+
 
 
         //--------------------Project filter--------//
@@ -64,12 +66,22 @@ export namespace AppRoutes {
 
         public static readonly exportProjectsinExcel = "export-project";
 
-        public static readonly searchProject ="project-search"
+        public static readonly searchProject = "project-search"
 
 
         //---------------------master-data----------------//
 
-        public static readonly  getallLocations = "location";
+        public static readonly getallLocations = "location";
+
+
+        public static readonly deleteLocations ="location";
+
+        public static readonly addLocations ="location";
+        //--------------------------Scope ---------------//
+        public static readonly addScope ="scope";
+
+
+        public static readonly getscope = "scope";
 
         public static readonly  chargecode = "charge-code";
 
