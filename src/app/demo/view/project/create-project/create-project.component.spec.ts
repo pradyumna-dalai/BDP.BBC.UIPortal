@@ -149,7 +149,6 @@ fdescribe('CreateProjectComponent', () => {
     expect(impleNotes.valid).withContext('exceeeding max length').toBeFalse()
   });
   
-  // Add more tests as needed for your form validations and functionality
 
 });
 
