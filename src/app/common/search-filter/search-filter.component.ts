@@ -151,8 +151,14 @@ managerId:any;
           "id": this.selectedStatus
       },
       // "projectName": null,
+      "projectStage": {
+        "id": this.selectedStage
+    },
+      "company": {
+        "id": this.selectedProject
+    },
       "opportunityName": {
-          "id": this.oppourtunity_name
+          "id": this.selectedProject
       },
       "opportunityManager": {
           "id": this.opportunity_manager
