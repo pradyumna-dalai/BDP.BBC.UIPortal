@@ -6,6 +6,7 @@ import { AppBreadcrumbService } from 'src/app/app.breadcrumb.service';
 import { MasterDataService } from 'src/app/services/master-dataserivce/master-data.service';
 import { MasterTableService } from 'src/app/services/master-table.service';
 import { MessageService } from 'primeng/api';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-locations',
@@ -23,10 +24,18 @@ export class LocationsComponent {
   displayCreateLocationDialog: boolean = false;
   regionOptions: any[];
   locationForm: FormGroup;
-  totalRecords: any;
   countryOptions: any[];
   editMode: boolean = false;
   selectedLocation: any;
+  // Pagination properties
+  currentPage: number = 1;
+  pageSize: number = 10;
+  sortField: string = ''; // Initial sort field
+  sortOrder: number = 1; // 1 for ascending, -1 for descending
+  totalRecords: any = 10;
+  first: any = 0;
+  rows: any = 10;
+
 
   constructor(private breadcrumbService: AppBreadcrumbService,
     private messageService: MessageService, private fb: FormBuilder,
@@ -41,7 +50,7 @@ export class LocationsComponent {
       name: ['', Validators.required],
       region: ['', Validators.required],
       country: ['', Validators.required],
-    //  countryCode: ['', Validators.required],
+      //  countryCode: ['', Validators.required],
       locationCode: ['', Validators.required],
       description: ['', Validators.required],
       status: ['inactive', Validators.required],
@@ -64,16 +73,16 @@ export class LocationsComponent {
   //--------------------------fetch location-------------------------------//
 
   fetchAllLocationDetails() {
-    // const params = {
-    //   pageNo: this.currentPage - 1,
-    //   pageSize: this.pageSize,
-    //   sortBy: this.sortField,
-    //   sortDir: this.sortOrder === 1 ? 'asc' : 'desc',
-    // };
-    this.masterDataService.getAllLocationDetails().subscribe((res: any) => {
+    const params = {
+      pageNo: isNaN(this.currentPage) ? 0 : this.currentPage - 1,
+      pageSize: isNaN(this.pageSize) ? 10 : this.pageSize,
+      sortBy: this.sortField,
+      sortDir: this.sortOrder
+    };
+    this.masterDataService.getAllLocationDetails(params).subscribe((res: any) => {
       if (res?.message === 'success') {
         this.locationdetails = res.data.location;
-        this.totalRecords = res.data.totalPages;
+        this.totalRecords = res?.data.totalElements;
         console.log('fetch location details:', this.totalRecords);
       } else {
         console.error('Failed to fetch Location details:', res);
@@ -81,6 +90,21 @@ export class LocationsComponent {
     });
   }
 
+  onPageChange(event: any) {
+    this.currentPage = event.page + 1;
+    this.pageSize = event.rows;
+    this.fetchAllLocationDetails();
+  }
+  onSort(event: any) {
+    this.sortField = event.field;
+    this.sortOrder = event.order === 1 ? 1 : -1;
+    this.currentPage = 1; // Reset to the first page when sorting
+    this.fetchAllLocationDetails();
+  }
+
+  clear(table: Table) {
+    table.clear();
+  }
   //---------------------------------end------------------------------------------//
 
   //--------------------------Create Location--------------------------------------//
@@ -117,6 +141,10 @@ export class LocationsComponent {
     this.masterDataService.getAllCountryDetails().subscribe((res: any) => {
       if (res?.message == "success") {
         this.countryOptions = res?.data;
+        // this.countryOptions = res?.data.map((country: any) => ({
+        //   ...country,
+        //   flagClass: `flag-icon flag-icon-${country.iso2.toLowerCase()}`,
+        // }));
       } else {
         this.countryOptions = [];
       }
