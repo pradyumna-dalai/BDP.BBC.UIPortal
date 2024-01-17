@@ -131,8 +131,8 @@ export class ScopeComponent {
   getSeverity(status: boolean): string {
     return status ? 'success' : 'danger';
   }
-  getSeverityLabel(status: boolean): string {
-    return status ? 'Active' : 'Inactive';
+  getSeverityLabel(status: boolean | string): string {
+    return status === true || status === 'active' ? 'Active' : 'Inactive';
   }
   onPageChange(event: any) {
     const newPage = event.page + 1;
