@@ -77,8 +77,14 @@ export class MasterDataService {
     const payload = { id: locationId, isDeleted: true };
     return this.http.delete<any>(url + settings.AppRoutes.Auth.location,{ body: payload });
   }
-  getAllLocationDetails() {
-    return this.http.get<any>(url + settings.AppRoutes.Auth.location);
+  getAllLocationDetails(params: any): Observable<any> {
+    let httpParams = new HttpParams();
+    Object.keys(params).forEach((key) => {
+      if (params[key] !== null && params[key] !== undefined) {
+        httpParams = httpParams.append(key, params[key]);
+      }
+    });
+    return this.http.get<any>(url + settings.AppRoutes.Auth.location,{ params: httpParams});
   }
   //----------------------------For Scope-------------------------------------//
   addScopeDetails(body: any) {
