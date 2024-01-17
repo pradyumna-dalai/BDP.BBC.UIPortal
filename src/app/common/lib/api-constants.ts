@@ -78,16 +78,16 @@ export namespace AppRoutes {
 
         public static readonly addLocations ="location";
         //--------------------------Scope ---------------//
-        public static readonly addScope ="scope";
+        public static readonly scope ="scope";
 
-
-        public static readonly getscope = "scope";
+        public static readonly category ="cateogry";
 
         public static readonly  chargecode = "charge-code";
 
         public static readonly  product = "product";
 
         public static readonly  uom = "uom";
+    
 
 
     }
