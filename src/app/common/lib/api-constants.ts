@@ -80,7 +80,7 @@ export namespace AppRoutes {
         //--------------------------Scope ---------------//
         public static readonly scope ="scope";
 
-        public static readonly category ="cateogry";
+        public static readonly category ="category";
 
         public static readonly  chargecode = "charge-code";
 
