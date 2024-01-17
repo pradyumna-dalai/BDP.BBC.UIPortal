@@ -94,15 +94,13 @@
 </div>
 
 
-<p-dialog [(visible)]="displayCreateScopeDialog" [style]="{width: '50vw'}"  [resizable]="false"
+<p-dialog [(visible)]="displayCreateScopeDialog" [style]="{width: '40vw'}"  [resizable]="false"
     closable='true'   >
     <ng-template pTemplate="header">
         <h5 style="display: contents;">Add New Scope :</h5>&nbsp;
     </ng-template>
     <hr>
-    <p>Please complete all required fields to create a new Scope.</p>
-    <br>
-    <div class="tr-divider"></div>
+    <!-- <div class="tr-divider"></div> -->
     <form [formGroup]="ScopeForm">
         <div class="p-grid p-field">
             <div class="formgrid grid">
@@ -117,7 +115,7 @@
                         Product Name is required.
                     </div>
                 </div>
-                <div class="field col-12 md:col-4" style="margin-left: 70px;">
+                <div class="field col-12 md:col-5" style="margin-left: 70px;">
                     <label>Product Scope<span class="required">*</span></label>
 
                     <input id="productScope" type="text"
@@ -136,7 +134,7 @@
                 </div>
 
                 <div class="field col-12 md:col-6"
-                    style="display: flex; flex-direction: column; align-items: flex-start;margin-top: 10px;">
+                    style="display: flex; flex-direction: column; align-items: flex-start;margin-top: 9px;">
                     <label>Status is Active?<span class="required">*</span></label>
                     <div class="p-field-radiobutton" style="margin-left: 5px; margin-top: 15px;">
                         <div class="p-radio">
