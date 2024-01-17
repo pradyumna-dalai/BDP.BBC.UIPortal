@@ -32,6 +32,7 @@ export class LocationsComponent {
     private messageService: MessageService, private fb: FormBuilder,
     private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService, private masterTableService: MasterTableService) {
     this.breadcrumbService.setItems([
+      { label: 'Master Data Management' },
       { label: 'Location' }
     ]);
 

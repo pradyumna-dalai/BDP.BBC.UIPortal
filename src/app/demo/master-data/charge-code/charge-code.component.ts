@@ -4,6 +4,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { AppBreadcrumbService } from 'src/app/app.breadcrumb.service';
 import { MasterDataService } from 'src/app/services/master-dataserivce/master-data.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { Table } from 'primeng/table';
 
 
 @Component({
@@ -23,14 +24,21 @@ export class ChargeCodeComponent {
   chargeCodedetails: any;
   editMode: boolean = false;
   modeTitle: string = 'Add';
-  //pagination//
-  currentPage: number = 1;
-  pageSize: number = 10;
-  totalPages: number;
+ // Pagination properties
+ currentPage: number = 1;
+ pageSize: number = 10;
+ sortField: string = ''; // Initial sort field
+ sortOrder: number = 1; // 1 for ascending, -1 for descending
+
+  totalRecords: any = 10;
+  first: any = 0;
+  rows: any = 10;
+
 
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,private fb: FormBuilder,
      private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService) {
     this.breadcrumbService.setItems([
+      { label: 'Master Data Management' },
       { label: 'ChargeCode' }
     ]);
   }
@@ -66,35 +74,21 @@ export class ChargeCodeComponent {
   });
     this.editMode= false;
   }
-  //pagination//
-  onPageChange(event) {
-    let newPage: number;
-  
-    // Check if the event object contains information about the new page
-    if (event.page) {
-      newPage = parseInt(event.page, 10);
-    } else if (event.rows) {
-      // If the event object contains 'rows' instead of 'page'
-      newPage = Math.floor(event.first / event.rows);
-      this.pageSize = event.rows;
-    } else {
-      // Handle other scenarios or log a message
-      console.error('Invalid event object:', event);
-      return;
-    }
-  
-    if (!isNaN(newPage)) {
-      this.currentPage = newPage + 1;
-      this.fetchAllChargeCodeDetails();
-    }
-  }
+ 
   fetchAllChargeCodeDetails() {
-    this.masterDataService.getAllChargecode().subscribe((res: any) => {
+    const params = {
+      pageNo: isNaN(this.currentPage) ? 0 : this.currentPage - 1,
+      pageSize: isNaN(this.pageSize) ? 10 : this.pageSize,
+      sortBy: this.sortField,
+      sortDir: this.sortOrder
+    };
+  
+    this.masterDataService.getAllChargecode(params).subscribe((res: any) => {
       if (res?.message === "success") {
         this.chargeCodedetails = res.data.chargeCode.map((item: any) => {
           return {
             id: item.id, 
-            chargeCode_name: item.name,
+            name: item.name,
             description: item.description,
             status: item.status,
             createdBy: item.createdBy,
@@ -104,13 +98,30 @@ export class ChargeCodeComponent {
           };
         });
   
-        this.totalPages = res.data.totalPages;
+        this.totalRecords = res?.data.totalElements;
       } else {
         this.chargeCodedetails = [];
+        this.totalRecords = 0;
       }
     });
   }
-
+  clear(table: Table) {
+    table.clear();
+}
+  onPageChange(event: any) {
+    this.currentPage = event.page + 1;
+    this.pageSize = event.rows;
+    this.fetchAllChargeCodeDetails();
+  }
+  // Handle sorting event
+  onSort(event: any) {
+  
+    this.sortField = event.field;
+    this.sortOrder = (event.order === 1) ? 1 : -1;
+  
+    // Call the method to fetch data with sorting
+    this.fetchAllChargeCodeDetails();
+  }
  
   editChargecode(editId) {
     const selectedItem = this.chargeCodedetails.find(item => item.id === editId);
