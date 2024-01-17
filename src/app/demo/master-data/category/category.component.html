@@ -111,14 +111,12 @@
     </p-table>
 </div>
 
-<p-dialog [(visible)]="displayCreateCategoryDialog" [style]="{width: '50vw'}" [resizable]="false" closable='true'>
+<p-dialog [(visible)]="displayCreateCategoryDialog" [style]="{width: '40vw'}" [resizable]="false" closable='true'>
     <ng-template pTemplate="header">
         <h5 style="display: contents;">Add New Category :</h5>&nbsp;
     </ng-template>
     <hr>
-    <p>Please complete all required fields to create a new Category.</p>
-    <br>
-    <div class="tr-divider"></div>
+    <!-- <div class="tr-divider"></div> -->
     <form [formGroup]="CategoryForm">
         <div class="p-grid p-field">
             <div class="formgrid grid">
@@ -159,7 +157,7 @@
                 </div>
 
                 <div class="field col-12 md:col-6"
-                    style="display: flex; flex-direction: column; align-items: flex-start;margin-top: 10px;">
+                    style="display: flex; flex-direction: column; align-items: flex-start;margin-top: 9px;">
                     <label>Status is Active?<span class="required">*</span></label>
                     <div class="p-field-radiobutton" style="margin-left: 5px;margin-top: 15px;">
                         <div class="p-radio">
