@@ -19,9 +19,14 @@ export class MasterDataService {
   addChargecode(body: any){
     return this.http.post<any>(url + settings.AppRoutes.Auth.chargecode, body);
   }
-  getAllChargecode() {
-  
-    return this.http.get<any>(url + settings.AppRoutes.Auth.chargecode);
+  getAllChargecode(params: any): Observable<any>{
+    let httpParams = new HttpParams();
+    Object.keys(params).forEach((key) => {
+      if (params[key] !== null && params[key] !== undefined) {
+        httpParams = httpParams.append(key, params[key]);
+      }
+    });
+    return this.http.get<any>(url + settings.AppRoutes.Auth.chargecode,{ params: httpParams});
   }
   editChargecode(body: any){
     return this.http.put<any>(url + settings.AppRoutes.Auth.chargecode, body);
@@ -30,8 +35,14 @@ export class MasterDataService {
    addProdcut(body: any){
     return this.http.post<any>(url + settings.AppRoutes.Auth.product, body);
   }
-  getAllProdcut(){
-    return this.http.get<any>(url + settings.AppRoutes.Auth.product);
+  getAllProdcut(params: any): Observable<any>{
+    let httpParams = new HttpParams();
+    Object.keys(params).forEach((key) => {
+      if (params[key] !== null && params[key] !== undefined) {
+        httpParams = httpParams.append(key, params[key]);
+      }
+    });
+    return this.http.get<any>(url + settings.AppRoutes.Auth.product,{ params: httpParams});
   }
   editProduct(body: any){
     return this.http.put<any>(url + settings.AppRoutes.Auth.product, body);
@@ -44,8 +55,18 @@ export class MasterDataService {
   addUom(body: any){
     return this.http.post<any>(url + settings.AppRoutes.Auth.uom, body);
   }
-  getAllUom(){
-    return this.http.get<any>(url + settings.AppRoutes.Auth.uom);
+  getAllUom(params: any): Observable<any> {
+    // Convert params to HttpParams
+    let queryParams = new HttpParams();
+    if (params) {
+      Object.keys(params).forEach((key) => {
+        queryParams = queryParams.append(key, params[key]);
+      });
+    }
+
+    // Append params to the URL
+    const apiUrl = url + settings.AppRoutes.Auth.uom;
+    return this.http.get<any>(apiUrl, { params: queryParams });
   }
   editUom(body: any){
     return this.http.put<any>(url + settings.AppRoutes.Auth.uom, body);

@@ -4,6 +4,8 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { AppBreadcrumbService } from 'src/app/app.breadcrumb.service';
 import { MasterDataService } from 'src/app/services/master-dataserivce/master-data.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { debounceTime } from 'rxjs/operators';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-product',
@@ -19,9 +21,20 @@ export class ProductComponent {
   editMode: boolean = false;
   modeTitle: string = 'Add';
 
+   // Pagination properties
+   currentPage: number = 1;
+   pageSize: number = 10;
+   sortField: string = ''; // Initial sort field
+   sortOrder: number = 1; // 1 for ascending, -1 for descending
+ 
+    totalRecords: any = 10;
+    first: any = 0;
+    rows: any = 10;
+
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
     private fb: FormBuilder, private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService) {
     this.breadcrumbService.setItems([
+      { label: 'Master Data Management' },
       { label: 'Product Name' }
     ]);
   }
@@ -59,12 +72,19 @@ export class ProductComponent {
   }
  
   fetchAllProdcutDetails() {
-    this.masterDataService.getAllProdcut().subscribe((res: any) => {
+   
+    const params = {
+      pageNo: isNaN(this.currentPage) ? 0 : this.currentPage - 1,
+      pageSize: isNaN(this.pageSize) ? 10 : this.pageSize,
+      sortBy: this.sortField,
+      sortDir: this.sortOrder
+  };
+    this.masterDataService.getAllProdcut(params).subscribe((res: any) => {
       if (res?.message == "success") {
         this.productdetails = res.data.product.map((item: any) => {
           return {
             id: item.id, 
-            productName: item.name,
+            name: item.name,
             description: item.description,
             status: item.status,
 
@@ -75,11 +95,26 @@ export class ProductComponent {
 
           };
         });
-       // console.log("djdsf",this.locationdetails);
+        this.totalRecords = res?.data.totalElements;
       } else {
         this.productdetails = [];
+        this.totalRecords = 0;
       }
     });
+  }
+  clear(table: Table) {
+    table.clear();
+}
+  onPageChange(event: any) {
+    this.currentPage = event.page + 1;
+    this.pageSize = event.rows;
+    this.fetchAllProdcutDetails();
+  }
+  onSort(event: any) {
+    this.sortField = event.field;
+    this.sortOrder = event.order === 1 ? 1 : -1;
+    this.currentPage = 1; // Reset to the first page when sorting
+    this.fetchAllProdcutDetails();
   }
   editProduct(editId) {
     
