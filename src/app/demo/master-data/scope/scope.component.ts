@@ -33,6 +33,7 @@ export class ScopeComponent {
     private confirmationService: ConfirmationService, private router: Router, public MasterTableservice: MasterTableService,
     private fb: FormBuilder, private masterDataService: MasterDataService) {
     this.breadcrumbService.setItems([
+      { label: 'Master Data Management' },
       { label: 'Scope' }
     ]);
     this.createForm();

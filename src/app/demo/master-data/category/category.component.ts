@@ -31,6 +31,7 @@ export class CategoryComponent {
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService, public MasterTableservice: MasterTableService,
     private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService, private fb: FormBuilder,) {
     this.breadcrumbService.setItems([
+      { label: 'Master Data Management' },
       { label: 'Category' }
     ]);
 
