@@ -9,7 +9,7 @@
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
             <button type="button" pButton pRipple label="Clear" (click)="clear(dt2)" class="mr-2 mb-2"></button>
-            <button type="button" pButton pRipple label="Export" class="mr-2 mb-2"></button>
+            <button type="button" pButton pRipple label="Export" class="mr-2 mb-2" pTooltip="Export in Excel File" tooltipPosition="top"></button>
             <button type="button" pButton pRipple label="Add Category" (click)="showCreateCategoryDialog()"
                 icon="pi pi-plus" class="mr-2 mb-2"></button>
         </div>
@@ -51,7 +51,7 @@
                         <div class="icon-container">
                             <p-sortIcon field="scope.product.name" class="sort-icon"></p-sortIcon>
                             <p-columnFilter type="text" display="menu" field="scope.product.name"
-                                class="column-filter"></p-columnFilter>
+                                class="column-filter" pTooltip="Filter" tooltipPosition="right"></p-columnFilter>
                         </div>
                     </div>
                 </th>
@@ -63,7 +63,7 @@
                         <div class="icon-container">
                             <p-sortIcon field="scope.name" class="sort-icon"></p-sortIcon>
                             <p-columnFilter type="text" display="menu" field="scope.name"
-                                class="column-filter"></p-columnFilter>
+                                class="column-filter" pTooltip="Filter" tooltipPosition="right"></p-columnFilter>
                         </div>
                     </div>
                 </th>
@@ -74,7 +74,7 @@
                         <div class="icon-container">
                             <p-sortIcon field="name" class="sort-icon"></p-sortIcon>
                             <p-columnFilter type="text" display="menu" field="name"
-                                class="column-filter"></p-columnFilter>
+                                class="column-filter" pTooltip="Filter" tooltipPosition="right"></p-columnFilter>
                         </div>
                     </div>
                 </th>
@@ -149,7 +149,7 @@
 
 </div>
 
-<p-dialog [(visible)]="displayCreateCategoryDialog" [style]="{width: '40vw'}" [resizable]="false" closable='true'>
+<p-dialog [(visible)]="displayCreateCategoryDialog" [style]="{width: '40vw'}"  [modal]="true" [resizable]="false" closable='true'>
     <ng-template pTemplate="header">
         <h5 style="display: contents;">{{ editMode ? 'Edit Category :' : 'Add New Category :' }}</h5>&nbsp;
     </ng-template>

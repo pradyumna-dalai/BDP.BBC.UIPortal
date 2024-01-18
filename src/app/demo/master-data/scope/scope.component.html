@@ -9,7 +9,7 @@
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
             <button type="button" pButton pRipple label="Clear" (click)="clear(dt2)" class="mr-2 mb-2"></button>
-            <button type="button" pButton pRipple label="Export" class="mr-2 mb-2"></button>
+            <button type="button" pButton pRipple label="Export" class="mr-2 mb-2" pTooltip="Export in Excel File" tooltipPosition="top"></button>
             <button type="button" pButton pRipple label="Add Scope" (click)="showCreateScopeDialoge()"
                 icon="pi pi-plus" class="mr-2 mb-2"></button>
         </div>
@@ -51,7 +51,7 @@
                         <span class="header-text">Product Name</span>
                         <div class="icon-container">
                             <p-sortIcon field="product.name" class="sort-icon"></p-sortIcon>
-                            <p-columnFilter type="text" display="menu" field="product.name"
+                            <p-columnFilter type="text" display="menu" field="product.name" pTooltip="Filter" tooltipPosition="right"
                                 class="column-filter"></p-columnFilter>
                         </div>
                     </div>
@@ -63,7 +63,7 @@
                         <span class="header-text">Product Scope</span>
                         <div class="icon-container">
                             <p-sortIcon field="name" class="sort-icon"></p-sortIcon>
-                            <p-columnFilter type="text" display="menu" field="name"
+                            <p-columnFilter type="text" display="menu" field="name" pTooltip="Filter" tooltipPosition="right"
                                 class="column-filter"></p-columnFilter>
                         </div>
                     </div>
@@ -127,7 +127,7 @@
 </div>
 
 
-<p-dialog [(visible)]="displayCreateScopeDialog" [style]="{width: '40vw'}"  [resizable]="false"
+<p-dialog [(visible)]="displayCreateScopeDialog" [style]="{width: '40vw'}"  [resizable]="false"  [modal]="true" 
     closable='true'   >
     <ng-template pTemplate="header">
         <h5 style="display: contents;">{{ editMode ? 'Edit Scope :' : 'Add New Scope :' }}</h5>
@@ -168,7 +168,7 @@
                 </div>
 
                 <div class="field col-12 md:col-6"
-                    style="display: flex; flex-direction: column; align-items: flex-start;margin-top: 9px;">
+                    style="display: flex; flex-direction: column; align-items: flex-start;margin-top: 4px;">
                     <label>Status is Active?<span class="required">*</span></label>
                     <div class="p-field-radiobutton" style="margin-left: 5px; margin-top: 15px;">
                         <div class="p-radio">
