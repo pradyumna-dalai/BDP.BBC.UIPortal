@@ -3,156 +3,196 @@
         <div class="col-6">
             <h4>Location</h4>
         </div>
-        <div class="col-6" style="display: flex;justify-content: flex-end;">
-            <button type="button" pButton pRipple label="Create Location" (click)="showCreateLocationDialog()"
-                class="mr-2 mb-2"></button>
-        </div>
     </div>
-    <!-- <hr class="align"> -->
-    <p-table #dt1 [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [value]="locationdetails"
-        selectionMode="single" dataKey="id" styleClass="p-datatable-gridlines" responsiveLayout="scroll" [rows]="10"
-        [paginator]="true" scrollHeight="530px" scrollDirection="both" [resizableColumns]="true">
+    <p-table #dt2 [value]="locationdetails" dataKey="id" responsiveLayout="scroll" scrollHeight="530px"
+        scrollDirection="both"
+        [globalFilterFields]="['name', 'product.name', 'description', 'status','createdBy','updatedBy','updatedDate','createdDate']"
+        selectionMode="single" styleClass="p-datatable-gridlines" [resizableColumns]="true">
+        <ng-template pTemplate="caption">
+            <div class="row">
+                <div class="col-12" style="display: flex;">
+                    <div class="col-6">
+                        <span class="p-input-icon-right">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="dt2.filterGlobal($event.target.value, 'contains')"
+                                placeholder="Search keyword" />
+                        </span>
+                    </div>
+                    <div class="col-6" style="display: flex;justify-content: end;">
+                        <button type="button" pButton pRipple label="Clear" (click)="clear(dt2)"
+                            class="mr-2 mb-2"></button>
+                        <button type="button" pButton pRipple label="Export" class="mr-2 mb-2"></button>
+                        <button type="button" pButton pRipple label="Add Location" (click)="showCreateLocationDialog()"
+                            icon="pi pi-plus" class="mr-2 mb-2"></button>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+
+
+
         <ng-template pTemplate="header">
             <tr>
                 <th style="text-align: center;width: 50px" [frozen]="true" class="sticky-header">Actions</th>
-                <th style="text-align: center; width: 200px" pSortableColumn="loc_name" [frozen]="true"
-                    class="sticky-header">
-                    Location Name<p-sortIcon field="loc_name"></p-sortIcon>
-                </th>
-                <th style="text-align: center; width: 200px" pSortableColumn="region" [frozen]="true"
-                    class="sticky-header">
-                    Region<p-sortIcon field="region"></p-sortIcon>
-                </th>
-                <th style="text-align: center; width: 200px" pSortableColumn="country" [frozen]="true"
-                    class="sticky-header">
-                    Country<p-sortIcon field="country"></p-sortIcon>
-                </th>
-                <th style="text-align: center; width: 200px" pSortableColumn="country_code" [frozen]="true"
-                    class="sticky-header">Country Code<p-sortIcon field="country_code"></p-sortIcon>
-                </th>
-                <th style="text-align: center; width: 200px" pSortableColumn="description" [frozen]="true"
-                    class="sticky-header">
-                    Description<p-sortIcon field="description"></p-sortIcon>
-                </th>
-                <th style="text-align: center; width: 200px" pSortableColumn="location_code" [frozen]="true"
-                    class="sticky-header">Location Code<p-sortIcon field="location_code"></p-sortIcon>
-                </th>
                 <th style="text-align: center; width: 200px" pSortableColumn="status" [frozen]="true"
-                    class="sticky-header">Status<p-sortIcon field="status"></p-sortIcon>
-                </th>
-
+                    class="sticky-header">Status<p-sortIcon field="status"></p-sortIcon></th>
+                <th style="text-align: center; width: 200px" pSortableColumn="region" [frozen]="true"
+                    class="sticky-header">Region<p-sortIcon field="region"></p-sortIcon></th>
+                <th style="text-align: center; width: 200px" pSortableColumn="country" [frozen]="true"
+                    class="sticky-header">Country<p-sortIcon field="country"></p-sortIcon></th>
+                <th style="text-align: center; width: 200px" pSortableColumn="name" [frozen]="true"
+                    class="sticky-header">Location Name<p-sortIcon field="name"></p-sortIcon></th>
+                <th style="text-align: center; width: 200px" pSortableColumn="locationCode" [frozen]="true"
+                    class="sticky-header">Location Code<p-sortIcon field="locationCode"></p-sortIcon></th>
+                <th style="text-align: center; width: 200px" pSortableColumn="description" [frozen]="true"
+                    class="sticky-header">Description</th>
+                <th style="text-align: center; width: 200px" pSortableColumn="createdBy" [frozen]="true"
+                    class="sticky-header">Created By<p-sortIcon field="createdBy"></p-sortIcon></th>
+                <th style="text-align: center; width: 200px" pSortableColumn="createdDate" [frozen]="true"
+                    class="sticky-header">Created At<p-sortIcon field="createdDate"></p-sortIcon></th>
+                <th style="text-align: center; width: 200px" pSortableColumn="updatedBy" [frozen]="true"
+                    class="sticky-header">Updated By<p-sortIcon field="updatedBy"></p-sortIcon></th>
+                <th style="text-align: center; width: 200px" pSortableColumn="updatedAt" [frozen]="true"
+                    class="sticky-header">Updated At<p-sortIcon field="updatedAt"></p-sortIcon></th>
             </tr>
+            <tr>
+                <th></th>
+                <th></th>
+                <th>
+                    <p-columnFilter type="text" field="product.name"></p-columnFilter>
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="name"></p-columnFilter>
+                </th>
+                <th>
+                    <p-columnFilter type="text" field="name"></p-columnFilter>
+                </th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+
         </ng-template>
         <ng-template pTemplate="body" let-item>
-            <tr *ngFor="let item of locationdetails">
-                <td style="text-align: center;">
-                    <span style="cursor: pointer;" (click)="confirm('edit')"><i class="pi pi-pencil"></i></span>&nbsp;
-                    <span style="cursor: pointer;" (click)="item.id ? confirmDelete(item.id) : null">
-                        <i class="pi pi-trash"></i>
-                    </span>
+            <tr>
+                <td style="text-align: center; word-wrap: break-word;">
+                    <span style="cursor: pointer;" (click)="editLocation(scope)"><i
+                            class="pi pi-pencil"></i></span>&nbsp;
                 </td>
                 <td style="text-align: center; word-wrap: break-word;">
-                    <span>{{item.loc_name}}</span>
+                    <p-tag [value]="getSeverityLabel(item.status)" [severity]="getSeverity(item.status)"></p-tag>
                 </td>
-                <td style="text-align: center; word-wrap: break-word;">
-                    <span>{{item.region}}</span>
-                </td>
-                <td style="text-align: center; word-wrap: break-word;">
-                    <span>{{item.country}}</span>
-                </td>
-                <td style="text-align: center; word-wrap: break-word;">
-                    <span>{{item.country_code}}</span>
-                </td>
-                <td style="text-align: center; word-wrap: break-word;">
-                    <span>{{item.description}}</span>
-                </td>
-                <td style="text-align: center; word-wrap: break-word;">
-                    <span>{{item.location_code}}</span>
-                </td>
-                <td style="text-align: center; word-wrap: break-word;">
-                    <span>{{item.status}}</span>
-                </td>
+                <td style="text-align: center; word-wrap: break-word;">{{ item.region }}</td>
+                <td style="text-align: center; word-wrap: break-word;">{{ item.country }}</td>
+                <td style="text-align: center; word-wrap: break-word;">{{ item.name }}</td>
+                <td style="text-align: center; word-wrap: break-word;">{{ item.locationCode }}</td>
+                <td style="text-align: center; word-wrap: break-word;">{{ item.description }}</td>
+                <td style="text-align: center; word-wrap: break-word;">{{ item.createdBy }}</td>
+                <td style="text-align: center; word-wrap: break-word;">{{ item.createdDate | date:'dd MMM yyyy' }}</td>
+                <td style="text-align: center; word-wrap: break-word;">{{ item.updatedBy }}</td>
+                <td style="text-align: center; word-wrap: break-word;">{{ item.updatedDate | date:'dd MMM yyyy' }}</td>
+
             </tr>
         </ng-template>
         <ng-template pTemplate="emptymessage">
             <tr>
-                <td style="text-align: center;" colspan="18">No Data found.</td>
+                <td colspan="11">No customers found.</td>
             </tr>
         </ng-template>
     </p-table>
+    <p-paginator (onPageChange)="onPageChange($event)" [rows]="10" [totalRecords]="totalRecords"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[10,25,50]" (onSort)="onSort($event)"></p-paginator>
+
 </div>
 
-<p-dialog [(visible)]="displayCreateLocationDialog" [style]="{width: '50vw'}" [draggable]="false"
-    [resizable]="false" closable='true'>
+<p-dialog [(visible)]="displayCreateLocationDialog" [style]="{width: '40vw'}" [resizable]="false" closable='true'>
     <ng-template pTemplate="header">
         <h5 style="display: contents;">Add New Location :</h5>&nbsp;
     </ng-template>
     <hr>
-    <i>Please complete all required fields to create a new location.</i>
-  <br>
-    <div class="tr-divider"></div>
-    <form [formGroup]="locationForm" >
+    <!-- <div class="tr-divider"></div> -->
+    <form [formGroup]="locationForm">
         <div class="p-grid p-field">
             <div class="formgrid grid">
-                <div class="field col-12 md:col-6">
-                    <label for="name">Locaton Name</label>
-                    <input id="name" type="text"  formControlName="name"
+                <div class="field col-12 md:col-5">
+                    <label>Locaton Name<span class="required">*</span></label>
+                    <input id="name" type="text" formControlName="name"
                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                    <div *ngIf="locationForm.get('name')?.hasError('required') && locationForm.get('name')?.touched">
+                        Location name is required.
+                    </div>
                 </div>
-                <div class="field col-12 md:col-6">
-                    <label for="locationCode">Location Code</label>
+                <div class="field col-12 md:col-5" style="margin-left: 70px;">
+                    <label>Location Code<span class="required">*</span></label>
                     <input id="locationCode" type="text" formControlName="locationCode"
                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+
+                    <div
+                        *ngIf="locationForm.get('locationCode')?.hasError('required') && locationForm.get('locationCode')?.touched">
+                        Location Code is required.
+                    </div>
                 </div>
-                <div class="field col-12 md:col-6">
-                    <label for="region">Region</label>
-                    <p-dropdown [options]="regionOptions" formControlName="region" placeholder="Select Region"
-                    optionLabel="name" optionValue="name" [filter]="true" filterBy="name"
-                    [style]="{ 'width': '100%' }">
-        </p-dropdown>
+                <div class="field col-12 md:col-5">
+                    <label>Region<span class="required">*</span></label>
+                    <p-dropdown [options]="regionOptions" appendTo="body" formControlName="region"
+                        placeholder="Select Region" optionLabel="name" optionValue="name" [filter]="true"
+                        filterBy="name" [style]="{ 'width': '100%' }">
+                    </p-dropdown>
+                    <div
+                        *ngIf="locationForm.get('region')?.hasError('required') && locationForm.get('region')?.touched">
+                        Region is required.
+                    </div>
                 </div>
-                <div class="field col-12 md:col-6">
-                    <label for="state">Country</label>
-                    <select id="state"
-                        class="w-full text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round outline-none focus:border-primary"
-                        style="appearance: auto">
-                        <option>Arizona</option>
-                        <option>California</option>
-                        <option>Florida</option>
-                        <option>Ohio</option>
-                        <option>Washington</option>
-                    </select>
+                <div class="field col-12 md:col-5" style="margin-left: 70px;">
+                    <label>Country<span class="required">*</span></label>
+                    <p-dropdown [options]="countryOptions" appendTo="body" formControlName="country"
+                        placeholder="Select Country" optionLabel="name" optionValue="name" [filter]="true"
+                        filterBy="name" [style]="{ 'width': '100%' }">
+                        <!-- <ng-template let-item pTemplate="option">
+                            <i [class]="item.flagClass"></i>
+                            {{ item.name }}
+                        </ng-template> -->
+                    </p-dropdown>
+                    <div
+                        *ngIf="locationForm.get('country')?.hasError('required') && locationForm.get('country')?.touched">
+                        Country is required.
+                    </div>
                 </div>
-                <div class="field col-12">
-                    <label for="description">Discription</label>
-                    <textarea id="description" type="text" rows="4" formControlName="description"
-                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"></textarea>
+
+                <div class="field col-12 md:col-5 ">
+                    <label>Description</label>
+                    <textarea id="description" type="text" rows="4"
+                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+                        formControlName="description"></textarea>
                 </div>
-                <div class="field col-12 md:col-3">
-                    <p-card class="p-field-radiobutton p-mb-0">						
-						<ul>
-							<li class="p-card-label"> Status is Active ? </li>
-							<li class="p-card-value">
-								<p-inputSwitch value="1" formControlName="status"  ></p-inputSwitch>
-							</li>
-						</ul>
-					</p-card>
+                <div class="field col-12 md:col-5"
+                    style="display: flex; flex-direction: column; align-items: flex-start;margin-top: 9.5px;margin-left: 70px;">
+                    <label>Status is Active?<span class="required">*</span></label>
+                    <div class="p-field-radiobutton" style="margin-left: 5px; margin-top: 15px;">
+                        <div class="p-radio">
+                            <p-radioButton name="status" value="active" label="Active"
+                                formControlName="status"></p-radioButton>
+                            <p-radioButton name="status" value="inactive" label="Inactive" formControlName="status"
+                                style="margin-left: 25px;"></p-radioButton>
+                        </div>
+                    </div>
+                    <div *ngIf="locationForm.get('status').hasError('required') && locationForm.get('status').touched">
+                        Status is required.
+                    </div>
                 </div>
+                <br>
             </div>
-
-
-
-
         </div>
     </form>
+    <!-- <hr> -->
     <ng-template pTemplate="footer">
-        <p-button label=" Add " (click)="addLocationsDetails()"></p-button>&nbsp;&nbsp;
-        <p-button  label="Cancel" (click)="cancelCreateLocationDialog()"></p-button>
+        <p-button label="{{ editMode ? 'Update' : 'Add' }}" (click)="addLocationsDetails()"
+            [disabled]="!locationForm.valid"></p-button>&nbsp;&nbsp;
+        <p-button label="Cancel" (click)="cancelCreateLocationDialog()"></p-button>
     </ng-template>
-
-
 </p-dialog>
-<p-toast key="successToast" position="top-right"></p-toast>
-<p-confirmDialog [header]="confirmationHeader" icon="pi pi-exclamation-triangle"
-    [style]="{ 'width': '550px', 'height': '300px' }"></p-confirmDialog>
+<p-toast></p-toast>

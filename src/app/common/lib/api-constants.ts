@@ -71,16 +71,14 @@ export namespace AppRoutes {
 
         //---------------------master-data----------------//
 
-        public static readonly getallLocations = "location";
+        public static readonly location = "location";
 
+        public static readonly country = "country";
 
-        public static readonly deleteLocations ="location";
-
-        public static readonly addLocations ="location";
         //--------------------------Scope ---------------//
         public static readonly scope ="scope";
 
-        public static readonly category ="cateogry";
+        public static readonly category ="category";
 
         public static readonly  chargecode = "charge-code";
 
