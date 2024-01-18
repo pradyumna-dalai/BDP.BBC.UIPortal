@@ -221,7 +221,7 @@ export class LocationsComponent {
         name: this.selectedLocation.name,
         locationCode: this.selectedLocation.locationCode,
         region: this.selectedLocation.region.name,
-        country: this.selectedLocation.country,
+        country: this.selectedLocation.country.id,
         description: this.selectedLocation.description,
         status: this.selectedLocation.status ? 'active' : 'inactive',
       });
