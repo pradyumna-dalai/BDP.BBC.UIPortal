@@ -1,14 +1,24 @@
 <div class="card">
     <div class="grid">
         <div class="col-6">
-            <h5>Product Category</h5>
+            <span class="p-input-icon-right">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dt2.filterGlobal($event.target.value, 'contains')"
+                    placeholder="Search Keyword" />
+            </span>
+        </div>
+        <div class="col-6" style="display: flex;justify-content: flex-end;">
+            <button type="button" pButton pRipple label="Clear" (click)="clear(dt2)" class="mr-2 mb-2"></button>
+            <button type="button" pButton pRipple label="Export" class="mr-2 mb-2"></button>
+            <button type="button" pButton pRipple label="Add Category" (click)="showCreateCategoryDialog()"
+                icon="pi pi-plus" class="mr-2 mb-2"></button>
         </div>
     </div>
     <p-table #dt2 [value]="categoryDetails" dataKey="id" responsiveLayout="scroll" scrollHeight="530px"
         scrollDirection="both"
         [globalFilterFields]="['name', 'scope.product.name','scope.name', 'description', 'status','createdBy','updatedBy','updatedDate','createdDate']"
-        selectionMode="single" styleClass="p-datatable-gridlines" [resizableColumns]="true" >
-        <ng-template pTemplate="caption">
+        selectionMode="single" styleClass="p-datatable-gridlines" [resizableColumns]="true">
+        <!-- <ng-template pTemplate="caption">
             <div class="row">
                 <div class="col-12" style="display: flex;">
                     <div class="col-6">
@@ -26,7 +36,7 @@
                     </div>
                 </div>
             </div>
-        </ng-template>
+        </ng-template> -->
 
         <ng-template pTemplate="header">
             <tr>
@@ -34,14 +44,40 @@
                 <th style="text-align: center; width: 200px" pSortableColumn="status" [frozen]="true"
                     class="sticky-header">Status<p-sortIcon field="status"></p-sortIcon></th>
 
-                <th style="text-align: center; width: 200px" pSortableColumn="scope.product.name" [frozen]="true"
-                    class="sticky-header">Product Name<p-sortIcon field="scope.product.name"></p-sortIcon></th>
+                <th style="text-align: center; width: 200px;" pSortableColumn="scope.product.name" [frozen]="true"
+                    class="sticky-header">
+                    <div class="header-container">
+                        <span class="header-text">Product Name</span>
+                        <div class="icon-container">
+                            <p-sortIcon field="scope.product.name" class="sort-icon"></p-sortIcon>
+                            <p-columnFilter type="text" display="menu" field="scope.product.name"
+                                class="column-filter"></p-columnFilter>
+                        </div>
+                    </div>
+                </th>
 
                 <th style="text-align: center; width: 200px" pSortableColumn="scope.name" [frozen]="true"
-                    class="sticky-header">Product Scope<p-sortIcon field="scope.name"></p-sortIcon></th>
-
+                    class="sticky-header">
+                    <div class="header-container">
+                        <span class="header-text"> Product Scope</span>
+                        <div class="icon-container">
+                            <p-sortIcon field="scope.name" class="sort-icon"></p-sortIcon>
+                            <p-columnFilter type="text" display="menu" field="scope.name"
+                                class="column-filter"></p-columnFilter>
+                        </div>
+                    </div>
+                </th>
                 <th style="text-align: center; width: 200px" pSortableColumn="name" [frozen]="true"
-                    class="sticky-header">Product Category<p-sortIcon field="name"></p-sortIcon></th>
+                    class="sticky-header">
+                    <div class="header-container">
+                        <span class="header-text"> Product Category</span>
+                        <div class="icon-container">
+                            <p-sortIcon field="name" class="sort-icon"></p-sortIcon>
+                            <p-columnFilter type="text" display="menu" field="name"
+                                class="column-filter"></p-columnFilter>
+                        </div>
+                    </div>
+                </th>
 
                 <th style="text-align: center; width: 200px" pSortableColumn="description" [frozen]="true"
                     class="sticky-header">Description</th>
@@ -58,7 +94,7 @@
                 <th style="text-align: center; width: 200px" pSortableColumn="updatedAt" [frozen]="true"
                     class="sticky-header">Updated At<p-sortIcon field="updatedAt"></p-sortIcon></th>
             </tr>
-            <tr>
+            <!-- <tr>
                 <th></th>
                 <th></th>
                 <th>
@@ -75,7 +111,7 @@
                 <th></th>
                 <th></th>
                 <th></th>
-            </tr>
+            </tr> -->
         </ng-template>
         <ng-template pTemplate="body" let-category>
             <tr>
@@ -103,7 +139,7 @@
         </ng-template>
         <ng-template pTemplate="emptymessage">
             <tr>
-                <td colspan="10">No customers found.</td>
+                <td colspan="10">No Category found.</td>
             </tr>
         </ng-template>
     </p-table>
@@ -115,9 +151,10 @@
 
 <p-dialog [(visible)]="displayCreateCategoryDialog" [style]="{width: '40vw'}" [resizable]="false" closable='true'>
     <ng-template pTemplate="header">
-        <h5 style="display: contents;">Add New Category :</h5>&nbsp;
+        <h5 style="display: contents;">{{ editMode ? 'Edit Category :' : 'Add New Category :' }}</h5>&nbsp;
     </ng-template>
-    <hr>
+    <hr class="alignhr">
+    <!-- <hr> -->
     <!-- <div class="tr-divider"></div> -->
     <form [formGroup]="CategoryForm">
         <div class="p-grid p-field">
@@ -143,7 +180,7 @@
                 <div class="field col-12 md:col-4">
                     <label>Product Category<span class="required">*</span></label>
 
-                    <input id="productCategory" type="text"
+                    <input id="productCategory" type="text" placeholder="Product Category"
                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
                         formControlName="productCategory">
                     <div
@@ -154,14 +191,15 @@
                 <div class="field col-12 md:col-6 ">
 
                     <label>Description</label>
-                    <textarea id="description" type="text" rows="4" formControlName="description"
+                    <textarea id="description" type="text" rows="2" formControlName="description"
+                        placeholder="Description"
                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"></textarea>
                 </div>
 
                 <div class="field col-12 md:col-6"
-                    style="display: flex; flex-direction: column; align-items: flex-start;margin-top: 9px;">
-                    <label>Status is Active?<span class="required">*</span></label>
-                    <div class="p-field-radiobutton" style="margin-left: 5px;margin-top: 15px;">
+                    style="display: flex; flex-direction: column; align-items: flex-start;margin-top: 4px;">
+                    <label style="margin-left: 60px;">Status is Active?<span class="required">*</span></label>
+                    <div class="p-field-radiobutton" style="margin-left: 60px;margin-top: 15px;">
                         <div class="p-radio">
                             <p-radioButton name="status" value="active" label="Active"
                                 formControlName="status"></p-radioButton>

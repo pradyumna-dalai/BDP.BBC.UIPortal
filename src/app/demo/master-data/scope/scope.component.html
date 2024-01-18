@@ -1,7 +1,17 @@
 <div class="card">
     <div class="grid">
         <div class="col-6">
-            <h5>Product Scope</h5>
+            <span class="p-input-icon-right">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dt2.filterGlobal($event.target.value, 'contains')"
+                    placeholder="Search Keyword" />
+            </span>
+        </div>
+        <div class="col-6" style="display: flex;justify-content: flex-end;">
+            <button type="button" pButton pRipple label="Clear" (click)="clear(dt2)" class="mr-2 mb-2"></button>
+            <button type="button" pButton pRipple label="Export" class="mr-2 mb-2"></button>
+            <button type="button" pButton pRipple label="Add Scope" (click)="showCreateScopeDialoge()"
+                icon="pi pi-plus" class="mr-2 mb-2"></button>
         </div>
     </div>
     <p-table #dt2 [value]="scopeDetails" dataKey="id" 
@@ -9,7 +19,7 @@
         [globalFilterFields]="['name', 'product.name', 'description', 'status','createdBy','updatedBy','updatedDate','createdDate']" 
         selectionMode="single" styleClass="p-datatable-gridlines" [resizableColumns]="true" (onSort)="onSort($event)"
         >
-        <ng-template pTemplate="caption">
+        <!-- <ng-template pTemplate="caption">
             <div class="row">
                 <div class="col-12" style="display: flex;">
                     <div class="col-6">
@@ -20,7 +30,7 @@
                         </span>
                     </div>
                     <div class="col-6" style="display: flex;justify-content: end;">
-                        <!-- <button type="button" pButton pRipple label="Clear" class="mr-2 mb-2"></button> -->
+                     
                         <button pButton label="Clear"  (click)="clear(dt2)" class="mr-2 mb-2"></button>
                         <button type="button" pButton pRipple label="Export" class="mr-2 mb-2"></button>
                         <button type="button" pButton pRipple label="Add Scope" (click)="showCreateScopeDialoge()"
@@ -28,7 +38,7 @@
                     </div>
                 </div>
             </div>
-        </ng-template>
+        </ng-template> -->
 
         <ng-template pTemplate="header">
             <tr>
@@ -36,9 +46,29 @@
                 <th style="text-align: center; width: 200px" pSortableColumn="status" [frozen]="true"
                     class="sticky-header">Status<p-sortIcon field="status"></p-sortIcon></th>
                 <th style="text-align: center; width: 200px" pSortableColumn="product.name" [frozen]="true"
-                    class="sticky-header">Product Name<p-sortIcon field="product.name"></p-sortIcon></th>
+                    class="sticky-header">
+                    <div class="header-container">
+                        <span class="header-text">Product Name</span>
+                        <div class="icon-container">
+                            <p-sortIcon field="product.name" class="sort-icon"></p-sortIcon>
+                            <p-columnFilter type="text" display="menu" field="product.name"
+                                class="column-filter"></p-columnFilter>
+                        </div>
+                    </div>
+                </th>
                 <th style="text-align: center; width: 200px" pSortableColumn="name" [frozen]="true"
-                    class="sticky-header">Product Scope<p-sortIcon field="name"></p-sortIcon></th>
+                    class="sticky-header">
+                    <!-- Product Scope<p-sortIcon field="name"></p-sortIcon> -->
+                    <div class="header-container">
+                        <span class="header-text">Product Scope</span>
+                        <div class="icon-container">
+                            <p-sortIcon field="name" class="sort-icon"></p-sortIcon>
+                            <p-columnFilter type="text" display="menu" field="name"
+                                class="column-filter"></p-columnFilter>
+                        </div>
+                    </div>
+
+                </th>
                 <th style="text-align: center; width: 200px" pSortableColumn="description" [frozen]="true"
                     class="sticky-header">Description</th>
                 <th style="text-align: center; width: 200px" pSortableColumn="createdBy" [frozen]="true"
@@ -50,7 +80,7 @@
                 <th style="text-align: center; width: 200px" pSortableColumn="updatedAt" [frozen]="true"
                     class="sticky-header">Updated At<p-sortIcon field="updatedAt"></p-sortIcon></th>
             </tr>
-            <tr>
+            <!-- <tr>
                 <th></th>
                 <th></th>
                 <th>
@@ -64,7 +94,7 @@
                 <th></th>
                 <th></th>
                 <th></th>
-            </tr>
+            </tr> -->
         </ng-template>
         <ng-template pTemplate="body" let-scope>
             <tr>
@@ -87,7 +117,7 @@
         </ng-template>
         <ng-template pTemplate="emptymessage">
             <tr>
-                <td colspan="9">No customers found.</td>
+                <td colspan="9">No Scope found.</td>
             </tr>
         </ng-template>
     </p-table>
@@ -100,9 +130,10 @@
 <p-dialog [(visible)]="displayCreateScopeDialog" [style]="{width: '40vw'}"  [resizable]="false"
     closable='true'   >
     <ng-template pTemplate="header">
-        <h5 style="display: contents;">Add New Scope :</h5>&nbsp;
+        <h5 style="display: contents;">{{ editMode ? 'Edit Scope :' : 'Add New Scope :' }}</h5>
+        <!-- <hr> -->
     </ng-template>
-    <hr>
+    <hr class="alignhr">
     <!-- <div class="tr-divider"></div> -->
     <form [formGroup]="ScopeForm">
         <div class="p-grid p-field">
@@ -121,7 +152,7 @@
                 <div class="field col-12 md:col-6" >
                     <label>Product Scope<span class="required">*</span></label>
 
-                    <input id="productScope" type="text"
+                    <input id="productScope" type="text"   placeholder="Product Scope" 
                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
                         formControlName="productScope">
                     <div
@@ -131,7 +162,7 @@
                 </div>
                 <div class="field col-12 md:col-6 ">
                     <label>Description</label>
-                    <textarea id="description" type="text" rows="4"
+                    <textarea id="description" type="text" rows="2"   placeholder="Description"
                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
                         formControlName="description"></textarea>
                 </div>

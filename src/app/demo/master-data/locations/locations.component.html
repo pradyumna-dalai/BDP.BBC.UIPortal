@@ -15,7 +15,7 @@
                         <span class="p-input-icon-right">
                             <i class="pi pi-search"></i>
                             <input pInputText type="text" (input)="dt2.filterGlobal($event.target.value, 'contains')"
-                                placeholder="Search keyword" />
+                                placeholder="Search Keyword" />
                         </span>
                     </div>
                     <div class="col-6" style="display: flex;justify-content: end;">
@@ -36,11 +36,11 @@
                 <th style="text-align: center;width: 50px" [frozen]="true" class="sticky-header">Actions</th>
                 <th style="text-align: center; width: 200px" pSortableColumn="status" [frozen]="true"
                     class="sticky-header">Status<p-sortIcon field="status"></p-sortIcon></th>
-                <th style="text-align: center; width: 200px" pSortableColumn="region" [frozen]="true"
+                <th style="text-align: center; width: 300px" pSortableColumn="region" [frozen]="true"
                     class="sticky-header">Region<p-sortIcon field="region"></p-sortIcon></th>
-                <th style="text-align: center; width: 200px" pSortableColumn="country" [frozen]="true"
+                <th style="text-align: center; width: 300px" pSortableColumn="country" [frozen]="true"
                     class="sticky-header">Country<p-sortIcon field="country"></p-sortIcon></th>
-                <th style="text-align: center; width: 200px" pSortableColumn="name" [frozen]="true"
+                <th style="text-align: center; width: 300px" pSortableColumn="name" [frozen]="true"
                     class="sticky-header">Location Name<p-sortIcon field="name"></p-sortIcon></th>
                 <th style="text-align: center; width: 200px" pSortableColumn="locationCode" [frozen]="true"
                     class="sticky-header">Location Code<p-sortIcon field="locationCode"></p-sortIcon></th>
@@ -99,7 +99,7 @@
         </ng-template>
         <ng-template pTemplate="emptymessage">
             <tr>
-                <td colspan="11">No customers found.</td>
+                <td colspan="11">No Location found.</td>
             </tr>
         </ng-template>
     </p-table>
@@ -111,16 +111,16 @@
 
 <p-dialog [(visible)]="displayCreateLocationDialog" [style]="{width: '40vw'}" [resizable]="false" closable='true'>
     <ng-template pTemplate="header">
-        <h5 style="display: contents;">Add New Location :</h5>&nbsp;
+        <h5 style="display: contents;">{{ editMode ? 'Edit Location :' : 'Add New Location :' }}</h5>&nbsp;
     </ng-template>
-    <hr>
+    <hr class="alignhr">
     <!-- <div class="tr-divider"></div> -->
     <form [formGroup]="locationForm">
         <div class="p-grid p-field">
             <div class="formgrid grid">
                 <div class="field col-12 md:col-5">
                     <label>Locaton Name<span class="required">*</span></label>
-                    <input id="name" type="text" formControlName="name"
+                    <input id="name" type="text" formControlName="name"   placeholder="Location Name"
                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
                     <div *ngIf="locationForm.get('name')?.hasError('required') && locationForm.get('name')?.touched">
                         Location name is required.
@@ -128,7 +128,7 @@
                 </div>
                 <div class="field col-12 md:col-5" style="margin-left: 70px;">
                     <label>Location Code<span class="required">*</span></label>
-                    <input id="locationCode" type="text" formControlName="locationCode"
+                    <input id="locationCode" type="text" formControlName="locationCode"   placeholder="Location Code"
                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 
                     <div
@@ -150,12 +150,13 @@
                 <div class="field col-12 md:col-5" style="margin-left: 70px;">
                     <label>Country<span class="required">*</span></label>
                     <p-dropdown [options]="countryOptions" appendTo="body" formControlName="country"
-                        placeholder="Select Country" optionLabel="name" optionValue="name" [filter]="true"
+                        placeholder="Select Country" optionLabel="name" optionValue="id" [filter]="true"
                         filterBy="name" [style]="{ 'width': '100%' }">
-                        <!-- <ng-template let-item pTemplate="option">
-                            <i [class]="item.flagClass"></i>
+                        <ng-template let-item pTemplate="option">
+                            <i [ngClass]="item.flagClass"></i>
                             {{ item.name }}
-                        </ng-template> -->
+                          </ng-template>
+                    
                     </p-dropdown>
                     <div
                         *ngIf="locationForm.get('country')?.hasError('required') && locationForm.get('country')?.touched">
@@ -165,7 +166,7 @@
 
                 <div class="field col-12 md:col-5 ">
                     <label>Description</label>
-                    <textarea id="description" type="text" rows="4"
+                    <textarea id="description" type="text" rows="2"   placeholder="Description"
                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
                         formControlName="description"></textarea>
                 </div>

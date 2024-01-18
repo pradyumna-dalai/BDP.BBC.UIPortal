@@ -83,7 +83,7 @@ export class ScopeComponent {
         id: this.ScopeForm.get('id').value || '',
         name: this.ScopeForm.value.productScope,
         description: this.ScopeForm.value.description,
-        status: this.ScopeForm.value.status,
+        status: this.ScopeForm.value.status === 'active' ? true : false,
         isDeleted: false,
         product: {
           id: this.ScopeForm.value.productid
