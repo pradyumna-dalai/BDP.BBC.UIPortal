@@ -1,14 +1,29 @@
 <div class="card">
-    <div class="grid">
+    <!-- <div class="grid">
         <div class="col-6">
             <h4>Location</h4>
+        </div>
+    </div> -->
+    <div class="grid">
+        <div class="col-6">
+            <span class="p-input-icon-right">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dt2.filterGlobal($event.target.value, 'contains')"
+                    placeholder="Search Keyword" />
+            </span>
+        </div>
+        <div class="col-6" style="display: flex;justify-content: flex-end;">
+            <button type="button" pButton pRipple label="Clear" (click)="clear(dt2)" class="mr-2 mb-2"></button>
+            <button type="button" pButton pRipple label="Export" class="mr-2 mb-2" pTooltip="Export in Excel File" tooltipPosition="top"></button>
+            <button type="button" pButton pRipple label="Add Location" (click)="showCreateLocationDialog()"
+                icon="pi pi-plus" class="mr-2 mb-2"></button>
         </div>
     </div>
     <p-table #dt2 [value]="locationdetails" dataKey="id" responsiveLayout="scroll" scrollHeight="530px"
         scrollDirection="both"
         [globalFilterFields]="['name', 'product.name', 'description', 'status','createdBy','updatedBy','updatedDate','createdDate']"
         selectionMode="single" styleClass="p-datatable-gridlines" [resizableColumns]="true">
-        <ng-template pTemplate="caption">
+        <!-- <ng-template pTemplate="caption">
             <div class="row">
                 <div class="col-12" style="display: flex;">
                     <div class="col-6">
@@ -27,7 +42,7 @@
                     </div>
                 </div>
             </div>
-        </ng-template>
+        </ng-template> -->
 
 
 
@@ -35,13 +50,41 @@
             <tr>
                 <th style="text-align: center;width: 50px" [frozen]="true" class="sticky-header">Actions</th>
                 <th style="text-align: center; width: 200px" pSortableColumn="status" [frozen]="true"
-                    class="sticky-header">Status<p-sortIcon field="status"></p-sortIcon></th>
-                <th style="text-align: center; width: 300px" pSortableColumn="region" [frozen]="true"
-                    class="sticky-header">Region<p-sortIcon field="region"></p-sortIcon></th>
-                <th style="text-align: center; width: 300px" pSortableColumn="country" [frozen]="true"
-                    class="sticky-header">Country<p-sortIcon field="country"></p-sortIcon></th>
-                <th style="text-align: center; width: 300px" pSortableColumn="name" [frozen]="true"
-                    class="sticky-header">Location Name<p-sortIcon field="name"></p-sortIcon></th>
+                    class="sticky-header">
+                    Status<p-sortIcon field="status"></p-sortIcon></th>
+                <th style="text-align: center; width: 200px" pSortableColumn="region" [frozen]="true"
+                    class="sticky-header">
+                    <div class="header-container">
+                        <span class="header-text">Region</span>
+                        <div class="icon-container">
+                            <p-sortIcon field="region" class="sort-icon"></p-sortIcon>
+                            <p-columnFilter type="text" display="menu" field="region" pTooltip="Filter" tooltipPosition="right"
+                                class="column-filter"></p-columnFilter>
+                        </div>
+                    </div>
+                </th>
+                <th style="text-align: center; width: 200px" pSortableColumn="country" [frozen]="true"
+                    class="sticky-header">
+                    <div class="header-container">
+                        <span class="header-text">Country</span>
+                        <div class="icon-container">
+                            <p-sortIcon field="country" class="sort-icon"></p-sortIcon>
+                            <p-columnFilter type="text" display="menu" field="country" pTooltip="Filter" tooltipPosition="right"
+                                class="column-filter"></p-columnFilter>
+                        </div>
+                    </div>
+                </th>
+                <th style="text-align: center; width: 200px" pSortableColumn="name" [frozen]="true"
+                    class="sticky-header">
+                    <div class="header-container">
+                        <span class="header-text">Location Name</span>
+                        <div class="icon-container">
+                            <p-sortIcon field="name" class="sort-icon"></p-sortIcon>
+                            <p-columnFilter type="text" display="menu" field="name" pTooltip="Filter" tooltipPosition="right"
+                                class="column-filter"></p-columnFilter>
+                        </div>
+                    </div>
+                </th>
                 <th style="text-align: center; width: 200px" pSortableColumn="locationCode" [frozen]="true"
                     class="sticky-header">Location Code<p-sortIcon field="locationCode"></p-sortIcon></th>
                 <th style="text-align: center; width: 200px" pSortableColumn="description" [frozen]="true"
@@ -55,7 +98,7 @@
                 <th style="text-align: center; width: 200px" pSortableColumn="updatedAt" [frozen]="true"
                     class="sticky-header">Updated At<p-sortIcon field="updatedAt"></p-sortIcon></th>
             </tr>
-            <tr>
+            <!-- <tr>
                 <th></th>
                 <th></th>
                 <th>
@@ -73,7 +116,7 @@
                 <th></th>
                 <th></th>
                 <th></th>
-            </tr>
+            </tr> -->
 
         </ng-template>
         <ng-template pTemplate="body" let-item>
@@ -109,7 +152,7 @@
 
 </div>
 
-<p-dialog [(visible)]="displayCreateLocationDialog" [style]="{width: '40vw'}" [resizable]="false" closable='true'>
+<p-dialog [(visible)]="displayCreateLocationDialog"  [modal]="true"  [style]="{width: '40vw'}" [resizable]="false" closable='true'>
     <ng-template pTemplate="header">
         <h5 style="display: contents;">{{ editMode ? 'Edit Location :' : 'Add New Location :' }}</h5>&nbsp;
     </ng-template>
@@ -171,7 +214,7 @@
                         formControlName="description"></textarea>
                 </div>
                 <div class="field col-12 md:col-5"
-                    style="display: flex; flex-direction: column; align-items: flex-start;margin-top: 9.5px;margin-left: 70px;">
+                    style="display: flex; flex-direction: column; align-items: flex-start;margin-top: 4px;margin-left: 70px;">
                     <label>Status is Active?<span class="required">*</span></label>
                     <div class="p-field-radiobutton" style="margin-left: 5px; margin-top: 15px;">
                         <div class="p-radio">
