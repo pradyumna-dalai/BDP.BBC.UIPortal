@@ -123,7 +123,7 @@ export class ProductComponent {
     if (selectedItem) {
         this.myForm.setValue({
             id: selectedItem.id,
-            prodcut_name: selectedItem.productName,
+            prodcut_name: selectedItem.name,
             description: selectedItem.description,
             status: selectedItem.status ? 'active' : 'inactive',
         });
