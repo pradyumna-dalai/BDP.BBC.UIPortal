@@ -8,10 +8,10 @@ export namespace AppRoutes {
 
         // --------------------get all master dropdown data-----------------------//
 
-        public static readonly getProductName = "product";
+        public static readonly getProductName = "active-product";
         public static readonly getProductScope = "scope";
         public static readonly getProductCtegory = "category";
-        public static readonly getchargeCode = "charge-code";
+        public static readonly getchargeCode = "active-chargeCode";
         public static readonly getModeofTransport = "mode-of-transport";
         public static readonly getProjectStatus = "project-status";
         public static readonly getRegion = "region";
