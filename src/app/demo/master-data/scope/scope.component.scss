@@ -80,3 +80,41 @@ i {
   width: 50vw;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
 }
+.alignhr{
+  margin-top: 0px;
+  
+}
+.filter-container {
+  position: relative;
+  display: inline-block;
+}
+
+.filter-icon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  color: #495057;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  height: 100%; /* Set a fixed height for the container */
+}
+
+.icon-container {
+  display: flex;
+  align-items: center;
+}
+
+.header-text {
+  flex-grow: 1; 
+}
+
+
+.sort-icon,
+.column-filter {
+  height: 100%; 
+  margin: 0; 
+}

@@ -141,10 +141,10 @@ export class LocationsComponent {
     this.masterDataService.getAllCountryDetails().subscribe((res: any) => {
       if (res?.message == "success") {
         this.countryOptions = res?.data;
-        // this.countryOptions = res?.data.map((country: any) => ({
-        //   ...country,
-        //   flagClass: `flag-icon flag-icon-${country.iso2.toLowerCase()}`,
-        // }));
+        this.countryOptions = res?.data.map((country: any) => ({
+          ...country,
+          flagClass: `flag-icon flag-icon-${country.iso2.toLowerCase()}`,
+        }));
       } else {
         this.countryOptions = [];
       }
@@ -159,9 +159,12 @@ export class LocationsComponent {
         name: this.locationForm.value.name,
         locationCode: this.locationForm.value.locationCode,
         region: this.locationForm.value.region,
-        country: this.locationForm.value.country,
+        country: {
+          id: this.locationForm.value.country
+        },
+        // country: this.locationForm.value.country,
         description: this.locationForm.value.description,
-        status: this.locationForm.value.status === 'active',
+        status: this.locationForm.value.value.status === 'active' ? true : false,
         isDeleted: false,
       };
 
