@@ -4,12 +4,10 @@
             <h5>Product Category</h5>
         </div>
     </div>
-    <p-table #dt2 [value]="categoryDetails" dataKey="id" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]"
-        [paginator]="true" responsiveLayout="scroll" scrollHeight="530px" scrollDirection="both"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    <p-table #dt2 [value]="categoryDetails" dataKey="id" responsiveLayout="scroll" scrollHeight="530px"
+        scrollDirection="both"
         [globalFilterFields]="['name', 'scope.product.name','scope.name', 'description', 'status','createdBy','updatedBy','updatedDate','createdDate']"
-        [showCurrentPageReport]="true" selectionMode="single" styleClass="p-datatable-gridlines"
-        [resizableColumns]="true" [totalRecords]="totalPages * pageSize">
+        selectionMode="single" styleClass="p-datatable-gridlines" [resizableColumns]="true" >
         <ng-template pTemplate="caption">
             <div class="row">
                 <div class="col-12" style="display: flex;">
@@ -21,7 +19,7 @@
                         </span>
                     </div>
                     <div class="col-6" style="display: flex;justify-content: end;">
-                        <button type="button" pButton pRipple label="Clear" class="mr-2 mb-2"></button>
+                        <button type="button" pButton pRipple label="Clear"   (click)="clear(dt2)" class="mr-2 mb-2"></button>
                         <button type="button" pButton pRipple label="Export" class="mr-2 mb-2"></button>
                         <button type="button" pButton pRipple label="Add Category" (click)="showCreateCategoryDialog()"
                             icon="pi pi-plus" class="mr-2 mb-2"></button>
@@ -46,7 +44,7 @@
                     class="sticky-header">Product Category<p-sortIcon field="name"></p-sortIcon></th>
 
                 <th style="text-align: center; width: 200px" pSortableColumn="description" [frozen]="true"
-                    class="sticky-header">Description<p-sortIcon field="description"></p-sortIcon></th>
+                    class="sticky-header">Description</th>
 
                 <th style="text-align: center; width: 200px" pSortableColumn="createdBy" [frozen]="true"
                     class="sticky-header">Created By<p-sortIcon field="createdBy"></p-sortIcon></th>
@@ -109,6 +107,10 @@
             </tr>
         </ng-template>
     </p-table>
+    <p-paginator (onPageChange)="onPageChange($event)" [rows]="10" [totalRecords]="totalRecords"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[10,25,50]" (onSort)="onSort($event)"></p-paginator>
+
 </div>
 
 <p-dialog [(visible)]="displayCreateCategoryDialog" [style]="{width: '40vw'}" [resizable]="false" closable='true'>
@@ -135,7 +137,7 @@
                     <label>Product Scope<span class="required">*</span></label>
                     <p-dropdown placeholder="Select Product Scope" optionLabel="name" optionValue="id" [filter]="true"
                         [options]="procuctScopesOptions" filterBy="name" [style]="{ 'width': '100%' }"
-                        formControlName="productScope"  appendTo="body">
+                        formControlName="productScope" appendTo="body">
                     </p-dropdown>
                 </div>
                 <div class="field col-12 md:col-4">
@@ -144,7 +146,7 @@
                     <input id="productCategory" type="text"
                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
                         formControlName="productCategory">
-                        <div
+                    <div
                         *ngIf="CategoryForm.get('productCategory')?.hasError('required') && CategoryForm.get('productCategory')?.touched">
                         Product Category is required.
                     </div>
@@ -179,7 +181,7 @@
     <ng-template pTemplate="footer">
         <p-button label="{{ editMode ? 'Update' : 'Add' }}" (click)="createProductCategory()"
             [disabled]="!CategoryForm.valid"></p-button>&nbsp;&nbsp;
-        <p-button label="Cancel" (click) ="cancelUpdate()"></p-button>
+        <p-button label="Cancel" (click)="cancelUpdate()"></p-button>
     </ng-template>
 </p-dialog>
 <p-toast></p-toast>
