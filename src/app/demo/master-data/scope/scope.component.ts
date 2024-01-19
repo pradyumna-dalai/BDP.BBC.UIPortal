@@ -195,4 +195,12 @@ export class ScopeComponent {
     }
 
   }
+
+  cancelUpdate() {
+    // Reset the form when the "Cancel" button is clicked
+    this.ScopeForm.reset();
+    this.displayCreateScopeDialog = false;
+    this.editMode = false;
+
+  }
 }
