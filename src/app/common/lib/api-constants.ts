@@ -89,9 +89,15 @@ export namespace AppRoutes {
 
         public static readonly  chargecode = "charge-code";
 
+        public static readonly downloadChargecode = "download-chargeCode";
+
         public static readonly  product = "product";
 
+        public static readonly downloadProduct = "download-product";
+
         public static readonly  uom = "uom";
+
+        public static readonly downloadUOM = "download-uom";
     
 
 

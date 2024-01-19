@@ -4,7 +4,7 @@
             <h4>UOM-Unit Of Measure</h4>
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
-            <button type="button" pButton pRipple label="Export" class="mr-2 mb-2"></button>
+            <button type="button" pButton pRipple label="Export" (click)="downloadExcel($event)" class="mr-2 mb-2"></button>
             <button type="button" pButton pRipple label="Add" (click)="showDialog()" class="mr-2 mb-2"></button>
         </div>
     </div>
