@@ -52,7 +52,7 @@ export class LocationsComponent {
       country: ['', Validators.required],
       //  countryCode: ['', Validators.required],
       locationCode: ['', Validators.required],
-      description: ['', Validators.required],
+      description: [''],
       status: ['inactive', Validators.required],
     });
   }
