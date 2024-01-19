@@ -84,18 +84,21 @@ i {
   margin-top: 0px;
   
 }
-.filter-container {
-  position: relative;
-  display: inline-block;
-}
+// .filter-container {
+//   position: relative;
+//   display: inline-block;
+// }
 
-.filter-icon {
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  color: #495057;
-}
+// .filter-icon {
+//   position: absolute;
+//   top: 50%;
+//   right: 10px;
+//   transform: translateY(-50%);
+//   color: #495057;
+//   margin-top: 5px;
+//   width: 14px;
+//   height: 18px;
+// }
 
 .header-container {
   display: flex;
@@ -117,4 +120,10 @@ i {
 .column-filter {
   height: 100%; 
   margin: 0; 
+}
+
+.p-datatable-gridlines .custom-filter-icon {
+  margin-top: 5px;
+  width: 14px;
+  height: 18px;
 }

@@ -9,7 +9,7 @@
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
             <button type="button" pButton pRipple label="Clear" (click)="clear(dt2)" class="mr-2 mb-2"></button>
-            <button type="button" pButton pRipple label="Export" class="mr-2 mb-2" pTooltip="Export in Excel File" tooltipPosition="top"></button>
+            <button type="button" pButton pRipple label="Export" class="mr-2 mb-2" pTooltip="Export in Excel File" (click)="downloadExcel($event)" tooltipPosition="top"></button>
             <button type="button" pButton pRipple label=" Add " (click)="showCreateScopeDialoge()"
                 icon="pi pi-plus" class="mr-2 mb-2"></button>
         </div>
@@ -31,8 +31,8 @@
                         <span class="header-text">Product Name</span>
                         <div class="icon-container">
                             <p-sortIcon field="product.name" class="sort-icon"></p-sortIcon>
-                            <p-columnFilter type="text" display="menu" field="product.name" pTooltip="Filter" tooltipPosition="right"
-                                class="column-filter"></p-columnFilter>
+                            <p-columnFilter type="text" display="menu" field="product.name" pTooltip="Filter" tooltipPosition="right" 
+                                class="custom-filter-icon"></p-columnFilter>
                         </div>
                     </div>
                 </th>
@@ -44,7 +44,7 @@
                         <div class="icon-container">
                             <p-sortIcon field="name" class="sort-icon"></p-sortIcon>
                             <p-columnFilter type="text" display="menu" field="name" pTooltip="Filter" tooltipPosition="right"
-                                class="column-filter"></p-columnFilter>
+                                class="custom-filter-icon"></p-columnFilter>
                         </div>
                     </div>
 

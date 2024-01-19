@@ -243,5 +243,25 @@ export class CategoryComponent {
 
   }
 
+   //-------------------Exoprt Excel-----------------------------------------------------//
+   downloadExcel(event: Event) {
+    event.preventDefault();
+  
+    this.masterDataService.downloadLocationDetails().subscribe((res: any) => {
+      const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = 'CategoryDetails.xlsx';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      this.messageService.add({
+        key: 'successToast',
+        severity: 'success',
+        summary: 'Success!',
+        detail: 'Excel File Downloaded successfully.'
+      });
+    });
+  }
 }
 

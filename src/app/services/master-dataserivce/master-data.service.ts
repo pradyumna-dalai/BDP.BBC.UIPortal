@@ -86,6 +86,11 @@ export class MasterDataService {
     });
     return this.http.get<any>(url + settings.AppRoutes.Auth.location,{ params: httpParams});
   }
+
+  downloadLocationDetails(){
+    return this.http.get(`${url}${settings.AppRoutes.Auth.downloadLocation}`, { responseType: 'arraybuffer' as 'json' });
+  }
+
   //----------------------------For Scope-------------------------------------//
   addScopeDetails(body: any) {
     return this.http.post<any>(url + settings.AppRoutes.Auth.scope, body);
@@ -103,6 +108,10 @@ export class MasterDataService {
 
   updateScopeDetails(body: any){
     return this.http.put<any>(url + settings.AppRoutes.Auth.scope, body);
+  }
+
+  downloadScopeDetails(){
+    return this.http.get(`${url}${settings.AppRoutes.Auth.downloadScope}`, { responseType: 'arraybuffer' as 'json' });
   }
 
   //----------------------Prduct Category------------------------------//
@@ -124,6 +133,10 @@ export class MasterDataService {
     return this.http.put<any>(url + settings.AppRoutes.Auth.category, body);
   }
 
+  
+  downloadCategoryDetails(){
+    return this.http.get(`${url}${settings.AppRoutes.Auth.downloadCategory}`, { responseType: 'arraybuffer' as 'json' });
+  }
   //-------------------------------------country----------------------//
 
   getAllCountryDetails() {
