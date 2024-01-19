@@ -118,7 +118,7 @@
                         [style]="{ 'width': '100%' }" formControlName="productid" appendTo="body">
                     </p-dropdown>
                     <div
-                        *ngIf="CategoryForm.get('productid')?.hasError('required') && CategoryForm.get('productid')?.touched">
+                        *ngIf="CategoryForm.get('productid')?.hasError('required') && CategoryForm.get('productid')?.touched"  class="error-message">
                         Product Name is required.
                     </div>
                 </div>
@@ -136,7 +136,7 @@
                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
                         formControlName="productCategory">
                     <div
-                        *ngIf="CategoryForm.get('productCategory')?.hasError('required') && CategoryForm.get('productCategory')?.touched">
+                        *ngIf="CategoryForm.get('productCategory')?.hasError('required') && CategoryForm.get('productCategory')?.touched" class="error-message">
                         Product Category is required.
                     </div>
                 </div>

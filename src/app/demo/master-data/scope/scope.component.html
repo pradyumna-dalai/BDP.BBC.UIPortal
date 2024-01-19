@@ -102,7 +102,7 @@
                         formControlName="productid" appendTo="body">
                     </p-dropdown>
                     <div
-                        *ngIf="ScopeForm.get('productid')?.hasError('required') && ScopeForm.get('productid')?.touched">
+                        *ngIf="ScopeForm.get('productid')?.hasError('required') && ScopeForm.get('productid')?.touched" class="error-message">
                         Product Name is required.
                     </div>
                 </div>
@@ -111,9 +111,9 @@
 
                     <input id="productScope" type="text" placeholder="Product Scope"
                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
-                        formControlName="productScope">
+                        formControlName="productScope" >
                     <div
-                        *ngIf="ScopeForm.get('productScope')?.hasError('required') && ScopeForm.get('productScope')?.touched"    class="error-message">
+                        *ngIf="ScopeForm.get('productScope')?.hasError('required') && ScopeForm.get('productScope')?.touched" class="error-message">
                         Product Scope is required.
                     </div>
                 </div>
@@ -134,7 +134,7 @@
                                 style="margin-left: 25px;"></p-radioButton>
                         </div>
                     </div>
-                    <div *ngIf="ScopeForm.get('status').hasError('required') && ScopeForm.get('status').touched">
+                    <div *ngIf="ScopeForm.get('status').hasError('required') && ScopeForm.get('status').touched" class="error-message">
                         Status is required.
                     </div>
                 </div>
