@@ -123,7 +123,7 @@ export class ProductComponent {
     if (selectedItem) {
         this.myForm.setValue({
             id: selectedItem.id,
-            prodcut_name: selectedItem.productName,
+            prodcut_name: selectedItem.name,
             description: selectedItem.description,
             status: selectedItem.status ? 'active' : 'inactive',
         });
@@ -199,6 +199,28 @@ export class ProductComponent {
         severity: 'error',
         summary: 'Error!',
         detail: this.editMode ? 'Failed To Update Product.' : 'Failed to save Product'
+    });
+  }
+
+   //------------------export excel-----------------------------------------------------------//
+   downloadExcel(event: Event) {
+    event.preventDefault();
+  
+    this.masterDataService.downloadProudctDetails().subscribe((res: any) => {
+      const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = 'ProductDetails.xlsx';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      this.messageService.add({
+        key: 'successToast',
+        severity: 'success',
+        summary: 'Success!',
+        detail: 'Excel File Downloaded successfully.'
+      });
     });
   }
 }

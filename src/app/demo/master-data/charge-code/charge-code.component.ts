@@ -39,7 +39,7 @@ export class ChargeCodeComponent {
      private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService) {
     this.breadcrumbService.setItems([
       { label: 'Master Data Management' },
-      { label: 'ChargeCode' }
+      { label: 'Charge Code' }
     ]);
   }
   ngOnInit() {
@@ -129,7 +129,7 @@ export class ChargeCodeComponent {
     if (selectedItem) {
         this.myForm.setValue({
             id: selectedItem.id,
-            chargeCode: selectedItem.chargeCode_name,
+            chargeCode: selectedItem.name,
             description: selectedItem.description,
             status: selectedItem.status ? 'active' : 'inactive',
         });
@@ -209,4 +209,26 @@ private handleError() {
 }
 
   // ... Other methods in your component
+
+   //------------------export excel-----------------------------------------------------------//
+   downloadExcel(event: Event) {
+    event.preventDefault();
+  
+    this.masterDataService.downloadChargeCodeDetails().subscribe((res: any) => {
+      const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = 'ChargeCodeDetails.xlsx';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      this.messageService.add({
+        key: 'successToast',
+        severity: 'success',
+        summary: 'Success!',
+        detail: 'Excel File Downloaded successfully.'
+      });
+    });
+  }
 }

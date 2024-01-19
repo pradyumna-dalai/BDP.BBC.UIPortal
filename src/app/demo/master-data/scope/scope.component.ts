@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { Table } from 'primeng/table';
 import { AppBreadcrumbService } from 'src/app/app.breadcrumb.service';
 import { MasterDataService } from 'src/app/services/master-dataserivce/master-data.service';
 import { MasterTableService } from 'src/app/services/master-table.service';
@@ -19,20 +20,24 @@ export class ScopeComponent {
   procuctNamesOptions: any[];
   ScopeForm: FormGroup;
   scopeDetails: any[] = [];
-  totalRecords: number = 0;
-  pageSize: number = 10;
-  currentPage: number = 1;
-  sortField: string = 'id';
-  sortOrder: number = 1;
-  totalPages: number;
   editMode: boolean = false;
   selectedScope: any;
+  // Pagination properties
+  currentPage: number = 1;
+  pageSize: number = 10;
+  sortField: string = ''; // Initial sort field
+  sortOrder: number = 1; // 1 for ascending, -1 for descending
+  totalRecords: any = 10;
+  first: any = 0;
+  rows: any = 10;
+
 
 
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
     private confirmationService: ConfirmationService, private router: Router, public MasterTableservice: MasterTableService,
     private fb: FormBuilder, private masterDataService: MasterDataService) {
     this.breadcrumbService.setItems([
+      { label: 'Master Data Management' },
       { label: 'Scope' }
     ]);
     this.createForm();
@@ -63,7 +68,7 @@ export class ScopeComponent {
     // this.procuctNamesOptions = [];
     this.MasterTableservice.getProductName().subscribe((res: any) => {
       if (res?.message == "success") {
-        this.procuctNamesOptions = res?.data?.product;
+        this.procuctNamesOptions = res?.data;
       } else {
         this.procuctNamesOptions = [];
       }
@@ -78,7 +83,7 @@ export class ScopeComponent {
         id: this.ScopeForm.get('id').value || '',
         name: this.ScopeForm.value.productScope,
         description: this.ScopeForm.value.description,
-        status: this.ScopeForm.value.status,
+        status: this.ScopeForm.value.status === 'active' ? true : false,
         isDeleted: false,
         product: {
           id: this.ScopeForm.value.productid
@@ -134,32 +139,18 @@ export class ScopeComponent {
   getSeverityLabel(status: boolean | string): string {
     return status === true || status === 'active' ? 'Active' : 'Inactive';
   }
-  onPageChange(event: any) {
-    const newPage = event.page + 1;
-
-    if (!isNaN(newPage)) {
-      this.currentPage = newPage;
-      this.fetchProductScope();
-    }
-  }
-
-  onSortChange(event: any) {
-    this.sortField = event.field;
-    this.sortOrder = event.order;
-    this.fetchProductScope();
-  }
 
   fetchProductScope() {
     const params = {
-      pageNo: this.currentPage - 1,
-      pageSize: this.pageSize,
+      pageNo: isNaN(this.currentPage) ? 0 : this.currentPage - 1,
+      pageSize: isNaN(this.pageSize) ? 10 : this.pageSize,
       sortBy: this.sortField,
-      sortDir: this.sortOrder === 1 ? 'asc' : 'desc',
+      sortDir: this.sortOrder
     };
     this.masterDataService.getScopeDetails(params).subscribe((res: any) => {
       if (res?.message === 'success') {
         this.scopeDetails = res.data.scope;
-        this.totalRecords = res.data.totalPages;
+        this.totalRecords = res?.data.totalElements;
         console.log('fetch scope details:', this.totalRecords);
       } else {
         console.error('Failed to fetch scope details:', res);
@@ -167,6 +158,23 @@ export class ScopeComponent {
     });
   }
 
+
+  onPageChange(event: any) {
+    this.currentPage = event.page + 1;
+    this.pageSize = event.rows;
+    this.fetchProductScope();
+  }
+  onSort(event: any) {
+    this.sortField = event.field;
+    this.sortOrder = event.order === 1 ? 1 : -1;
+    this.currentPage = 1; // Reset to the first page when sorting
+    this.fetchProductScope();
+  }
+
+  clear(table: Table) {
+    table.clear();
+    this.onSort(Event);
+  }
   //-------------------------------end---------------------------------------------------//
 
   //------------------------------UpdateScope--------------------------------------------//
@@ -187,5 +195,35 @@ export class ScopeComponent {
       this.displayCreateScopeDialog = true;
     }
 
+  }
+
+  cancelUpdate() {
+    // Reset the form when the "Cancel" button is clicked
+    this.ScopeForm.reset();
+    this.displayCreateScopeDialog = false;
+    this.editMode = false;
+
+  }
+
+
+  //-------------------Exoprt Excel-----------------------------------------------------//
+  downloadExcel(event: Event) {
+    event.preventDefault();
+
+    this.masterDataService.downloadScopeDetails().subscribe((res: any) => {
+      const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = 'ScopeDetails.xlsx';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      this.messageService.add({
+        key: 'successToast',
+        severity: 'success',
+        summary: 'Success!',
+        detail: 'Excel File Downloaded successfully.'
+      });
+    });
   }
 }

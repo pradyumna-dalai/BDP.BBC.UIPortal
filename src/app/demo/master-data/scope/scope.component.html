@@ -1,34 +1,24 @@
 <div class="card">
     <div class="grid">
         <div class="col-6">
-            <h5>Product Scope</h5>
+            <span class="p-input-icon-right">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dt2.filterGlobal($event.target.value, 'contains')"
+                    placeholder="Search Keyword" />
+            </span>
+        </div>
+        <div class="col-6" style="display: flex;justify-content: flex-end;">
+            <button type="button" pButton pRipple label="Clear" (click)="clear(dt2)" class="mr-2 mb-2"></button>
+            <button type="button" pButton pRipple label="Export" class="mr-2 mb-2" pTooltip="Export in Excel File" (click)="downloadExcel($event)" tooltipPosition="top"></button>
+            <button type="button" pButton pRipple label=" Add " (click)="showCreateScopeDialoge()"
+                icon="pi pi-plus" class="mr-2 mb-2"></button>
         </div>
     </div>
-    <p-table #dt2 [value]="scopeDetails" dataKey="id" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true"
+    <p-table #dt2 [value]="scopeDetails" dataKey="id" 
         responsiveLayout="scroll" scrollHeight="530px" scrollDirection="both"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-        [globalFilterFields]="['name', 'product.name', 'description', 'status','createdBy','updatedBy','updatedDate','createdDate']" [showCurrentPageReport]="true"
-        selectionMode="single" styleClass="p-datatable-gridlines" [resizableColumns]="true"
-        [totalRecords]="totalPages * pageSize">
-        <ng-template pTemplate="caption">
-            <div class="row">
-                <div class="col-12" style="display: flex;">
-                    <div class="col-6">
-                        <span class="p-input-icon-right">
-                            <i class="pi pi-search"></i>
-                            <input pInputText type="text" (input)="dt2.filterGlobal($event.target.value, 'contains')"
-                                placeholder="Search keyword" />
-                        </span>
-                    </div>
-                    <div class="col-6" style="display: flex;justify-content: end;">
-                        <button type="button" pButton pRipple label="Clear" class="mr-2 mb-2"></button>
-                        <button type="button" pButton pRipple label="Export" class="mr-2 mb-2"></button>
-                        <button type="button" pButton pRipple label="Add Scope" (click)="showCreateScopeDialoge()"
-                            icon="pi pi-plus" class="mr-2 mb-2"></button>
-                    </div>
-                </div>
-            </div>
-        </ng-template>
+        [globalFilterFields]="['name', 'product.name', 'description', 'status','createdBy','updatedBy','updatedDate','createdDate']" 
+        selectionMode="single" styleClass="p-datatable-gridlines" [resizableColumns]="true" (onSort)="onSort($event)"
+        >
 
         <ng-template pTemplate="header">
             <tr>
@@ -36,11 +26,23 @@
                 <th style="text-align: center; width: 200px" pSortableColumn="status" [frozen]="true"
                     class="sticky-header">Status<p-sortIcon field="status"></p-sortIcon></th>
                 <th style="text-align: center; width: 200px" pSortableColumn="product.name" [frozen]="true"
-                    class="sticky-header">Product Name<p-sortIcon field="product.name"></p-sortIcon></th>
+                    class="sticky-header">Product Name
+                            <p-sortIcon field="product.name" class="sort-icon"></p-sortIcon>
+                            <p-columnFilter type="text" display="menu" field="product.name" pTooltip="Filter" tooltipPosition="right"
+                                class="column-filter icon-align"></p-columnFilter>
+                        
+                </th>
                 <th style="text-align: center; width: 200px" pSortableColumn="name" [frozen]="true"
-                    class="sticky-header">Product Scope<p-sortIcon field="name"></p-sortIcon></th>
+                    class="sticky-header">
+                    <!-- Product Scope<p-sortIcon field="name"></p-sortIcon> -->Product Scope
+                            <p-sortIcon field="name" class="sort-icon"></p-sortIcon>
+                            <p-columnFilter type="text" display="menu" field="name" pTooltip="Filter" tooltipPosition="right"
+                                class="column-filter icon-align"></p-columnFilter>
+                      
+
+                </th>
                 <th style="text-align: center; width: 200px" pSortableColumn="description" [frozen]="true"
-                    class="sticky-header">Description<p-sortIcon field="description"></p-sortIcon></th>
+                    class="sticky-header">Description</th>
                 <th style="text-align: center; width: 200px" pSortableColumn="createdBy" [frozen]="true"
                     class="sticky-header">Created By<p-sortIcon field="createdBy"></p-sortIcon></th>
                 <th style="text-align: center; width: 200px" pSortableColumn="createdDate" [frozen]="true"
@@ -49,21 +51,6 @@
                     class="sticky-header">Updated By<p-sortIcon field="updatedBy"></p-sortIcon></th>
                 <th style="text-align: center; width: 200px" pSortableColumn="updatedAt" [frozen]="true"
                     class="sticky-header">Updated At<p-sortIcon field="updatedAt"></p-sortIcon></th>
-            </tr>
-            <tr>
-                <th></th>
-                <th></th>
-                <th>
-                    <p-columnFilter type="text" field="product.name"></p-columnFilter>
-                </th>
-                <th>
-                    <p-columnFilter type="text" field="name"></p-columnFilter>
-                </th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-scope>
@@ -87,26 +74,28 @@
         </ng-template>
         <ng-template pTemplate="emptymessage">
             <tr>
-                <td colspan="9">No customers found.</td>
+                <td style="text-align: center;" colspan="18">No Data found.</td>
             </tr>
         </ng-template>
     </p-table>
+    <p-paginator (onPageChange)="onPageChange($event)" [rows]="10" [totalRecords]="totalRecords"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" (onSort)="onSort($event)"></p-paginator>
 </div>
 
 
-<p-dialog [(visible)]="displayCreateScopeDialog" [style]="{width: '50vw'}"  [resizable]="false"
+<p-dialog [(visible)]="displayCreateScopeDialog" [style]="{width: '40vw'}"  [resizable]="false"  [modal]="true" 
     closable='true'   >
     <ng-template pTemplate="header">
-        <h5 style="display: contents;">Add New Scope :</h5>&nbsp;
+        <h5 style="display: contents;">{{ editMode ? 'Edit Scope :' : 'Add New Scope :' }}</h5>
+        <!-- <hr> -->
     </ng-template>
-    <hr>
-    <p>Please complete all required fields to create a new Scope.</p>
-    <br>
-    <div class="tr-divider"></div>
+    <hr class="alignhr">
+    <!-- <div class="tr-divider"></div> -->
     <form [formGroup]="ScopeForm">
         <div class="p-grid p-field">
             <div class="formgrid grid">
-                <div class="field col-12 md:col-5">
+                <div class="field col-12 md:col-6">
                     <label>Product Name<span class="required">*</span></label>
                     <p-dropdown optionLabel="name" placeholder="Select Product Name" [options]="procuctNamesOptions"
                         optionValue="id" [filter]="true" filterBy="name" [style]="{ 'width': '100%' }"
@@ -117,10 +106,10 @@
                         Product Name is required.
                     </div>
                 </div>
-                <div class="field col-12 md:col-4" style="margin-left: 70px;">
+                <div class="field col-12 md:col-6" >
                     <label>Product Scope<span class="required">*</span></label>
 
-                    <input id="productScope" type="text"
+                    <input id="productScope" type="text"   placeholder="Product Scope" 
                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
                         formControlName="productScope">
                     <div
@@ -130,13 +119,13 @@
                 </div>
                 <div class="field col-12 md:col-6 ">
                     <label>Description</label>
-                    <textarea id="description" type="text" rows="4"
+                    <textarea id="description" type="text" rows="2"   placeholder="Description"
                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
                         formControlName="description"></textarea>
                 </div>
 
                 <div class="field col-12 md:col-6"
-                    style="display: flex; flex-direction: column; align-items: flex-start;margin-top: 10px;">
+                    style="display: flex; flex-direction: column; align-items: flex-start;margin-top: 4px;">
                     <label>Status is Active?<span class="required">*</span></label>
                     <div class="p-field-radiobutton" style="margin-left: 5px; margin-top: 15px;">
                         <div class="p-radio">
@@ -158,7 +147,7 @@
     <ng-template pTemplate="footer">
         <p-button label="{{ editMode ? 'Update' : 'Add' }}" (click)="createProductScope()"
             [disabled]="!ScopeForm.valid"></p-button>&nbsp;&nbsp;
-        <p-button label="Cancel" (click)="displayCreateScopeDialog = false"></p-button>
+        <p-button label="Cancel" (click)="displayCreateScopeDialog = false"  class="p-button-outlined mr-2 mb-2"></p-button>
     </ng-template>
 </p-dialog>
 <p-toast></p-toast>

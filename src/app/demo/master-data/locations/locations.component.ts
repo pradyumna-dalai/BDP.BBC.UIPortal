@@ -1,21 +1,20 @@
-import { DatePipe } from '@angular/common';
-import { HttpResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import dayjs from 'dayjs';
-import { ConfirmationService, SelectItem } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 import { AppBreadcrumbService } from 'src/app/app.breadcrumb.service';
 import { MasterDataService } from 'src/app/services/master-dataserivce/master-data.service';
 import { MasterTableService } from 'src/app/services/master-table.service';
-import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
 import { MessageService } from 'primeng/api';
+import { Table } from 'primeng/table';
+
 @Component({
   selector: 'app-locations',
   templateUrl: './locations.component.html',
   styleUrls: ['./locations.component.scss'],
   providers: [MessageService, ConfirmationService]
 })
+
 export class LocationsComponent {
   text: string = '';
   data: any = {};
@@ -25,196 +24,235 @@ export class LocationsComponent {
   displayCreateLocationDialog: boolean = false;
   regionOptions: any[];
   locationForm: FormGroup;
-  
-  constructor(private datePipe: DatePipe, private breadcrumbService: AppBreadcrumbService, 
-    private messageService: MessageService,private fb: FormBuilder,
-    private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService,private masterTableService:MasterTableService ) {
+  countryOptions: any[];
+  editMode: boolean = false;
+  selectedLocation: any;
+  // Pagination properties
+  currentPage: number = 1;
+  pageSize: number = 10;
+  sortField: string = ''; // Initial sort field
+  sortOrder: number = 1; // 1 for ascending, -1 for descending
+  totalRecords: any = 10;
+  first: any = 0;
+  rows: any = 10;
+
+
+  constructor(private breadcrumbService: AppBreadcrumbService,
+    private messageService: MessageService, private fb: FormBuilder,
+    private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService, private masterTableService: MasterTableService) {
     this.breadcrumbService.setItems([
       { label: 'Master Data Management' },
       { label: 'Location' }
     ]);
 
     this.locationForm = this.fb.group({
+      id: [''],
       name: ['', Validators.required],
       region: ['', Validators.required],
-      country: ['xx', Validators.required], 
-      countryCode: ['33', Validators.required],
+      country: ['', Validators.required],
+      //  countryCode: ['', Validators.required],
       locationCode: ['', Validators.required],
-      description: ['', Validators.required],
+      description: [''],
       status: ['inactive', Validators.required],
-       // Assuming '1' for Active and '0' for Inactive
     });
   }
 
   ngOnInit() {
     this.fetchAllLocationDetails();
     this.fetchLocationRegion();
+    this.fetchLocationCountry();
 
   }
-
-
-  confirm(action: string, itemId?: string): void {
-    let confirmationMessage: string;
-    let header: string;
-
-    if (action === 'edit') {
-      confirmationMessage = 'Are you sure that you want to edit this Location?';
-      header = 'EditLocation';
-    } else if (action === 'delete') {
-      confirmationMessage = 'Are you sure that you want to delete this Location?';
-      header = 'Delete Location';
-    }
-
-    this.confirmationHeader = header;
-    this.confirmationService.confirm({
-      message: confirmationMessage,
-      accept: () => {
-        if (action === 'copy') {
-          //   this.router.navigateByUrl('/create-location');
-        } else if (action === 'delete') {
-          this.rowDisabledState[itemId] = true;
-        }
-      },
-      header: this.confirmationHeader,
-    });
+  getSeverity(status: boolean): string {
+    return status ? 'success' : 'danger';
+  }
+  getSeverityLabel(status: boolean | string): string {
+    return status === true || status === 'active' ? 'Active' : 'Inactive';
   }
 
-
+  //--------------------------fetch location-------------------------------//
 
   fetchAllLocationDetails() {
-    this.masterDataService.getAllLocationDetails().subscribe((res: any) => {
-      if (res?.message == "success") {
-        this.locationdetails = res.data.location.map((item: any) => {
-          return {
-            loc_name: item.name,
-            region: item.region,
-            country: item.country,
-            country_code: item.countryCode,
-            description: item.description,
-            location_code: item.locationCode,
-            status: item.status,
-            id: item.id 
-
-          };
-        });
-       // console.log("djdsf",this.locationdetails);
+    const params = {
+      pageNo: isNaN(this.currentPage) ? 0 : this.currentPage - 1,
+      pageSize: isNaN(this.pageSize) ? 10 : this.pageSize,
+      sortBy: this.sortField,
+      sortDir: this.sortOrder
+    };
+    this.masterDataService.getAllLocationDetails(params).subscribe((res: any) => {
+      if (res?.message === 'success') {
+        this.locationdetails = res.data.location;
+        this.totalRecords = res?.data.totalElements;
+        console.log('fetch location details:', this.totalRecords);
       } else {
-        this.locationdetails = [];
+        console.error('Failed to fetch Location details:', res);
       }
     });
   }
 
+  onPageChange(event: any) {
+    this.currentPage = event.page + 1;
+    this.pageSize = event.rows;
+    this.fetchAllLocationDetails();
+  }
+  onSort(event: any) {
+    this.sortField = event.field;
+    this.sortOrder = event.order === 1 ? 1 : -1;
+    this.currentPage = 1; // Reset to the first page when sorting
+    this.fetchAllLocationDetails();
+  }
 
-//----------------------------Delete location--------------------------------------//
+  clear(table: Table) {
+    table.clear();
+    this.onSort(Event);
+  }
+  //---------------------------------end------------------------------------------//
 
-confirmDelete(locationId: number): void {
-  this.confirmationHeader = 'Delete Location';
-  this.confirmationService.confirm({
-    message: 'Are you sure that you want to delete this Location?',
-    accept: () => {
-      this.deleteLocation(locationId);
-    },
-    header: this.confirmationHeader,
-  });
-}
+  //--------------------------Create Location--------------------------------------//
 
-deleteLocation(locationId: number): void {
-  console.log('Deleting location with ID:', locationId);
-  this.masterDataService.deleteLocationDetails(locationId).subscribe((response: any) => {
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Location Deleted',
-        detail: 'The location has been deleted successfully.'
-      });
-      this.fetchAllLocationDetails(); 
-    },
-    (error) => {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error Deleting Location',
-        detail: 'An error occurred while deleting the location.'
-      });
-    }
-  );
-}
+  showCreateLocationDialog() {
 
+    this.displayCreateLocationDialog = true;
+  }
 
-//---------------------------------end------------------------------------------//
+  cancelCreateLocationDialog() {
 
-//--------------------------Create Location--------------------------------------//
+    this.displayCreateLocationDialog = false;
+  }
 
-showCreateLocationDialog() {
+  saveLocation() {
 
-  this.displayCreateLocationDialog = true;
-}
+    this.displayCreateLocationDialog = false;
+  }
 
-cancelCreateLocationDialog() {
-  
-  this.displayCreateLocationDialog = false;
-}
+  //---------------fetch Region and Country---------------------------------//
+  fetchLocationRegion() {
+    this.regionOptions = [];
+    this.masterTableService.getRegion().subscribe((res: any) => {
+      if (res?.message == "success") {
+        this.regionOptions = res?.data;
+      } else {
+        this.regionOptions = [];
+      }
+    })
+  }
 
-saveLocation() {
- 
-  this.displayCreateLocationDialog = false;
-}
+  fetchLocationCountry() {
+    this.countryOptions = [];
+    this.masterDataService.getAllCountryDetails().subscribe((res: any) => {
+      if (res?.message == "success") {
+        this.countryOptions = res?.data;
+        this.countryOptions = res?.data.map((country: any) => ({
+          ...country,
+          flagClass: `flag-icon flag-icon-${country.iso2.toLowerCase()}`,
+        }));
+      } else {
+        this.countryOptions = [];
+      }
+    })
+  }
+  //--------------------end---------------------------------------//
 
+  addLocationsDetails() {
+    if (this.locationForm.valid) {
+      const body = {
+        id: this.locationForm.get('id').value || '',
+        name: this.locationForm.value.name,
+        locationCode: this.locationForm.value.locationCode,
+        region: this.locationForm.value.region,
+        country: {
+          id: this.locationForm.value.country
+        },
+        // country: this.locationForm.value.country,
+        description: this.locationForm.value.description,
+        status: this.locationForm.value.value.status === 'active' ? true : false,
+        isDeleted: false,
+      };
 
-fetchLocationRegion() {
-  this.regionOptions = [];
-  this.masterTableService.getRegion().subscribe((res: any) => {
-    if (res?.message == "success") {
-      this.regionOptions = res?.data;
+      if (this.editMode) {
+        body['id'] = this.selectedLocation.id;
+        this.masterDataService.updateLocations(body).subscribe(
+          (response) => {
+            console.log(response);
+            this.displayCreateLocationDialog = false;
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Location updated successfully!' });
+            // this.createForm();
+            this.editMode = false;
+            this.fetchAllLocationDetails();
+          },
+          (error) => {
+            console.error(error);
+
+          }
+        );
+      } else {
+        this.masterDataService.addLocations(body).subscribe(
+          (response) => {
+            console.log(response);
+            this.displayCreateLocationDialog = false;
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Location added successfully!' });
+            // this.createForm();
+          },
+          (error) => {
+            console.error(error);
+            if (error.status === 400 && error.error?.message === 'Fill required field(s)') {
+              const errorMessage = error.error.data?.join(', ') || 'Error in adding location';
+              this.messageService.add({ severity: 'error', summary: 'Error', detail: errorMessage });
+            } else {
+              this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error in adding location' });
+            }
+          }
+        );
+      }
     } else {
-      this.regionOptions = [];
+      this.messageService.add({ severity: 'error', summary: 'Validation Error', detail: 'Form is invalid!' });
     }
-  })
-}
+
+    //-------------------------------end--------------------------------------//
+  }
+  //------------------------------UpdateLocation--------------------------------------------//
+  editLocation(location: any) {
+    this.selectedLocation = location;
+    this.updateLocationDetails(location);
+  }
+  updateLocationDetails(location: any) {
+    this.editMode = true;
+    if (this.selectedLocation) {
+      this.locationForm.patchValue({
+        name: this.selectedLocation.name,
+        locationCode: this.selectedLocation.locationCode,
+        region: this.selectedLocation.region.name,
+        country: this.selectedLocation.country.id,
+        description: this.selectedLocation.description,
+        status: this.selectedLocation.status ? 'active' : 'inactive',
+      });
+
+      this.displayCreateLocationDialog = true;
+    }
+
+  }
 
 
-addLocationsDetails() {
-  if (this.locationForm.valid) {
-    const formData = { ...this.locationForm.value };
-    formData.status = formData.status ? 'active' : 'inactive';
-    this.masterDataService.addLocations(formData).subscribe(
-      (response: any) => {
-        if (response.message === 'success') {
-          this.messageService.add({
-            key: 'successToast',
-            severity: 'success',
-            summary: 'Location Created',
-            detail: 'The location has been created successfully.'
-          });
-          this.fetchAllLocationDetails();
-        } else {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error Creating Location',
-            detail: 'An error occurred while creating the location.'
-          });
-        }
-      },
-      (error) => {
-        console.error('API Error:', error);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'API Error',
-          detail: 'An error occurred while communicating with the server.'
-        });
-      }
-    );
+  //------------------export excel-----------------------------------------------------------//
+  downloadExcel(event: Event) {
+    event.preventDefault();
+  
+    this.masterDataService.downloadLocationDetails().subscribe((res: any) => {
+      const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
 
-    this.cancelCreateLocationDialog();
-  } else {
-    console.log('Form is invalid. Cannot submit.');
-
-    this.messageService.add({
-      severity: 'error',
-      summary: 'Validation Error',
-      detail: 'Please complete all required fields.'
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = 'LocationDetails.xlsx';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      this.messageService.add({
+        key: 'successToast',
+        severity: 'success',
+        summary: 'Success!',
+        detail: 'Excel File Downloaded successfully.'
+      });
     });
   }
-}
 
-
-//-------------------------------end--------------------------------------//
 }

@@ -1,11 +1,16 @@
 <div class="card">
     <div class="grid">
         <div class="col-6">
-            <h4>Product</h4>
+            <span class="p-input-icon-right">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                    placeholder="Search Keyword" />
+            </span>
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
-            <button type="button" pButton pRipple label="Export" class="mr-2 mb-2"></button>
-            <button type="button" pButton pRipple label="Add" (click)="showDialog()" class="mr-2 mb-2"></button>
+            <button type="button" pButton pRipple label="Clear" (click)="clear(dt1)" class="mr-2 mb-2"></button>
+            <button type="button" pButton pRipple label="Export" pTooltip="Export in Excel File" class="mr-2 mb-2" (click)="downloadExcel($event)"></button>
+            <button type="button" icon="pi pi-plus" pButton pRipple label="Add" (click)="showDialog()" class="mr-2 mb-2"></button>
         </div>
     </div>
 <p-table #dt1 [showCurrentPageReport]="true" [value]="productdetails"
@@ -30,6 +35,8 @@ scrollHeight="530px" scrollDirection="both"
                 <th style="text-align: center; width: 300px" pSortableColumn="name" [frozen]="true"
                     class="sticky-header">
                     Product Name<p-sortIcon field="name"></p-sortIcon>
+                    <p-columnFilter type="text" display="menu" field="name" pTooltip="Filter" tooltipPosition="right"
+                                class="column-filter icon-align"></p-columnFilter>
                 </th>
                 <th style="text-align: center; width: 200px"  [frozen]="true"
                     class="sticky-header">
@@ -51,17 +58,6 @@ scrollHeight="530px" scrollDirection="both"
                 </th>
                
 
-            </tr>
-            <tr><th></th>
-                <th></th>
-                <th>
-                    <p-columnFilter type="text" field="name"></p-columnFilter>
-                </th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-item>
@@ -108,7 +104,7 @@ scrollHeight="530px" scrollDirection="both"
                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                 [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" (onSort)="onSort($event)"></p-paginator>
 </div>
-<p-dialog header="Charge Code" [(visible)]="visibleDialog" [style]="{width: '30vw',height: '35rem'}">
+<p-dialog header="Charge Code" [(visible)]="visibleDialog" [style]="{width: '30vw',height: '35rem'}"  [modal]="true"  >
     <ng-template pTemplate="header">
         <div style="width: 100%;">
             <h5 style="display: contents;">{{ modeTitle }}&nbsp;Product</h5>

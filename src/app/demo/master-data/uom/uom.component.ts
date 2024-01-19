@@ -35,7 +35,7 @@ export class UOMComponent implements AfterViewInit{
     private fb: FormBuilder, private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService) {
     this.breadcrumbService.setItems([
       { label: 'Master Data Management' },
-      { label: 'UOM-Unit oOf Measure' }
+      { label: 'UOM-Unit Of Measure' }
     ]);
   }
   ngAfterViewInit(): void {
@@ -127,7 +127,7 @@ export class UOMComponent implements AfterViewInit{
     if (selectedItem) {
         this.myForm.setValue({
             id: selectedItem.id,
-            uom_name: selectedItem.uomName,
+            uom_name: selectedItem.name,
             description: selectedItem.description,
             status: selectedItem.status ? 'active' : 'inactive',
         });
@@ -206,5 +206,24 @@ export class UOMComponent implements AfterViewInit{
     });
   }
 
+  downloadExcel(event: Event) {
+    event.preventDefault();
+  
+    this.masterDataService.downloadUomDetails().subscribe((res: any) => {
+      const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
 
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = 'UOMDetails.xlsx';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      this.messageService.add({
+        key: 'successToast',
+        severity: 'success',
+        summary: 'Success!',
+        detail: 'Excel File Downloaded successfully.'
+      });
+    });
+  }
 }

@@ -127,3 +127,32 @@ i {
   width: 50vw;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
 }
+.header-container {
+  display: flex;
+  align-items: center;
+  height: 100%; /* Set a fixed height for the container */
+}
+
+.icon-container {
+  display: flex;
+  align-items: center;
+}
+
+.header-text {
+  flex-grow: 1; /* Allow the header text to take remaining space */
+}
+
+.sort-icon,
+.column-filter {
+  height: 100%; /* Set a fixed height for both the sort icon and column filter */
+  margin: 0; /* Remove any default margin */
+}
+
+
+.alignhr{
+  margin-top: 0px;
+  
+}
+.icon-align{
+  position: relative;top: 3px;
+}

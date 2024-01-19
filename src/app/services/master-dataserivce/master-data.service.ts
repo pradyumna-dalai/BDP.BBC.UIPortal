@@ -27,6 +27,10 @@ export class MasterDataService {
   editChargecode(body: any){
     return this.http.put<any>(url + settings.AppRoutes.Auth.chargecode, body);
   }
+
+  downloadChargeCodeDetails(){
+    return this.http.get(`${url}${settings.AppRoutes.Auth.downloadChargecode}`, { responseType: 'arraybuffer' as 'json' });
+  }
    //---------------------Prodcut----------------//
    addProdcut(body: any){
     return this.http.post<any>(url + settings.AppRoutes.Auth.product, body);
@@ -44,6 +48,9 @@ export class MasterDataService {
     return this.http.put<any>(url + settings.AppRoutes.Auth.product, body);
   }  
 
+  downloadProudctDetails(){
+    return this.http.get(`${url}${settings.AppRoutes.Auth.downloadProduct}`, { responseType: 'arraybuffer' as 'json' });
+  }
   //---------------------uom----------------//
   addUom(body: any){
     return this.http.post<any>(url + settings.AppRoutes.Auth.uom, body);
@@ -64,17 +71,37 @@ export class MasterDataService {
   editUom(body: any){
     return this.http.put<any>(url + settings.AppRoutes.Auth.uom, body);
   }
+
+  downloadUomDetails(){
+    return this.http.get(`${url}${settings.AppRoutes.Auth.downloadUOM}`, { responseType: 'arraybuffer' as 'json' });
+  }
    //---------------------Locations----------------//
   addLocations(body: any){
-    return this.http.post<any>(url + settings.AppRoutes.Auth.addLocations,body);
+    return this.http.post<any>(url + settings.AppRoutes.Auth.location,body);
   }
+
+  updateLocations(body: any){
+    return this.http.put<any>(url + settings.AppRoutes.Auth.location,body);
+  }
+
   deleteLocationDetails(locationId: number){
     const payload = { id: locationId, isDeleted: true };
-    return this.http.delete<any>(url + settings.AppRoutes.Auth.deleteLocations,{ body: payload });
+    return this.http.delete<any>(url + settings.AppRoutes.Auth.location,{ body: payload });
   }
-  getAllLocationDetails() {
-    return this.http.get<any>(url + settings.AppRoutes.Auth.getallLocations);
+  getAllLocationDetails(params: any): Observable<any> {
+    let httpParams = new HttpParams();
+    Object.keys(params).forEach((key) => {
+      if (params[key] !== null && params[key] !== undefined) {
+        httpParams = httpParams.append(key, params[key]);
+      }
+    });
+    return this.http.get<any>(url + settings.AppRoutes.Auth.location,{ params: httpParams});
   }
+
+  downloadLocationDetails(){
+    return this.http.get(`${url}${settings.AppRoutes.Auth.downloadLocation}`, { responseType: 'arraybuffer' as 'json' });
+  }
+
   //----------------------------For Scope-------------------------------------//
   addScopeDetails(body: any) {
     return this.http.post<any>(url + settings.AppRoutes.Auth.scope, body);
@@ -94,6 +121,10 @@ export class MasterDataService {
     return this.http.put<any>(url + settings.AppRoutes.Auth.scope, body);
   }
 
+  downloadScopeDetails(){
+    return this.http.get(`${url}${settings.AppRoutes.Auth.downloadScope}`, { responseType: 'arraybuffer' as 'json' });
+  }
+
   //----------------------Prduct Category------------------------------//
   getCategoryDetails(params: any): Observable<any> {
     let httpParams = new HttpParams();
@@ -111,5 +142,15 @@ export class MasterDataService {
 
   updateCateogryDetails(body: any){
     return this.http.put<any>(url + settings.AppRoutes.Auth.category, body);
+  }
+
+  
+  downloadCategoryDetails(){
+    return this.http.get(`${url}${settings.AppRoutes.Auth.downloadCategory}`, { responseType: 'arraybuffer' as 'json' });
+  }
+  //-------------------------------------country----------------------//
+
+  getAllCountryDetails() {
+    return this.http.get<any>(url + settings.AppRoutes.Auth.country);
   }
 }

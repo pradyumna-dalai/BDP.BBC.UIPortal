@@ -8,10 +8,10 @@ export namespace AppRoutes {
 
         // --------------------get all master dropdown data-----------------------//
 
-        public static readonly getProductName = "product";
+        public static readonly getProductName = "active-product";
         public static readonly getProductScope = "scope";
         public static readonly getProductCtegory = "category";
-        public static readonly getchargeCode = "charge-code";
+        public static readonly getchargeCode = "active-chargeCode";
         public static readonly getModeofTransport = "mode-of-transport";
         public static readonly getProjectStatus = "project-status";
         public static readonly getRegion = "region";
@@ -71,22 +71,33 @@ export namespace AppRoutes {
 
         //---------------------master-data----------------//
 
-        public static readonly getallLocations = "location";
+        public static readonly location = "location";
 
+        public static readonly country = "country";
 
-        public static readonly deleteLocations ="location";
+        public static readonly downloadLocation = "download-location";
 
-        public static readonly addLocations ="location";
         //--------------------------Scope ---------------//
         public static readonly scope ="scope";
 
+        public static readonly downloadScope = "download-scope";
+
         public static readonly category ="category";
+
+        public static readonly downloadCategory = "download-category";
+        
 
         public static readonly  chargecode = "charge-code";
 
+        public static readonly downloadChargecode = "download-chargeCode";
+
         public static readonly  product = "product";
 
+        public static readonly downloadProduct = "download-product";
+
         public static readonly  uom = "uom";
+
+        public static readonly downloadUOM = "download-uom";
     
 
 
