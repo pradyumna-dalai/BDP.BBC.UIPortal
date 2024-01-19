@@ -27,6 +27,10 @@ export class MasterDataService {
   editChargecode(body: any){
     return this.http.put<any>(url + settings.AppRoutes.Auth.chargecode, body);
   }
+
+  downloadChargeCodeDetails(){
+    return this.http.get(`${url}${settings.AppRoutes.Auth.downloadChargecode}`, { responseType: 'arraybuffer' as 'json' });
+  }
    //---------------------Prodcut----------------//
    addProdcut(body: any){
     return this.http.post<any>(url + settings.AppRoutes.Auth.product, body);
@@ -44,6 +48,9 @@ export class MasterDataService {
     return this.http.put<any>(url + settings.AppRoutes.Auth.product, body);
   }  
 
+  downloadProudctDetails(){
+    return this.http.get(`${url}${settings.AppRoutes.Auth.downloadProduct}`, { responseType: 'arraybuffer' as 'json' });
+  }
   //---------------------uom----------------//
   addUom(body: any){
     return this.http.post<any>(url + settings.AppRoutes.Auth.uom, body);
@@ -63,6 +70,10 @@ export class MasterDataService {
   }
   editUom(body: any){
     return this.http.put<any>(url + settings.AppRoutes.Auth.uom, body);
+  }
+
+  downloadUomDetails(){
+    return this.http.get(`${url}${settings.AppRoutes.Auth.downloadUOM}`, { responseType: 'arraybuffer' as 'json' });
   }
    //---------------------Locations----------------//
   addLocations(body: any){
