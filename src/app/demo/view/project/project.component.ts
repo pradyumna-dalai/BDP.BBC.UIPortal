@@ -90,7 +90,13 @@ export class ProjectComponent {
         });
         if (res.length >0) {
           console.log("dataUpdate",res);
-          this.proejctdetails = this.updateTable
+          this.proejctdetails = this.updateTable;
+          this.messageService.add({
+            key: 'successToast',
+            severity: 'success',
+            summary: 'Success!',
+            detail: 'Filter Data'
+          });
         } else {
           this.fetchAllProjectDetails();
           this.messageService.add({
