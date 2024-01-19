@@ -9,16 +9,16 @@
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
             <button type="button" pButton pRipple label="Clear" (click)="clear(dt2)" class="mr-2 mb-2"></button>
-            <button type="button" pButton pRipple label="Export" class="mr-2 mb-2" pTooltip="Export in Excel File" (click)="downloadExcel($event)" tooltipPosition="top"></button>
-            <button type="button" pButton pRipple label=" Add " (click)="showCreateScopeDialoge()"
-                icon="pi pi-plus" class="mr-2 mb-2"></button>
+            <button type="button" pButton pRipple label="Export" class="mr-2 mb-2" pTooltip="Export in Excel File"
+                (click)="downloadExcel($event)" tooltipPosition="top"></button>
+            <button type="button" pButton pRipple label=" Add " (click)="showCreateScopeDialoge()" icon="pi pi-plus"
+                class="mr-2 mb-2"></button>
         </div>
     </div>
-    <p-table #dt2 [value]="scopeDetails" dataKey="id" 
-        responsiveLayout="scroll" scrollHeight="530px" scrollDirection="both"
-        [globalFilterFields]="['name', 'product.name', 'description', 'status','createdBy','updatedBy','updatedDate','createdDate']" 
-        selectionMode="single" styleClass="p-datatable-gridlines" [resizableColumns]="true" (onSort)="onSort($event)"
-        >
+    <p-table #dt2 [value]="scopeDetails" dataKey="id" responsiveLayout="scroll" scrollHeight="530px"
+        scrollDirection="both"
+        [globalFilterFields]="['name', 'product.name', 'description', 'status','createdBy','updatedBy','updatedDate','createdDate']"
+        selectionMode="single" styleClass="p-datatable-gridlines" [resizableColumns]="true" (onSort)="onSort($event)">
 
         <ng-template pTemplate="header">
             <tr>
@@ -27,18 +27,18 @@
                     class="sticky-header">Status<p-sortIcon field="status"></p-sortIcon></th>
                 <th style="text-align: center; width: 200px" pSortableColumn="product.name" [frozen]="true"
                     class="sticky-header">Product Name
-                            <p-sortIcon field="product.name" class="sort-icon"></p-sortIcon>
-                            <p-columnFilter type="text" display="menu" field="product.name" pTooltip="Filter" tooltipPosition="right"
-                                class="column-filter icon-align"></p-columnFilter>
-                        
+                    <p-sortIcon field="product.name" class="sort-icon"></p-sortIcon>
+                    <p-columnFilter type="text" display="menu" field="product.name" pTooltip="Filter"
+                        tooltipPosition="right" class="column-filter icon-align"></p-columnFilter>
+
                 </th>
                 <th style="text-align: center; width: 200px" pSortableColumn="name" [frozen]="true"
                     class="sticky-header">
                     <!-- Product Scope<p-sortIcon field="name"></p-sortIcon> -->Product Scope
-                            <p-sortIcon field="name" class="sort-icon"></p-sortIcon>
-                            <p-columnFilter type="text" display="menu" field="name" pTooltip="Filter" tooltipPosition="right"
-                                class="column-filter icon-align"></p-columnFilter>
-                      
+                    <p-sortIcon field="name" class="sort-icon"></p-sortIcon>
+                    <p-columnFilter type="text" display="menu" field="name" pTooltip="Filter" tooltipPosition="right"
+                        class="column-filter icon-align"></p-columnFilter>
+
 
                 </th>
                 <th style="text-align: center; width: 200px" pSortableColumn="description" [frozen]="true"
@@ -79,15 +79,15 @@
         </ng-template>
     </p-table>
     <p-paginator (onPageChange)="onPageChange($event)" [rows]="10" [totalRecords]="totalRecords"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" (onSort)="onSort($event)"></p-paginator>
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[10,25,50]" (onSort)="onSort($event)"></p-paginator>
 </div>
 
 
-<p-dialog [(visible)]="displayCreateScopeDialog" [style]="{width: '40vw'}"  [resizable]="false"  [modal]="true" 
-    closable='true'   >
+<p-dialog [(visible)]="displayCreateScopeDialog" [style]="{width: '40vw'}" [resizable]="false" [modal]="true"
+    closable='true'>
     <ng-template pTemplate="header">
-        <h5 style="display: contents;">{{ editMode ? 'Edit Scope :' : 'Add New Scope :' }}</h5>
+        <h5 style="display: contents;">{{ editMode ? 'Edit Scope ' : 'Add New Scope ' }}</h5>
         <!-- <hr> -->
     </ng-template>
     <hr class="alignhr">
@@ -106,21 +106,20 @@
                         Product Name is required.
                     </div>
                 </div>
-                <div class="field col-12 md:col-6" >
+                <div class="field col-12 md:col-6">
                     <label>Product Scope<span class="required">*</span></label>
 
-                    <input id="productScope" type="text"   placeholder="Product Scope" 
+                    <input id="productScope" type="text" placeholder="Product Scope"
                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
                         formControlName="productScope">
                     <div
-                        *ngIf="ScopeForm.get('productScope')?.hasError('required') && ScopeForm.get('productScope')?.touched">
+                        *ngIf="ScopeForm.get('productScope')?.hasError('required') && ScopeForm.get('productScope')?.touched"    class="error-message">
                         Product Scope is required.
                     </div>
                 </div>
                 <div class="field col-12 md:col-6 ">
                     <label>Description</label>
-                    <textarea id="description" type="text" rows="2"   placeholder="Description"
-                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+                    <textarea id="description" type="text" rows="2"  cols="30" placeholder="Description" pInputTextarea
                         formControlName="description"></textarea>
                 </div>
 
@@ -147,7 +146,8 @@
     <ng-template pTemplate="footer">
         <p-button label="{{ editMode ? 'Update' : 'Add' }}" (click)="createProductScope()"
             [disabled]="!ScopeForm.valid"></p-button>&nbsp;&nbsp;
-        <p-button label="Cancel" (click)="displayCreateScopeDialog = false"  class="p-button-outlined mr-2 mb-2"></p-button>
+        <p-button label="Cancel" (click)="displayCreateScopeDialog = false"
+            class="p-button-outlined mr-2 mb-2"></p-button>
     </ng-template>
 </p-dialog>
 <p-toast></p-toast>

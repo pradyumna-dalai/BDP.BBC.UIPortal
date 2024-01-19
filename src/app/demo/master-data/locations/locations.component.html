@@ -9,16 +9,17 @@
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
             <button type="button" pButton pRipple label="Clear" (click)="clear(dt2)" class="mr-2 mb-2"></button>
-            <button type="button" pButton pRipple label="Export" class="mr-2 mb-2"  (click)="downloadExcel($event)" pTooltip="Export in Excel File" tooltipPosition="top"></button>
-            <button type="button" pButton pRipple label=" Add " (click)="showCreateLocationDialog()"
-                icon="pi pi-plus" class="mr-2 mb-2"></button>
+            <button type="button" pButton pRipple label="Export" class="mr-2 mb-2" (click)="downloadExcel($event)"
+                pTooltip="Export in Excel File" tooltipPosition="top"></button>
+            <button type="button" pButton pRipple label=" Add " (click)="showCreateLocationDialog()" icon="pi pi-plus"
+                class="mr-2 mb-2"></button>
         </div>
     </div>
     <p-table #dt2 [value]="locationdetails" dataKey="id" responsiveLayout="scroll" scrollHeight="530px"
         scrollDirection="both"
         [globalFilterFields]="['name', 'product.name', 'description', 'status','createdBy','updatedBy','updatedDate','createdDate']"
         selectionMode="single" styleClass="p-datatable-gridlines" [resizableColumns]="true">
-      
+
         <ng-template pTemplate="header">
             <tr>
                 <th style="text-align: center;width: 50px" [frozen]="true" class="sticky-header">Actions</th>
@@ -27,21 +28,21 @@
                     Status<p-sortIcon field="status"></p-sortIcon></th>
                 <th style="text-align: center; width: 200px" pSortableColumn="region" [frozen]="true"
                     class="sticky-header">Region
-                            <p-sortIcon field="region" class="sort-icon"></p-sortIcon>
-                            <p-columnFilter type="text" display="menu" field="region" pTooltip="Filter" tooltipPosition="right"
-                                class="column-filter icon-align"></p-columnFilter>
+                    <p-sortIcon field="region" class="sort-icon"></p-sortIcon>
+                    <p-columnFilter type="text" display="menu" field="region" pTooltip="Filter" tooltipPosition="right"
+                        class="column-filter icon-align"></p-columnFilter>
                 </th>
                 <th style="text-align: center; width: 200px" pSortableColumn="country" [frozen]="true"
                     class="sticky-header">Country
-                            <p-sortIcon field="country" class="sort-icon"></p-sortIcon>
-                            <p-columnFilter type="text" display="menu" field="country" pTooltip="Filter" tooltipPosition="right"
-                                class="column-filter icon-align"></p-columnFilter>
+                    <p-sortIcon field="country" class="sort-icon"></p-sortIcon>
+                    <p-columnFilter type="text" display="menu" field="country" pTooltip="Filter" tooltipPosition="right"
+                        class="column-filter icon-align"></p-columnFilter>
                 </th>
                 <th style="text-align: center; width: 200px" pSortableColumn="name" [frozen]="true"
                     class="sticky-header">Location Name
-                            <p-sortIcon field="name" class="sort-icon"></p-sortIcon>
-                            <p-columnFilter type="text" display="menu" field="name" pTooltip="Filter" tooltipPosition="right"
-                                class="column-filter icon-align"></p-columnFilter>
+                    <p-sortIcon field="name" class="sort-icon"></p-sortIcon>
+                    <p-columnFilter type="text" display="menu" field="name" pTooltip="Filter" tooltipPosition="right"
+                        class="column-filter icon-align"></p-columnFilter>
                 </th>
                 <th style="text-align: center; width: 200px" pSortableColumn="locationCode" [frozen]="true"
                     class="sticky-header">Location Code<p-sortIcon field="locationCode"></p-sortIcon></th>
@@ -91,9 +92,10 @@
 
 </div>
 
-<p-dialog [(visible)]="displayCreateLocationDialog"  [modal]="true"  [style]="{width: '40vw'}" [resizable]="false" closable='true'>
+<p-dialog [(visible)]="displayCreateLocationDialog" [modal]="true" [style]="{width: '40vw'}" [resizable]="false"
+    closable='true'>
     <ng-template pTemplate="header">
-        <h5 style="display: contents;">{{ editMode ? 'Edit Location :' : 'Add New Location :' }}</h5>&nbsp;
+        <h5 style="display: contents;">{{ editMode ? 'Edit Location ' : 'Add New Location ' }}</h5>&nbsp;
     </ng-template>
     <hr class="alignhr">
     <!-- <div class="tr-divider"></div> -->
@@ -102,7 +104,7 @@
             <div class="formgrid grid">
                 <div class="field col-12 md:col-5">
                     <label>Locaton Name<span class="required">*</span></label>
-                    <input id="name" type="text" formControlName="name"   placeholder="Location Name"
+                    <input id="name" type="text" formControlName="name" placeholder="Location Name"
                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
                     <div *ngIf="locationForm.get('name')?.hasError('required') && locationForm.get('name')?.touched">
                         Location name is required.
@@ -110,7 +112,7 @@
                 </div>
                 <div class="field col-12 md:col-5" style="margin-left: 70px;">
                     <label>Location Code<span class="required">*</span></label>
-                    <input id="locationCode" type="text" formControlName="locationCode"   placeholder="Location Code"
+                    <input id="locationCode" type="text" formControlName="locationCode" placeholder="Location Code"
                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 
                     <div
@@ -132,13 +134,13 @@
                 <div class="field col-12 md:col-5" style="margin-left: 70px;">
                     <label>Country<span class="required">*</span></label>
                     <p-dropdown [options]="countryOptions" appendTo="body" formControlName="country"
-                        placeholder="Select Country" optionLabel="name" optionValue="id" [filter]="true"
-                        filterBy="name" [style]="{ 'width': '100%' }">
+                        placeholder="Select Country" optionLabel="name" optionValue="id" [filter]="true" filterBy="name"
+                        [style]="{ 'width': '100%' }">
                         <ng-template let-item pTemplate="option">
                             <i [ngClass]="item.flagClass"></i>
                             {{ item.name }}
-                          </ng-template>
-                    
+                        </ng-template>
+
                     </p-dropdown>
                     <div
                         *ngIf="locationForm.get('country')?.hasError('required') && locationForm.get('country')?.touched">
@@ -148,8 +150,7 @@
 
                 <div class="field col-12 md:col-5 ">
                     <label>Description</label>
-                    <textarea id="description" type="text" rows="2"   placeholder="Description"
-                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+                    <textarea id="description" type="text" rows="2" cols="30" placeholder="Description" pInputTextarea
                         formControlName="description"></textarea>
                 </div>
                 <div class="field col-12 md:col-5"
