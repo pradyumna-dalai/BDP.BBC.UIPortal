@@ -1,8 +1,4 @@
-.button {
-  background-color: #fff;
-  border-color: #d7d8d9;
-  color: var(--bdpFontPrimary);
-}
+
 :host ::ng-deep .p-paginator {
 justify-content: flex-end;
 }
@@ -13,52 +9,9 @@ top: 0;
 background-color: #f8f9fa;
 z-index: 100;
 }
-i {
-  color: rgb(104, 103, 103);
-  font-size: 12px;
-}
 
 
-.p-field-radiobutton {
-  flex-direction: column;
-  align-items: flex-start;                
-  .p-card{
-      width: 100%;
-  }
-  ul {
-      list-style-type: none;
-      padding: 0px;
-      margin: 0px;
-      width: 100%;
 
-      li {
-          display: inline-block;
-          width: 20%;
-          // float: left;
-          margin-top: -10px;
-          &:nth-child(1) {
-              width: 75%;                            
-          }
-          
-      }
-
-      label {
-          margin-left: 5px;
-          line-height: 1.3;
-      }
-  }
-
-  .p-dialog-footer {
-    .p-button {
-        width: 100px;
-        // background-color: #2d74ff;
-        float: right;
-    }
-}  }
-.required {
-  color: red;
-  margin-left: 5px; 
-}
 
 .tag-success,
 .tag-danger {
@@ -103,4 +56,7 @@ color: red;
 }
 .icon-align{
   position: relative;top: 3px;
+}
+.error-message {
+  color: red;
 }
