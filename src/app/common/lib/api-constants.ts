@@ -75,16 +75,29 @@ export namespace AppRoutes {
 
         public static readonly country = "country";
 
+        public static readonly downloadLocation = "download-location";
+
         //--------------------------Scope ---------------//
         public static readonly scope ="scope";
 
+        public static readonly downloadScope = "download-scope";
+
         public static readonly category ="category";
+
+        public static readonly downloadCategory = "download-category";
+        
 
         public static readonly  chargecode = "charge-code";
 
+        public static readonly downloadChargecode = "download-chargeCode";
+
         public static readonly  product = "product";
 
+        public static readonly downloadProduct = "download-product";
+
         public static readonly  uom = "uom";
+
+        public static readonly downloadUOM = "download-uom";
     
 
 

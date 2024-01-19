@@ -22,14 +22,14 @@ export class ScopeComponent {
   scopeDetails: any[] = [];
   editMode: boolean = false;
   selectedScope: any;
-   // Pagination properties
-   currentPage: number = 1;
-   pageSize: number = 10;
-   sortField: string = ''; // Initial sort field
-   sortOrder: number = 1; // 1 for ascending, -1 for descending
-    totalRecords: any = 10;
-    first: any = 0;
-    rows: any = 10;
+  // Pagination properties
+  currentPage: number = 1;
+  pageSize: number = 10;
+  sortField: string = ''; // Initial sort field
+  sortOrder: number = 1; // 1 for ascending, -1 for descending
+  totalRecords: any = 10;
+  first: any = 0;
+  rows: any = 10;
 
 
 
@@ -173,7 +173,7 @@ export class ScopeComponent {
 
   clear(table: Table) {
     table.clear();
-}
+  }
   //-------------------------------end---------------------------------------------------//
 
   //------------------------------UpdateScope--------------------------------------------//
@@ -194,5 +194,35 @@ export class ScopeComponent {
       this.displayCreateScopeDialog = true;
     }
 
+  }
+
+  cancelUpdate() {
+    // Reset the form when the "Cancel" button is clicked
+    this.ScopeForm.reset();
+    this.displayCreateScopeDialog = false;
+    this.editMode = false;
+
+  }
+
+
+  //-------------------Exoprt Excel-----------------------------------------------------//
+  downloadExcel(event: Event) {
+    event.preventDefault();
+
+    this.masterDataService.downloadLocationDetails().subscribe((res: any) => {
+      const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = 'ScopeDetails.xlsx';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      this.messageService.add({
+        key: 'successToast',
+        severity: 'success',
+        summary: 'Success!',
+        detail: 'Excel File Downloaded successfully.'
+      });
+    });
   }
 }
