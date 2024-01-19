@@ -69,7 +69,7 @@ export class CategoryComponent {
   getProdname() {
     this.MasterTableservice.getProductName().subscribe((res: any) => {
       if (res?.message == "success") {
-        this.procuctNamesOptions = res?.data?.product;
+        this.procuctNamesOptions = res?.data;
       } else {
         this.procuctNamesOptions = [];
       }
