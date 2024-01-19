@@ -1,3 +1,4 @@
+
 #bdpfilter .sidebar-header {
   display: flex;
   align-items: center;
@@ -6,12 +7,11 @@
   padding-bottom: 10px;
 }
 
-.field {
-  padding: 5px !important;
-  padding-bottom: 0px !important;
-  font-size: 13px;
+.field{
+padding: 5px !important;
+padding-bottom: 0px !important;
+font-size: 13px;
 }
-
 #bdpfilter .bdp-clear-filters {
   cursor: pointer;
   color: #007BFF;
@@ -24,18 +24,11 @@
 #bdpfilter .font-color-dark {
   color: #030303;
 }
-
-.filter-button {
-  border-radius: 6px;
-  display: flex;
-  justify-content: center;
-  height: 38px;
-  background: #4285f4;
+.filter-button{
+  border-radius: 6px;display: flex;justify-content: center;    height: 38px;background: #4285f4;
 }
-
-.centerContent {
-  display: flex;
-  align-items: center;
+.centerContent{
+display: flex; align-items: center;
 }
 
 #bdpfilter .bdp-filter-panel .bdp-visible-filters label {
@@ -47,159 +40,134 @@
   overflow: hidden !important;
   white-space: nowrap !important;
   word-wrap: break-word !important;
+    
 
-
-}
-
-#bdpfilter .bdp-filter-dropdown .p-dropdown-items-wrapper {
-  max-width: 200px;
-  overflow: hidden;
-  white-space: nowrap;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.hr {
+  }
+  #bdpfilter .bdp-filter-dropdown .p-dropdown-items-wrapper {
+      max-width: 200px;
+      overflow: hidden;
+      white-space: nowrap;
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+    }
+.hr{
   background-color: black;
 }
-
-#bdpfilter .sidebar-button {
+#bdpfilter .sidebar-button{
   width: 100px;
 }
-
 /* Add this CSS to your component's stylesheet */
 
 /* Limit the width of the dropdown options */
 #bdpfilter .p-dropdown-panel .p-dropdown-items {
-  max-width: 300px;
-  /* Adjust the max-width as needed */
+max-width: 300px; /* Adjust the max-width as needed */
 }
 
 /* Break long option labels into multiple lines */
 #bdpfilter .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
-  white-space: normal;
+white-space: normal;
 }
-
 #bdpfilter .p-dropdown-label {
-  width: 89%;
-  /* Adjust the width as needed */
+width: 89%; /* Adjust the width as needed */
 }
 
 /* Additional styling for label */
 #bdpfilter .p-dropdown-label .p-dropdown-label-text {
-  display: block;
-  white-space: normal;
+display: block;
+white-space: normal;
 }
 
-.date_pick {
-  height: 35px;
-  width: 100%;
-  color: gray;
-  border: 1px solid lightgray;
-  border-radius: 3px;
-  margin-bottom: 7px;
+.date_pick{
+height: 35px;
+width: 100%;
+color: gray;
+border: 1px solid lightgray;
+border-radius: 3px;
+margin-bottom: 7px;
 }
-
-.filter_row {
-  display: flex;
+.filter_row{
+display: flex;
 
 }
-
-.filter_btn_group {
-  display: flex;
-  align-items: center;
-  margin-top: 1.3rem;
-  justify-content: space-around;
+.filter_btn_group{
+display: flex;
+align-items: center;
+margin-top: 1.3rem;
+justify-content: space-around;
 }
-
-label {
-  // font-size: 13px; *
-  font-weight: 600;
-  color: #2196f3;
+label{
+// font-size: 13px; *
+font-weight: 600;
+color: #2196f3;
 }
-
 ::ng-deep .p-calendar .p-datepicker {
-  min-width: 100%;
-  z-index: 1001;
-  transform-origin: center bottom;
-  left: 0rem !important;
-  min-width: 25rem !important
+min-width: 100%;
+z-index: 1001;
+transform-origin: center bottom;
+left: 0rem !important;
+min-width: 25rem !important
 }
 
 ::ng-deep .p-datepicker table th {
-  padding: 0.5rem;
-  text-align: center;
+padding: 0.5rem;
+text-align: center;
 }
-
-.tt {
-  background: #f8f9fa;
-  display: flex;
-  margin-bottom: 0.7rem;
-  justify-content: space-around;
+.tt{
+background: #f8f9fa;
+display: flex;
+margin-bottom: 0.7rem;
+justify-content: space-around;
 }
-
 ::ng-deep .small-calendar {
-  width: 200px !important;
-  /* Adjust the width as needed */
-  height: 200px !important;
-  /* Adjust the height as needed */
-  font-size: 12px !important;
-  /* Adjust the font size as needed */
+width: 200px !important; /* Adjust the width as needed */
+height: 200px !important; /* Adjust the height as needed */
+font-size: 12px !important; /* Adjust the font size as needed */
 }
-
 ::ng-deep .md-drppicker {
-  position: absolute;
-  font-family: Roboto, sans-serif;
-  color: inherit;
-  border-radius: 4px;
-  width: 499px !important;
-  padding: 4px;
-  margin-top: -10px;
-  overflow: hidden;
-  z-index: 1000;
-  font-size: 10px !important;
-  background-color: #fff;
-  box-shadow: 0 2px 4px #00000029, 0 2px 8px #0000001f;
-  /* height: 231px; */
+position: absolute;
+font-family: Roboto,sans-serif;
+color: inherit;
+border-radius: 4px;
+width: 499px !important;
+padding: 4px;
+margin-top: -10px;
+overflow: hidden;
+z-index: 1000;
+font-size: 10px !important;
+background-color: #fff;
+box-shadow: 0 2px 4px #00000029, 0 2px 8px #0000001f;
+/* height: 231px; */
 }
-
 ::ng-deep .md-drppicker .btn {
-  position: relative;
-  overflow: hidden;
-  border-width: 0;
-  outline: none;
-  padding: 6px 6px !important;
-  cursor: pointer;
-  border-radius: 2px;
-  box-shadow: 0 1px 4px #0009;
-  background-color: #3f51b5;
-  color: #ecf0f1;
-  transition: background-color .4s;
-  height: auto;
-  text-transform: uppercase;
-  line-height: 8px !important;
-  border: none;
-  padding-left: 3px !important;
-  padding-right: 1px !important;
+position: relative;
+overflow: hidden;
+border-width: 0;
+outline: none;
+padding: 6px 6px !important;
+cursor: pointer;
+border-radius: 2px;
+box-shadow: 0 1px 4px #0009;
+background-color: #3f51b5;
+color: #ecf0f1;
+transition: background-color .4s;
+height: auto;
+text-transform: uppercase;
+line-height: 8px !important;
+border: none;
+padding-left: 3px !important;
+padding-right: 1px !important;
 }
-
-::ng-deep .right {
-  display: none !important;
+::ng-deep .right{
+display: none !important;
 }
+::ng-deep .md-drppicker{
+top: auto;
+left: 0px; 
 
-::ng-deep .md-drppicker {
-  top: auto;
-  left: 0px;
-
-  right: auto;
-  width: 247px !important;
+right: auto;
+width: 247px !important;
 }
-
-::ng-deep .p-dropdown {
-  max-width: 10rem;
-}
-
 // ::ng-deep .p-dropdown{
 //   width: 11rem !important;
 // }
