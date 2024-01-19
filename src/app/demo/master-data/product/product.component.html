@@ -1,11 +1,15 @@
 <div class="card">
     <div class="grid">
         <div class="col-6">
-            <h4>Product</h4>
+            <span class="p-input-icon-right">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                    placeholder="Search Keyword" />
+            </span>
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
             <button type="button" pButton pRipple label="Clear" (click)="clear(dt1)" class="mr-2 mb-2"></button>
-            <button type="button" pButton pRipple label="Export" pTooltip="Export in Excel File" class="mr-2 mb-2"></button>
+            <button type="button" pButton pRipple label="Export" pTooltip="Export in Excel File" class="mr-2 mb-2" (click)="downloadExcel($event)"></button>
             <button type="button" icon="pi pi-plus" pButton pRipple label="Add" (click)="showDialog()" class="mr-2 mb-2"></button>
         </div>
     </div>
@@ -54,17 +58,6 @@ scrollHeight="530px" scrollDirection="both"
                 </th>
                
 
-            </tr>
-            <tr><th></th>
-                <th></th>
-                <th>
-                    <p-columnFilter type="text" field="name"></p-columnFilter>
-                </th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-item>

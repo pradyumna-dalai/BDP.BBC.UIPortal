@@ -202,6 +202,7 @@ export class CategoryComponent {
 
   clear(table: Table) {
     table.clear();
+    this.onSort(Event);
   }
   //-------------------------------end---------------------------------------------------//
   //------------------------------UpdateScope--------------------------------------------//
@@ -247,7 +248,7 @@ export class CategoryComponent {
    downloadExcel(event: Event) {
     event.preventDefault();
   
-    this.masterDataService.downloadLocationDetails().subscribe((res: any) => {
+    this.masterDataService.downloadCategoryDetails().subscribe((res: any) => {
       const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(blob);

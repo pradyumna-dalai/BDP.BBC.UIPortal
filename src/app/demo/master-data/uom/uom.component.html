@@ -1,11 +1,15 @@
 <div class="card">
     <div class="grid">
         <div class="col-6">
-            <h4>UOM-Unit Of Measure</h4>
+            <span class="p-input-icon-right">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                    placeholder="Search Keyword" />
+            </span>
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
             <button type="button" pButton pRipple label="Clear" (click)="clear(dt1)" class="mr-2 mb-2"></button>
-            <button type="button" pButton pRipple label="Export" class="mr-2 mb-2"></button>
+            <button type="button" pButton pRipple label="Export" class="mr-2 mb-2" (click)="downloadExcel($event)"></button>
             <button type="button" icon="pi pi-plus" pButton pRipple label="Add" (click)="showDialog()" class="mr-2 mb-2"></button>
         </div>
     </div>
@@ -13,15 +17,6 @@
 selectionMode="single" dataKey="id" styleClass="p-datatable-gridlines" responsiveLayout="scroll"
  scrollHeight="530px" scrollDirection="both" [globalFilterFields]="['name', 'description','status','createdBy','updatedBy','createdDate','updatedDate']" [resizableColumns]="true"
 (onPage)="onPageChange($event)" (onSort)="onSort($event)">
-<ng-template pTemplate="caption">
-    <div class="flex">
-        <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
-        <span class="p-input-icon-left ml-auto">
-            <i class="pi pi-search"></i>
-            <input pInputText type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
-        </span>
-    </div>
-</ng-template>
         <ng-template pTemplate="header">
             <tr>
                 <th style="text-align: center;width: 50px" [frozen]="true" class="sticky-header">Actions</th>
@@ -55,17 +50,7 @@ selectionMode="single" dataKey="id" styleClass="p-datatable-gridlines" responsiv
                
 
             </tr>
-            <tr><th></th>
-                <th></th>
-                <th>
-                    <p-columnFilter type="text" field="name"></p-columnFilter>
-                </th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-            </tr>
+           
         </ng-template>
         <ng-template pTemplate="body" let-item>
             <tr>

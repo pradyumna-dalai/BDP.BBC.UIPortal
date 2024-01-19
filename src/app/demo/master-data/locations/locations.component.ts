@@ -104,6 +104,7 @@ export class LocationsComponent {
 
   clear(table: Table) {
     table.clear();
+    this.onSort(Event);
   }
   //---------------------------------end------------------------------------------//
 
