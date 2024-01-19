@@ -92,7 +92,13 @@ export class ProjectComponent {
           console.log("dataUpdate",res);
           this.proejctdetails = this.updateTable
         } else {
-          this.fetchAllProjectDetails()
+          this.fetchAllProjectDetails();
+          this.messageService.add({
+            key: 'errorToast',
+            severity: 'error',
+            summary: 'Error!',
+            detail: 'No Data' 
+          });
         }
       }
       

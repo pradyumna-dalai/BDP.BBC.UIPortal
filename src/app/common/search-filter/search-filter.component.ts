@@ -29,9 +29,9 @@ export class SearchFilterComponent {
   isProjectStageSelected: boolean = false;
   visible: boolean = false;
   isapply: boolean = false;
-  newSearchfilter:[]
-  constructor(private filterService: FilterService, public MasterTableservice: MasterTableService, 
-   private projectService:ProjectsService) {
+  newSearchfilter: []
+  constructor(private filterService: FilterService, public MasterTableservice: MasterTableService,
+    private projectService: ProjectsService) {
 
   }
 
@@ -49,16 +49,14 @@ export class SearchFilterComponent {
   onSearchClick() {
     // Implement search logic 
   }
-    formatDate(date: Date): string {
-      return dayjs(date).format('YYYY-MM-DD');
-    }
+  formatDate(date: Date): string {
+    return dayjs(date).format('YYYY-MM-DD');
+  }
 
   onClearFilterClick() {
     console.log("Clearing filters...");
     this.statusOptions = null;
     this.projectSuggestions = null;
-    this.startDate = null;
-    this.endDate = null;
     this.managerOptions = null;
     this.opportunityManagers = null;
     console.log("Filters cleared.");
@@ -138,69 +136,69 @@ export class SearchFilterComponent {
       }
     })
   }
-managerId:any;
-  fecthOppManager(){
+  managerId: any;
+  fecthOppManager() {
     let managerId = this.opportunityManagers.map((ele) => ele.value);
-    console.log("id",managerId)
+    console.log("id", managerId)
   }
-  oppourtunity_name:any;
-  opportunity_manager:any;
-    selected: {startDate: Date, endDate: Date};
-  getProjectFilter(){
-    let payload= {
+  oppourtunity_name: any;
+  opportunity_manager: any;
+  selected: { startDate: Date, endDate: Date };
+  getProjectFilter() {
+    let payload = {
       "status": {
-          "id": this.selectedStatus
+        "id": this.selectedStatus
       },
       // "projectName": null,
       "projectStage": {
         "id": this.selectedStage
-    },
+      },
       "company": {
         "id": this.selectedProject
-    },
+      },
       "opportunityName": {
-          "id": this.selectedProject
+        "id": this.selectedProject
       },
       "opportunityManager": {
-          "id": this.opportunity_manager
+        "id": this.opportunity_manager
       },
-      "startDate":this.formatDate(this.selected.startDate),
-      "endDate":this.formatDate(this.selected.endDate),
-  }
-  if (payload.status.id === 'Invalid Date') {
-    payload.status = null;
-  }
-  if (payload.opportunityName.id === undefined ) {
-    payload.opportunityName = null;
-  }
-  if (payload.opportunityManager.id === undefined || payload.opportunityManager.id === '') {
-    payload.opportunityManager = null;
-  }
- 
-  if (payload.startDate === 'Invalid Date') {
-    payload.startDate = null;
-  }
-  if (payload.endDate === 'Invalid Date') {
-    payload.endDate = null;
-  }
-  console.log("payload",payload)
-  this.projectService.advanceSearchFilter(payload).subscribe(
-    (response) => {
-      this.newSearchfilter = response
-      this.projectService.updateData(this.newSearchfilter);
-    },
-    (error) => {
-            console.error('Error:', error);
+      "startDate": this.formatDate(this.selected.startDate),
+      "endDate": this.formatDate(this.selected.endDate),
     }
-  );
+    if (payload.status.id === 'Invalid Date') {
+      payload.status = null;
+    }
+    if (payload.opportunityName.id === undefined) {
+      payload.opportunityName = null;
+    }
+    if (payload.opportunityManager.id === undefined || payload.opportunityManager.id === '') {
+      payload.opportunityManager = null;
+    }
+
+    if (payload.startDate === 'Invalid Date') {
+      payload.startDate = null;
+    }
+    if (payload.endDate === 'Invalid Date') {
+      payload.endDate = null;
+    }
+    console.log("payload", payload)
+    this.projectService.advanceSearchFilter(payload).subscribe(
+      (response) => {
+        this.newSearchfilter = response
+        this.projectService.updateData(this.newSearchfilter);
+      },
+      (error) => {
+        console.error('Error:', error);
+      }
+    );
     this.visible = false;
     this.isapply = true;
 
   }
 
-  
-  onclickShow()
-  {
-    this.visible = !this.visible
+
+  onclickShow() {
+    this.visible = !this.visible;
+    this.selected = null;
   }
 }
