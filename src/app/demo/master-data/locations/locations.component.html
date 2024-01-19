@@ -53,37 +53,22 @@
                     class="sticky-header">
                     Status<p-sortIcon field="status"></p-sortIcon></th>
                 <th style="text-align: center; width: 200px" pSortableColumn="region" [frozen]="true"
-                    class="sticky-header">
-                    <div class="header-container">
-                        <span class="header-text">Region</span>
-                        <div class="icon-container">
+                    class="sticky-header">Region
                             <p-sortIcon field="region" class="sort-icon"></p-sortIcon>
                             <p-columnFilter type="text" display="menu" field="region" pTooltip="Filter" tooltipPosition="right"
-                                class="column-filter"></p-columnFilter>
-                        </div>
-                    </div>
+                                class="column-filter icon-align"></p-columnFilter>
                 </th>
                 <th style="text-align: center; width: 200px" pSortableColumn="country" [frozen]="true"
-                    class="sticky-header">
-                    <div class="header-container">
-                        <span class="header-text">Country</span>
-                        <div class="icon-container">
+                    class="sticky-header">Country
                             <p-sortIcon field="country" class="sort-icon"></p-sortIcon>
                             <p-columnFilter type="text" display="menu" field="country" pTooltip="Filter" tooltipPosition="right"
-                                class="column-filter"></p-columnFilter>
-                        </div>
-                    </div>
+                                class="column-filter icon-align"></p-columnFilter>
                 </th>
                 <th style="text-align: center; width: 200px" pSortableColumn="name" [frozen]="true"
-                    class="sticky-header">
-                    <div class="header-container">
-                        <span class="header-text">Location Name</span>
-                        <div class="icon-container">
+                    class="sticky-header">Location Name
                             <p-sortIcon field="name" class="sort-icon"></p-sortIcon>
                             <p-columnFilter type="text" display="menu" field="name" pTooltip="Filter" tooltipPosition="right"
-                                class="column-filter"></p-columnFilter>
-                        </div>
-                    </div>
+                                class="column-filter icon-align"></p-columnFilter>
                 </th>
                 <th style="text-align: center; width: 200px" pSortableColumn="locationCode" [frozen]="true"
                     class="sticky-header">Location Code<p-sortIcon field="locationCode"></p-sortIcon></th>
@@ -142,7 +127,7 @@
         </ng-template>
         <ng-template pTemplate="emptymessage">
             <tr>
-                <td colspan="11">No Location found.</td>
+                <td style="text-align: center;" colspan="18">No Data found.</td>
             </tr>
         </ng-template>
     </p-table>

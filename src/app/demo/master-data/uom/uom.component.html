@@ -9,7 +9,7 @@
         <div class="col-6" style="display: flex;justify-content: flex-end;">
             <button type="button" pButton pRipple label="Clear" (click)="clear(dt1)" class="mr-2 mb-2"></button>
             <button type="button" pButton pRipple label="Export" class="mr-2 mb-2"></button>
-            <button type="button" pButton pRipple label="Add" (click)="showDialog()" class="mr-2 mb-2"></button>
+            <button type="button" icon="pi pi-plus" pButton pRipple label="Add" (click)="showDialog()" class="mr-2 mb-2"></button>
         </div>
     </div>
 <p-table #dt1 [value]="uomtdetails"
@@ -23,10 +23,10 @@ selectionMode="single" dataKey="id" styleClass="p-datatable-gridlines" responsiv
                 class="sticky-header">Status<p-sortIcon field="status"></p-sortIcon>
                 </th>
                 <th style="text-align: center; width: 300px" pSortableColumn="name" [frozen]="true"
-                    class="sticky-header">
+                    class="sticky-header" >
                     UOM<p-sortIcon field="name"></p-sortIcon>
                     <p-columnFilter type="text" display="menu" field="name" pTooltip="Filter" tooltipPosition="right"
-                                class="column-filter"></p-columnFilter>
+                                class="column-filter icon-align"></p-columnFilter>
                 </th>
                 <th style="text-align: center; width: 200px"  [frozen]="true"
                     class="sticky-header">
@@ -92,7 +92,7 @@ selectionMode="single" dataKey="id" styleClass="p-datatable-gridlines" responsiv
                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                 [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]"></p-paginator>
 </div>
-<p-dialog header="Charge Code" [(visible)]="visibleDialog" [style]="{width: '30vw',height: '35rem'}">
+<p-dialog header="Charge Code" [(visible)]="visibleDialog"  [modal]="true"  [style]="{width: '30vw',height: '35rem'}">
     <ng-template pTemplate="header">
         <div style="width: 100%;">
             <h5 style="display: contents;">{{ modeTitle }}&nbsp;UOM</h5>

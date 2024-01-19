@@ -46,37 +46,23 @@
 
                 <th style="text-align: center; width: 200px;" pSortableColumn="scope.product.name" [frozen]="true"
                     class="sticky-header">
-                    <div class="header-container">
-                        <span class="header-text">Product Name</span>
-                        <div class="icon-container">
+                        Product Name
                             <p-sortIcon field="scope.product.name" class="sort-icon"></p-sortIcon>
                             <p-columnFilter type="text" display="menu" field="scope.product.name"
-                                class="column-filter" pTooltip="Filter" tooltipPosition="right"></p-columnFilter>
-                        </div>
-                    </div>
+                                class="column-filter icon-align" pTooltip="Filter" tooltipPosition="right"></p-columnFilter>
                 </th>
 
                 <th style="text-align: center; width: 200px" pSortableColumn="scope.name" [frozen]="true"
-                    class="sticky-header">
-                    <div class="header-container">
-                        <span class="header-text"> Product Scope</span>
-                        <div class="icon-container">
+                    class="sticky-header">Product Scope
                             <p-sortIcon field="scope.name" class="sort-icon"></p-sortIcon>
                             <p-columnFilter type="text" display="menu" field="scope.name"
-                                class="column-filter" pTooltip="Filter" tooltipPosition="right"></p-columnFilter>
-                        </div>
-                    </div>
+                                class="column-filter icon-align" pTooltip="Filter" tooltipPosition="right"></p-columnFilter>
                 </th>
                 <th style="text-align: center; width: 200px" pSortableColumn="name" [frozen]="true"
-                    class="sticky-header">
-                    <div class="header-container">
-                        <span class="header-text"> Product Category</span>
-                        <div class="icon-container">
+                    class="sticky-header"> Product Category
                             <p-sortIcon field="name" class="sort-icon"></p-sortIcon>
                             <p-columnFilter type="text" display="menu" field="name"
-                                class="column-filter" pTooltip="Filter" tooltipPosition="right"></p-columnFilter>
-                        </div>
-                    </div>
+                                class="column-filter icon-align" pTooltip="Filter" tooltipPosition="right"></p-columnFilter>
                 </th>
 
                 <th style="text-align: center; width: 200px" pSortableColumn="description" [frozen]="true"
@@ -139,7 +125,7 @@
         </ng-template>
         <ng-template pTemplate="emptymessage">
             <tr>
-                <td colspan="10">No Category found.</td>
+                <td style="text-align: center;" colspan="18">No Data found.</td>
             </tr>
         </ng-template>
     </p-table>
