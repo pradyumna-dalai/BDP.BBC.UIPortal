@@ -10,6 +10,7 @@ import { CalendarModule } from 'primeng/calendar';
 //import moment from "moment";
 import dayjs from 'dayjs';
 import { HttpResponse } from '@angular/common/http';
+import { finalize } from 'rxjs';
 @Component({
   selector: 'app-project',
   templateUrl: './project.component.html',
@@ -56,23 +57,21 @@ export class ProjectComponent {
   ngOnInit() {
     this.fetchAllProjectDetails();
     this.selectedPredefinedDateRange = this.predefinedDateRanges[0];
-    this.projectsService.data$.subscribe((res)=>{
-      
-      if(res > 0){
-        this.isloader = true;
+    this.projectsService.data$.subscribe((res)=> {
+      if (res && res.length) {
         this.getDataFromFilter();
-
       }
     })
     this.getDataFromFilter()
   }
   isloader:boolean= false;
   getDataFromFilter(){
-
-    this.projectsService.data$.subscribe((res:any)=>{
+    this.isloader = true
+    this.projectsService.data$.pipe(
+      finalize(()=> this.isloader = false)
+    ).subscribe((res:any)=>{
       if(Array.isArray(res)){
         this.updateTable =res?.map((item: any) => {
-          this.isloader = true;
           const opportunityManagers = item.projectInformation?.opportunityManager?.map(manager => manager?.name).join(', ');
           //console.log('opp',opportunityManagers);
           const formattedStartDate = this.datePipe.transform(item.projectInformation?.startDate, 'dd-MM-yyyy');
@@ -89,14 +88,23 @@ export class ProjectComponent {
             end_date: formattedEndDate,
           };
         });
-        if(res.length >0){
-         
+        if (res.length >0) {
           console.log("dataUpdate",res);
-          this.isloader= false;
-          this.proejctdetails = this.updateTable
-        }else{
-          this.proejctdetails;
-          this.fetchAllProjectDetails()
+          this.proejctdetails = this.updateTable;
+          this.messageService.add({
+            key: 'successToast',
+            severity: 'success',
+            summary: 'Success!',
+            detail: 'Filter Data'
+          });
+        } else {
+          this.fetchAllProjectDetails();
+          this.messageService.add({
+            key: 'errorToast',
+            severity: 'error',
+            summary: 'Error!',
+            detail: 'No Data' 
+          });
         }
       }
       
