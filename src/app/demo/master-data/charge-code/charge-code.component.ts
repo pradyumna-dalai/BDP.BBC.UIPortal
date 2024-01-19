@@ -39,7 +39,7 @@ export class ChargeCodeComponent {
      private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService) {
     this.breadcrumbService.setItems([
       { label: 'Master Data Management' },
-      { label: 'ChargeCode' }
+      { label: 'Charge Code' }
     ]);
   }
   ngOnInit() {
@@ -129,7 +129,7 @@ export class ChargeCodeComponent {
     if (selectedItem) {
         this.myForm.setValue({
             id: selectedItem.id,
-            chargeCode: selectedItem.chargeCode_name,
+            chargeCode: selectedItem.name,
             description: selectedItem.description,
             status: selectedItem.status ? 'active' : 'inactive',
         });

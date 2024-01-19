@@ -35,7 +35,7 @@ export class UOMComponent implements AfterViewInit{
     private fb: FormBuilder, private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService) {
     this.breadcrumbService.setItems([
       { label: 'Master Data Management' },
-      { label: 'UOM-Unit oOf Measure' }
+      { label: 'UOM-Unit Of Measure' }
     ]);
   }
   ngAfterViewInit(): void {
@@ -127,7 +127,7 @@ export class UOMComponent implements AfterViewInit{
     if (selectedItem) {
         this.myForm.setValue({
             id: selectedItem.id,
-            uom_name: selectedItem.uomName,
+            uom_name: selectedItem.name,
             description: selectedItem.description,
             status: selectedItem.status ? 'active' : 'inactive',
         });

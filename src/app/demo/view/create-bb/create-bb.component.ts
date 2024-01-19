@@ -557,7 +557,7 @@ showDialogCommercialCard() {
     this.procuctCategoryOptions = [];
     this.MasterTableservice.getProductName().subscribe((res: any) => {
       if (res?.message == "success") {
-        this.procuctNamesOptions = res?.data?.product;
+        this.procuctNamesOptions = res?.data;
       } else {
         this.procuctNamesOptions = [];
       }
@@ -594,7 +594,7 @@ showDialogCommercialCard() {
   getChargeCode() {
     this.MasterTableservice.getChargeCode().subscribe((res: any) => {
       if (res?.message === "success") {
-        this.chargecodeOptions = res?.data.chargeCode; // Assign the chargeCode array
+        this.chargecodeOptions = res?.data; // Assign the chargeCode array
       } else {
         this.chargecodeOptions = [];
       }
