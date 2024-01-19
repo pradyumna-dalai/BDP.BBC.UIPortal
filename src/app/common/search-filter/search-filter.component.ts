@@ -73,6 +73,7 @@ export class SearchFilterComponent {
     this.selected = null;
     this.newSearchfilter = null;
     this.isapply = false;
+    this.projectService.updateData([]);
   }
 
 
@@ -189,7 +190,7 @@ managerId:any;
       this.projectService.updateData(this.newSearchfilter);
     },
     (error) => {
-      console.error('Error:', error);
+            console.error('Error:', error);
     }
   );
     this.visible = false;
