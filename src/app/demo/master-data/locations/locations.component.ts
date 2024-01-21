@@ -115,11 +115,6 @@ export class LocationsComponent {
     this.displayCreateLocationDialog = true;
   }
 
-  cancelCreateLocationDialog() {
-
-    this.displayCreateLocationDialog = false;
-  }
-
   saveLocation() {
 
     this.displayCreateLocationDialog = false;
@@ -144,7 +139,7 @@ export class LocationsComponent {
         this.countryOptions = res?.data;
         this.countryOptions = res?.data.map((country: any) => ({
           ...country,
-          flagClass: `flag-icon flag-icon-${country.iso2.toLowerCase()}`,
+          //  flagClass: `flag-icon flag-icon-${country.iso2.toLowerCase()}`,
         }));
       } else {
         this.countryOptions = [];
@@ -165,7 +160,7 @@ export class LocationsComponent {
         },
         // country: this.locationForm.value.country,
         description: this.locationForm.value.description,
-        status: this.locationForm.value.value.status === 'active' ? true : false,
+        status: this.locationForm.value.status === 'active' ? true : false,
         isDeleted: false,
       };
 
@@ -218,15 +213,28 @@ export class LocationsComponent {
   updateLocationDetails(location: any) {
     this.editMode = true;
     if (this.selectedLocation) {
+      const selectedRegion = this.selectedLocation.region;
+      const findRegionOption = (option: any) =>
+        option.name.toLowerCase() === selectedRegion.toLowerCase();
+      const regionOption = this.regionOptions.find(findRegionOption);
+      //console.log('fr',regionOption);
+      if (regionOption) {
+        this.locationForm.get('region').setValue(regionOption);
+
+      } else {
+        console.error('Region option not found for selectedRegion:', selectedRegion);
+      }
+
+
       this.locationForm.patchValue({
         name: this.selectedLocation.name,
         locationCode: this.selectedLocation.locationCode,
-        region: this.selectedLocation.region.name,
+        region: this.selectedLocation.region,
         country: this.selectedLocation.country.id,
         description: this.selectedLocation.description,
         status: this.selectedLocation.status ? 'active' : 'inactive',
       });
-
+      console.log('df', this.locationForm)
       this.displayCreateLocationDialog = true;
     }
 
@@ -236,7 +244,7 @@ export class LocationsComponent {
   //------------------export excel-----------------------------------------------------------//
   downloadExcel(event: Event) {
     event.preventDefault();
-  
+
     this.masterDataService.downloadLocationDetails().subscribe((res: any) => {
       const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
 
@@ -255,4 +263,12 @@ export class LocationsComponent {
     });
   }
 
+
+  cancelUpdate() {
+    // Reset the form when the "Cancel" button is clicked
+    this.locationForm.reset();
+    this.displayCreateLocationDialog = false;
+    this.editMode = false;
+
+  }
 }
