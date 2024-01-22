@@ -136,19 +136,29 @@ export class CreateBbComponent {
 
 
 
-onCancelClickSC() {
-  this.showUploaderror = false;
-  this.uploadError = "";
-  this.fileNameSC = "";
-  this.uploadFilesc = null;
+  onCancelClickSC() {
+    this.showUploaderror = false;
+    this.uploadError = "";
+    this.fileNameSC = "";
+    this.uploadFilesc = null;
   
-}
-onCancelClickCC(){
-  this.showUploaderror = false;
-  this.uploadError = "";
-  this.fileNameCC = "";
-  this.uploadFilecc = null;
-}
+    // Add the following line to reset the file input
+    const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = ''; // Clear the file input value
+    }
+  }
+  onCancelClickCC() {
+    this.showUploaderror = false;
+    this.uploadError = "";
+    this.fileNameCC = "";
+    this.uploadFilecc = null;
+    // Reset the file input value
+    const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
+    }
+  }
 
 onUploadSCExcel(event: any) {
   const file:File = event.target.files[0];
@@ -194,6 +204,11 @@ makeScopingCardApiServiceCall()
           summary: 'Success!',
           detail: 'Excel Uploaded successfully.'
         });
+         // Reset the file input value
+        const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
+        if (fileInput) {
+          fileInput.value = '';
+        }
       }
        else {
         console.log('Unexpected response:', res);
@@ -267,6 +282,11 @@ onPopupCancelSCClick(){
   this.uploadError = "";
   this.fileNameSC = "";
   this.uploadFilesc = null;
+  // Add the following line to reset the file input
+  const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
+  if (fileInput) {
+    fileInput.value = ''; // Clear the file input value
+  }
 }
 uploadFilecc: File | null = null;
 onUploadCCExcel(event) 
@@ -320,6 +340,16 @@ makeCommercialCardApiServiceCall() {
           summary: 'Success!',
           detail: 'Excel Uploaded successfully.'
         });
+  //        // Reset the file input value
+  // const fileInput = document.getElementById('fileUploadCC') as HTMLInputElement;
+  // if (fileInput) {
+  //   fileInput.value = ''; // Clear the file input value
+  // }
+  // Reset the file input value
+  const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
+  if (fileInput) {
+    fileInput.value = '';
+  }
       } else {
         console.log('Unexpected response:', res);
       }
@@ -403,6 +433,11 @@ onPopupCancelCClick(){
   this.uploadError = "";
   this.fileNameCC = "";
   this.uploadFilecc = null;
+  // Reset the file input value
+  const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
+  if (fileInput) {
+    fileInput.value = '';
+  }
 }
 downloadSampleSCExcel(event: Event) {
   event.preventDefault();
@@ -559,7 +594,7 @@ showDialogCommercialCard() {
   getChargeCode() {
     this.MasterTableservice.getChargeCode().subscribe((res: any) => {
       if (res?.message === "success") {
-        this.chargecodeOptions = res?.data.chargeCode; // Assign the chargeCode array
+        this.chargecodeOptions = res?.data; // Assign the chargeCode array
       } else {
         this.chargecodeOptions = [];
       }
@@ -580,6 +615,7 @@ showDialogCommercialCard() {
 
   saveAsDraft() {
     this.buildingBlockId = this.route.snapshot.paramMap.get('id');
+    let errorMessages: string[] = [];
     if (this.product_name == '' || this.product_name == null || this.product_name == undefined) {
       return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Product name is a required field.`, detail: '' });
     }
@@ -602,45 +638,45 @@ showDialogCommercialCard() {
 
     {
       id: this.buildingBlockId,
-      name: this.building_block_name,
+      name: this.building_block_name || '',
       product: {
-        id: this.product_name
+        id: this.product_name || ''
       },
       scope: {
-        id: this.product_scope
+        id: this.product_scope || ''
       },
       category: {
-        id: this.product_category
+        id: this.product_category || ''
       },
       chargeCode: {
-        id: this.charge_code
+        id: this.charge_code || ''
       },
-      modeOfTransport: mod
+      modeOfTransport: mod || []
       ,
       scopingCard: {
-        serviceDescription: this.seervice_desc,
-        customerRequirement: this.customer_requirement,
-        deliverable: this.deliverables,
-        stakeHolder: this.stakeholders_audience,
-        valueToPsaBdp: this.value_to_psa_bdp,
-        parameter: this.parameters,
-        configurable: this.configurables,
+        serviceDescription: this.seervice_desc || '',
+        customerRequirement: this.customer_requirement || '',
+        deliverable: this.deliverables || '',
+        stakeHolder: this.stakeholders_audience || '',
+        valueToPsaBdp: this.value_to_psa_bdp || '',
+        parameter: this.parameters || '',
+        configurable: this.configurables || '',
       },
-      operationsCard: {
-        card: ""
-      },
+      // operationsCard: {
+      //   card: ""
+      // },
       commercialCard: {
-        serviceDescription: this.seervice_desc,
-        customerRequirement: this.customer_requirement,
-        psaBdpValueStatement: this.cvalue_to_psa_bdp,
-        standardService: this.standard_service,
-        sow: this.sow,
-        prerequisiteInfo: this.pre_requisite_info,
-        combinedValue: this.combined_value,
-        dos: this.do_s,
-        donts: this.don_s,
-        configurable: this.configurables
-      }
+        serviceDescription: this.seervice_desc || '',
+        customerRequirement: this.customer_requirement || '',
+        psaBdpValueStatement: this.cvalue_to_psa_bdp || '',
+        standardService: this.standard_service || '',
+        sow: this.sow || '',
+        prerequisiteInfo: this.pre_requisite_info || '',
+        combinedValue: this.combined_value || '',
+        dos: this.do_s || '',
+        donts: this.don_s || '',
+        configurable: this.configurables || ''
+      },
 
     }
     this.CreateBuildingBlockservice.saveEditBuildingBlocks(1, body).subscribe(
@@ -658,13 +694,15 @@ showDialogCommercialCard() {
         }, 1000); 
       },
       (error) => {
-        console.error('Error saving draft:', error);
-
+       // console.error('Error saving draft:', error);
         if (error && error.status === 400) {
           const errorMessage = error.error?.message;
           const data = error.error?.data;
-          console.log('error', errorMessage)
-          console.log('error', data)
+        //  console.log('error', errorMessage)
+        //  console.log('error', data)
+          if (data && data.length > 0) {
+            this.formattedErrors = data.join('\n');
+          }
           if (data && data.includes('Block name exist')) {
             // Handle the case where the block name already exists
             this.messageService.add({
@@ -678,24 +716,19 @@ showDialogCommercialCard() {
               key: 'errorToast',
               severity: 'error',
               summary: 'Error!',
-              detail: 'Fill required field(s).'
+              detail: this.formattedErrors 
             });
           } else {
             this.messageService.add({
               key: 'errorToast',
               severity: 'error',
               summary: 'Error!',
-              detail: 'Failed to save building block draft.'
+              detail: data || 'Failed to save building block Draft.'
+             
             });
           }
-        } else {
-          this.messageService.add({
-            key: 'errorToast',
-            severity: 'error',
-            summary: 'Error!',
-            detail: 'Failed to save building block draft.'
-          });
-        }
+      //    console.log('d',data);
+        } 
       }
     );
 
@@ -873,132 +906,7 @@ showDialogCommercialCard() {
         } 
       }
     );
-    // if (!this.isEditorContentValid(body.scopingCard.serviceDescription)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid service description. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    //  if (!this.isEditorContentValid(body.scopingCard.customerRequirement)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid Customer Requirement. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    //  if (!this.isEditorContentValid(body.scopingCard.deliverable)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid Deliverable. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    //  if (!this.isEditorContentValid(body.scopingCard.stakeHolder)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid StakeHolder. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    //  if (!this.isEditorContentValid(body.scopingCard.valueToPsaBdp)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid valueToPsaBdp. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    // if (!this.isEditorContentValid(body.scopingCard.parameter)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid Parameter. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    //  if (!this.isEditorContentValid(body.scopingCard.configurable)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid Parameter. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    //  if (!this.isEditorContentValid(body.commercialCard.psaBdpValueStatement)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid PsaBdpValueStatement in Commercial Card. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    //  if (!this.isEditorContentValid(body.commercialCard.standardService)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid Standard Service in Commercial Card. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    // if (!this.isEditorContentValid(body.commercialCard.sow)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid SOW in Commercial Card. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    //  if (!this.isEditorContentValid(body.commercialCard.prerequisiteInfo)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid PrerequisiteInfo in Commercial Card. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    //  if (!this.isEditorContentValid(body.commercialCard.combinedValue)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid CombinedValue in Commercial Card. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    //  if (!this.isEditorContentValid(body.commercialCard.dos)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid Dos in Commercial Card. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // }
-    // if (!this.isEditorContentValid(body.commercialCard.donts)) {                                                  
-    //   this.messageService.add({
-    //     key: 'errorToast',
-    //     severity: 'error',
-    //     summary: 'Error!',
-    //     detail: 'Invalid Donts in Commercial Card. Please enter meaningful content.'
-    //   });
-    //   return; 
-    // };
+ 
   }
 
   isSaveAsDraftDisabled(): boolean {
@@ -1007,7 +915,32 @@ showDialogCommercialCard() {
 
 
 //--------------------operation Card Details----------------//
+downloadSampleOpExcel(event: Event) {
+  event.preventDefault();
 
+  this.createBuildingBlockservice.downloadSampleOPExcel().subscribe((res: any) => {
+    // Assuming the response contains the file content
+    const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+    // Creating an anchor element to trigger the download
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = 'OperationCard.xlsx';
+    document.body.appendChild(link);
+
+    // Triggering the download
+    link.click();
+
+    // Removing the anchor element
+    document.body.removeChild(link);
+    this.messageService.add({
+      key: 'successToast',
+      severity: 'success',
+      summary: 'Success!',
+      detail: 'Sample Excel Downloaded successfully.'
+    });
+  });
+}
 showDialogOperationCard() {
   this.visibleOperationBox = true;
 }

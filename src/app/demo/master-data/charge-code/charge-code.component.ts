@@ -4,6 +4,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { AppBreadcrumbService } from 'src/app/app.breadcrumb.service';
 import { MasterDataService } from 'src/app/services/master-dataserivce/master-data.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { Table } from 'primeng/table';
 
 
 @Component({
@@ -23,11 +24,22 @@ export class ChargeCodeComponent {
   chargeCodedetails: any;
   editMode: boolean = false;
   modeTitle: string = 'Add';
+ // Pagination properties
+ currentPage: number = 1;
+ pageSize: number = 10;
+ sortField: string = ''; // Initial sort field
+ sortOrder: number = 1; // 1 for ascending, -1 for descending
+
+  totalRecords: any = 10;
+  first: any = 0;
+  rows: any = 10;
+
 
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,private fb: FormBuilder,
      private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService) {
     this.breadcrumbService.setItems([
-      { label: 'ChargeCode' }
+      { label: 'Master Data Management' },
+      { label: 'Charge Code' }
     ]);
   }
   ngOnInit() {
@@ -40,120 +52,183 @@ export class ChargeCodeComponent {
     });
     this.fetchAllChargeCodeDetails();
   }
+  getSeverity(status: boolean): string {
+    return status ? 'success' : 'danger'; 
+  }
+  getSeverityLabel(status: boolean): string {
+    return status ? 'Active' : 'Inactive';
+  }
+  
   showDialog() {
     this.visibleDialog = true;
+    this.myForm.reset({
+      status: 'inactive' // Set default value for 'status' on form reset
+  });
+    this.editMode= false;
+    this.modeTitle = 'Add';
   }
   onCancel(){
     this.visibleDialog = false;
+    this.myForm.reset({
+      status: 'inactive' // Set default value for 'status' on form reset
+  });
+    this.editMode= false;
   }
+ 
   fetchAllChargeCodeDetails() {
-    this.masterDataService.getAllChargecode().subscribe((res: any) => {
-      if (res?.message == "success") {
+    const params = {
+      pageNo: isNaN(this.currentPage) ? 0 : this.currentPage - 1,
+      pageSize: isNaN(this.pageSize) ? 10 : this.pageSize,
+      sortBy: this.sortField,
+      sortDir: this.sortOrder
+    };
+  
+    this.masterDataService.getAllChargecode(params).subscribe((res: any) => {
+      if (res?.message === "success") {
         this.chargeCodedetails = res.data.chargeCode.map((item: any) => {
           return {
             id: item.id, 
-            chargeCode_name: item.name,
+            name: item.name,
             description: item.description,
-            status: item.status
-
+            status: item.status,
+            createdBy: item.createdBy,
+            updatedBy: item.updatedBy,
+            createdDate: item.createdDate,
+            updatedDate: item.updatedDate,
           };
         });
-       // console.log("djdsf",this.locationdetails);
+  
+        this.totalRecords = res?.data.totalElements;
       } else {
         this.chargeCodedetails = [];
+        this.totalRecords = 0;
       }
     });
   }
-
+  clear(table: Table) {
+    table.clear();
+}
+  onPageChange(event: any) {
+    this.currentPage = event.page + 1;
+    this.pageSize = event.rows;
+    this.fetchAllChargeCodeDetails();
+  }
+  // Handle sorting event
+  onSort(event: any) {
+  
+    this.sortField = event.field;
+    this.sortOrder = (event.order === 1) ? 1 : -1;
+  
+    // Call the method to fetch data with sorting
+    this.fetchAllChargeCodeDetails();
+  }
  
   editChargecode(editId) {
     const selectedItem = this.chargeCodedetails.find(item => item.id === editId);
-  
+
     if (selectedItem) {
-      this.myForm.setValue({
-        id: selectedItem.id,
-        chargeCode: selectedItem.chargeCode_name,
-        description: selectedItem.description,
-        status: selectedItem.status,
-      });
-  
-      // Check the 'status' value and set the corresponding radio button
-      const statusControl = this.myForm.get('status');
-      if (statusControl.value === 'active') {
-        statusControl.setValue('active');
-      } else if (statusControl.value === 'inactive') {
-        statusControl.setValue('inactive');
-      }
-  
-      this.editMode = true;
-      this.visibleDialog = true;
-      // Set the mode and title for Edit
-      this.modeTitle = 'Edit';
+        this.myForm.setValue({
+            id: selectedItem.id,
+            chargeCode: selectedItem.name,
+            description: selectedItem.description,
+            status: selectedItem.status ? 'active' : 'inactive',
+        });
+
+        // Set the mode and title for Edit
+        this.modeTitle = 'Edit';
+
+        // Set editMode to true before opening the dialog
+        this.editMode = true;
+
+        // Use a timeout to ensure that the form value is set before opening the dialog
+        setTimeout(() => {
+            this.visibleDialog = true;
+        });
     }
-  }
-  SaveChargecode() {
-    const body = {
+}
+SaveChargecode() {
+  const statusValue = this.myForm.get('status').value;
+  const isStatusActive = statusValue === 'active';
+  const body = {
       id: this.myForm.get('id').value || '',
       name: this.myForm.get('chargeCode').value,
       description: this.myForm.get('description').value,
-      status: this.myForm.get('status').value,
+      status: isStatusActive,
       isDeleted: false
-    };
+  };
 
-    if (this.editMode) {
+  if (this.editMode) {
       // Editing an existing charge code
       this.masterDataService.editChargecode(body).subscribe(
-        (res) => {
-          this.visibleDialog = false;
-          this.messageService.add({
-            key: 'successToast',
-            severity: 'success',
-            summary: 'Success!',
-            detail: 'Charge Code is edited Successfully.'
-          });
-           // Reset the form on success
-            this.myForm.reset();
-        },
-        (error) => {
-          console.error('Error saving draft:', error);
-
-          this.messageService.add({
-            key: 'errorToast',
-            severity: 'error',
-            summary: 'Error!',
-            detail: 'Failed to edit Charge Code.'
-          });
-        }
+          (res) => {
+              this.handleSuccess();
+          },
+          (error) => {
+              this.handleError();
+          }
       );
-    } else {
+  } else {
+    this.modeTitle = 'Add';
       // Adding a new charge code
       this.masterDataService.addChargecode(body).subscribe(
-        (res) => {
-          this.visibleDialog = false;
-          this.messageService.add({
-            key: 'successToast',
-            severity: 'success',
-            summary: 'Success!',
-            detail: 'Charge Code is saved Successfully.'
-          });
-           // Reset the form on success
-          this.myForm.reset();
-        },
-        (error) => {
-          console.error('Error saving draft:', error);
-
-          this.messageService.add({
-            key: 'errorToast',
-            severity: 'error',
-            summary: 'Error!',
-            detail: 'Failed to save Charge Code.'
-          });
-        }
+          (res) => {
+              this.handleSuccess();
+          },
+          (error) => {
+              this.handleError();
+          }
       );
-    }
-
-    this.editMode = false;
   }
+}
+private handleSuccess() {
+  const successMessage = this.editMode ? 'Charge Code Updated Successfully.' : 'Charge Code Added Successfully.';
+  
+  this.messageService.add({
+      key: 'successToast',
+      severity: 'success',
+      summary: 'Success!',
+      detail: successMessage
+  });
+
+  this.myForm.reset({
+      status: 'inactive' // Set default value for 'status' on form reset
+  });
+  this.editMode= false;
+
+  this.visibleDialog = false;
+  this.fetchAllChargeCodeDetails(); // Fetch updated data
+}
+
+private handleError() {
+  this.messageService.add({
+      key: 'errorToast',
+      severity: 'error',
+      summary: 'Error!',
+      detail: this.editMode ? 'Failed To Update Charge Code.' : 'Failed to save Charge Code.'
+  });
+}
 
   // ... Other methods in your component
+
+   //------------------export excel-----------------------------------------------------------//
+   downloadExcel(event: Event) {
+    event.preventDefault();
+  
+    this.masterDataService.downloadChargeCodeDetails().subscribe((res: any) => {
+      const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = 'ChargeCodeDetails.xlsx';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      this.messageService.add({
+        key: 'successToast',
+        severity: 'success',
+        summary: 'Success!',
+        detail: 'Excel File Downloaded successfully.'
+      });
+    });
+  }
 }

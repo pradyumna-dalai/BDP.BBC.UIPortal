@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject ,  Observable } from 'rxjs';
 import { MenuItem } from 'primeng/api';
 
-@Injectable({
-    providedIn: 'root',
-  })
+@Injectable()
 export class AppBreadcrumbService {
 
     private itemsSource = new Subject<MenuItem[]>();

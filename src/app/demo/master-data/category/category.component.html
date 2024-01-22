@@ -1,1 +1,177 @@
-<p>category works!</p>
+<div class="card">
+    <div class="grid">
+        <div class="col-6">
+            <span class="p-input-icon-right">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dt2.filterGlobal($event.target.value, 'contains')"
+                    placeholder="Search Keyword" />
+            </span>
+        </div>
+        <div class="col-6" style="display: flex;justify-content: flex-end;">
+            <button type="button" pButton pRipple label="Clear" (click)="clear(dt2)" class="mr-2 mb-2"></button>
+            <button type="button" pButton pRipple label="Export" class="mr-2 mb-2" pTooltip="Export in Excel File"
+                (click)="downloadExcel($event)" tooltipPosition="top"></button>
+            <button type="button" pButton pRipple label=" Add " (click)="showCreateCategoryDialog()" icon="pi pi-plus"
+                class="mr-2 mb-2"></button>
+        </div>
+    </div>
+    <p-table #dt2 [value]="categoryDetails" dataKey="id" responsiveLayout="scroll" scrollHeight="530px"
+        scrollDirection="both"
+        [globalFilterFields]="['name', 'scope.product.name','scope.name', 'description', 'status','createdBy','updatedBy','updatedDate','createdDate']"
+        selectionMode="single" styleClass="p-datatable-gridlines" [resizableColumns]="true">
+
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="text-align: center;width: 50px" [frozen]="true" class="sticky-header">Actions</th>
+                <th style="text-align: center; width: 200px" pSortableColumn="status" [frozen]="true"
+                    class="sticky-header">Status<p-sortIcon field="status"></p-sortIcon></th>
+
+                <th style="text-align: center; width: 200px;" pSortableColumn="scope.product.name" [frozen]="true"
+                    class="sticky-header">
+                        Product Name
+                            <p-sortIcon field="scope.product.name" class="sort-icon"></p-sortIcon>
+                            <p-columnFilter type="text" display="menu" field="scope.product.name"
+                                class="column-filter icon-align" pTooltip="Filter" tooltipPosition="right"></p-columnFilter>
+                </th>
+
+                <th style="text-align: center; width: 200px" pSortableColumn="scope.name" [frozen]="true"
+                    class="sticky-header">Product Scope
+                            <p-sortIcon field="scope.name" class="sort-icon"></p-sortIcon>
+                            <p-columnFilter type="text" display="menu" field="scope.name"
+                                class="column-filter icon-align" pTooltip="Filter" tooltipPosition="right"></p-columnFilter>
+                </th>
+                <th style="text-align: center; width: 200px" pSortableColumn="name" [frozen]="true"
+                    class="sticky-header"> Product Category
+                            <p-sortIcon field="name" class="sort-icon"></p-sortIcon>
+                            <p-columnFilter type="text" display="menu" field="name"
+                                class="column-filter icon-align" pTooltip="Filter" tooltipPosition="right"></p-columnFilter>
+                </th>
+
+                <th style="text-align: center; width: 200px" pSortableColumn="description" [frozen]="true"
+                    class="sticky-header">Description</th>
+
+                <th style="text-align: center; width: 200px" pSortableColumn="createdBy" [frozen]="true"
+                    class="sticky-header">Created By<p-sortIcon field="createdBy"></p-sortIcon></th>
+
+                <th style="text-align: center; width: 200px" pSortableColumn="createdDate" [frozen]="true"
+                    class="sticky-header">Created At<p-sortIcon field="createdDate"></p-sortIcon></th>
+
+                <th style="text-align: center; width: 200px" pSortableColumn="updatedBy" [frozen]="true"
+                    class="sticky-header">Updated By<p-sortIcon field="updatedBy"></p-sortIcon></th>
+
+                <th style="text-align: center; width: 200px" pSortableColumn="updatedAt" [frozen]="true"
+                    class="sticky-header">Updated At<p-sortIcon field="updatedAt"></p-sortIcon></th>
+            </tr>
+
+        </ng-template>
+        <ng-template pTemplate="body" let-category>
+            <tr>
+                <td style="text-align: center; word-wrap: break-word;">
+                    <span style="cursor: pointer;" (click)="editCategory(category)"><i
+                            class="pi pi-pencil"></i></span>&nbsp;
+
+                    <!-- <span style="cursor: pointer;"><i class="pi pi-trash"></i></span> -->
+                </td>
+                <td style="text-align: center; word-wrap: break-word;">
+                    <p-tag [value]="getSeverityLabel(category.status)"
+                        [severity]="getSeverity(category.status)"></p-tag>
+                </td>
+                <td style="text-align: center; word-wrap: break-word;">{{ category.scope.product.name }}</td>
+                <td style="text-align: center; word-wrap: break-word;">{{ category.scope.name }}</td>
+                <td style="text-align: center; word-wrap: break-word;">{{ category.name }}</td>
+                <td style="text-align: center; word-wrap: break-word;">{{ category.description }}</td>
+                <td style="text-align: center; word-wrap: break-word;">{{ category.createdBy }}</td>
+                <td style="text-align: center; word-wrap: break-word;">{{ category.createdDate | date:'dd MMM yyyy' }}
+                </td>
+                <td style="text-align: center; word-wrap: break-word;">{{ category.updatedBy }}</td>
+                <td style="text-align: center; word-wrap: break-word;">{{ category.updatedDate | date:'dd MMM yyyy' }}
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td style="text-align: center;" colspan="18">No Data found.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <p-paginator (onPageChange)="onPageChange($event)" [rows]="10" [totalRecords]="totalRecords"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[10,25,50]" (onSort)="onSort($event)"></p-paginator>
+
+</div>
+
+<p-dialog [(visible)]="displayCreateCategoryDialog" [style]="{width: '40vw'}" [modal]="true" [resizable]="false"
+    closable='true'>
+    <ng-template pTemplate="header">
+        <h5 style="display: contents;">{{ editMode ? 'Edit Category' : 'Add New Category' }}</h5>&nbsp;
+    </ng-template>
+    <hr class="alignhr">
+    <!-- <hr> -->
+    <!-- <div class="tr-divider"></div> -->
+    <form [formGroup]="CategoryForm">
+        <div class="p-grid p-field">
+            <div class="formgrid grid">
+                <div class="field col-12 md:col-4">
+                    <label>Product Name<span class="required">*</span></label>
+                    <p-dropdown optionLabel="name" placeholder="Select Product Name" [options]="procuctNamesOptions"
+                        (onChange)="onProductSelect($event.value)" optionValue="id" [filter]="true" filterBy="name"
+                        [style]="{ 'width': '100%' }" formControlName="productid" appendTo="body">
+                    </p-dropdown>
+                    <div
+                        *ngIf="CategoryForm.get('productid')?.hasError('required') && CategoryForm.get('productid')?.touched"  class="error-message">
+                        Product Name is required.
+                    </div>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label>Product Scope<span class="required">*</span></label>
+                    <p-dropdown placeholder="Select Product Scope" optionLabel="name" optionValue="id" [filter]="true"
+                        [options]="procuctScopesOptions" filterBy="name" [style]="{ 'width': '100%' }"
+                        formControlName="productScope" appendTo="body">
+                    </p-dropdown>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label>Product Category<span class="required">*</span></label>
+
+                    <input id="productCategory" type="text" placeholder="Product Category"
+                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
+                        formControlName="productCategory">
+                    <div
+                        *ngIf="CategoryForm.get('productCategory')?.hasError('required') && CategoryForm.get('productCategory')?.touched" class="error-message">
+                        Product Category is required.
+                    </div>
+                </div>
+                <div class="field col-12 md:col-6 ">
+
+                    <label>Description</label>
+                    <textarea id="description" type="text" rows="2" cols="30" formControlName="description"
+                        placeholder="Description" pInputTextarea></textarea>
+                       
+                    </div>
+
+                <div class="field col-12 md:col-6"
+                    style="display: flex; flex-direction: column; align-items: flex-start;margin-top: 4px;">
+                    <label style="margin-left: 60px;">Status is Active?</label>
+                    <div class="p-field-radiobutton" style="margin-left: 60px;margin-top: 15px;">
+                        <div class="p-radio">
+                            <p-radioButton name="status" value="active" label="Active"
+                                formControlName="status"></p-radioButton>
+
+                            <p-radioButton name="status" value="inactive" label="Inactive" formControlName="status"
+                                [ngStyle]="{'margin-left': '25px'}"></p-radioButton>
+                        </div>
+                    </div>
+                    <div *ngIf="CategoryForm.get('status').hasError('required') && CategoryForm.get('status').touched">
+                        Status is required.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+    <ng-template pTemplate="footer">
+        <p-button label="{{ editMode ? 'Update' : 'Add' }}" (click)="createProductCategory()"
+            [disabled]="!CategoryForm.valid"></p-button>&nbsp;&nbsp;
+        <p-button label="Cancel" (click)="cancelUpdate()"></p-button>
+    </ng-template>
+</p-dialog>
+<p-toast></p-toast>

@@ -1,0 +1,77 @@
+.align {
+  margin-top: -9px;
+  border-top: 0.5px solid rgb(211, 208, 208);
+}
+
+
+.success {
+  color: green;
+}
+
+.danger {
+  color: red;
+}
+
+
+:host ::ng-deep .p-paginator {
+  justify-content: flex-end;
+}
+
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.sticky-header {
+  position: sticky;
+  top: 0;
+  background-color: #f8f9fa;
+  z-index: 100;
+}
+
+
+
+:host ::ng-deep .p-dialog {
+  height: 550px;
+  width: 550px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+.selected {
+  background-color: #e6e6e6;
+}
+
+
+.btnwidth{
+  width: 126px;
+}
+.contentRadio{
+  display: flex;
+}
+::ng-deep .p-dialog-content{
+  overflow: hidden !important;
+}
+.alignhr{
+  margin-top: 0px;
+  
+}
+label{
+  font-size: 15px;
+}
+.customCSS{
+  margin-top: -15px;
+}
+.p-d-block{
+  margin-bottom: 3px;
+}
+.p-mr-2{
+  margin-left: 5px; 
+}
+.icon-align{
+  position: relative;top: 3px;
+}
+
+
+

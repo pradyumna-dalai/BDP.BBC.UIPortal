@@ -10,6 +10,7 @@ import { CalendarModule } from 'primeng/calendar';
 //import moment from "moment";
 import dayjs from 'dayjs';
 import { HttpResponse } from '@angular/common/http';
+import { finalize } from 'rxjs';
 @Component({
   selector: 'app-project',
   templateUrl: './project.component.html',
@@ -21,7 +22,7 @@ export class ProjectComponent {
   data: any = {};
   rowDisabledState: { [key: string]: boolean } = {};
   proejctdetails = [];
-  updateTable:any[]
+  updateTable=[]
   startDate: string;
   endDate: string;
   displayDateRangeDialog = false;
@@ -56,47 +57,57 @@ export class ProjectComponent {
   ngOnInit() {
     this.fetchAllProjectDetails();
     this.selectedPredefinedDateRange = this.predefinedDateRanges[0];
-    this.projectsService.data$.subscribe((res)=>{
-      
-      if(res > 0){
-        this.isloader = true;
+    this.projectsService.data$.subscribe((res)=> {
+      if (res && res.length) {
         this.getDataFromFilter();
-
       }
     })
     this.getDataFromFilter()
   }
   isloader:boolean= false;
   getDataFromFilter(){
-
-    this.projectsService.data$.subscribe((res:any)=>{
-      this.updateTable =res?.map((item: any) => {
-        this.isloader = true;
-        const opportunityManagers = item.projectInformation?.opportunityManager?.map(manager => manager?.name).join(', ');
-        //console.log('opp',opportunityManagers);
-        const formattedStartDate = this.datePipe.transform(item.projectInformation?.startDate, 'dd-MM-yyyy');
-        const formattedEndDate = this.datePipe.transform(item.projectInformation?.endDate, 'dd-MM-yyyy');
-        return {
-          comp_name: item.projectInformation?.company?.name,
-          proj_id: item?.id,
-          proj_name: item.projectInformation?.projectName,
-          oppourtunity_name: item.projectInformation?.opportunityName?.name,
-          proj_stage: item.projectInformation?.projectStage?.name,
-          proj_status: item.projectInformation?.projectStatus?.name,
-          oppourtunity_manager: opportunityManagers,
-          start_date: formattedStartDate,
-          end_date: formattedEndDate,
-        };
-      });
-      if(res.length >0){
-       
-        console.log("dataUpdate",res);
-        this.isloader= false;
-        this.proejctdetails = this.updateTable
-      }else{
-        this.proejctdetails;
-        this.fetchAllProjectDetails()
+    this.isloader = true
+    this.projectsService.data$.pipe(
+      finalize(()=> this.isloader = false)
+    ).subscribe((res:any)=>{
+      if(Array.isArray(res)){
+        this.updateTable =res?.map((item: any) => {
+          const opportunityManagers = item.projectInformation?.opportunityManager?.map(manager => manager?.name).join(', ');
+          //console.log('opp',opportunityManagers);
+          const formattedStartDate = this.datePipe.transform(item.projectInformation?.startDate, 'dd-MM-yyyy');
+          const formattedEndDate = this.datePipe.transform(item.projectInformation?.endDate, 'dd-MM-yyyy');
+          return {
+            comp_name: item.projectInformation?.company?.name,
+            proj_id: item?.id,
+            proj_name: item.projectInformation?.projectName,
+            oppourtunity_name: item.projectInformation?.opportunityName?.name,
+            proj_stage: item.projectInformation?.projectStage?.name,
+            proj_status: item.projectInformation?.projectStatus?.name,
+            oppourtunity_manager: opportunityManagers,
+            start_date: formattedStartDate,
+            end_date: formattedEndDate,
+          };
+        });
+        if (res.length >0) {
+          console.log("dataUpdate",res);
+          this.proejctdetails = this.updateTable;
+          this.messageService.add({
+            key: 'successToast',
+            severity: 'success',
+            summary: 'Success!',
+            detail: 'Filter Data'
+          });
+        } else {
+          this.fetchAllProjectDetails();
+          this.messageService.add({
+            key: 'errorToast',
+            severity: 'error',
+            summary: 'Error!',
+            detail: 'No Data' 
+          });
+        }
       }
+      
   })
   }
 

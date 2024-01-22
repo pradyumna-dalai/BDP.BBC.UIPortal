@@ -1,1 +1,155 @@
-<p>uom works!</p>
+<div class="card">
+    <div class="grid">
+        <div class="col-6">
+            <span class="p-input-icon-right">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                    placeholder="Search Keyword" />
+            </span>
+        </div>
+        <div class="col-6" style="display: flex;justify-content: flex-end;">
+            <button type="button" pButton pRipple label="Clear" (click)="clear(dt1)" class="mr-2 mb-2"></button>
+            <button type="button" pButton pRipple label="Export" class="mr-2 mb-2" (click)="downloadExcel($event)"></button>
+            <button type="button" icon="pi pi-plus" pButton pRipple label="Add" (click)="showDialog()" class="mr-2 mb-2"></button>
+        </div>
+    </div>
+<p-table #dt1 [value]="uomtdetails"
+selectionMode="single" dataKey="id" styleClass="p-datatable-gridlines" responsiveLayout="scroll"
+ scrollHeight="530px" scrollDirection="both" [globalFilterFields]="['name', 'description','status','createdBy','updatedBy','createdDate','updatedDate']" [resizableColumns]="true"
+(onPage)="onPageChange($event)" (onSort)="onSort($event)">
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="text-align: center;width: 50px" [frozen]="true" class="sticky-header">Actions</th>
+                <th style="text-align: center; width: 200px" pSortableColumn="status" [frozen]="true"
+                class="sticky-header">Status<p-sortIcon field="status"></p-sortIcon>
+                </th>
+                <th style="text-align: center; width: 300px" pSortableColumn="name" [frozen]="true"
+                    class="sticky-header" >
+                    UOM<p-sortIcon field="name"></p-sortIcon>
+                    <p-columnFilter type="text" display="menu" field="name" pTooltip="Filter" tooltipPosition="right"
+                                class="column-filter icon-align"></p-columnFilter>
+                </th>
+                <th style="text-align: center; width: 200px"  [frozen]="true"
+                    class="sticky-header">
+                    Description
+                </th>
+                <th style="text-align: center; width: 200px" pSortableColumn="createdBy" [frozen]="true"
+                    class="sticky-header">
+                    Created By<p-sortIcon field="createdBy"></p-sortIcon>
+                </th>
+                <th style="text-align: center; width: 200px" pSortableColumn="createdDate" [frozen]="true"
+                    class="sticky-header">Created At<p-sortIcon field="createdDate"></p-sortIcon>
+                </th>
+                <th style="text-align: center; width: 200px" pSortableColumn="updatedBy" [frozen]="true"
+                    class="sticky-header">
+                    Updated By<p-sortIcon field="updatedBy"></p-sortIcon>
+                </th>
+                <th style="text-align: center; width: 200px" pSortableColumn="updatedDate" [frozen]="true"
+                    class="sticky-header">Updated At<p-sortIcon field="updatedDate"></p-sortIcon>
+                </th>
+               
+
+            </tr>
+           
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+            <tr>
+                <td style="text-align: center;">
+                    <span style="cursor: pointer;" (click)="editUOM(item.id)"><i class="pi pi-pencil"></i></span>&nbsp;
+                    <!-- <span style="cursor: pointer;" (click)="confirm('delete', item.id)">
+                        <i class="pi pi-trash"></i>
+                    </span> -->
+                </td>
+                <td style="text-align: center; word-wrap: break-word;">
+                    <!-- <span>{{item.status ? 'Active' : 'Inactive'}}</span> -->
+                    <p-tag [value]="getSeverityLabel(item.status)" [severity]="getSeverity(item.status)"></p-tag>
+                </td>
+                <td style="text-align: center; word-wrap: break-word;">
+                    <span>{{item.name}}</span>
+                </td>
+                <td style="text-align: center; word-wrap: break-word;">
+                    <span>{{item.description}}</span>
+                </td>
+                <td style="text-align: center; word-wrap: break-word;">
+                    <span>{{ item.createdBy }}</span>
+                  </td>
+                  <td style="text-align: center; word-wrap: break-word;">
+                    <span>{{ item.createdDate | date:'dd MMM yyyy' }}</span>
+                </td>
+                <td style="text-align: center; word-wrap: break-word;">
+                    <span>{{item.updatedBy}}</span>
+                </td>
+               
+                <td style="text-align: center; word-wrap: break-word;">
+                    <span>{{ item.updatedDate | date:'dd MMM yyyy' }}</span>
+                </td>
+               
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td style="text-align: center;" colspan="18">No Data found.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+<p-paginator (onPageChange)="onPageChange($event)" [rows]="10" [totalRecords]="totalRecords"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]"></p-paginator>
+</div>
+<p-dialog header="Charge Code" [(visible)]="visibleDialog"  [modal]="true"  [style]="{width: '30vw',height: '35rem'}">
+    <ng-template pTemplate="header">
+        <div style="width: 100%;">
+            <h5 style="display: contents;">{{ modeTitle }}&nbsp;UOM</h5>
+        </div>
+    </ng-template>
+    <hr class="alignhr">
+    <div>
+        <form [formGroup]="myForm">
+            <div class="p-fluid grid">
+                <div class="col-12" style="display: none;">
+                    <label>ID</label>
+                    <input type="text" formControlName="id" pInputText />
+                </div>
+                <div class="field col-12 md:col-12">
+                    <div class="p-d-block"><label>UOM<span class="requiredField">*</span></label></div>
+                    <input placeholder="Enter UOM" formControlName="uom_name" type="text" pInputText>
+                </div>
+                <div class="field col-12 md:col-12 customCSS" >
+                    <div class="p-d-block"><label>Description</label></div>
+                    <textarea rows="4" cols="30" pInputTextarea formControlName="description"
+                    placeholder="Description" id="inputtext"></textarea>
+                </div>
+                <div class="field col-12 md:col-12 customCSS">
+                    <div class="p-d-flex p-flex-row align-center">
+                        <div class="p-mr-2">
+                            <div class="p-d-block"><label>Status is Active?</label></div>
+                        </div>
+                        <div class="flex flex-wrap gap-3">
+                            <div class="flex align-items-center">
+                                <p-radioButton name="status" value="active" formControlName="status"></p-radioButton>
+                                <label for="ingredient1" class="ml-2">Active</label>
+                              </div>
+                              
+                              <div class="flex align-items-center">
+                                <p-radioButton name="status" value="inactive" formControlName="status"></p-radioButton>
+                                <label for="ingredient2" class="ml-2">Inactive</label>
+                              </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12" style="display: flex;justify-content: flex-end;">
+                <button pButton pRipple type="button" (click)="onCancel()" label="Cancel" 
+                        class="p-button-outlined mr-2 mb-2"></button>
+                <button type="submit" pButton pRipple [label]="editMode ? 'Update' : 'Add'" [disabled]="!myForm.valid"
+                        (click)="SaveUom()" class="mr-2 mb-2"></button>
+            </div>
+            
+        </form>
+    </div>
+  
+
+</p-dialog>
+<!-- Add this inside your p-dialog or any suitable place -->
+<p-toast key="successToast" position="top-right"></p-toast>
+<p-toast key="errorToast" position="top-right"></p-toast>

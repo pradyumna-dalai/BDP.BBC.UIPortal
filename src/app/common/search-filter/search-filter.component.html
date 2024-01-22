@@ -30,14 +30,14 @@
               <div class="p-d-block"><label>Company Name:</label></div>
               <p-dropdown [options]="projectSuggestions" (onChange)="fetchOpprNameOnCompanySelect($event)"
                 optionLabel="name" optionValue="id" [(ngModel)]="selectedProject" placeholder="Select Company"
-                [filter]="true" filterBy="name"></p-dropdown>
+                [filter]="true" filterBy="name" [autoWidth]="false"
+                [style]="{ minWidth: '100%', width:'11rem'}"></p-dropdown>
             </div>
             <div class="field">
               <div class="p-d-block"><label>Date Range :</label></div>
               <input type="text" ngxDaterangepickerMd
               [lockStartDate]="false"
-        [(ngModel)]="selected" placeholder="Start-End"
-        (ngModelChange)="ngModelChange($event)" style=" width: 77px; height: 35px;border: 1px solid gainsboro;border-radius: 3px;" />
+        [(ngModel)]="selected" placeholder="Start-End" style=" width: 124px; height: 35px;border: 1px solid gainsboro;border-radius: 3px;" />
             </div>
             <div class="field">
               <div class="p-d-block"><label>Opportunity Name :</label></div>
