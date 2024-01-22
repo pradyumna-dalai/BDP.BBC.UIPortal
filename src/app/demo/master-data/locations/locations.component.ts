@@ -35,6 +35,7 @@ export class LocationsComponent {
   totalRecords: any = 10;
   first: any = 0;
   rows: any = 10;
+  modeTitle: string = 'Add';
 
 
   constructor(private breadcrumbService: AppBreadcrumbService,
@@ -44,7 +45,7 @@ export class LocationsComponent {
       { label: 'Master Data Management' },
       { label: 'Location' }
     ]);
-
+    // this.createForm();
     this.locationForm = this.fb.group({
       id: [''],
       name: ['', Validators.required],
@@ -57,23 +58,27 @@ export class LocationsComponent {
     });
   }
 
+  ngAfterViewInit(): void {
+    
+  }
   ngOnInit() {
     this.fetchAllLocationDetails();
     this.fetchLocationRegion();
     this.fetchLocationCountry();
+   // this.createForm();
+   this.locationForm = this.fb.group({
+    id: [''],
+    name: ['', Validators.required],
+    region: ['', Validators.required],
+    country: ['', Validators.required],
+    //  countryCode: ['', Validators.required],
+    locationCode: ['', Validators.required],
+    description: [''],
+    status: ['inactive', Validators.required],
+  });
 
   }
 
-  createForm() {
-    this.locationForm = this.fb.group({
-      id: [''],
-      productid: ['', Validators.required],
-      productScope: ['', Validators.required],
-      productCategory: ['', Validators.required],
-      description: [''],
-      status: ['inactive', Validators.required],
-    });
-  }
   getSeverity(status: boolean): string {
     return status ? 'success' : 'danger';
   }
@@ -122,8 +127,13 @@ export class LocationsComponent {
   //--------------------------Create Location--------------------------------------//
 
   showCreateLocationDialog() {
-
     this.displayCreateLocationDialog = true;
+    this.locationForm.reset({
+      status: 'inactive'
+    });
+    this.editMode = false;
+    this.modeTitle = 'Add';
+    
   }
 
   saveLocation() {
@@ -176,13 +186,14 @@ export class LocationsComponent {
       };
 
       if (this.editMode) {
+        this.modeTitle = 'Edit';
         body['id'] = this.selectedLocation.id;
         this.masterDataService.updateLocations(body).subscribe(
           (response) => {
             console.log(response);
             this.displayCreateLocationDialog = false;
             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Location updated successfully!' });
-            // this.createForm();
+         //   this.createForm();
             this.editMode = false;
             this.fetchAllLocationDetails();
           },
@@ -192,12 +203,13 @@ export class LocationsComponent {
           }
         );
       } else {
+        this.modeTitle = 'Add';
         this.masterDataService.addLocations(body).subscribe(
           (response) => {
             console.log(response);
             this.displayCreateLocationDialog = false;
             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Location added successfully!' });
-            // this.createForm();
+           // this.createForm();
           },
           (error) => {
             console.error(error);

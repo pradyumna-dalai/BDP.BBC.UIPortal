@@ -11,7 +11,7 @@
             <button type="button" pButton pRipple label="Clear" (click)="clear(dt2)" class="mr-2 mb-2"></button>
             <button type="button" pButton pRipple label="Export" class="mr-2 mb-2" pTooltip="Export in Excel File"
                 (click)="downloadExcel($event)" tooltipPosition="top"></button>
-            <button type="button" pButton pRipple label=" Add " (click)="showCreateCategoryDialog()" icon="pi pi-plus"
+            <button type="button" pButton pRipple label=" Add " (click)="showCreateCategoryDialoge()" icon="pi pi-plus"
                 class="mr-2 mb-2"></button>
         </div>
     </div>
@@ -103,7 +103,7 @@
 <p-dialog [(visible)]="displayCreateCategoryDialog" [style]="{width: '40vw'}" [modal]="true" [resizable]="false"
     closable='true'>
     <ng-template pTemplate="header">
-        <h5 style="display: contents;">{{ editMode ? 'Edit Category' : 'Add New Category' }}</h5>&nbsp;
+        <h5 style="display: contents;">{{ modeTitle }}&nbsp; Category</h5>&nbsp;
     </ng-template>
     <hr class="alignhr">
     <!-- <hr> -->
