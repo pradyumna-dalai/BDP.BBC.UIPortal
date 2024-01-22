@@ -20,8 +20,6 @@ import { By } from "@angular/platform-browser";
 describe('ProjectComponent',()=>{
     let component: ProjectComponent; // Replace 'ProjectComponent' with the actual name of your component
     let fixture: ComponentFixture<ProjectComponent>; // Replace 'ProjectComponent' with the actual name of your component
-    let fb: FormBuilder;
-    // let mtest: MasterTableService;  let projectService: ProjectService;
   let httpTestingController: HttpTestingController;
 
 
@@ -63,9 +61,8 @@ describe('ProjectComponent',()=>{
 
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProjectComponent); // Replace 'CreateProjectComponent' with the actual name of your component
+    fixture = TestBed.createComponent(ProjectComponent);
     component = fixture.componentInstance;
-    fb = TestBed.inject(FormBuilder);
     fixture.detectChanges();
   });
 
