@@ -137,6 +137,9 @@ label {
   display: flex;
   margin-bottom: 0.7rem;
   justify-content: space-around;
+  border: 1px solid #15aec7;
+  border-radius: 9px;
+  box-shadow: 0px 12px 6px -11px;
 }
 
 ::ng-deep .small-calendar {
@@ -218,3 +221,6 @@ label {
 //   border: 2px solid rgb(0, 153, 255);
 //   background-color: lightgray;
 // }
+.drop_down{
+  border-radius: 10px;
+}
