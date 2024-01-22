@@ -17,7 +17,7 @@ import { HttpClientTestingModule, HttpTestingController } from "@angular/common/
 import { ProjectsService } from "src/app/services/project-serivce/projects.service";
 import { By } from "@angular/platform-browser";
 
-fdescribe('ProjectComponent',()=>{
+describe('ProjectComponent',()=>{
     let component: ProjectComponent; // Replace 'ProjectComponent' with the actual name of your component
     let fixture: ComponentFixture<ProjectComponent>; // Replace 'ProjectComponent' with the actual name of your component
     let fb: FormBuilder;
