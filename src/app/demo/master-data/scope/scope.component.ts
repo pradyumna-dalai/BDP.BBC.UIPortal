@@ -56,7 +56,8 @@ export class ScopeComponent {
       description: [''],
       status: ['inactive', Validators.required],
     });
-    
+    this.currentPage = 1;
+    this.pageSize = 10;
   }
 
   showCreateScopeDialoge() {
@@ -118,6 +119,8 @@ export class ScopeComponent {
             console.log(response);
             this.displayCreateScopeDialog = false;
             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Scope added successfully!' });
+            this.totalRecords += 1;
+            this.fetchProductScope();
           },
           (error) => {
             console.error(error);
@@ -168,13 +171,19 @@ export class ScopeComponent {
     this.pageSize = event.rows;
     this.fetchProductScope();
   }
-  onSort(event: any) {
-    this.sortField = event.field;
-    this.sortOrder = event.order === 1 ? 1 : -1;
-    this.currentPage = 1; // Reset to the first page when sorting
-    this.fetchProductScope();
-  }
 
+  onSort(event: any) {
+    const newSortField = event.field;
+    const newSortOrder = event.order === 1 ? 1 : -1;
+  
+    if (newSortField !== this.sortField || newSortOrder !== this.sortOrder) {
+      this.sortField = newSortField;
+      this.sortOrder = newSortOrder;
+      this.currentPage = 1;
+      this.fetchProductScope();
+    }
+  }
+  
   clear(table: Table) {
     table.clear();
     this.onSort(Event);
@@ -231,4 +240,6 @@ export class ScopeComponent {
       });
     });
   }
+
+  
 }
