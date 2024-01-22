@@ -106,28 +106,29 @@
                     <label>Locaton Name<span class="required">*</span></label>
                     <input id="name" type="text" formControlName="name" placeholder="Location Name"
                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-                    <div *ngIf="locationForm.get('name')?.hasError('required') && locationForm.get('name')?.touched" class="error-message">
+                    <div *ngIf="locationForm.get('name')?.hasError('required') && locationForm.get('name')?.touched"
+                        class="error-message">
                         Location name is required.
                     </div>
                 </div>
                 <div class="field col-12 md:col-5" style="margin-left: 70px;">
                     <label>Location Code<span class="required">*</span></label>
                     <input id="locationCode" type="text" formControlName="locationCode" placeholder="Location Code"
-                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" >
-                        
-                    <div
-                        *ngIf="locationForm.get('locationCode')?.hasError('required') && locationForm.get('locationCode')?.touched" class="error-message">
+                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+
+                    <div *ngIf="locationForm.get('locationCode')?.hasError('required') && locationForm.get('locationCode')?.touched"
+                        class="error-message">
                         Location Code is required.
                     </div>
                 </div>
                 <div class="field col-12 md:col-5">
                     <label>Region<span class="required">*</span></label>
-                    <p-dropdown [options]="regionOptions" appendTo="body" formControlName="region" 
+                    <p-dropdown [options]="regionOptions" appendTo="body" formControlName="region"
                         placeholder="Select Region" optionLabel="name" optionValue="name" [filter]="true"
                         filterBy="name" [style]="{ 'width': '100%' }">
                     </p-dropdown>
-                    <div
-                        *ngIf="locationForm.get('region')?.hasError('required') && locationForm.get('region')?.touched" class="error-message">
+                    <div *ngIf="locationForm.get('region')?.hasError('required') && locationForm.get('region')?.touched"
+                        class="error-message">
                         Region is required.
                     </div>
                 </div>
@@ -142,15 +143,16 @@
                         </ng-template>
 
                     </p-dropdown>
-                    <div
-                        *ngIf="locationForm.get('country')?.hasError('required') && locationForm.get('country')?.touched" class="error-message">
+                    <div *ngIf="locationForm.get('country')?.hasError('required') && locationForm.get('country')?.touched"
+                        class="error-message">
                         Country is required.
                     </div>
                 </div>
 
-                <div class="field col-12 md:col-5 ">
+                <div class="field col-12 md:col-5">
                     <label>Description</label>
-                    <textarea id="description" type="text" rows="2" cols="30" placeholder="Description" pInputTextarea
+                    <textarea id="description" type="text" rows="2" placeholder="Description" pInputTextarea
+                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
                         formControlName="description"></textarea>
                 </div>
                 <div class="field col-12 md:col-5"
@@ -164,7 +166,8 @@
                                 style="margin-left: 25px;"></p-radioButton>
                         </div>
                     </div>
-                    <div *ngIf="locationForm.get('status').hasError('required') && locationForm.get('status').touched" class="error-message">
+                    <div *ngIf="locationForm.get('status').hasError('required') && locationForm.get('status').touched"
+                        class="error-message">
                         Status is required.
                     </div>
                 </div>
