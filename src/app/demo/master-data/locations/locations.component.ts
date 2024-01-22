@@ -111,13 +111,18 @@ export class LocationsComponent {
     this.pageSize = event.rows;
     this.fetchAllLocationDetails();
   }
-  onSort(event: any) {
-    this.sortField = event.field;
-    this.sortOrder = event.order === 1 ? 1 : -1;
-    this.currentPage = 1; // Reset to the first page when sorting
-    this.fetchAllLocationDetails();
-  }
 
+  onSort(event: any) {
+    const newSortField = event.field;
+    const newSortOrder = event.order === 1 ? 1 : -1;
+  
+    if (newSortField !== this.sortField || newSortOrder !== this.sortOrder) {
+      this.sortField = newSortField;
+      this.sortOrder = newSortOrder;
+      this.currentPage = 1;
+      this.fetchAllLocationDetails();
+    }
+  }
   clear(table: Table) {
     table.clear();
     this.onSort(Event);
@@ -209,7 +214,8 @@ export class LocationsComponent {
             console.log(response);
             this.displayCreateLocationDialog = false;
             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Location added successfully!' });
-           // this.createForm();
+            this.totalRecords += 1;
+            this.fetchAllLocationDetails();
           },
           (error) => {
             console.error(error);
