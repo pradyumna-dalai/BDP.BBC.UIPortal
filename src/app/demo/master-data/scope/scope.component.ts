@@ -30,7 +30,7 @@ export class ScopeComponent {
   totalRecords: any = 10;
   first: any = 0;
   rows: any = 10;
-
+  modeTitle: string = 'Add';
 
 
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
@@ -40,15 +40,15 @@ export class ScopeComponent {
       { label: 'Master Data Management' },
       { label: 'Scope' }
     ]);
-    this.createForm();
+   
 
+  }
+  ngAfterViewInit(): void {
+    
   }
   ngOnInit() {
     this.getProdname();
     this.fetchProductScope();
-  }
-
-  createForm() {
     this.ScopeForm = this.fb.group({
       id: [''],
       productid: ['', Validators.required],
@@ -56,12 +56,16 @@ export class ScopeComponent {
       description: [''],
       status: ['inactive', Validators.required],
     });
+    
   }
+
   showCreateScopeDialoge() {
     this.displayCreateScopeDialog = true;
     this.ScopeForm.reset({
       status: 'inactive'
     });
+    this.editMode = false;
+    this.modeTitle = 'Add';
   }
 
   getProdname() {
@@ -92,13 +96,13 @@ export class ScopeComponent {
 
       if (this.editMode) {
         // Handle update logic
+        this.modeTitle = 'Edit';
         body['id'] = this.selectedScope.id;
         this.masterDataService.updateScopeDetails(body).subscribe(
           (response) => {
             console.log(response);
             this.displayCreateScopeDialog = false;
             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Scope updated successfully!' });
-            this.createForm();
             this.editMode = false;
             this.fetchProductScope();
           },
@@ -108,12 +112,12 @@ export class ScopeComponent {
           }
         );
       } else {
+        this.modeTitle = 'Add';
         this.masterDataService.addScopeDetails(body).subscribe(
           (response) => {
             console.log(response);
             this.displayCreateScopeDialog = false;
             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Scope added successfully!' });
-            this.createForm();
           },
           (error) => {
             console.error(error);
