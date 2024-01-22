@@ -1,20 +1,17 @@
 
 
-<div>
+<div style="margin-bottom: 16px;">
   <button pButton pRipple  (click)="onclickShow()" class="mr-2 mb-2 filter-button">
     <div class="centerContent">
       <span style="margin-right: 8px;">Show Filters</span><i class="pi pi-filter icon-with-margin" [ngStyle]="{'color': isapply ? 'red' : 'white'}"></i>
     </div>
   </button>
 </div>
-<div>
- 
-</div>
     <div class="tt" *ngIf="visible">
             <div class="field">
               <div class="p-d-block"><label>Project Stage :</label></div>
               <p-dropdown optionLabel="name" optionValue="id" [(ngModel)]="selectedStage" [options]="projectStageOptions" (onChange)="OnStageSelectProjectstatus($event)"
-                placeholder="Select Stage" [filter]="true" filterBy="name"></p-dropdown>
+                placeholder="Select Stage" [filter]="true" filterBy="name" class="drop_down" [style]="{ borderredius: '10px'}"></p-dropdown>
             </div>
             <div class="field">
               <div class="p-d-block"><label>Project Status :</label></div>
@@ -37,7 +34,7 @@
               <div class="p-d-block"><label>Date Range :</label></div>
               <input type="text" ngxDaterangepickerMd
               [lockStartDate]="false"
-        [(ngModel)]="selected" placeholder="Start-End" style=" width: 124px; height: 35px;border: 1px solid gainsboro;border-radius: 3px;" />
+        [(ngModel)]="selected" placeholder="Start-End"  (focus)="focusFunction()" class="date_pick" [ngClass]="{'clicked': isClicked}" />
             </div>
             <div class="field">
               <div class="p-d-block"><label>Opportunity Name :</label></div>
