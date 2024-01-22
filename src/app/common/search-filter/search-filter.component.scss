@@ -196,10 +196,10 @@ label {
   width: 247px !important;
 }
 
-::ng-deep .p-dropdown {
+.p-dropdown {
   max-width: 10rem;
 }
 
-::ng-deep .p-dropdown{
-  width: 11rem !important;
-}
+// ::ng-deep .p-dropdown{
+//   width: 11rem !important;
+// }
