@@ -153,7 +153,7 @@ label {
   font-family: Roboto, sans-serif;
   color: inherit;
   border-radius: 4px;
-  width: 499px !important;
+  // width: 499px !important;
   padding: 4px;
   margin-top: -10px;
   overflow: hidden;
@@ -184,16 +184,16 @@ label {
   padding-right: 1px !important;
 }
 
-::ng-deep .right {
-  display: none !important;
-}
+// ::ng-deep .right {
+//   display: none !important;
+// }
 
 ::ng-deep .md-drppicker {
   top: auto;
   left: 0px;
 
   right: auto;
-  width: 247px !important;
+  // width: 247px !important;
 }
 
 .p-dropdown {
