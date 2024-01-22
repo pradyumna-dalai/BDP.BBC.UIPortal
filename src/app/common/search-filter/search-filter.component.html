@@ -1,14 +1,11 @@
 
 
-<div>
+<div style="margin-bottom: 16px;">
   <button pButton pRipple  (click)="onclickShow()" class="mr-2 mb-2 filter-button">
     <div class="centerContent">
       <span style="margin-right: 8px;">Show Filters</span><i class="pi pi-filter icon-with-margin" [ngStyle]="{'color': isapply ? 'red' : 'white'}"></i>
     </div>
   </button>
-</div>
-<div>
- 
 </div>
     <div class="tt" *ngIf="visible">
             <div class="field">
@@ -37,7 +34,7 @@
               <div class="p-d-block"><label>Date Range :</label></div>
               <input type="text" ngxDaterangepickerMd
               [lockStartDate]="false"
-        [(ngModel)]="selected" placeholder="Start-End" style=" width: 124px; height: 35px;border: 1px solid gainsboro;border-radius: 3px;" />
+        [(ngModel)]="selected" placeholder="Start-End"  (focus)="focusFunction()" class="date_pick" [ngClass]="{'clicked': isClicked}" />
             </div>
             <div class="field">
               <div class="p-d-block"><label>Opportunity Name :</label></div>

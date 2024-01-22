@@ -195,10 +195,13 @@ export class SearchFilterComponent {
     this.isapply = true;
 
   }
-
+  isClicked = false;
 
   onclickShow() {
     this.visible = !this.visible;
     this.selected = null;
+  }
+  focusFunction(){
+    this.isClicked = true;
   }
 }

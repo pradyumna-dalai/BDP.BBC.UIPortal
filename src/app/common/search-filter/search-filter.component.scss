@@ -116,7 +116,7 @@
 label {
   // font-size: 13px; *
   font-weight: 600;
-  color: #2196f3;
+  color: #6c6c6c;;
 }
 
 ::ng-deep .p-calendar .p-datepicker {
@@ -202,4 +202,19 @@ label {
 
 // ::ng-deep .p-dropdown{
 //   width: 11rem !important;
+// }
+.date_pick{
+  color:#77797b;
+  border: 1px solid gainsboro;
+  border-radius: 3px;
+  width: 124px;
+  height: 35px;
+  border-radius: 3px;
+}
+.date_pick:hover {
+  border: 1px solid rgba(15, 116, 223, 0.681);
+}
+// .clicked {
+//   border: 2px solid rgb(0, 153, 255);
+//   background-color: lightgray;
 // }
