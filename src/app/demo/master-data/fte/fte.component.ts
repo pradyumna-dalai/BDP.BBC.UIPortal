@@ -5,6 +5,7 @@ import { MasterDataService } from 'src/app/services/master-dataserivce/master-da
 import { MasterTableService } from 'src/app/services/master-table.service';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
+import { FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-fte',
   templateUrl: './fte.component.html',
@@ -12,6 +13,10 @@ import { Router } from '@angular/router';
   providers: [MessageService, ConfirmationService]
 })
 export class FteComponent {
+
+  Form: FormGroup;
+
+
   constructor(private breadcrumbService: AppBreadcrumbService,
     private messageService: MessageService, 
     private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService, private masterTableService: MasterTableService) {
@@ -19,5 +24,14 @@ export class FteComponent {
       { label: 'Master Data Management' },
       { label: 'FTE - Full Time Employee' }
     ]);
+  }
+
+
+
+  onSort(event){
+    console.log(event)
+  }
+  onPageChange(event){
+    
   }
 }
