@@ -71,7 +71,7 @@ describe('ProjectComponent',()=>{
   })
 
   it("should render table", () => {
-    const result = fixture.debugElement.queryAll(By.css(".testtable"));
+    const result = fixture.debugElement.queryAll(By.css("p-datatable-gridlines"));
     const markup = result[0].nativeNode.outerHTML;
     console.log(markup);
   });
