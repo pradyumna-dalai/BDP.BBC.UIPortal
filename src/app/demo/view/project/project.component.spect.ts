@@ -27,7 +27,7 @@ describe('ProjectComponent',()=>{
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-          declarations: [ProjectComponent], // Replace 'CreateProjectComponent' with the actual name of your component
+          declarations: [ProjectComponent], // Replace 'ProjectComponent' with the actual name of your component
           imports: [ReactiveFormsModule, 
                     TabViewModule,
                     ToastModule,
