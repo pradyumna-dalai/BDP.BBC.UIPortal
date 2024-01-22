@@ -38,6 +38,7 @@ export class CreateProjectComponent implements OnInit {
   designNotes: any;
   impleNotes: any;
   opportunityManger: any;
+  saveError: string;
 
 
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,private fb: FormBuilder, public MasterTableservice: MasterTableService, public projectService: ProjectsService) {
@@ -203,8 +204,6 @@ const body = {
     opportunityManager: opportunityMangers
   }
 }
-    
-    console.log(body);
     this.projectService.saveAsDraftProject(body).subscribe(
     (res) => {
       console.log('Draft saved successfully:', res);
@@ -217,8 +216,18 @@ const body = {
       });
     },
     (error) => {
-      console.error('Error saving draft:', error);
 
+      if (error.status === 400) {
+        // console.log('Bad Request Error:', error);
+        if(error.error.data[0] == 'Project name exist'){
+          this.messageService.add({
+            key: 'errorToast',
+            severity: 'error',
+            summary: 'Error!',
+            detail: 'Project Name already exists.'
+          });
+        }
+      }else{
       this.messageService.add({
         key: 'errorToast',
         severity: 'error',
@@ -226,7 +235,10 @@ const body = {
         detail: 'Failed to save Project draft.'
       });
     }
+    }
+  
   );
+  
 }
 
 
