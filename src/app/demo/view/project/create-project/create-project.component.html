@@ -93,6 +93,43 @@
                     </div>
                 </div>
             </div>
+            <hr >
+                <div><label>Location<span class="requiredField">*</span></label></div><br>
+                <p>Please Select Location and them for the project</p>
+                <div class="p-fluid grid">
+                    <div class="field col-12 md:col-5">
+                    <div class="p-d-block"><label>Origin Location<span class="requiredField">*</span></label></div>
+
+                        <p-multiSelect  placeholder="Select Location" optionLabel="name" display="chip" [showClear]="true"></p-multiSelect>
+            
+                    </div>       
+                    <div class="field col-12 md:col-5">
+                        <div class="p-d-block"><label>Destination Location<span class="requiredField">*</span></label></div>
+                        <p-multiSelect  placeholder="Select Location" optionLabel="name" display="chip" [showClear]="true"></p-multiSelect>
+                    </div>
+                </div>
+                <p-accordion [activeIndex]="0">
+                    <p-accordionTab header="Selected Location Volume and UOM">
+                       
+<div class="card">
+    <p-tabView>
+        <p-tabPanel header="Origin Location">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+        </p-tabPanel>
+        <p-tabPanel header="Destination Location">
+            <p>
+                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim
+                ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
+            </p>
+        </p-tabPanel>
+    </p-tabView>
+</div>
+                    </p-accordionTab>
+                </p-accordion>
+                
             <hr class="aligndown">
             <div class="col-12" style="display: flex;justify-content: flex-end;">
                 <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
