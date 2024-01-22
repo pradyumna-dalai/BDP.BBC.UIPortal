@@ -188,6 +188,7 @@ export class ScopeComponent {
   }
   updateProductScopeDetails(scope: any) {
     this.editMode = true;
+    this.modeTitle = 'Edit'; 
     if (this.selectedScope) {
       this.ScopeForm.patchValue({
         productid: this.selectedScope.product.id,

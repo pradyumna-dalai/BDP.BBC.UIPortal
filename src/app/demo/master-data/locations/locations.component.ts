@@ -235,6 +235,7 @@ export class LocationsComponent {
   }
   updateLocationDetails(location: any) {
     this.editMode = true;
+    this.modeTitle = 'Edit'; 
     if (this.selectedLocation) {
       const selectedRegion = this.selectedLocation.region;
       const findRegionOption = (option: any) =>

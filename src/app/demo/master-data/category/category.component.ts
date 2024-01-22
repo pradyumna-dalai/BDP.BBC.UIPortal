@@ -226,7 +226,7 @@ export class CategoryComponent {
   }
   updateProductCategoryDetails(category: any) {
     this.editMode = true;
-
+    this.modeTitle = 'Edit'; 
     if (this.selectedCategory) {
       // Fetch product scopes for the selected product
       const selectedProductId = this.selectedCategory.scope.product.id;
