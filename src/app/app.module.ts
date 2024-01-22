@@ -117,6 +117,7 @@ import { ScopeComponent } from './demo/master-data/scope/scope.component';
 import { CategoryComponent } from './demo/master-data/category/category.component';
 import { ProductComponent } from './demo/master-data/product/product.component';
 import { UOMComponent } from './demo/master-data/uom/uom.component';
+import { FteComponent } from './demo/master-data/fte/fte.component';
 
 
 
@@ -234,6 +235,7 @@ import { UOMComponent } from './demo/master-data/uom/uom.component';
         CategoryComponent,
         ProductComponent,
         UOMComponent,
+        FteComponent,
 
     ],
     providers: [

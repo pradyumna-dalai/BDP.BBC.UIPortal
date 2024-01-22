@@ -63,6 +63,17 @@ export class LocationsComponent {
     this.fetchLocationCountry();
 
   }
+
+  createForm() {
+    this.locationForm = this.fb.group({
+      id: [''],
+      productid: ['', Validators.required],
+      productScope: ['', Validators.required],
+      productCategory: ['', Validators.required],
+      description: [''],
+      status: ['inactive', Validators.required],
+    });
+  }
   getSeverity(status: boolean): string {
     return status ? 'success' : 'danger';
   }

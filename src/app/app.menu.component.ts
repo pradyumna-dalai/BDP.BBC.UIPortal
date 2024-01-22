@@ -59,17 +59,19 @@ export class AppMenuComponent implements OnInit {
                 return 'pi pi-fw pi-cog';
             case 'master data management':
                 return 'pi pi-fw pi-database';
-            case 'locations':
+            case 'location':
                 return 'pi pi-fw pi-map-marker'; 
             case 'charge code':
                 return 'pi pi-fw pi-code';
-            case 'scope':
+            case 'product scope':
                 return 'pi pi-fw pi-map'; 
-            case 'product':
+            case 'product name':
                 return 'pi pi-fw pi-inbox';
-            case 'uom':
+            case 'uom - unit of measure':
                 return 'pi pi-arrow-right-arrow-left';
-            case 'category':
+            case 'product category':
+                return 'pi pi-bars';
+            case 'fte - full time employee':
                 return 'pi pi-bars';
             default:
                 return 'pi pi-fw pi-desktop';
@@ -89,18 +91,20 @@ export class AppMenuComponent implements OnInit {
                 return ['/uikit'];
             case 'master data management':
                 return ['/master-data'];
-            case 'locations':
+            case 'location':
                 return ['/locations'];
             case 'charge code':
                 return ['/charge-code'];
-            case 'scope':
+            case 'product scope':
                 return ['/scope'];
-            case 'category':
+            case 'product category':
                 return ['/category'];
-            case 'product':
+            case 'product name':
                 return ['/product'];
-            case 'uom':
+            case 'uom - unit of measure':
                 return ['/uom'];
+            case 'fte - full time employee':
+                return ['/fte'];
             default:
                 return ['/uikit'];
         }
