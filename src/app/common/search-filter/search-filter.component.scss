@@ -110,7 +110,7 @@
   display: flex;
   align-items: center;
   margin-top: 1.3rem;
-  justify-content: space-around;
+  justify-content: space-evenly;
 }
 
 label {
@@ -136,10 +136,10 @@ label {
   background: #f8f9fa;
   display: flex;
   margin-bottom: 0.7rem;
-  justify-content: space-around;
   border: 1px solid #15aec7;
   border-radius: 9px;
   box-shadow: 0px 12px 6px -11px;
+  // overflow: auto;
 }
 
 ::ng-deep .small-calendar {
@@ -200,7 +200,8 @@ label {
 }
 
 .p-dropdown {
-  max-width: 10rem;
+  max-width: 100% !important;
+  border-radius: 10px;
 }
 
 // ::ng-deep .p-dropdown{
@@ -223,4 +224,18 @@ label {
 // }
 .drop_down{
   border-radius: 10px;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-button {
+  background: #ffffff00
+}
+::-webkit-scrollbar-track-piece {
+  background: #fffdfd
+}
+::-webkit-scrollbar-thumb {
+  background: #d6d6d6
 }
