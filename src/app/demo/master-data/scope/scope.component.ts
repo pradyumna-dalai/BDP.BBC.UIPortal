@@ -26,7 +26,7 @@ export class ScopeComponent {
   currentPage: number = 1;
   pageSize: number = 10;
   sortField: string = ''; // Initial sort field
-  sortOrder: number = 1; // 1 for ascending, -1 for descending
+  sortOrder: string = 'asc'; // or initialize it based on your requirements
   totalRecords: any = 10;
   first: any = 0;
   rows: any = 10;
@@ -38,7 +38,7 @@ export class ScopeComponent {
     private fb: FormBuilder, private masterDataService: MasterDataService) {
     this.breadcrumbService.setItems([
       { label: 'Master Data Management' },
-      { label: 'Scope' }
+      { label: 'Product Scope' }
     ]);
    
 
@@ -174,8 +174,7 @@ export class ScopeComponent {
 
   onSort(event: any) {
     const newSortField = event.field;
-    const newSortOrder = event.order === 1 ? 1 : -1;
-  
+    const newSortOrder = event.order === 1 ? 'asc' : 'desc'; 
     if (newSortField !== this.sortField || newSortOrder !== this.sortOrder) {
       this.sortField = newSortField;
       this.sortOrder = newSortOrder;

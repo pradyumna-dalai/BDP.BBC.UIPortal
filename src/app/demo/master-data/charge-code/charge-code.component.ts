@@ -33,6 +33,8 @@ export class ChargeCodeComponent {
   totalRecords: any = 10;
   first: any = 0;
   rows: any = 10;
+  newSortField: any;
+  newSortOrder: number;
 
 
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,private fb: FormBuilder,
@@ -107,6 +109,7 @@ export class ChargeCodeComponent {
   }
   clear(table: Table) {
     table.clear();
+  
 }
   onPageChange(event: any) {
     this.currentPage = event.page + 1;
@@ -116,11 +119,16 @@ export class ChargeCodeComponent {
   // Handle sorting event
   onSort(event: any) {
   
-    this.sortField = event.field;
-    this.sortOrder = (event.order === 1) ? 1 : -1;
+    this.newSortField = event.field;
+    this.newSortOrder = (event.order === 1) ? 1 : -1;
   
-    // Call the method to fetch data with sorting
-    this.fetchAllChargeCodeDetails();
+    if (this.newSortField !== this.sortField || this.newSortOrder !== this.sortOrder) {
+      this.sortField = this.newSortField;
+      this.sortOrder = this.newSortOrder;
+      this.currentPage = 1;
+      this.fetchAllChargeCodeDetails();
+    }
+   
   }
  
   editChargecode(editId) {
@@ -176,6 +184,24 @@ SaveChargecode() {
           },
           (error) => {
               this.handleError();
+            //   if (error.status === 400) {
+            //     // console.log('Bad Request Error:', error);
+            //     if(error.error.data[0] == 'Project name exist'){
+            //       this.messageService.add({
+            //         key: 'errorToast',
+            //         severity: 'error',
+            //         summary: 'Error!',
+            //         detail: 'Project Name already exists.'
+            //       });
+            //     }
+            //   }else{
+            //   this.messageService.add({
+            //     key: 'errorToast',
+            //     severity: 'error',
+            //     summary: 'Error!',
+            //     detail: 'Failed to save Project draft.'
+            //   });
+            // }
           }
       );
   }
