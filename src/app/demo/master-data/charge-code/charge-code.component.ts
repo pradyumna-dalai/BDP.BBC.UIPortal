@@ -34,7 +34,7 @@ export class ChargeCodeComponent {
   first: any = 0;
   rows: any = 10;
   newSortField: any;
-  newSortOrder: number;
+  newSortOrder: any;
 
 
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,private fb: FormBuilder,
@@ -120,7 +120,7 @@ export class ChargeCodeComponent {
   onSort(event: any) {
   
     this.newSortField = event.field;
-    this.newSortOrder = (event.order === 1) ? 1 : -1;
+    this.newSortOrder = (event.order === 1) ? 'asc' : 'desc';
   
     if (this.newSortField !== this.sortField || this.newSortOrder !== this.sortOrder) {
       this.sortField = this.newSortField;

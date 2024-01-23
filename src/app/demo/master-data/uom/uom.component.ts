@@ -31,7 +31,7 @@ export class UOMComponent implements AfterViewInit{
     first: any = 0;
     rows: any = 10;
   newSortField: any;
-  newSortOrder: number;
+  newSortOrder: any;
  
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
     private fb: FormBuilder, private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService) {
@@ -116,7 +116,7 @@ export class UOMComponent implements AfterViewInit{
   onSort(event: any) {
   
     this.newSortField = event.field;
-    this.newSortOrder = (event.order === 1) ? 1 : -1;
+    this.newSortOrder = (event.order === 1) ? 'asc' : 'desc';
   
     if (this.newSortField !== this.sortField || this.newSortOrder !== this.sortOrder) {
       this.sortField = this.newSortField;
