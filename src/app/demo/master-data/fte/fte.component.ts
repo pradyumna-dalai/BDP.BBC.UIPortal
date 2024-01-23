@@ -14,8 +14,8 @@ import { FormGroup } from '@angular/forms';
 })
 export class FteComponent {
 
-  Form: FormGroup;
-
+  FteForm: FormGroup;
+  displayCreateFteDialog :boolean =false
 
   constructor(private breadcrumbService: AppBreadcrumbService,
     private messageService: MessageService, 
@@ -26,7 +26,15 @@ export class FteComponent {
     ]);
   }
 
-
+  showCreateFteDialog() {
+    this.displayCreateFteDialog = true;
+    // this.locationForm.reset({
+    //   status: 'inactive'
+    // });
+    // this.editMode = false;
+    // this.modeTitle = 'Add';
+    
+  }
 
   onSort(event){
     console.log(event)
