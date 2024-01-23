@@ -30,7 +30,7 @@ export class ScopeComponent {
   totalRecords: any = 10;
   first: any = 0;
   rows: any = 10;
-
+  modeTitle: string = 'Add';
 
 
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
@@ -40,15 +40,15 @@ export class ScopeComponent {
       { label: 'Master Data Management' },
       { label: 'Scope' }
     ]);
-    this.createForm();
+   
 
+  }
+  ngAfterViewInit(): void {
+    
   }
   ngOnInit() {
     this.getProdname();
     this.fetchProductScope();
-  }
-
-  createForm() {
     this.ScopeForm = this.fb.group({
       id: [''],
       productid: ['', Validators.required],
@@ -56,12 +56,17 @@ export class ScopeComponent {
       description: [''],
       status: ['inactive', Validators.required],
     });
+    this.currentPage = 1;
+    this.pageSize = 10;
   }
+
   showCreateScopeDialoge() {
     this.displayCreateScopeDialog = true;
     this.ScopeForm.reset({
       status: 'inactive'
     });
+    this.editMode = false;
+    this.modeTitle = 'Add';
   }
 
   getProdname() {
@@ -92,13 +97,13 @@ export class ScopeComponent {
 
       if (this.editMode) {
         // Handle update logic
+        this.modeTitle = 'Edit';
         body['id'] = this.selectedScope.id;
         this.masterDataService.updateScopeDetails(body).subscribe(
           (response) => {
             console.log(response);
             this.displayCreateScopeDialog = false;
             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Scope updated successfully!' });
-            this.createForm();
             this.editMode = false;
             this.fetchProductScope();
           },
@@ -108,12 +113,14 @@ export class ScopeComponent {
           }
         );
       } else {
+        this.modeTitle = 'Add';
         this.masterDataService.addScopeDetails(body).subscribe(
           (response) => {
             console.log(response);
             this.displayCreateScopeDialog = false;
             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Scope added successfully!' });
-            this.createForm();
+            this.totalRecords += 1;
+            this.fetchProductScope();
           },
           (error) => {
             console.error(error);
@@ -164,13 +171,19 @@ export class ScopeComponent {
     this.pageSize = event.rows;
     this.fetchProductScope();
   }
-  onSort(event: any) {
-    this.sortField = event.field;
-    this.sortOrder = event.order === 1 ? 1 : -1;
-    this.currentPage = 1; // Reset to the first page when sorting
-    this.fetchProductScope();
-  }
 
+  onSort(event: any) {
+    const newSortField = event.field;
+    const newSortOrder = event.order === 1 ? 1 : -1;
+  
+    if (newSortField !== this.sortField || newSortOrder !== this.sortOrder) {
+      this.sortField = newSortField;
+      this.sortOrder = newSortOrder;
+      this.currentPage = 1;
+      this.fetchProductScope();
+    }
+  }
+  
   clear(table: Table) {
     table.clear();
     this.onSort(Event);
@@ -184,6 +197,7 @@ export class ScopeComponent {
   }
   updateProductScopeDetails(scope: any) {
     this.editMode = true;
+    this.modeTitle = 'Edit'; 
     if (this.selectedScope) {
       this.ScopeForm.patchValue({
         productid: this.selectedScope.product.id,
@@ -226,4 +240,6 @@ export class ScopeComponent {
       });
     });
   }
+
+  
 }
