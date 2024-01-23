@@ -180,7 +180,9 @@ export class LocationsComponent {
         id: this.locationForm.get('id').value || '',
         name: this.locationForm.value.name,
         locationCode: this.locationForm.value.locationCode,
-        region: this.locationForm.value.region,
+        region: {
+          id: this.locationForm.value.region
+        },
         country: {
           id: this.locationForm.value.country
         },
@@ -243,31 +245,19 @@ export class LocationsComponent {
     this.editMode = true;
     this.modeTitle = 'Edit';
     if (this.selectedLocation) {
-      const selectedRegion = this.selectedLocation.region;
-      const findRegionOption = (option: any) =>
-        option.name.toLowerCase() === selectedRegion.toLowerCase();
-      const regionOption = this.regionOptions.find(findRegionOption);
-      //console.log('fr',regionOption);
-      if (regionOption) {
-        this.locationForm.get('region').setValue(regionOption);
-
-      } else {
-        console.error('Region option not found for selectedRegion:', selectedRegion);
-      }
-
 
       this.locationForm.patchValue({
         name: this.selectedLocation.name,
         locationCode: this.selectedLocation.locationCode,
-        region: this.selectedLocation.region,
+        region: this.selectedLocation.region.id,
         country: this.selectedLocation.country.id,
         description: this.selectedLocation.description,
         status: this.selectedLocation.status ? 'active' : 'inactive',
       });
       console.log('df', this.locationForm)
       this.displayCreateLocationDialog = true;
+    
     }
-
   }
 
 

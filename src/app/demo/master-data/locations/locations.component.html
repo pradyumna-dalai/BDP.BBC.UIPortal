@@ -68,7 +68,7 @@
                 <td style="text-align: center; word-wrap: break-word;">
                     <p-tag [value]="getSeverityLabel(item.status)" [severity]="getSeverity(item.status)"></p-tag>
                 </td>
-                <td style="text-align: center; word-wrap: break-word;">{{ item.region }}</td>
+                <td style="text-align: center; word-wrap: break-word;">{{ item.region.name }}</td>
                 <td style="text-align: center; word-wrap: break-word;">{{ item.country.name }}</td>
                 <td style="text-align: center; word-wrap: break-word;">{{ item.name }}</td>
                 <td style="text-align: center; word-wrap: break-word;">{{ item.locationCode }}</td>
@@ -127,7 +127,7 @@
                 <div class="field col-12 md:col-5">
                     <label>Region<span class="required">*</span></label>
                     <p-dropdown [options]="regionOptions" appendTo="body" formControlName="region"
-                        placeholder="Select Region" optionLabel="name" optionValue="name" [filter]="true"
+                        placeholder="Select Region" optionLabel="name" optionValue="id" [filter]="true"
                         filterBy="name" [style]="{ 'width': '100%' }">
                     </p-dropdown>
                     <div *ngIf="locationForm.get('region')?.hasError('required') && locationForm.get('region')?.touched"
