@@ -118,6 +118,7 @@ import { CategoryComponent } from './demo/master-data/category/category.componen
 import { ProductComponent } from './demo/master-data/product/product.component';
 import { UOMComponent } from './demo/master-data/uom/uom.component';
 import { FteComponent } from './demo/master-data/fte/fte.component';
+import { ProcessConfigComponent } from './demo/master-data/process-config/process-config.component';
 
 
 
@@ -235,6 +236,7 @@ import { FteComponent } from './demo/master-data/fte/fte.component';
         ProductComponent,
         UOMComponent,
         FteComponent,
+        ProcessConfigComponent,
 
     ],
     providers: [

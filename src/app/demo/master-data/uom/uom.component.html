@@ -67,9 +67,10 @@ selectionMode="single" dataKey="id" styleClass="p-datatable-gridlines" responsiv
                 <td style="text-align: center; word-wrap: break-word;">
                     <span>{{item.name}}</span>
                 </td>
-                <td style="text-align: center; word-wrap: break-word;">
-                    <span>{{item.description}}</span>
-                </td>
+                <td style="text-align: center; max-width: 200px; overflow: hidden;" [title]="item.description">
+                    <span *ngIf="item.description && item.description.length > 50">{{ item.description.slice(0, 20) + '...' }}</span>
+                    <span *ngIf="!item.description || (item.description && item.description.length <= 50)">{{ item.description }}</span>
+                </td> 
                 <td style="text-align: center; word-wrap: break-word;">
                     <span>{{ item.createdBy }}</span>
                   </td>

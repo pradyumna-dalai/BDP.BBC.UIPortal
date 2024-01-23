@@ -72,7 +72,9 @@ export class AppMenuComponent implements OnInit {
             case 'product category':
                 return 'pi pi-bars';
             case 'fte - full time employee':
-                return 'pi pi-bars';
+                return 'pi pi-fw pi-desktop';
+            case 'process configurable':
+                return 'pi pi-fw pi-desktop';
             default:
                 return 'pi pi-fw pi-desktop';
         }
@@ -105,6 +107,8 @@ export class AppMenuComponent implements OnInit {
                 return ['/uom'];
             case 'fte - full time employee':
                 return ['/fte'];
+            case 'process configurable':
+                return ['/processConfig'];
             default:
                 return ['/uikit'];
         }
