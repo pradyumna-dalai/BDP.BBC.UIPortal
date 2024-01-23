@@ -14,6 +14,7 @@ import { ScopeComponent } from './demo/master-data/scope/scope.component';
 import { ProductComponent } from './demo/master-data/product/product.component';
 import { UOMComponent } from './demo/master-data/uom/uom.component';
 import { FteComponent } from './demo/master-data/fte/fte.component';
+import { ProcessConfigComponent } from './demo/master-data/process-config/process-config.component';
 
 
 
@@ -54,7 +55,8 @@ import { FteComponent } from './demo/master-data/fte/fte.component';
                     { path: 'product', component: ProductComponent },
                     { path: 'charge-code', component: ChargeCodeComponent },
                     { path: 'uom', component: UOMComponent },
-                    { path: 'fte', component: FteComponent }
+                    { path: 'fte', component: FteComponent },
+                    { path: 'processConfig', component: ProcessConfigComponent }
                 ]
             },
             { path: 'notfound', component: AppNotfoundComponent },
