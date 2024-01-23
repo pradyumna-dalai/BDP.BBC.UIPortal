@@ -30,6 +30,8 @@ export class ProductComponent {
     totalRecords: any = 10;
     first: any = 0;
     rows: any = 10;
+  newSortField: any;
+  newSortOrder: number;
 
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
     private fb: FormBuilder, private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService) {
@@ -111,10 +113,15 @@ export class ProductComponent {
     this.fetchAllProdcutDetails();
   }
   onSort(event: any) {
-    this.sortField = event.field;
-    this.sortOrder = event.order === 1 ? 1 : -1;
-    this.currentPage = 1; // Reset to the first page when sorting
-    this.fetchAllProdcutDetails();
+    this.newSortField = event.field;
+    this.newSortOrder = event.order === 1 ? 1 : -1;
+    if (this.newSortField !== this.sortField || this.newSortOrder !== this.sortOrder) {
+      this.sortField = this.newSortField;
+      this.sortOrder = this.newSortOrder;
+      this.currentPage = 1;
+      this.fetchAllProdcutDetails();
+    }
+    
   }
   editProduct(editId) {
     
