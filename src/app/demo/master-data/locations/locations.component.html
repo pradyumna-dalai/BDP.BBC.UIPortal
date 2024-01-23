@@ -135,7 +135,7 @@
                         Region is required.
                     </div>
                 </div>
-                <div class="field col-12 md:col-5" style="margin-left: 70px;">
+                <!-- <div class="field col-12 md:col-5" style="margin-left: 70px;">
                     <label>Country<span class="required">*</span></label>
                     <p-dropdown [options]="countryOptions" appendTo="body" formControlName="country"
                         placeholder="Select Country" optionLabel="name" optionValue="id" [filter]="true" filterBy="name"
@@ -150,8 +150,34 @@
                         class="error-message">
                         Country is required.
                     </div>
-                </div>
-
+                
+                </div> -->
+                <div class="field col-12 md:col-5" style="margin-left: 70px;">
+                    <label>Country<span class="required">*</span></label>
+                    <p-dropdown
+                      [options]="countryOptions"
+                      appendTo="body"
+                      formControlName="country"
+                      placeholder="Select Country"
+                      optionLabel="name"
+                      optionValue="id"
+                      [filter]="true"
+                      filterBy="name"
+                      [style]="{ 'width': '100%' }"
+                    >
+                    <ng-container *ngFor="let country of countryOptions">
+                        <div [ngClass]="'flag-icon-' + country.code.toLowerCase()"></div>
+                        {{ country.name }}
+                      </ng-container>
+                    </p-dropdown>
+                    <div
+                      *ngIf="locationForm.get('country')?.hasError('required') && locationForm.get('country')?.touched"
+                      class="error-message"
+                    >
+                      Country is required.
+                    </div>
+                  </div>
+                  
                 <div class="field col-12 md:col-5">
                     <label>Description</label>
                     <textarea id="description" type="text" rows="2" placeholder="Description" pInputTextarea
