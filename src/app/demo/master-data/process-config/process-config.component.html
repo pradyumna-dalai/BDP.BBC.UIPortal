@@ -1,1 +1,88 @@
-<p>process-config works!</p>
+<div class="card">
+    <div class="grid">
+        <div class="col-6">
+            <!-- <span class="p-input-icon-right">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                    placeholder="Search Keyword" />
+            </span> -->
+        </div>
+        <div class="col-6" style="display: flex;justify-content: flex-end;">
+            <button type="button" pButton pRipple label="Import From Excel"  class="mr-2 mb-2" ></button>
+    </div>
+    </div>
+<p-table #dt1 [showCurrentPageReport]="true" 
+selectionMode="single" dataKey="id" styleClass="p-datatable-gridlines" responsiveLayout="scroll"
+scrollHeight="530px" scrollDirection="both" >
+
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="text-align: center;width: 50px" [frozen]="true" class="sticky-header">Actions</th>
+                <th style="text-align: center; width: 200px"  [frozen]="true"
+                class="sticky-header"> Product Name
+                </th>
+                <th style="text-align: center; width: 300px"  [frozen]="true"
+                    class="sticky-header">
+                    Product Scope
+                </th>
+                <th style="text-align: center; width: 200px"  [frozen]="true"
+                    class="sticky-header">
+                    Product Category
+                </th>
+                <th style="text-align: center; width: 200px" pSortableColumn="createdBy" [frozen]="true"
+                    class="sticky-header">
+                    Building Block Name<p-sortIcon field="createdBy"></p-sortIcon>
+                </th>
+                <th style="text-align: center; width: 200px" pSortableColumn="createdDate" [frozen]="true"
+                    class="sticky-header">Created At<p-sortIcon field="createdDate"></p-sortIcon>
+                </th>
+                <th style="text-align: center; width: 200px" pSortableColumn="updatedBy" [frozen]="true"
+                    class="sticky-header">
+                    Updated By<p-sortIcon field="updatedBy"></p-sortIcon>
+                </th>
+                <th style="text-align: center; width: 200px" pSortableColumn="updatedDate" [frozen]="true"
+                    class="sticky-header">Updated At<p-sortIcon field="updatedDate"></p-sortIcon>
+                </th>
+               
+
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+            <tr>
+                <td style="text-align: center;">
+                    <span style="cursor: pointer;" (click)="editProduct(item.id)"><i class="pi pi-pencil"></i></span>&nbsp;
+                    <!-- <span style="cursor: pointer;" (click)="confirm('delete', item.id)">
+                        <i class="pi pi-trash"></i>
+                    </span> -->
+                </td>
+                <td style="text-align: center; word-wrap: break-word;">
+                    <!-- <span>{{item.status ? 'Active' : 'Inactive'}}</span> -->
+                    <span></span>
+                </td>
+                <td style="text-align: center; word-wrap: break-word;">
+                    <span></span>
+                </td>
+                <td style="text-align: center; max-width: 200px; overflow: hidden;">
+                    <span></span>
+                </td>
+                <td style="text-align: center; word-wrap: break-word;">
+                    <span></span>
+                  </td>
+                  <td style="text-align: center; word-wrap: break-word;">
+                    <span></span>
+                </td>
+                <td style="text-align: center; word-wrap: break-word;">
+                    <span></span>
+                </td>
+               
+               
+               
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td style="text-align: center;" colspan="18">No Data found.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
