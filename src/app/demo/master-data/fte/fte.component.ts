@@ -16,7 +16,9 @@ export class FteComponent {
 
   FteForm: FormGroup;
   displayCreateFteDialog :boolean =false
-
+  regionOptions:any;
+  countryOptions:any;
+  locationOptions:any;
   constructor(private breadcrumbService: AppBreadcrumbService,
     private messageService: MessageService, 
     private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService, private masterTableService: MasterTableService,private fb: FormBuilder,) {
@@ -43,6 +45,12 @@ export class FteComponent {
 
   }
 
+  ngOnInit(){
+    this.fetchLocationRegion();
+    this.fetchLocationCountry();
+    this.fetchLocation();
+  }
+
   showCreateFteDialog() {
     this.displayCreateFteDialog = true;
     // this.locationForm.reset({
@@ -53,6 +61,52 @@ export class FteComponent {
     
   }
 
+/**Region get Data */
+
+fetchLocationRegion() {
+  this.regionOptions = [];
+  this.masterTableService.getRegion().subscribe((res: any) => {
+    if (res?.message == "success") {
+      this.regionOptions = res?.data;
+    } else {
+      this.regionOptions = [];
+    }
+  })
+}
+
+/**Contry get */
+
+
+fetchLocationCountry() {
+  this.countryOptions = [];
+  this.masterDataService.getAllCountryDetails().subscribe((res: any) => {
+    if (res?.message == "success") {
+      this.countryOptions = res?.data;
+      this.countryOptions = res?.data.map((country: any) => ({
+        ...country,
+        //  flagClass: `flag-icon flag-icon-${country.iso2.toLowerCase()}`,
+      }));
+    } else {
+      this.countryOptions = [];
+    }
+  })
+}
+
+
+fetchLocation() {
+  this.locationOptions = [];
+  this.masterDataService.getAllLocationDropdown().subscribe((res: any) => {
+    if (res?.message == "success") {
+      this.locationOptions = res?.data;
+      this.locationOptions = res?.data.map((country: any) => ({
+        ...country,
+        //  flagClass: `flag-icon flag-icon-${country.iso2.toLowerCase()}`,
+      }));
+    } else {
+      this.locationOptions = [];
+    }
+  })
+}
   addFteData(){
     console.log(this.FteForm.value)
   }
