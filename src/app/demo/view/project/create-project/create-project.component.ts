@@ -270,7 +270,8 @@ const body = {
 fetchActiveLocation() {
   this.MasterTableservice.getAllActiveLocation().subscribe((res: any) => {
     if (res?.message === "success") {
-      this.locationOptions = res?.data;
+      this.locationOptions = res?.data.map((location: any) => ({ id: location.id, name: location.name }));
+
       this.originLocations = [...this.locationOptions];
       this.destinationLocations = [...this.locationOptions];
     } else {
@@ -280,37 +281,33 @@ fetchActiveLocation() {
     }
   });
 }
-
 onOriginLocationChange(event: any) {
-  const selectedLocation = event.value;
+  const selectedLocationIds = event.value;
   console.log('fdf4', this.destinationLocations);
 
-  if (selectedLocation && selectedLocation.id !== undefined) {
-    this.destinationLocations = this.locationOptions.filter(loc => !this.arrayIncludes(loc.id, selectedLocation.id));
+  if (selectedLocationIds && selectedLocationIds.length > 0) {
+    this.destinationLocations = this.locationOptions.filter(loc => !selectedLocationIds.includes(loc.id));
   } else {
-    // Handle the case where selectedLocation or selectedLocation.id is undefined
+   
     this.destinationLocations = [...this.locationOptions];
   }
 
   console.log('fdf5', this.destinationLocations);
-  console.log('fdf5', selectedLocation);
+  console.log('fdf5', selectedLocationIds);
 }
-
-arrayIncludes(value: any, search: any): boolean {
-  if (Array.isArray(value)) {
-    return value.includes(search);
-  }
-  return false;
-}
-
-
 
 onDestinationLocationChange(event: any) {
-  const selectedLocation = event.value;
-  console.log('fdf2',this.originLocations);
-  this.originLocations = this.locationOptions.filter(loc=> loc.id !== selectedLocation.id);
-  console.log('fdf3',this.originLocations);
+  const selectedLocationIds = event.value;
+  console.log('fdf2', this.originLocations);
+
+  if (selectedLocationIds && selectedLocationIds.length > 0) {
+    this.originLocations = this.locationOptions.filter(loc => !selectedLocationIds.includes(loc.id));
+  } else {
+    
+    this.originLocations = [...this.locationOptions];
+  }
 }
+
 
 fetchActiveUom(){
   this.uomOptions = [];
