@@ -5,7 +5,7 @@ import { MasterDataService } from 'src/app/services/master-dataserivce/master-da
 import { MasterTableService } from 'src/app/services/master-table.service';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-fte',
   templateUrl: './fte.component.html',
@@ -19,11 +19,28 @@ export class FteComponent {
 
   constructor(private breadcrumbService: AppBreadcrumbService,
     private messageService: MessageService, 
-    private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService, private masterTableService: MasterTableService) {
+    private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService, private masterTableService: MasterTableService,private fb: FormBuilder,) {
     this.breadcrumbService.setItems([
       { label: 'Master Data Management' },
       { label: 'FTE - Full Time Employee' }
     ]);
+
+    /**
+     * @FormGroup for FteFrom Group 
+     */
+
+    this.FteForm = this.fb.group({
+      region : ['',Validators.required],
+      country : ['',Validators.required],
+      location: ['',Validators.required],
+      fte_month: ['',Validators.required],
+      ftf_year : ['',Validators.required],
+      Work_Time_Year: ['',Validators.required],
+      status : ['']
+    })
+
+
+
   }
 
   showCreateFteDialog() {
@@ -34,6 +51,10 @@ export class FteComponent {
     // this.editMode = false;
     // this.modeTitle = 'Add';
     
+  }
+
+  addFteData(){
+    console.log(this.FteForm.value)
   }
 
   onSort(event){
