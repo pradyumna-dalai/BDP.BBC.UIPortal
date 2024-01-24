@@ -165,7 +165,25 @@ export class ProductComponent {
                 this.handleSuccess();
             },
             (error) => {
-                this.handleError();
+              if(error.error.data[0] == 'Name should not be more than 50 words'){
+                this.messageService.add({
+                  key: 'errorToast',
+                  severity: 'error',
+                  summary: 'Error!',
+                  detail: 'Name should not be more than 50 words.'
+                });
+              }
+              else if(error.error.data[0] == 'Description should not be more than 1000 words'){
+              this.messageService.add({
+                key: 'errorToast',
+                severity: 'error',
+                summary: 'Error!',
+                detail: 'Description should not be more than 1000 words'
+              });
+          }
+          else{
+            this.handleError();
+          }
             }
         );
     } else {
@@ -176,7 +194,25 @@ export class ProductComponent {
                 this.handleSuccess();
             },
             (error) => {
-                this.handleError();
+              if(error.error.data[0] == 'Name should not be more than 50 words'){
+                this.messageService.add({
+                  key: 'errorToast',
+                  severity: 'error',
+                  summary: 'Error!',
+                  detail: 'Name should not be more than 50 words.'
+                });
+              }
+              else if(error.error.data[0] == 'Description should not be more than 1000 words'){
+              this.messageService.add({
+                key: 'errorToast',
+                severity: 'error',
+                summary: 'Error!',
+                detail: 'Description should not be more than 1000 words'
+              });
+          }
+          else{
+            this.handleError();
+          }
             }
         );
     }
@@ -205,7 +241,7 @@ export class ProductComponent {
         key: 'errorToast',
         severity: 'error',
         summary: 'Error!',
-        detail: this.editMode ? 'Failed To Update Product.' : 'Failed to save Product'
+        detail: 'Name should not exceed 50 characters; description exceeds limit—please shorten it'
     });
   }
 
