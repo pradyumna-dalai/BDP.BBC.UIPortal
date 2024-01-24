@@ -10,6 +10,9 @@ import { AppBreadcrumbService } from 'src/app/app.breadcrumb.service';
   providers: [MessageService, ConfirmationService]
 })
 export class ProcessConfigComponent implements OnInit {
+// Add an array to track the edit mode for each row
+editModes: boolean[] = [];
+visible: boolean = false;
 
   jsonData = {
     "status": 200,
@@ -60,6 +63,7 @@ export class ProcessConfigComponent implements OnInit {
       "isFirst": true
     }
   };
+  // jsonData:any= "";
 
   data: any[] = []; // Add your data array here
 
@@ -72,7 +76,7 @@ export class ProcessConfigComponent implements OnInit {
       { label: 'Master Data Management' },
       { label: 'Process Configurables' }
     ]);
-   
+  
 
   }
   ngOnInit() {
@@ -109,23 +113,46 @@ export class ProcessConfigComponent implements OnInit {
  
        return rowData;
      });
-     console.log('Columns:', this.columns);
-     console.log('Data:', this.data);
+     // Initialize edit mode for each row to false
+    this.editModes = Array(this.data.length).fill(false);
    }
- 
+ // Add a method to toggle the edit mode for a specific row
+ toggleEditMode(index: number) {
+  this.editModes[index] = !this.editModes[index];
+}
+isEditableColumn(columnField: string): boolean {
+  // List the columns that should not be editable
+  const nonEditableColumns = ['Product Name', 'Product Scope', 'Product Category','Building Block Name'];
+
+  // Check if the current column is in the non-editable list
+  return !nonEditableColumns.includes(columnField);
+}
+cancelAllEdits() {
+  // Revert changes to the original data for all rows
+  // this.data = JSON.parse(JSON.stringify(this.originalData));
+  // Toggle back to the original grid for all rows
+  this.editModes = Array(this.data.length).fill(false);
+}
+addNewRow() {
+  // Create a new row with the same data as the first row
+  const newRow = { ...this.data[0] };
+  newRow.id = null;
+  this.data.push(newRow);
+  this.editModes.push(true);
+}
    initializeColumns() {
      // Initialize static columns
      this.columns = [
       //  { field: 'Actions', header: 'Actions', style: { 'text-align': 'center' } },
-       { field: 'Product Name', header: 'Product Name', style: { 'text-align': 'center', width: '200px' } },
-       { field: 'Product Scope', header: 'Product Scope', style: { 'text-align': 'center', width: '300px' } },
-       { field: 'Product Category', header: 'Product Category', style: { 'text-align': 'center', width: '300px' } },
-       { field: 'Building Block Name', header: 'Building Block Name', style: { 'text-align': 'center', width: '300px' } },
-       { field: 'Origin / Destination', header: 'Origin / Destination', style: { 'text-align': 'center', width: '300px' } },
-       { field: 'Process No.', header: 'Process No.', style: { 'text-align': 'center', width: '300px' } },
-       { field: 'Operations Steps', header: 'Operations Steps', style: { 'text-align': 'center', width: '300px' } },
-       { field: 'Location', header: 'Location', style: { 'text-align': 'center', width: '300px' } },
-       { field: 'UOM', header: 'UOM', style: { 'text-align': 'center', width: '300px' } },
+       { field: 'Product Name', header: 'Product Name', style: { 'text-align': 'center', width: '500px' } },
+       { field: 'Product Scope', header: 'Product Scope', style: { 'text-align': 'center', width: '500px' } },
+       { field: 'Product Category', header: 'Product Category', style: { 'text-align': 'center', width: '500px' } },
+       { field: 'Building Block Name', header: 'Building Block Name', style: { 'text-align': 'center', width: '500px' } },
+       { field: 'Origin / Destination', header: 'Origin / Destination', style: { 'text-align': 'center', width: '500px' } },
+       { field: 'Process No.', header: 'Process No.', style: { 'text-align': 'center', width: '500px' } },
+       { field: 'Operations Steps', header: 'Operations Steps', style: { 'text-align': 'center', width: '700px' } },
+       { field: 'Location', header: 'Location', style: { 'text-align': 'center', width: '500px' } },
+       { field: 'UOM', header: 'UOM', style: { 'text-align': 'center', width: '500px' } },
        { field: 'Configuration', header: 'Configuration', style: { 'text-align': 'center', width: '300px' } },
        // ... add other static columns ...
  
@@ -134,6 +161,11 @@ export class ProcessConfigComponent implements OnInit {
          return { field: location.locationName, header: location.locationName, style: { 'text-align': 'center' } };
        }),
      ];
+   }
+
+
+   showDialog(){
+    this.visible = true;
    }
   }
 

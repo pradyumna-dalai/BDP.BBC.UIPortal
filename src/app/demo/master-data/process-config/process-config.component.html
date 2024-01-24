@@ -8,7 +8,8 @@
             </span> -->
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
-            <button type="button" pButton pRipple label="Import From Excel"  class="mr-2 mb-2" ></button>
+            <button type="button" pButton pRipple label="Export"  class="mr-2 mb-2" ></button>
+            <button type="button" pButton pRipple label="Import" (click)="showDialog()"  class="mr-2 mb-2" ></button>
     </div>
     </div>
 <p-table #dt1 [showCurrentPageReport]="true" 
@@ -18,20 +19,56 @@ scrollHeight="530px" scrollDirection="both" [columns]="columns" [value]="data">
 <ng-template pTemplate="header" let-columns>
     <tr>
         <th style="text-align: center;width: 50px" [frozen]="true" class="sticky-header">Actions</th>
-        <th *ngFor="let col of columns" [style]="col.style">{{ col.header }}</th>
+        <th *ngFor="let col of columns"  [style]="col.style">{{ col.header }}</th>
     </tr>
 </ng-template>
 
-<ng-template pTemplate="body" let-rowData let-columns="columns">
+<!-- Modify the body template to conditionally render the input field or display the current value -->
+<ng-template pTemplate="body" let-rowData let-columns="columns" let-i="rowIndex">
     <tr>
         <td style="text-align: center;">
-            <span style="cursor: pointer;" (click)="editProduct(item.id)"><i class="pi pi-pencil"></i></span>&nbsp;
-            <!-- <span style="cursor: pointer;" (click)="confirm('delete', item.id)">
-                <i class="pi pi-trash"></i>
-            </span> -->
+            <span style="cursor: pointer;" (click)="toggleEditMode(i)">
+                <i class="pi pi-{{ editModes[i] ? 'check' : 'pencil' }}"></i>
+              </span>&nbsp;
+              <span style="cursor: pointer;" >
+                <i class="pi pi-{{ editModes[i] ? 'times' : 'plus' }}" *ngIf="!editModes[i]" (click)="addNewRow()"></i>
+                <i class="pi pi-times" *ngIf="editModes[i]" (click)="toggleEditMode(i)"></i>
+              </span>
         </td>
-        <td *ngFor="let col of columns">
-            {{ rowData[col.field] }}
+        <td style="text-align: center;" *ngFor="let col of columns">
+            <!-- Conditionally render input field or display the current value -->
+            <ng-container *ngIf="!editModes[i] || !isEditableColumn(col.field)">
+                {{ rowData[col.field] }}
+            </ng-container>
+            <ng-container *ngIf="editModes[i] && isEditableColumn(col.field)">
+                <input pInputText *ngIf="col.field !== 'Origin / Destination' && col.field !== 'UOM' && col.field !== 'Configuration'" [(ngModel)]="rowData[col.field]" />
+                <ng-container *ngIf="col.field === 'Origin / Destination'">
+                    <p-dropdown
+                        [options]="locations"
+                        [(ngModel)]="rowData[col.field]"
+                        optionLabel="locationName"
+                        placeholder="Select Origin/Destination"
+                    ></p-dropdown>
+                </ng-container>
+                <ng-container *ngIf="col.field === 'UOM'">
+                    <!-- Replace 'UOM' with your actual data source for UOM -->
+                    <p-dropdown
+                        [options]="uomOptions"
+                        [(ngModel)]="rowData[col.field]"
+                        optionLabel="label"
+                        placeholder="Select UOM"
+                    ></p-dropdown>
+                </ng-container>
+                <ng-container *ngIf="col.field === 'Configuration'">
+                    <!-- Replace 'Configuration' with your actual data source for Configuration -->
+                    <p-dropdown
+                        [options]="configurationOptions"
+                        [(ngModel)]="rowData[col.field]"
+                        optionLabel="label"
+                        placeholder="Select Configuration"
+                    ></p-dropdown>
+                </ng-container>
+            </ng-container>
         </td>
     </tr>
 </ng-template>
@@ -42,3 +79,89 @@ scrollHeight="530px" scrollDirection="both" [columns]="columns" [value]="data">
         </ng-template>
     </p-table>
 </div>
+
+<p-dialog header="Import Excel" [(visible)]="visible" [style]="{width: '50vw'}" >
+    <!-- <div class="page-under-construction">
+        <img src="assets/layout/images/page-under-construction.jpg" alt="No Building Blocks Found">
+    </div> -->
+    <ng-template pTemplate="header">
+        <div style="width: 100%;">
+            <h5 style="display: contents;">Import From Excel</h5>&nbsp;&nbsp;&nbsp;
+            <h5 style="display: contents;">
+                <a   style="text-decoration: underline;">Download Sample File</a>
+              </h5>
+        </div>
+    </ng-template>
+    <hr>
+    <div>
+        <div class="p-fluid grid">
+            <!-- Left Column -->
+            <div class="col-12 md:col-12">
+            <div class="custom-container">
+                <h6><b>Instructions</b></h6>
+                <ul class="list">
+                <li>Maximum File Size: 2MB</li>
+                <li>File Format: CSV,xlsx</li>
+                </ul>
+                <ol class="list" type="1">
+                <li>Make sure to provide valid data</li>
+                <li>Keep file name recognizable</li>
+                </ol>
+            </div>
+            </div>
+            <!-- Right Column -->
+            <div class="col-12 md:col-12">
+                <div class="custom-container">
+                    <h6><b>Upload</b></h6>
+                    <!-- <div *ngIf="showUploaderror" style="color: red;">
+                        <b>Upload error: Review the file before uploading.</b>
+                        <div *ngIf="!uploadError">
+                            <div *ngIf="deliverablesError">{{ deliverablesError }}</div>
+                        <div *ngIf="valueToPSABDPError">{{ valueToPSABDPError }}</div>
+                        <div *ngIf="parametersError">{{ parametersError }}</div>
+                        <div *ngIf="serviceDescriptionError">{{ serviceDescriptionError }}</div>
+                        <div *ngIf="stakeholdersAudienceError">{{ stakeholdersAudienceError }}</div>
+                        <div *ngIf="customerRequirementsError">{{ customerRequirementsError }}</div>
+                        <div *ngIf="configurableError">{{ configurableError }}</div> 
+                        </div>
+                       
+                      </div> -->
+                      <div  style="color: red;">
+                        
+                      </div>
+                    <div class="box">
+                        <div class="card-body">
+                        <div class="container">
+                            
+                            <label for="fileUpload" class="custom-file-input">
+                                <i class="pi pi-upload" style="font-size: 30px;display: block;"></i>
+                                <div class="upload_name">Upload</div>
+                            </label>
+                            <p style="text-align: center;"></p>
+                            <input type="file" id="fileUpload" style="display: none;" accept=".xlsx, .csv">
+                        </div>
+                        </div>
+                    </div>
+                    <!-- <p-progressBar *ngIf="uploadInProgress" mode="indeterminate" [style]="{'height': '6px', 'marginBottom':'1rem'}">
+                    </p-progressBar> -->
+                    <div class="card_footer">
+                        <div>
+                            <button type="submit" pButton pRipple class=" btn" >
+                            Remove File
+                        </button> 
+                        </div>
+                        <div class="uplodBtn_right">
+                        <button type="submit" pButton pRipple class=" btn" >
+                            Submit
+                        </button>
+                        <button type="submit"  pButton pRipple class=" btn">Cancel</button>
+                        </div>
+                    </div>
+                    </div>
+            </div>
+        </div>
+        <div class="">
+        </div>    
+
+    </div>
+</p-dialog>
