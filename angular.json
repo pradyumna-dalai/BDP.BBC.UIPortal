@@ -29,7 +29,8 @@
                         "assets": [
                             "src/favicon.ico",
                             "src/assets",
-                            "src/upload.php"
+                            "src/upload.php",
+                            "src/assets/demo/flags"
                         ],
                         "styles": [
                             "src/styles.scss",

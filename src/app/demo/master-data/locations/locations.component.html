@@ -165,10 +165,11 @@
                       filterBy="name"
                       [style]="{ 'width': '100%' }"
                     >
-                    <ng-container *ngFor="let country of countryOptions">
-                        <div [ngClass]="'flag-icon-' + country.code.toLowerCase()"></div>
-                        {{ country.name }}
-                      </ng-container>
+                    <ng-template let-item pTemplate="option">
+                        <img src="assets/demo/flags/{{ item.code.toLowerCase() }}.png" [class]="'flag flag-' + item.code.toLowerCase()" />
+                        {{ item.name }}
+                      </ng-template>
+                      
                     </p-dropdown>
                     <div
                       *ngIf="locationForm.get('country')?.hasError('required') && locationForm.get('country')?.touched"
