@@ -133,7 +133,7 @@
                                         <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
                                             <tr [pEditableRow]="product">
                                                 <td>
-                                                    <div class="flex align-items-center justify-content-center gap-2">
+                                                    <div>
                                                         <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(product)" class="p-button-rounded p-button-text"></button>
                                                         <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(product)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
                                                         <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(product, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
@@ -162,7 +162,7 @@
                                                 <td>
                                                     <p-cellEditor>
                                                         <ng-template pTemplate="input">
-                                                            <p-dropdown [options]="statuses" appendTo="body" [(ngModel)]="product.inventoryStatus" [style]="{'width':'100%'}"></p-dropdown>
+                                                            <p-dropdown [options]="uomOptions" optionLabel="name" appendTo="body" [(ngModel)]="product.inventoryStatus" [style]="{'width':'100%'}"></p-dropdown>
                                                         </ng-template>
                                                         <ng-template pTemplate="output">
                                                         UOM
@@ -220,7 +220,7 @@
                                                 <td>
                                                     <p-cellEditor>
                                                         <ng-template pTemplate="input">
-                                                            <p-dropdown [options]="statuses" appendTo="body" [(ngModel)]="product.inventoryStatus" [style]="{'width':'100%'}"></p-dropdown>
+                                                            <p-dropdown [options]="uomOptions" optionLabel="name" appendTo="body"  [style]="{'width':'100%'}"></p-dropdown>
                                                         </ng-template>
                                                         <ng-template pTemplate="output">
                                                         UOM

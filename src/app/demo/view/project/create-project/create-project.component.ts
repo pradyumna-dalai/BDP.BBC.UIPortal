@@ -84,7 +84,7 @@ export class CreateProjectComponent implements OnInit {
       // Add more fields as needed
 
     });
-    //this.getProjectStatus();
+    this.fetchActiveUom();
     this.getRegion();
     this.getCompany();
     this.getProjectStage();
