@@ -6,6 +6,7 @@ import { ProjectsService } from 'src/app/services/project-serivce/projects.servi
 import { ConfirmationService, MessageService } from 'primeng/api';
 import dayjs from 'dayjs';
 import { DatePipe } from '@angular/common';
+import { Product } from 'src/app/demo/domain/product';
 
 @Component({
   selector: 'app-create-project',
@@ -42,7 +43,17 @@ export class CreateProjectComponent implements OnInit {
   opportunityManger: any;
   saveError: string;
   dateRange: any;
+  locationOptions: any[] = [];
+  originLocations: any[] = [];
+  destinationLocations: any[] = [];
+  uomOptions: any[];
+//dummny
+ // products: any;
 
+ 
+
+  clonedProducts: { [s: string]: Product } = {};
+  products = [{'id':1,'name':'Asia'},{'id':2,'name':'Delhi'}];
 
 
   constructor(private breadcrumbService: AppBreadcrumbService,
@@ -78,8 +89,10 @@ export class CreateProjectComponent implements OnInit {
     this.getCompany();
     this.getProjectStage();
     this.getOpportunityManger();
-
-
+    this.fetchActiveLocation();
+   
+     
+   
 
   }
 
@@ -252,6 +265,66 @@ const body = {
 }
 
 
+
+//-----------------------------location Information-----------------------------//
+fetchActiveLocation() {
+  this.MasterTableservice.getAllActiveLocation().subscribe((res: any) => {
+    if (res?.message === "success") {
+      this.locationOptions = res?.data;
+      this.originLocations = [...this.locationOptions];
+      this.destinationLocations = [...this.locationOptions];
+    } else {
+      this.locationOptions = [];
+      this.originLocations = [];
+      this.destinationLocations = [];
+    }
+  });
+}
+
+onOriginLocationChange(event: any) {
+  const selectedLocation = event.value;
+  console.log('fdf4', this.destinationLocations);
+
+  if (selectedLocation && selectedLocation.id !== undefined) {
+    this.destinationLocations = this.locationOptions.filter(loc => !this.arrayIncludes(loc.id, selectedLocation.id));
+  } else {
+    // Handle the case where selectedLocation or selectedLocation.id is undefined
+    this.destinationLocations = [...this.locationOptions];
+  }
+
+  console.log('fdf5', this.destinationLocations);
+  console.log('fdf5', selectedLocation);
+}
+
+arrayIncludes(value: any, search: any): boolean {
+  if (Array.isArray(value)) {
+    return value.includes(search);
+  }
+  return false;
+}
+
+
+
+onDestinationLocationChange(event: any) {
+  const selectedLocation = event.value;
+  console.log('fdf2',this.originLocations);
+  this.originLocations = this.locationOptions.filter(loc=> loc.id !== selectedLocation.id);
+  console.log('fdf3',this.originLocations);
+}
+
+fetchActiveUom(){
+  this.uomOptions = [];
+  this.MasterTableservice.getAllActiveUOM().subscribe((res: any) => {
+    if (res?.message == "success") {
+      this.uomOptions = res?.data;
+    } else {
+      this.uomOptions = [];
+    }
+  })
+}
+
+
+//---------------------------------dummy UI--------------------------------------------//
 
 
 }
