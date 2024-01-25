@@ -107,6 +107,23 @@ fetchLocation() {
     }
   })
 }
+
+/**@edit function here*/
+
+
+editFteRow(){
+  let rowData:any;
+  this.FteForm.patchValue({
+    region: rowData.region,
+    country: rowData.country,
+    location: rowData.location,
+    fte_month: rowData.fte_month,
+    ftf_year: rowData.ftf_year,
+    Work_Time_Year: rowData.Work_Time_Year,
+    status: rowData.status
+  });
+}
+
   addFteData(){
     console.log(this.FteForm.value)
   }
