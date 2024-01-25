@@ -27,7 +27,7 @@ export class CategoryComponent {
   currentPage: number = 1;
   pageSize: number = 10;
   sortField: string = ''; // Initial sort field
-  sortOrder: number = 1; // 1 for ascending, -1 for descending
+  sortOrder: string = 'asc'; // 1 for ascending, -1 for descending
   totalRecords: any = 10;
   first: any = 0;
   rows: any = 10;
@@ -37,7 +37,7 @@ export class CategoryComponent {
     private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService, private fb: FormBuilder,) {
     this.breadcrumbService.setItems([
       { label: 'Master Data Management' },
-      { label: 'Category' }
+      { label: 'Product Category' }
     ]);
 
     //this.createForm();
@@ -60,18 +60,6 @@ export class CategoryComponent {
       status: ['inactive', Validators.required],
     });
   }
-
-
-  // createForm() {
-  //   this.CategoryForm = this.fb.group({
-  //     id: [''],
-  //     productid: ['', Validators.required],
-  //     productScope: ['', Validators.required],
-  //     productCategory: ['', Validators.required],
-  //     description: [''],
-  //     status: ['inactive', Validators.required],
-  //   });
-  // }
 
   showCreateCategoryDialoge() {
     this.displayCreateCategoryDialog = true;
@@ -211,7 +199,7 @@ export class CategoryComponent {
  
   onSort(event: any) {
     const newSortField = event.field;
-    const newSortOrder = event.order === 1 ? 1 : -1;
+    const newSortOrder = event.order === 1 ? 'asc' : 'desc'; 
   
     if (newSortField !== this.sortField || newSortOrder !== this.sortOrder) {
       this.sortField = newSortField;

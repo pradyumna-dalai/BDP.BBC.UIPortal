@@ -31,7 +31,7 @@ export class LocationsComponent {
   currentPage: number = 1;
   pageSize: number = 10;
   sortField: string = ''; // Initial sort field
-  sortOrder: number = 1; // 1 for ascending, -1 for descending
+  sortOrder: string = 'asc'; // 1 for ascending, -1 for descending
   totalRecords: any = 10;
   first: any = 0;
   rows: any = 10;
@@ -59,23 +59,23 @@ export class LocationsComponent {
   }
 
   ngAfterViewInit(): void {
-    
+
   }
   ngOnInit() {
     this.fetchAllLocationDetails();
     this.fetchLocationRegion();
     this.fetchLocationCountry();
-   // this.createForm();
-   this.locationForm = this.fb.group({
-    id: [''],
-    name: ['', Validators.required],
-    region: ['', Validators.required],
-    country: ['', Validators.required],
-    //  countryCode: ['', Validators.required],
-    locationCode: ['', Validators.required],
-    description: [''],
-    status: ['inactive', Validators.required],
-  });
+    // this.createForm();
+    this.locationForm = this.fb.group({
+      id: [''],
+      name: ['', Validators.required],
+      region: ['', Validators.required],
+      country: ['', Validators.required],
+      //  countryCode: ['', Validators.required],
+      locationCode: ['', Validators.required],
+      description: [''],
+      status: ['inactive', Validators.required],
+    });
 
   }
 
@@ -114,8 +114,8 @@ export class LocationsComponent {
 
   onSort(event: any) {
     const newSortField = event.field;
-    const newSortOrder = event.order === 1 ? 1 : -1;
-  
+    const newSortOrder = event.order === 1 ? 'asc' : 'desc';
+
     if (newSortField !== this.sortField || newSortOrder !== this.sortOrder) {
       this.sortField = newSortField;
       this.sortOrder = newSortOrder;
@@ -138,7 +138,7 @@ export class LocationsComponent {
     });
     this.editMode = false;
     this.modeTitle = 'Add';
-    
+
   }
 
   saveLocation() {
@@ -180,7 +180,9 @@ export class LocationsComponent {
         id: this.locationForm.get('id').value || '',
         name: this.locationForm.value.name,
         locationCode: this.locationForm.value.locationCode,
-        region: this.locationForm.value.region,
+        region: {
+          id: this.locationForm.value.region
+        },
         country: {
           id: this.locationForm.value.country
         },
@@ -198,7 +200,7 @@ export class LocationsComponent {
             console.log(response);
             this.displayCreateLocationDialog = false;
             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Location updated successfully!' });
-         //   this.createForm();
+            //   this.createForm();
             this.editMode = false;
             this.fetchAllLocationDetails();
           },
@@ -241,33 +243,21 @@ export class LocationsComponent {
   }
   updateLocationDetails(location: any) {
     this.editMode = true;
-    this.modeTitle = 'Edit'; 
+    this.modeTitle = 'Edit';
     if (this.selectedLocation) {
-      const selectedRegion = this.selectedLocation.region;
-      const findRegionOption = (option: any) =>
-        option.name.toLowerCase() === selectedRegion.toLowerCase();
-      const regionOption = this.regionOptions.find(findRegionOption);
-      //console.log('fr',regionOption);
-      if (regionOption) {
-        this.locationForm.get('region').setValue(regionOption);
-
-      } else {
-        console.error('Region option not found for selectedRegion:', selectedRegion);
-      }
-
 
       this.locationForm.patchValue({
         name: this.selectedLocation.name,
         locationCode: this.selectedLocation.locationCode,
-        region: this.selectedLocation.region,
+        region: this.selectedLocation.region.id,
         country: this.selectedLocation.country.id,
         description: this.selectedLocation.description,
         status: this.selectedLocation.status ? 'active' : 'inactive',
       });
       console.log('df', this.locationForm)
       this.displayCreateLocationDialog = true;
+    
     }
-
   }
 
 
