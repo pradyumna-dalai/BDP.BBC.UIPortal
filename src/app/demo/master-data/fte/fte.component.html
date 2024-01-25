@@ -178,7 +178,7 @@
 </div>
     <ng-template pTemplate="footer">
         <button type="button" pButton pRipple label=" Add " 
-              (click)="addFteData()" ></button>&nbsp;&nbsp;
+              (click)="addFteData()" [disabled]="!FteForm.valid"></button>&nbsp;&nbsp;
         <button pButton pRipple label="Cancel" (click)="cancelUpdate()"></button>
     </ng-template>
 </p-dialog>
