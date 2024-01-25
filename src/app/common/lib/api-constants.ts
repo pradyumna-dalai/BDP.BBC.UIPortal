@@ -103,7 +103,7 @@ export namespace AppRoutes {
         public static readonly downloadUOM = "download-uom";
 
     
-
+        public static readonly active_location = "active-location"
 
     }
 
