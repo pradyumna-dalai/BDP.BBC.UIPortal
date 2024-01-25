@@ -84,7 +84,6 @@ fetchLocationCountry() {
       this.countryOptions = res?.data;
       this.countryOptions = res?.data.map((country: any) => ({
         ...country,
-        //  flagClass: `flag-icon flag-icon-${country.iso2.toLowerCase()}`,
       }));
     } else {
       this.countryOptions = [];
@@ -100,7 +99,6 @@ fetchLocation() {
       this.locationOptions = res?.data;
       this.locationOptions = res?.data.map((country: any) => ({
         ...country,
-        //  flagClass: `flag-icon flag-icon-${country.iso2.toLowerCase()}`,
       }));
     } else {
       this.locationOptions = [];
