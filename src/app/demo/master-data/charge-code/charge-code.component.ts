@@ -188,6 +188,14 @@ SaveChargecode() {
               detail: 'Description should not be more than 1000 words'
             });
         }
+        else if(error.error.data[0] == 'Charge code name exists\nDescription should not be more than 1000 words'){
+          this.messageService.add({
+            key: 'errorToast',
+            severity: 'error',
+            summary: 'Error!',
+            detail: 'Charge code name exists\nDescription should not be more than 1000 words'
+          });
+      }
         else if(error.error.data[0] == 'Charge code name exists'){
           this.messageService.add({
             key: 'errorToast',
