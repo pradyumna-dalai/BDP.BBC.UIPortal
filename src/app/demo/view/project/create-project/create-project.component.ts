@@ -4,6 +4,8 @@ import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms'
 import { MasterTableService } from '../../../../services/master-table.service';
 import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import dayjs from 'dayjs';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-create-project',
@@ -38,9 +40,13 @@ export class CreateProjectComponent implements OnInit {
   designNotes: any;
   impleNotes: any;
   opportunityManger: any;
+  saveError: string;
+  dateRange: any;
 
 
-  constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,private fb: FormBuilder, public MasterTableservice: MasterTableService, public projectService: ProjectsService) {
+
+  constructor(private breadcrumbService: AppBreadcrumbService,
+    private datePipe: DatePipe, private messageService: MessageService,private fb: FormBuilder, public MasterTableservice: MasterTableService, public projectService: ProjectsService) {
     this.breadcrumbService.setItems([
       {
         label: 'PROJECT',
@@ -61,8 +67,7 @@ export class CreateProjectComponent implements OnInit {
       projectStage: [''],
       projectStatus: [''],
       opportunityManger: [''],
-      startDate: [''],
-      endDate: [''],
+      selectedDateRange: [''],
       designNotes: ['', [Validators.maxLength(1000)]],
       impleNotes: ['', [Validators.maxLength(1000)]],
       // Add more fields as needed
@@ -164,7 +169,9 @@ export class CreateProjectComponent implements OnInit {
     })
   }
 
-
+  formatDate(date: Date): string {
+    return dayjs(date).format('YYYY-MM-DD');
+  }
   //----------------------Save Project as Draft-----------------------//
   SaveAsDraftProjects() {
     var om = this.myForm.get('opportunityManger').value;
@@ -173,13 +180,17 @@ export class CreateProjectComponent implements OnInit {
     } else {
       opportunityMangers = om.map(id => ({ id }))
     }
+    this.dateRange = this.myForm.get('selectedDateRange').value;
+    let dateRangevalStartDate = this.dateRange.startDate;
+    let dateRangevalEndDate = this.dateRange.endDate;
+   
 const body = {
   description: "",
   projectInformation: {
       customerCode: this.myForm.get('customerCode').value,
       projectName: this.myForm.get('projectName').value,
-      startDate: this.myForm.get('startDate').value,
-      endDate: this.myForm.get('endDate').value,
+      startDate: this.formatDate(dateRangevalStartDate),
+      endDate: this.formatDate(dateRangevalEndDate),
       designNote: this.myForm.get('designNotes').value,
       implementationNote: this.myForm.get('impleNotes').value,
       company: {
@@ -203,8 +214,6 @@ const body = {
     opportunityManager: opportunityMangers
   }
 }
-    
-    console.log(body);
     this.projectService.saveAsDraftProject(body).subscribe(
     (res) => {
       console.log('Draft saved successfully:', res);
@@ -217,8 +226,18 @@ const body = {
       });
     },
     (error) => {
-      console.error('Error saving draft:', error);
 
+      if (error.status === 400) {
+        // console.log('Bad Request Error:', error);
+        if(error.error.data[0] == 'Project name exist'){
+          this.messageService.add({
+            key: 'errorToast',
+            severity: 'error',
+            summary: 'Error!',
+            detail: 'Project Name already exists.'
+          });
+        }
+      }else{
       this.messageService.add({
         key: 'errorToast',
         severity: 'error',
@@ -226,7 +245,10 @@ const body = {
         detail: 'Failed to save Project draft.'
       });
     }
+    }
+  
   );
+  
 }
 
 

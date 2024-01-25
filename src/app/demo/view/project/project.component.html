@@ -1,9 +1,5 @@
 <div class="card">
-  <div class="grid">
-    <div class="col-6">
-      <h4>Project</h4>
-    </div>
-    <div class="col-6" style="display: flex;justify-content: flex-end;">
+    <div style="display: flex;justify-content: flex-end; margin-top: -45px;">
       <div *ngIf="showDateRangeSelection" class="custom-date-range-dropdown">
         <p-dropdown [options]="predefinedDateRanges" [(ngModel)]="selectedPredefinedDateRange" optionLabel="label"
           placeholder="Select Date Range" [style]="{'width': '200px'}"
@@ -21,20 +17,18 @@
 
         <button pButton type="button" label="Apply" (click)="applyDateRange()" class="mr-2 mb-2"></button>
       </div>
-      <button type="button" pButton pRipple label="Create Project" [routerLink]="['/create-project']"
-        class="mr-2 mb-2"></button>
-        <button type="button" pButton pRipple label="Export Excel" (click)="toggleDateRangeSelection()"
-        class="mr-2 mb-2 btnwidth"></button>
+   <div class="project_right">
+    <button type="button" pButton pRipple label="Create Project" [routerLink]="['/create-project']"
+    class="mr-2 mb-2"></button>
+    <button type="button" pButton pRipple label="Export Excel" (click)="toggleDateRangeSelection()"
+    class="mr-2 mb-2 btnwidth"></button>
+   </div>
         
-       
+   </div>    
   
         <p-toast key="errorToast"></p-toast>
         <p-toast key="successToast"></p-toast>
 
-        
-    </div>
-  </div>
-  <hr class="align">
     <div>
       <div class="sidebar-container">
         <app-search-filter></app-search-filter>
@@ -74,7 +68,7 @@
           Project ID<p-sortIcon field="proj_id"></p-sortIcon>
         </th>
         <th style="text-align: center; width: 200px" pSortableColumn="proj_name" [frozen]="true" class="sticky-header">
-          Project Name<p-sortIcon field="proj_id"></p-sortIcon>
+          Project Name<p-sortIcon field="proj_name"></p-sortIcon>
         </th>
         <th style="text-align: center; width: 200px" pSortableColumn="oppourtunity_name" [frozen]="true"
           class="sticky-header">Opportunity Name<p-sortIcon field="oppourtunity_name"></p-sortIcon>

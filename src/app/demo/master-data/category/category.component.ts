@@ -31,6 +31,7 @@ export class CategoryComponent {
   totalRecords: any = 10;
   first: any = 0;
   rows: any = 10;
+  modeTitle: string = 'Add';
 
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService, public MasterTableservice: MasterTableService,
     private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService, private fb: FormBuilder,) {
@@ -39,15 +40,17 @@ export class CategoryComponent {
       { label: 'Category' }
     ]);
 
-    this.createForm();
+    //this.createForm();
+
+  }
+
+  ngAfterViewInit(): void {
 
   }
   ngOnInit() {
     this.getProdname();
     this.fetchProductCategory();
-  }
-
-  createForm() {
+    // this.createForm();
     this.CategoryForm = this.fb.group({
       id: [''],
       productid: ['', Validators.required],
@@ -58,11 +61,25 @@ export class CategoryComponent {
     });
   }
 
+
+  // createForm() {
+  //   this.CategoryForm = this.fb.group({
+  //     id: [''],
+  //     productid: ['', Validators.required],
+  //     productScope: ['', Validators.required],
+  //     productCategory: ['', Validators.required],
+  //     description: [''],
+  //     status: ['inactive', Validators.required],
+  //   });
+  // }
+
   showCreateCategoryDialoge() {
     this.displayCreateCategoryDialog = true;
     this.CategoryForm.reset({
       status: 'inactive'
     });
+    this.editMode = false;
+    this.modeTitle = 'Add';
   }
 
   // ---------------get product data------------------------//
@@ -117,13 +134,14 @@ export class CategoryComponent {
       };
 
       if (this.editMode) {
+        this.modeTitle = 'Edit';
         body['id'] = this.selectedCategory.id;
         this.masterDataService.updateCateogryDetails(body).subscribe(
           (response) => {
             //  console.log(response);
             this.displayCreateCategoryDialog = false;
             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Category updated successfully!' });
-            this.createForm();
+            //  this.createForm();
             this.editMode = false;
             this.fetchProductCategory();
           },
@@ -133,12 +151,14 @@ export class CategoryComponent {
           }
         );
       } else {
+        this.modeTitle = 'Add';
         this.masterDataService.addCateogoryDetails(body).subscribe(
           (response) => {
             //   console.log(response);
             this.displayCreateCategoryDialog = false;
             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Category added successfully!' });
-            this.createForm();
+            this.totalRecords += 1;
+            this.fetchProductCategory();
           },
           (error) => {
             //  console.error(error);
@@ -154,11 +174,6 @@ export class CategoryComponent {
     } else {
       this.messageService.add({ severity: 'error', summary: 'Validation Error', detail: 'Form is invalid!' });
     }
-  }
-
-
-  showCreateCategoryDialog() {
-    this.displayCreateCategoryDialog = true;
   }
 
   //-----------------------fetch scope details-------------------------------------------//
@@ -193,13 +208,18 @@ export class CategoryComponent {
     this.pageSize = event.rows;
     this.fetchProductCategory();
   }
+ 
   onSort(event: any) {
-    this.sortField = event.field;
-    this.sortOrder = event.order === 1 ? 1 : -1;
-    this.currentPage = 1; // Reset to the first page when sorting
-    this.fetchProductCategory();
+    const newSortField = event.field;
+    const newSortOrder = event.order === 1 ? 1 : -1;
+  
+    if (newSortField !== this.sortField || newSortOrder !== this.sortOrder) {
+      this.sortField = newSortField;
+      this.sortOrder = newSortOrder;
+      this.currentPage = 1;
+      this.fetchProductCategory();
+    }
   }
-
   clear(table: Table) {
     table.clear();
     this.onSort(Event);
@@ -212,7 +232,7 @@ export class CategoryComponent {
   }
   updateProductCategoryDetails(category: any) {
     this.editMode = true;
-
+    this.modeTitle = 'Edit'; 
     if (this.selectedCategory) {
       // Fetch product scopes for the selected product
       const selectedProductId = this.selectedCategory.scope.product.id;
@@ -244,10 +264,10 @@ export class CategoryComponent {
 
   }
 
-   //-------------------Exoprt Excel-----------------------------------------------------//
-   downloadExcel(event: Event) {
+  //-------------------Exoprt Excel-----------------------------------------------------//
+  downloadExcel(event: Event) {
     event.preventDefault();
-  
+
     this.masterDataService.downloadCategoryDetails().subscribe((res: any) => {
       const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
       const link = document.createElement('a');

@@ -30,6 +30,8 @@ export class UOMComponent implements AfterViewInit{
     totalRecords: any = 10;
     first: any = 0;
     rows: any = 10;
+  newSortField: any;
+  newSortOrder: number;
  
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
     private fb: FormBuilder, private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService) {
@@ -113,11 +115,15 @@ export class UOMComponent implements AfterViewInit{
   // Handle sorting event
   onSort(event: any) {
   
-    this.sortField = event.field;
-    this.sortOrder = (event.order === 1) ? 1 : -1;
+    this.newSortField = event.field;
+    this.newSortOrder = (event.order === 1) ? 1 : -1;
   
-    // Call the method to fetch data with sorting
-    this.fetchAllUOMDetails();
+    if (this.newSortField !== this.sortField || this.newSortOrder !== this.sortOrder) {
+      this.sortField = this.newSortField;
+      this.sortOrder = this.newSortOrder;
+      this.currentPage = 1;
+      this.fetchAllUOMDetails();
+    }
   }
 
   editUOM(editId) {

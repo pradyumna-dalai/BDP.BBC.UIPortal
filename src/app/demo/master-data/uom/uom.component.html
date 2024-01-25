@@ -117,14 +117,14 @@ selectionMode="single" dataKey="id" styleClass="p-datatable-gridlines" responsiv
                 <div class="field col-12 md:col-12 customCSS" >
                     <div class="p-d-block"><label>Description</label></div>
                     <textarea rows="4" cols="30" pInputTextarea formControlName="description"
-                    placeholder="Description" id="inputtext"></textarea>
+                    placeholder="Description" id="inputtext" style="resize: none;"></textarea>
                 </div>
                 <div class="field col-12 md:col-12 customCSS">
                     <div class="p-d-flex p-flex-row align-center">
                         <div class="p-mr-2">
                             <div class="p-d-block"><label>Status is Active?</label></div>
                         </div>
-                        <div class="flex flex-wrap gap-3">
+                        <div class="flex flex-wrap gap-3" style="margin-left: 5px;">
                             <div class="flex align-items-center">
                                 <p-radioButton name="status" value="active" formControlName="status"></p-radioButton>
                                 <label for="ingredient1" class="ml-2">Active</label>
