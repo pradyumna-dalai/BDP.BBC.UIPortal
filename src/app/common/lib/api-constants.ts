@@ -66,8 +66,11 @@ export namespace AppRoutes {
 
         public static readonly exportProjectsinExcel = "export-project";
 
-        public static readonly searchProject = "project-search"
+        public static readonly searchProject = "project-search";
 
+        public static readonly activeLocation = "active-location";
+
+        public static readonly activeUom = "active-uom";
 
         //---------------------master-data----------------//
 
@@ -98,6 +101,7 @@ export namespace AppRoutes {
         public static readonly  uom = "uom";
 
         public static readonly downloadUOM = "download-uom";
+
     
 
 

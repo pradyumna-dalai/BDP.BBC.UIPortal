@@ -8,7 +8,7 @@
             <div class="p-fluid grid">
                 <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>Company Name<span class="requiredField">*</span></label></div>
-                    <p-dropdown   [options]="companyOptions" (onChange)="onCompanySelect($event)" optionLabel="name"
+                    <p-dropdown [options]="companyOptions" (onChange)="onCompanySelect($event)" optionLabel="name"
                         optionValue="id" formControlName="companyName" placeholder="Select Company Name" [filter]="true"
                         filterBy="name"></p-dropdown>
                 </div>
@@ -44,9 +44,9 @@
                 </div>
                 <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>Project Stage<span class="requiredField">*</span></label></div>
-                    <p-dropdown [options]="projectStageOptions" formControlName="projectStage"   (onChange)="OnStageSelectProjectstatus($event)"
-                        placeholder="Select Project Stage" optionLabel="name" optionValue="id" [filter]="true"
-                        filterBy="name"></p-dropdown>
+                    <p-dropdown [options]="projectStageOptions" formControlName="projectStage"
+                        (onChange)="OnStageSelectProjectstatus($event)" placeholder="Select Project Stage"
+                        optionLabel="name" optionValue="id" [filter]="true" filterBy="name"></p-dropdown>
                 </div>
                 <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>Project Status<span class="requiredField">*</span></label></div>
@@ -70,8 +70,8 @@
                 </div> -->
                 <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>Date Range<span class="requiredField">*</span></label></div>
-                    <input type="text" ngxDaterangepickerMd
-                    [lockStartDate]="false" formControlName="selectedDateRange" placeholder="Start Date-End Date" class="date_pick" />
+                    <input type="text" ngxDaterangepickerMd [lockStartDate]="false" formControlName="selectedDateRange"
+                        placeholder="Start Date-End Date" class="date_pick" />
                 </div>
                 <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>Design Notes<span class="requiredField">*</span></label></div>
@@ -93,6 +93,156 @@
                     </div>
                 </div>
             </div>
+            <hr class="aligndown">
+            <div><label>Location<span class="requiredField">*</span></label></div><br>
+            <p>Please Select Location and add them for the project</p>
+            <div class="p-fluid grid">
+                <div class="field col-12 md:col-5">
+                  <div class="p-d-block"><label>Origin Location<span class="requiredField">*</span></label></div>
+                  <p-multiSelect placeholder="Select Origin Location" optionLabel="name"  optionValue="id" display="chip" [showClear]="true"
+                    [options]="originLocations" (onChange)="onOriginLocationChange($event)">
+                  </p-multiSelect>
+                </div>
+              
+                <div class="field col-12 md:col-5">
+                  <div class="p-d-block"><label>Destination Location<span class="requiredField">*</span></label></div>
+                  <p-multiSelect placeholder="Select Destination Location" optionLabel="name"  optionValue="id" display="chip" [showClear]="true"
+                    [options]="destinationLocations" (onChange)="onDestinationLocationChange($event)">
+                  </p-multiSelect>
+                </div>
+              </div>
+              
+              
+            <p-accordion [activeIndex]="0">
+                <p-accordionTab header="Selected Location Volume and UOM">
+                    <div class="card">
+                        <p-tabView>
+                            <p-tabPanel header="Origin Location">
+                               
+                                    <p-toast></p-toast>
+                                    <p-table [value]="products" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th style="width:20%">Action</th>
+                                                <th style="width:20%">Location</th>
+                                                <th style="width:20%">Volume</th>
+                                                <th style="width:20%">UOM</th>
+                                                
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
+                                            <tr [pEditableRow]="product">
+                                                <td>
+                                                    <div>
+                                                        <button *ngIf="!editing" pButton pRipple type="button" icon="pi pi-plus" class="p-button-rounded p-button-text" (click)="onAddRowBelow(ri)"></button>
+                                                        <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(product)" class="p-button-rounded p-button-text"></button>
+                                                        <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(product)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                                                        <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(product, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                                                        <button *ngIf="!editing" pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger" (click)="onDeleteRow(ri)"></button>
+  
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <p-cellEditor>
+                                                        <ng-template pTemplate="input">
+                                                            <input pInputText type="text" >
+                                                        </ng-template>
+                                                        <ng-template pTemplate="output">
+                                                          Asia
+                                                        </ng-template>
+                                                    </p-cellEditor>
+                                                </td>
+                                                <td>
+                                                    <p-cellEditor>
+                                                        <ng-template pTemplate="input">
+                                                            <input pInputText type="text" required>
+                                                        </ng-template>
+                                                        <ng-template pTemplate="output">
+                                                           123
+                                                        </ng-template>
+                                                    </p-cellEditor>
+                                                </td>
+                                                <td>
+                                                    <p-cellEditor>
+                                                        <ng-template pTemplate="input">
+                                                            <p-dropdown [options]="uomOptions" optionLabel="name" appendTo="body" [(ngModel)]="product.inventoryStatus" [style]="{'width':'100%'}"></p-dropdown>
+                                                        </ng-template>
+                                                        <ng-template pTemplate="output">
+                                                        UOM
+                                                        </ng-template>
+                                                    </p-cellEditor>
+                                                </td>
+                                               
+                                                
+                                            </tr>
+                                        </ng-template>
+                                    </p-table>
+                              
+                            </p-tabPanel>
+                            <p-tabPanel header="Destination Location">
+                                <p-toast></p-toast>
+                                    <p-table [value]="products" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th style="width:20%">Action</th>
+                                                <th style="width:20%">Location</th>
+                                                <th style="width:20%">Volume</th>
+                                                <th style="width:20%">UOM</th>
+                                                
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
+                                            <tr [pEditableRow]="product">
+                                                <td>
+                                                    <div >
+                                                        <button *ngIf="!editing" pButton pRipple type="button" icon="pi pi-plus" class="p-button-rounded p-button-text" (click)="onAddRowBelow(ri)"></button>
+                                                        <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(product)" class="p-button-rounded p-button-text"></button>
+                                                        <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(product)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                                                        <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(product, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                                                        <button *ngIf="!editing" pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger" (click)="onDeleteRow(ri)"></button>
+
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <p-cellEditor>
+                                                        <ng-template pTemplate="input">
+                                                            <input pInputText type="text" >
+                                                        </ng-template>
+                                                        <ng-template pTemplate="output">
+                                                          Delhi
+                                                        </ng-template>
+                                                    </p-cellEditor>
+                                                </td>
+                                                <td>
+                                                    <p-cellEditor>
+                                                        <ng-template pTemplate="input">
+                                                            <input pInputText type="text" required>
+                                                        </ng-template>
+                                                        <ng-template pTemplate="output">
+                                                           123
+                                                        </ng-template>
+                                                    </p-cellEditor>
+                                                </td>
+                                                <td>
+                                                    <p-cellEditor>
+                                                        <ng-template pTemplate="input">
+                                                            <p-dropdown [options]="uomOptions" optionLabel="name" appendTo="body"  [style]="{'width':'100%'}"></p-dropdown>
+                                                        </ng-template>
+                                                        <ng-template pTemplate="output">
+                                                        UOM
+                                                        </ng-template>
+                                                    </p-cellEditor>
+                                                </td>
+                                               
+                                                
+                                            </tr>
+                                        </ng-template>
+                                    </p-table>
+                            </p-tabPanel>
+                        </p-tabView>
+                    </div>
+                </p-accordionTab>
+            </p-accordion>
             <hr class="aligndown">
             <div class="col-12" style="display: flex;justify-content: flex-end;">
                 <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
