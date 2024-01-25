@@ -55,16 +55,16 @@ scrollHeight="530px" scrollDirection="both" [columns]="columns" [value]="data">
                     <p-dropdown
                         [options]="uomOptions"
                         [(ngModel)]="rowData[col.field]"
-                        optionLabel="label"
+                        optionLabel="name" optionValue="id"
                         placeholder="Select UOM"
                     ></p-dropdown>
                 </ng-container>
                 <ng-container *ngIf="col.field === 'Configuration'">
                     <!-- Replace 'Configuration' with your actual data source for Configuration -->
                     <p-dropdown
-                        [options]="configurationOptions"
+                        [options]="configOptions"
                         [(ngModel)]="rowData[col.field]"
-                        optionLabel="label"
+                        optionLabel="name" optionValue="id"
                         placeholder="Select Configuration"
                     ></p-dropdown>
                 </ng-container>

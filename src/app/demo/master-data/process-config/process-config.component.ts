@@ -2,6 +2,7 @@ import { Component,OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { AppBreadcrumbService } from 'src/app/app.breadcrumb.service';
+import { MasterTableService } from './../../../services/master-table.service';
 
 @Component({
   selector: 'app-process-config',
@@ -53,6 +54,41 @@ visible: boolean = false;
           ],
           "status": true,
           "isDeleted": false
+        },
+        {
+          "createdBy": 1,
+          "updatedBy": 2,
+          "createdDate": "2023-11-28T07:28:26.000+00:00",
+          "updatedDate": "2023-11-28T07:28:26.000+00:00",
+          "productId": 1,
+          "productName": "Contract Logistic",
+          "scopeId": 1,
+          "scopeName": "Distribution",
+          "categoryId": 1,
+          "categoryName": "Onboarding",
+          "buildingBlockId": 1,
+          "buildingBlockName": "1stMileCoordination",
+          "originDestination": "Origin",
+          "processNumber": 1,
+          "operationStep": "Customer send booking request",
+          "uomId": 1,
+          "uomName": "Order",
+          "configurationId": 1,
+          "configurationName": "Manual",
+          "location_takTime": [
+            {
+              "locationId": 1,
+              "locationName": "Singapore",
+              "takTime": 7.1
+            },
+            {
+              "locationId": 2,
+              "locationName": "Shanghai",
+              "takTime": 10.1
+            }
+          ],
+          "status": true,
+          "isDeleted": false
         }
       ],
       "pageNo": 0,
@@ -69,8 +105,10 @@ visible: boolean = false;
 
   columns: any[] = []; // Dynamic columns
   locations: any[] = []; // Locations array from the JSON data
+  uomOptions: any[];
+  configOptions: any[];
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
-    private confirmationService: ConfirmationService, private router: Router,
+    private confirmationService: ConfirmationService, private router: Router,public MasterTableservice: MasterTableService,
     ) {
     this.breadcrumbService.setItems([
       { label: 'Master Data Management' },
@@ -115,6 +153,9 @@ visible: boolean = false;
      });
      // Initialize edit mode for each row to false
     this.editModes = Array(this.data.length).fill(false);
+
+    this.getUom();
+    this.getConfigurable();
    }
  // Add a method to toggle the edit mode for a specific row
  toggleEditMode(index: number) {
@@ -167,6 +208,28 @@ addNewRow() {
    showDialog(){
     this.visible = true;
    }
+   // ---------------get UOM data------------------------//
+   getUom() {
+    this.uomOptions = [];
+    this.MasterTableservice.getUom().subscribe((res: any) => {
+      if (res?.message == "success") {
+        this.uomOptions = res?.data;
+      } else {
+        this.uomOptions = [];
+      }
+    })
+  }
+  // ---------------get config data------------------------//
+  getConfigurable() {
+    this.configOptions = [];
+    this.MasterTableservice.getConfigurable().subscribe((res: any) => {
+      if (res?.message == "success") {
+        this.configOptions = res?.data;
+      } else {
+        this.configOptions = [];
+      }
+    })
+  }
   }
 
  

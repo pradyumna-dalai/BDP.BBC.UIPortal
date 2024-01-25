@@ -20,6 +20,8 @@ export namespace AppRoutes {
         public static readonly getOpportunityManger = "opportunity-manager";
         public static readonly getOpportunityName = "opportunity-name";
         public static readonly getIndustryVertical = "industry-vertical";
+        public static readonly getUom = "active-uom";
+        public static readonly getConfigurable = "configurable";
 
         // --------------------create building block----------------------//
 
