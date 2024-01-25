@@ -5,6 +5,7 @@ import { MasterDataService } from 'src/app/services/master-dataserivce/master-da
 import { MasterTableService } from 'src/app/services/master-table.service';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-fte',
   templateUrl: './fte.component.html',
@@ -12,12 +13,123 @@ import { Router } from '@angular/router';
   providers: [MessageService, ConfirmationService]
 })
 export class FteComponent {
+
+  FteForm: FormGroup;
+  displayCreateFteDialog :boolean =false
+  regionOptions:any;
+  countryOptions:any;
+  locationOptions:any;
   constructor(private breadcrumbService: AppBreadcrumbService,
     private messageService: MessageService, 
-    private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService, private masterTableService: MasterTableService) {
+    private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService, private masterTableService: MasterTableService,private fb: FormBuilder,) {
     this.breadcrumbService.setItems([
       { label: 'Master Data Management' },
       { label: 'FTE - Full Time Employee' }
     ]);
+
+    /**
+     * @FormGroup for FteFrom Group 
+     */
+
+    this.FteForm = this.fb.group({
+      region : ['',Validators.required],
+      country : ['',Validators.required],
+      location: ['',Validators.required],
+      fte_month: ['',Validators.required],
+      ftf_year : ['',Validators.required],
+      Work_Time_Year: ['',Validators.required],
+      status : ['']
+    })
+
+
+
+  }
+
+  ngOnInit(){
+    this.fetchLocationRegion();
+    this.fetchLocationCountry();
+    this.fetchLocation();
+  }
+
+  showCreateFteDialog() {
+    this.displayCreateFteDialog = true;
+    // this.locationForm.reset({
+    //   status: 'inactive'
+    // });
+    // this.editMode = false;
+    // this.modeTitle = 'Add';
+    
+  }
+
+/**Region get Data */
+
+fetchLocationRegion() {
+  this.regionOptions = [];
+  this.masterTableService.getRegion().subscribe((res: any) => {
+    if (res?.message == "success") {
+      this.regionOptions = res?.data;
+    } else {
+      this.regionOptions = [];
+    }
+  })
+}
+
+/**Contry get */
+
+
+fetchLocationCountry() {
+  this.countryOptions = [];
+  this.masterDataService.getAllCountryDetails().subscribe((res: any) => {
+    if (res?.message == "success") {
+      this.countryOptions = res?.data;
+      this.countryOptions = res?.data.map((country: any) => ({
+        ...country,
+      }));
+    } else {
+      this.countryOptions = [];
+    }
+  })
+}
+
+
+fetchLocation() {
+  this.locationOptions = [];
+  this.masterDataService.getAllLocationDropdown().subscribe((res: any) => {
+    if (res?.message == "success") {
+      this.locationOptions = res?.data;
+      this.locationOptions = res?.data.map((country: any) => ({
+        ...country,
+      }));
+    } else {
+      this.locationOptions = [];
+    }
+  })
+}
+
+/**@edit function here*/
+
+
+editFteRow(){
+  let rowData:any;
+  this.FteForm.patchValue({
+    region: rowData.region,
+    country: rowData.country,
+    location: rowData.location,
+    fte_month: rowData.fte_month,
+    ftf_year: rowData.ftf_year,
+    Work_Time_Year: rowData.Work_Time_Year,
+    status: rowData.status
+  });
+}
+
+  addFteData(){
+    console.log(this.FteForm.value)
+  }
+
+  onSort(event){
+    console.log(event)
+  }
+  onPageChange(event){
+    
   }
 }

@@ -153,4 +153,7 @@ export class MasterDataService {
   getAllCountryDetails() {
     return this.http.get<any>(url + settings.AppRoutes.Auth.country);
   }
+  getAllLocationDropdown(){
+    return this.http.get<any>(url + settings.AppRoutes.Auth.active_location)
+  }
 }

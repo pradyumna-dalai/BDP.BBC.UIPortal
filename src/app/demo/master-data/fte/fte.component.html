@@ -1,1 +1,187 @@
-<p>fte works!</p>
+<div class="card">
+    <div class="grid">
+        <div class="col-6">
+            <span class="p-input-icon-right">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dt2.filterGlobal($event.target.value, 'contains')"
+                    placeholder="Search Keyword" />
+            </span>
+        </div>
+        <div class="col-6" style="display: flex;justify-content: flex-end;">
+            <button type="button" pButton pRipple label="Clear" class="mr-2 mb-2"></button>
+            <button type="button" pButton pRipple label="Export" class="mr-2 mb-2" pTooltip="Export in Excel File"
+                tooltipPosition="top"></button>
+            <button type="button" pButton pRipple label=" Add " icon="pi pi-plus" class="mr-2 mb-2"
+                (click)="showCreateFteDialog()"></button>
+        </div>
+    </div>
+    <p-table #dt2 [value]="" dataKey="id" responsiveLayout="scroll" scrollHeight="530px" scrollDirection="both"
+        [globalFilterFields]="['name', 'product.name', 'description', 'status','createdBy','updatedBy','updatedDate','createdDate']"
+        selectionMode="single" styleClass="p-datatable-gridlines" [resizableColumns]="true">
+
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="text-align: center; width: 200px" [frozen]="true"
+                class="sticky-header">
+                Actions
+            </th>
+                <th style="text-align: center;width: 50px" [frozen]="true" class="sticky-header">Region </th>
+
+                <th style="text-align: center; width: 200px" pSortableColumn="region" [frozen]="true"
+                    class="sticky-header">Country
+                    <p-sortIcon field="region" class="sort-icon"></p-sortIcon>
+                    <p-columnFilter type="text" display="menu" field="region" pTooltip="Filter" tooltipPosition="right"
+                        class="column-filter icon-align"></p-columnFilter>
+                </th>
+                <th style="text-align: center; width: 200px" pSortableColumn="country" [frozen]="true"
+                    class="sticky-header">Location
+                    <p-sortIcon field="country" class="sort-icon"></p-sortIcon>
+                    <p-columnFilter type="text" display="menu" field="country" pTooltip="Filter" tooltipPosition="right"
+                        class="column-filter icon-align"></p-columnFilter>
+                </th>
+                <th style="text-align: center; width: 200px" pSortableColumn="name" [frozen]="true"
+                    class="sticky-header">FTE/Month (USD)
+                    <p-sortIcon field="name" class="sort-icon"></p-sortIcon>
+                    <p-columnFilter type="text" display="menu" field="name" pTooltip="Filter" tooltipPosition="right"
+                        class="column-filter icon-align"></p-columnFilter>
+                </th>
+                <th style="text-align: center; width: 200px" pSortableColumn="locationCode" [frozen]="true"
+                    class="sticky-header">FTE/Year (USD)<p-sortIcon field="locationCode"></p-sortIcon></th>
+                <th style="text-align: center; width: 200px" pSortableColumn="description" [frozen]="true"
+                    class="sticky-header">Working Time/Year (min)</th>
+                <th style="text-align: center; width: 200px" pSortableColumn="createdBy" [frozen]="true"
+                    class="sticky-header">Created By<p-sortIcon field="createdBy"></p-sortIcon></th>
+                <th style="text-align: center; width: 200px" pSortableColumn="createdDate" [frozen]="true"
+                    class="sticky-header">Created At<p-sortIcon field="createdDate"></p-sortIcon></th>
+                <th style="text-align: center; width: 200px" pSortableColumn="updatedBy" [frozen]="true"
+                    class="sticky-header">Updated By<p-sortIcon field="updatedBy"></p-sortIcon></th>
+                <th style="text-align: center; width: 200px" pSortableColumn="updatedAt" [frozen]="true"
+                    class="sticky-header">Updated At<p-sortIcon field="updatedAt"></p-sortIcon></th>
+                <th style="text-align: center; width: 200px" [frozen]="true"
+                    class="sticky-header">
+                    Status
+                </th>
+               
+            </tr>
+
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+            <tr>
+                <td style="text-align: center; word-wrap: break-word;">
+                    <span style="cursor: pointer;" (click)="editLocation(item)"><i
+                            class="pi pi-pencil"></i></span>&nbsp;
+                </td>
+                <td style="text-align: center; word-wrap: break-word;">
+                    <p-tag [value]="getSeverityLabel(item.status)" [severity]="getSeverity(item.status)"></p-tag>
+                </td>
+                <td style="text-align: center; word-wrap: break-word;">Action</td>
+                <td style="text-align: center; word-wrap: break-word;">Region </td>
+                <td style="text-align: center; word-wrap: break-word;">Country </td>
+                <td style="text-align: center; word-wrap: break-word;">FTE/Month (USD)</td>
+                <td style="text-align: center; word-wrap: break-word;">Location </td>
+                <td style="text-align: center; word-wrap: break-word;">FTE/Year (USD)</td>
+                <td style="text-align: center; word-wrap: break-word;">Working Time/Year (min)</td>
+                <td style="text-align: center; word-wrap: break-word;">Created By</td>
+                <td style="text-align: center; word-wrap: break-word;">Created At</td>
+                <td style="text-align: center; word-wrap: break-word;">Updated By</td>
+                <td style="text-align: center; word-wrap: break-word;">Updated At</td>
+                <td style="text-align: center; word-wrap: break-word;">Updated At</td>
+                <td style="text-align: center; word-wrap: break-word;">Status</td>
+                
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td style="text-align: center;" colspan="18">No Data found.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <p-paginator (onPageChange)="onPageChange($event)" [rows]="10" [totalRecords]=""
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[10,25,50]" (onSort)="onSort($event)"></p-paginator>
+
+</div>
+
+<p-dialog header="Header" [(visible)]="displayCreateFteDialog" [modal]="true" [style]="{ width: '50rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+    <ng-template pTemplate="header">
+        <div class="inline-flex align-items-center justify-content-center gap-2">
+            <span class="font-bold white-space-nowrap">FTE</span>
+        </div>
+    </ng-template>
+<div>
+<form [formGroup]="FteForm">
+    <div class="p-grid p-field">
+        <div class="formgrid grid">
+            <div class="field col-12 md:col-6">
+                <label>Region<span class="required">*</span></label>
+                <p-dropdown [options]="regionOptions" appendTo="body" 
+                    placeholder="Select Region" optionLabel="name" formControlName="region" optionValue="name" [filter]="true"
+                    filterBy="name" [style]="{ 'width': '100%' }">
+                </p-dropdown>
+                <!-- <div *ngIf="locationForm.get('region')?.hasError('required') && locationForm.get('region')?.touched"
+                    class="error-message">
+                    Region is required.
+                </div> -->
+            </div>
+            <div class="field col-12 md:col-6">
+                <label>Country <span class="required">*</span></label>
+                <p-dropdown [options]="countryOptions" appendTo="body" 
+                    placeholder="Select Country" optionLabel="name" optionValue="name" [filter]="true"
+                    filterBy="name" [style]="{ 'width': '100%' }" formControlName="country">
+                </p-dropdown>
+                <!-- <div *ngIf="locationForm.get('region')?.hasError('required') && locationForm.get('region')?.touched"
+                    class="error-message">
+                    Region is required.
+                </div> -->
+            </div>
+            <div class="field col-12 md:col-6">
+                <label>Location <span class="required">*</span></label>
+                <p-dropdown [options]="locationOptions" appendTo="body" 
+                    placeholder="Select Location" optionLabel="name" optionValue="name" [filter]="true"
+                    filterBy="name" [style]="{ 'width': '100%' }" formControlName="location">
+                </p-dropdown>
+                <!-- <div *ngIf="locationForm.get('region')?.hasError('required') && locationForm.get('region')?.touched"
+                    class="error-message">
+                    Region is required.
+                </div> -->
+            </div>
+            <div class="field col-12 md:col-6">
+                <label>FTE/Month (USD)<span class="required">*</span></label>
+                <input id="name" type="text"  placeholder="FTE/Month" formControlName="fte_month"
+                    class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+            </div>
+            <div class="field col-12 md:col-6">
+                <label>FTE/Year (USD)<span class="required">*</span></label>
+                <input id="name" type="text"  placeholder="FTE/Year "  formControlName="ftf_year"
+                    class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+            </div>
+            <div class="field col-12 md:col-6">
+                <label>Working Time/Year<span class="required">*</span></label>
+                <input id="name" type="text"  placeholder="Working Time/Year" formControlName="Work_Time_Year"
+                    class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+            </div>
+            <div class="field col-12 md:col-6"
+                    style="display: flex; flex-direction: column; align-items: flex-start;margin-top: 4px;">
+                    <label>Status is Active?</label>
+                    <div class="p-field-radiobutton" style=" margin-top: 3px;">
+                        <div class="p-radio">
+                            <p-radioButton name="status" value="active" label="Active"
+                               ></p-radioButton>
+                            <p-radioButton name="status" value="inactive" label="Inactive" 
+                                style="margin-left: 25px;"></p-radioButton>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        </div>
+</form>
+</div>
+    <ng-template pTemplate="footer">
+        <button type="button" pButton pRipple label=" Add " 
+              (click)="addFteData()" [disabled]="!FteForm.valid"></button>&nbsp;&nbsp;
+        <button pButton pRipple label="Cancel" (click)="cancelUpdate()"></button>
+    </ng-template>
+</p-dialog>
+
+
+<p-toast></p-toast>
