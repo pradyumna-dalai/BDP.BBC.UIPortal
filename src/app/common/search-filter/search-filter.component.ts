@@ -3,6 +3,7 @@ import { FilterService } from '../filter/filter.service';
 import { MasterTableService } from 'src/app/services/master-table.service';
 import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
 import dayjs from 'dayjs';
+import { MessageService } from 'primeng/api';
 
 
 @Component({
@@ -31,7 +32,7 @@ export class SearchFilterComponent {
   isapply: boolean = false;
   newSearchfilter: []
   constructor(private filterService: FilterService, public MasterTableservice: MasterTableService,
-    private projectService: ProjectsService) {
+    private projectService: ProjectsService ,private messageService: MessageService,) {
 
   }
 
@@ -184,11 +185,28 @@ export class SearchFilterComponent {
     console.log("payload", payload)
     this.projectService.advanceSearchFilter(payload).subscribe(
       (response) => {
+        
         this.newSearchfilter = response
         this.projectService.updateData(this.newSearchfilter);
+        if(response.length >0){
+          this.messageService.add({
+            key: 'successToast',
+            severity: 'success',
+            summary: 'Success!',
+            detail: 'Filter Data'
+          });
+        }else{
+          this.messageService.add({
+            key: 'errorToast',
+            severity: 'error',
+            summary: 'Error!',
+            detail: 'No Data' 
+          });
+        }
       },
       (error) => {
         console.error('Error:', error);
+       
       }
     );
     this.visible = false;
