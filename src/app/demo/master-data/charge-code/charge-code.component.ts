@@ -187,23 +187,31 @@ SaveChargecode() {
               summary: 'Error!',
               detail: 'Description should not be more than 1000 words'
             });
-        }
-        else if(error.error.data[0] == 'Charge code name exists\nDescription should not be more than 1000 words'){
-          this.messageService.add({
-            key: 'errorToast',
-            severity: 'error',
-            summary: 'Error!',
-            detail: 'Charge code name exists\nDescription should not be more than 1000 words'
-          });
-      }
-        else if(error.error.data[0] == 'Charge code name exists'){
-          this.messageService.add({
-            key: 'errorToast',
-            severity: 'error',
-            summary: 'Error!',
-            detail: 'Charge code name exists'
-          });
-      }
+            }
+            else if(error.error.data[0] == 'Charge code name exists\nDescription should not be more than 1000 words'){
+              this.messageService.add({
+                key: 'errorToast',
+                severity: 'error',
+                summary: 'Error!',
+                detail: 'Charge code name exists.\nDescription should not be more than 1000 words.'
+              });
+            }
+            else if(error.error.data[0] == 'Charge code name exists'){
+              this.messageService.add({
+                key: 'errorToast',
+                severity: 'error',
+                summary: 'Error!',
+                detail: 'Charge code name exists'
+              });
+            }
+            else if(error.error.data[0] == 'Name should not be more than 50 words\nDescription should not be more than 1000 word'){
+            this.messageService.add({
+              key: 'errorToast',
+              severity: 'error',
+              summary: 'Error!',
+              detail: 'Name should not be more than 50 words\nDescription should not be more than 1000 word'
+            });
+            }
         else{
           this.handleError();
         }
@@ -217,30 +225,46 @@ SaveChargecode() {
               this.handleSuccess();
           },
           (error) => {
-              if(error.error.data[0] == 'Name should not be more than 50 words'){
-                this.messageService.add({
-                  key: 'errorToast',
-                  severity: 'error',
-                  summary: 'Error!',
-                  detail: 'Name should not be more than 50 words.'
-                });
-              }
-              else if(error.error.data[0] == 'Description should not be more than 1000 words'){
+            if(error.error.data[0] == 'Name should not be more than 50 words'){
               this.messageService.add({
                 key: 'errorToast',
                 severity: 'error',
                 summary: 'Error!',
-                detail: 'Description should not be more than 1000 words'
+                detail: 'Name should not be more than 50 words.'
               });
-          }
-          else if(error.error.data[0] == 'Charge code name exists'){
+            }
+            else if(error.error.data[0] == 'Description should not be more than 1000 words'){
             this.messageService.add({
               key: 'errorToast',
               severity: 'error',
               summary: 'Error!',
-              detail: 'Charge code name exists'
+              detail: 'Description should not be more than 1000 words'
             });
-        }
+            }
+            else if(error.error.data[0] == 'Charge code name exists\nDescription should not be more than 1000 words'){
+              this.messageService.add({
+                key: 'errorToast',
+                severity: 'error',
+                summary: 'Error!',
+                detail: 'Charge code name exists.\nDescription should not be more than 1000 words.'
+              });
+            }
+            else if(error.error.data[0] == 'Charge code name exists'){
+              this.messageService.add({
+                key: 'errorToast',
+                severity: 'error',
+                summary: 'Error!',
+                detail: 'Charge code name exists'
+              });
+            }
+            else if(error.error.data[0] == 'Name should not be more than 50 words\nDescription should not be more than 1000 word'){
+            this.messageService.add({
+              key: 'errorToast',
+              severity: 'error',
+              summary: 'Error!',
+              detail: 'Name should not be more than 50 words\nDescription should not be more than 1000 word'
+            });
+            }
           else{
             this.handleError();
           }
