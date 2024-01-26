@@ -44,11 +44,11 @@ scrollHeight="530px" scrollDirection="both" [columns]="columns" [value]="data">
                 <input pInputText *ngIf="col.field !== 'Origin / Destination' && col.field !== 'UOM' && col.field !== 'Configuration'" [(ngModel)]="rowData[col.field]" />
                 <ng-container *ngIf="col.field === 'Origin / Destination'">
                     <p-dropdown
-                        [options]="locations"
+                        [options]="locationss"
                         [(ngModel)]="rowData[col.field]"
                         optionLabel="locationName"
                         placeholder="Select Origin/Destination"
-                    ></p-dropdown>
+                        ></p-dropdown>
                 </ng-container>
                 <ng-container *ngIf="col.field === 'UOM'">
                     <!-- Replace 'UOM' with your actual data source for UOM -->

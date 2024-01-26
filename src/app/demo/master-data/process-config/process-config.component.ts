@@ -107,6 +107,11 @@ visible: boolean = false;
   locations: any[] = []; // Locations array from the JSON data
   uomOptions: any[];
   configOptions: any[];
+  locationss = [
+    { locationName: 'Origin', value: 'origin' },
+    { locationName: 'Destination', value: 'destination' }
+    // Add more options as needed
+  ];
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
     private confirmationService: ConfirmationService, private router: Router,public MasterTableservice: MasterTableService,
     ) {
