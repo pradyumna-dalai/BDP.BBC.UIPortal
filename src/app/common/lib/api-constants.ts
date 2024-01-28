@@ -105,6 +105,11 @@ export namespace AppRoutes {
     
         public static readonly active_location = "active-location"
 
+        //------FTE-----------------------//
+        public static readonly fte = "fte"
+
+
+
     }
 
 }

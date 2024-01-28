@@ -19,6 +19,15 @@ export class FteComponent {
   regionOptions:any;
   countryOptions:any;
   locationOptions:any;
+  Ftedetails:any;
+
+  currentPage: number = 1;
+  pageSize: number = 10;
+  sortField: string = ''; // Initial sort field
+  sortOrder: string = 'asc'; // 1 for ascending, -1 for descending
+  totalRecords: any = 10;
+  first: any = 0;
+  rows: any = 10;
   constructor(private breadcrumbService: AppBreadcrumbService,
     private messageService: MessageService, 
     private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService, private masterTableService: MasterTableService,private fb: FormBuilder,) {
@@ -46,9 +55,18 @@ export class FteComponent {
   }
 
   ngOnInit(){
+    this.fetchAllFteDetails();
     this.fetchLocationRegion();
     this.fetchLocationCountry();
     this.fetchLocation();
+  }
+
+
+  getSeverity(status: boolean): string {
+    return status ? 'success' : 'danger';
+  }
+  getSeverityLabel(status: boolean | string): string {
+    return status === true || status === 'active' ? 'Active' : 'Inactive';
   }
 
   showCreateFteDialog() {
@@ -106,6 +124,30 @@ fetchLocation() {
   })
 }
 
+
+/**getFTE Details */
+
+fetchAllFteDetails() {
+  const params = {
+    pageNo: isNaN(this.currentPage) ? 0 : this.currentPage - 1,
+    pageSize: isNaN(this.pageSize) ? 10 : this.pageSize,
+    sortBy: this.sortField,
+    sortDir: this.sortOrder
+  };
+  this.masterDataService.getAllFteDetails(params).subscribe((res: any) => {
+    if (res?.message === 'success') {
+      this.Ftedetails = res.data.fte;
+      this.totalRecords = res?.data.totalElements;
+      console.log('fetch Fte details:', this.totalRecords);
+    } else {
+      console.error('Failed to fetch Fte details:', res);
+    }
+  });
+} 
+
+
+
+
 /**@edit function here*/
 
 
@@ -132,4 +174,6 @@ editFteRow(){
   onPageChange(event){
     
   }
+
+  
 }

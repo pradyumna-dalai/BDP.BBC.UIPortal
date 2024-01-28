@@ -3,7 +3,7 @@
         <div class="col-6">
             <span class="p-input-icon-right">
                 <i class="pi pi-search"></i>
-                <input pInputText type="text" (input)="dt2.filterGlobal($event.target.value, 'contains')"
+                <input pInputText type="text" 
                     placeholder="Search Keyword" />
             </span>
         </div>
@@ -15,90 +15,60 @@
                 (click)="showCreateFteDialog()"></button>
         </div>
     </div>
-    <p-table #dt2 [value]="" dataKey="id" responsiveLayout="scroll" scrollHeight="530px" scrollDirection="both"
-        [globalFilterFields]="['name', 'product.name', 'description', 'status','createdBy','updatedBy','updatedDate','createdDate']"
-        selectionMode="single" styleClass="p-datatable-gridlines" [resizableColumns]="true">
 
+
+    <p-table [value]="Ftedetails" responsiveLayout="scroll" scrollHeight="530px" styleClass="p-datatable-gridlines" [resizableColumns]="true" >
         <ng-template pTemplate="header">
             <tr>
-                <th style="text-align: center; width: 200px" [frozen]="true"
-                class="sticky-header">
-                Actions
-            </th>
-                <th style="text-align: center;width: 50px" [frozen]="true" class="sticky-header">Region </th>
-
-                <th style="text-align: center; width: 200px" pSortableColumn="region" [frozen]="true"
-                    class="sticky-header">Country
-                    <p-sortIcon field="region" class="sort-icon"></p-sortIcon>
-                    <p-columnFilter type="text" display="menu" field="region" pTooltip="Filter" tooltipPosition="right"
-                        class="column-filter icon-align"></p-columnFilter>
-                </th>
-                <th style="text-align: center; width: 200px" pSortableColumn="country" [frozen]="true"
-                    class="sticky-header">Location
-                    <p-sortIcon field="country" class="sort-icon"></p-sortIcon>
-                    <p-columnFilter type="text" display="menu" field="country" pTooltip="Filter" tooltipPosition="right"
-                        class="column-filter icon-align"></p-columnFilter>
-                </th>
-                <th style="text-align: center; width: 200px" pSortableColumn="name" [frozen]="true"
-                    class="sticky-header">FTE/Month (USD)
-                    <p-sortIcon field="name" class="sort-icon"></p-sortIcon>
-                    <p-columnFilter type="text" display="menu" field="name" pTooltip="Filter" tooltipPosition="right"
-                        class="column-filter icon-align"></p-columnFilter>
-                </th>
-                <th style="text-align: center; width: 200px" pSortableColumn="locationCode" [frozen]="true"
-                    class="sticky-header">FTE/Year (USD)<p-sortIcon field="locationCode"></p-sortIcon></th>
-                <th style="text-align: center; width: 200px" pSortableColumn="description" [frozen]="true"
-                    class="sticky-header">Working Time/Year (min)</th>
-                <th style="text-align: center; width: 200px" pSortableColumn="createdBy" [frozen]="true"
-                    class="sticky-header">Created By<p-sortIcon field="createdBy"></p-sortIcon></th>
-                <th style="text-align: center; width: 200px" pSortableColumn="createdDate" [frozen]="true"
-                    class="sticky-header">Created At<p-sortIcon field="createdDate"></p-sortIcon></th>
-                <th style="text-align: center; width: 200px" pSortableColumn="updatedBy" [frozen]="true"
-                    class="sticky-header">Updated By<p-sortIcon field="updatedBy"></p-sortIcon></th>
-                <th style="text-align: center; width: 200px" pSortableColumn="updatedAt" [frozen]="true"
-                    class="sticky-header">Updated At<p-sortIcon field="updatedAt"></p-sortIcon></th>
-                <th style="text-align: center; width: 200px" [frozen]="true"
-                    class="sticky-header">
-                    Status
-                </th>
-               
+                <th style="text-align: center;width: 50px" [frozen]="true" class="sticky-header">Action</th>
+                <th pSortableColumn="region"  style="text-align: center; width: 20%" class="sticky-header">region <p-sortIcon field="region"></p-sortIcon></th>
+                <th pSortableColumn="country" style="width:20%" class="sticky-header">Country  <p-sortIcon field="country "></p-sortIcon></th>
+                <th pSortableColumn="location" style="width:20%" class="sticky-header">Location <p-sortIcon field="location"></p-sortIcon></th>
+                <th pSortableColumn="name" style="width:20%" class="sticky-header">FTE/Month(USD) <p-sortIcon field="name"></p-sortIcon></th>
+                <th pSortableColumn="name" style="width:20%" class="sticky-header">FTE/Year(USD)<p-sortIcon field="name"></p-sortIcon></th>
+                <th pSortableColumn="name" style="width:30%" class="sticky-header">Working Time/Year (min)<p-sortIcon field="name"></p-sortIcon></th>
+              
+                <th pSortableColumn="createdBy" style="width:30%" class="sticky-header">Created By<p-sortIcon field="createdBy"></p-sortIcon></th>  
+                <th pSortableColumn="name" style="width:30%" class="sticky-header">Created At
+                    <p-sortIcon field="name"></p-sortIcon></th>  
+                <th pSortableColumn="name" style="width:30%" class="sticky-header">Updated By
+                        <p-sortIcon field="name"></p-sortIcon></th> 
+                <th pSortableColumn="name" style="width:30%" class="sticky-header">Updated At
+                            <p-sortIcon field="name"></p-sortIcon></th> 
+                <th pSortableColumn="name" style="width:30%" class="sticky-header">Status
+                                <p-sortIcon field="name"></p-sortIcon></th> 
             </tr>
-
         </ng-template>
-        <ng-template pTemplate="body" let-item>
+        <ng-template pTemplate="body" let-fte>
             <tr>
-                <td style="text-align: center; word-wrap: break-word;">
+                <td> 
                     <span style="cursor: pointer;" (click)="editLocation(item)"><i
-                            class="pi pi-pencil"></i></span>&nbsp;
+                    class="pi pi-pencil"></i></span>&nbsp;
                 </td>
+                <td style="text-align: center; word-wrap: break-word;">{{fte.region.name}}</td>
+                <td style="text-align: center; word-wrap: break-word;">{{fte.country.name}} <span [ngClass]="'flag-icon flag-icon-'+fte.country.code.toLowerCase()"></span></td>
+
+                <td style="text-align: center; word-wrap: break-word;">{{fte.location.name}}</td>
+                <td style="text-align: center; word-wrap: break-word;">{{fte.monthlyCost | currency: 'USD'}}</td>
+                <td style="text-align: center; word-wrap: break-word;">{{fte.yearlyCost | currency: 'USD'}}</td>
+                <td style="text-align: center; word-wrap: break-word;">{{fte.yearlyWorkingMin | date:'mm' }} Minute</td>
+                <td style="text-align: center; word-wrap: break-word;">{{fte.createdBy }}</td>
+                <td style="text-align: center; word-wrap: break-word;">{{ fte.createdDate | date:'dd MMM yyyy' }}</td>
+                <td style="text-align: center; word-wrap: break-word;">{{ fte.updatedBy }}</td>
+                <td style="text-align: center; word-wrap: break-word;">{{ fte.updatedDate | date:'dd MMM yyyy'}}</td>
                 <td style="text-align: center; word-wrap: break-word;">
-                    <p-tag [value]="getSeverityLabel(item.status)" [severity]="getSeverity(item.status)"></p-tag>
+                    <p-tag [value]="getSeverityLabel(fte.status)" [severity]="getSeverity(fte.status)"></p-tag>
                 </td>
-                <td style="text-align: center; word-wrap: break-word;">Action</td>
-                <td style="text-align: center; word-wrap: break-word;">Region </td>
-                <td style="text-align: center; word-wrap: break-word;">Country </td>
-                <td style="text-align: center; word-wrap: break-word;">FTE/Month (USD)</td>
-                <td style="text-align: center; word-wrap: break-word;">Location </td>
-                <td style="text-align: center; word-wrap: break-word;">FTE/Year (USD)</td>
-                <td style="text-align: center; word-wrap: break-word;">Working Time/Year (min)</td>
-                <td style="text-align: center; word-wrap: break-word;">Created By</td>
-                <td style="text-align: center; word-wrap: break-word;">Created At</td>
-                <td style="text-align: center; word-wrap: break-word;">Updated By</td>
-                <td style="text-align: center; word-wrap: break-word;">Updated At</td>
-                <td style="text-align: center; word-wrap: break-word;">Updated At</td>
-                <td style="text-align: center; word-wrap: break-word;">Status</td>
                 
+
             </tr>
-        </ng-template>
+        </ng-template>Updated By
         <ng-template pTemplate="emptymessage">
             <tr>
                 <td style="text-align: center;" colspan="18">No Data found.</td>
             </tr>
         </ng-template>
     </p-table>
-    <p-paginator (onPageChange)="onPageChange($event)" [rows]="10" [totalRecords]=""
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true"
-        [rowsPerPageOptions]="[10,25,50]" (onSort)="onSort($event)"></p-paginator>
 
 </div>
 
