@@ -74,6 +74,7 @@ export class SearchFilterComponent {
     this.fetchOpprNameOnCompanySelect(event);
     this.selected = null;
     this.newSearchfilter = null;
+    this.project_name = null;
     this.isapply = false;
     this.projectService.updateData([]);
   }
