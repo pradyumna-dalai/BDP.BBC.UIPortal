@@ -3,7 +3,7 @@
         <div class="col-6">
             <span class="p-input-icon-right">
                 <i class="pi pi-search"></i>
-                <input pInputText type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                <input pInputText type="text" (input)="onGlobalSearch($event.target.value)"
                     placeholder="Search Keyword" />
             </span>
         </div>
@@ -16,7 +16,7 @@
 <p-table  #dt1 [showCurrentPageReport]="true"  [value]="chargeCodedetails"
 selectionMode="single" dataKey="id" styleClass="p-datatable-gridlines" responsiveLayout="scroll"  
  scrollHeight="530px" scrollDirection="both" [resizableColumns]="true"
-   [globalFilterFields]="['name', 'description','status','createdBy','updatedBy','createdDate','updatedDate']" (onPage)="onPageChange($event)" (onSort)="onSort($event)">
+    (onPage)="onPageChange($event)" (onSort)="onSort($event)">
         <ng-template pTemplate="header">
             <tr>
                 <th style="text-align: center;width: 50px" [frozen]="true" class="sticky-header">Actions</th>

@@ -36,6 +36,7 @@ export class LocationsComponent {
   first: any = 0;
   rows: any = 10;
   modeTitle: string = 'Add';
+  searchTimeout: number;
 
 
   constructor(private breadcrumbService: AppBreadcrumbService,
@@ -88,12 +89,13 @@ export class LocationsComponent {
 
   //--------------------------fetch location-------------------------------//
 
-  fetchAllLocationDetails() {
+  fetchAllLocationDetails(keyword: string = ''): void{
     const params = {
       pageNo: isNaN(this.currentPage) ? 0 : this.currentPage - 1,
       pageSize: isNaN(this.pageSize) ? 10 : this.pageSize,
       sortBy: this.sortField,
-      sortDir: this.sortOrder
+      sortDir: this.sortOrder,
+      keyword: keyword // Add the keyword parameter
     };
     this.masterDataService.getAllLocationDetails(params).subscribe((res: any) => {
       if (res?.message === 'success') {
@@ -105,6 +107,17 @@ export class LocationsComponent {
       }
     });
   }
+  onGlobalSearch(keyword: string): void {
+    // Clear any existing timeout
+    if (this.searchTimeout) {
+     clearTimeout(this.searchTimeout);
+ }
+ 
+ // Set a new timeout to trigger the search after 500 milliseconds (adjust as needed)
+ this.searchTimeout = setTimeout(() => {
+     this.fetchAllLocationDetails(keyword);
+ }, 500);
+ }
 
   onPageChange(event: any) {
     this.currentPage = event.page + 1;
