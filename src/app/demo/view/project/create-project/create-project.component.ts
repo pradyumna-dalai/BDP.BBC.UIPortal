@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AppBreadcrumbService } from '../../../../app.breadcrumb.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { MasterTableService } from '../../../../services/master-table.service';
@@ -7,15 +7,17 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import dayjs from 'dayjs';
 import { DatePipe } from '@angular/common';
 import { Product } from 'src/app/demo/domain/product';
-
+import { Table } from 'primeng/table'; 
 @Component({
   selector: 'app-create-project',
   templateUrl: './create-project.component.html',
   styleUrls: ['./create-project.component.scss'],
   providers: [MessageService, ConfirmationService]
 })
-export class CreateProjectComponent implements OnInit {
 
+
+export class CreateProjectComponent implements OnInit {
+  @ViewChild('dt') dt: Table;
   date: Date | undefined;
   activeIndex: number = 0;
   myForm: FormGroup;
@@ -47,13 +49,12 @@ export class CreateProjectComponent implements OnInit {
   originLocations: any[] = [];
   destinationLocations: any[] = [];
   uomOptions: any[];
-//dummny
- // products: any;
+  selectedLocationForEditing: any;
 
  
 
   clonedProducts: { [s: string]: Product } = {};
-  products = [{'id':1,'name':'Asia'},{'id':2,'name':'Delhi'}];
+  products = [];
 
 
   constructor(private breadcrumbService: AppBreadcrumbService,
@@ -281,20 +282,89 @@ fetchActiveLocation() {
     }
   });
 }
+
+addRowsForOriginLocations(selectedLocationIds: any[]) {
+  // Clear existing products array
+  this.products = [];
+
+  // Set the selected location for editing
+  this.selectedLocationForEditing = selectedLocationIds[0];
+
+  // Create a single row based on the selected origin location
+  const selectedLocation = this.locationOptions.find(loc => loc.id === this.selectedLocationForEditing);
+
+  if (selectedLocation) {
+    const newRow = {
+      id: 1,  // Assign a unique ID for the row
+      location: selectedLocation.name,
+      volume: '',
+      uom: '',  // You can set a default UOM or leave it empty,
+      editing: true
+    };
+
+    this.products.push(newRow);
+  }
+}
+
 onOriginLocationChange(event: any) {
   const selectedLocationIds = event.value;
-  console.log('fdf4', this.destinationLocations);
 
   if (selectedLocationIds && selectedLocationIds.length > 0) {
+    // Set the selected location for editing
+    this.selectedLocationForEditing = selectedLocationIds[0];
     this.destinationLocations = this.locationOptions.filter(loc => !selectedLocationIds.includes(loc.id));
   } else {
-   
     this.destinationLocations = [...this.locationOptions];
   }
 
-  console.log('fdf5', this.destinationLocations);
-  console.log('fdf5', selectedLocationIds);
+  this.addRowsForOriginLocations(selectedLocationIds);
 }
+
+onRowEditSave(product: any) {
+  // Use the selected location for editing to update the row data
+  product.location = this.locationOptions.find(loc => loc.id === this.selectedLocationForEditing)?.name;
+  
+  // ... (your existing code for saving)
+
+  // Clear the selected location for editing
+  this.selectedLocationForEditing = null;
+}
+// addRowsForOriginLocations(selectedLocationIds: any[]) {
+//   // Clear existing products array
+//   this.products = [];
+
+//   // Create rows based on selected origin locations
+//   selectedLocationIds.forEach(locationId => {
+//     const selectedLocation = this.locationOptions.find(loc => loc.id === locationId);
+
+//     if (selectedLocation) {
+//       const newRow = {
+//         id: this.products.length + 1,  // Assign a unique ID for each row
+//         location: selectedLocation.name,
+//         volume: '',
+//         uom: '',  // You can set a default UOM or leave it empty,
+//         editing: true
+//       };
+
+//       this.products.push(newRow);
+//     }
+//   });
+// }
+
+// onOriginLocationChange(event: any) {
+//   const selectedLocationIds = event.value;
+//   console.log('fdf4', this.destinationLocations);
+
+//   if (selectedLocationIds && selectedLocationIds.length > 0) {
+//     this.destinationLocations = this.locationOptions.filter(loc => !selectedLocationIds.includes(loc.id));
+//   } else {
+   
+//     this.destinationLocations = [...this.locationOptions];
+//   }
+//   this.addRowsForOriginLocations(selectedLocationIds);
+//   console.log('fdf5', this.destinationLocations);
+//   console.log('fdf5', selectedLocationIds);
+// }
 
 onDestinationLocationChange(event: any) {
   const selectedLocationIds = event.value;
