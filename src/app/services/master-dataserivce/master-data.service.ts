@@ -156,4 +156,27 @@ export class MasterDataService {
   getAllLocationDropdown(){
     return this.http.get<any>(url + settings.AppRoutes.Auth.active_location)
   }
+
+  /**Get FTE Details Api */
+  getAllFteDetails(params: any): Observable<any> {
+    let httpParams = new HttpParams();
+    Object.keys(params).forEach((key) => {
+      if (params[key] !== null && params[key] !== undefined) {
+        httpParams = httpParams.append(key, params[key]);
+      }
+    });
+    return this.http.get<any>(url + settings.AppRoutes.Auth.fte,{ params: httpParams});
+  }
+
+  downloadFteDetails(){
+    return this.http.get(`${url}${settings.AppRoutes.Auth.downloadfte}`, { responseType: 'arraybuffer' as 'json' });
+  }
+
+  updateFte(body:any){
+    return this.http.put<any>(url + settings.AppRoutes.Auth.fte,body);
+  }
+
+  addFteDetails(body:any){
+    return this.http.post<any>(url + settings.AppRoutes.Auth.fte,body);
+  }
 }
