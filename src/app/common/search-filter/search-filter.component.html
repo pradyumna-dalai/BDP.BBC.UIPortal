@@ -21,7 +21,7 @@
   </div>
   <div class="field  sm:col-3">
     <div class="p-d-block"><label>Project Name :</label></div>
-    <p-dropdown optionLabel="name" optionValue="id" [(ngModel)]="projectName" placeholder="Select Project" [filter]="true"
+    <p-dropdown optionLabel="label" optionValue="label" [(ngModel)]="project_name" [options]="projectName" placeholder="Select Project" [filter]="true"
       filterBy="name" [style]="{ width: '100%'}"></p-dropdown>
   </div>
   <div class="field sm:col-3">

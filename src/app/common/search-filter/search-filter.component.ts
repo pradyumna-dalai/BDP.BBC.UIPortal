@@ -24,6 +24,8 @@ export class SearchFilterComponent {
   statusOptions: any[]
   projectSuggestions: any[] = [];
   managerOptions: any[]
+  projectName:any[];
+  project_name:any;
   opportunityManagers: any[];
   projectStageOptions: any[];
   isCompanySelected: boolean = false;
@@ -41,6 +43,7 @@ export class SearchFilterComponent {
     this.fetchOpportunityManagers();
     this.fetchProjectbyCompany();
     this.fetchProjectStage();
+    this.fetchProjectName()
   }
 
   searchProjects(query: string) {
@@ -137,6 +140,21 @@ export class SearchFilterComponent {
       }
     })
   }
+
+  fetchProjectName(){
+    this.filterService.getProjectDropdown().subscribe((res)=>{
+      console.log("ProjectDropdown",res);
+      if (res?.message === "success") {
+        this.projectName = res?.data.map((project: any) => ({
+          label: project.projectName,
+          id: project.id,
+        }));
+      } else {
+        this.projectName = [];
+      }
+    })
+  }
+
   managerId: any;
   fecthOppManager() {
     let managerId = this.opportunityManagers.map((ele) => ele.value);
@@ -150,7 +168,7 @@ export class SearchFilterComponent {
       "status": {
         "id": this.selectedStatus
       },
-      // "projectName": null,
+      "projectName": this.project_name,
       "projectStage": {
         "id": this.selectedStage
       },
@@ -181,6 +199,9 @@ export class SearchFilterComponent {
     }
     if (payload.endDate === 'Invalid Date') {
       payload.endDate = null;
+    }
+    if (payload.projectName === undefined ||  payload.projectName === '') {
+      payload.projectName = null;
     }
     console.log("payload", payload)
     this.projectService.advanceSearchFilter(payload).subscribe(
