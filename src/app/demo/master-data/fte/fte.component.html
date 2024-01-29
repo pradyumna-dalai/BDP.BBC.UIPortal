@@ -92,10 +92,10 @@
                     placeholder="Select Region" optionLabel="name" formControlName="region" optionValue="id" [filter]="true"
                     filterBy="name" [style]="{ 'width': '100%' }">
                 </p-dropdown>
-                <!-- <div *ngIf="locationForm.get('region')?.hasError('required') && locationForm.get('region')?.touched"
+                <div *ngIf="FteForm.get('region')?.hasError('required') && FteForm.get('region')?.touched"
                     class="error-message">
                     Region is required.
-                </div> -->
+                </div>
             </div>
             <div class="field col-12 md:col-6">
                 <label>Country <span class="required">*</span></label>
@@ -103,10 +103,10 @@
                     placeholder="Select Country" optionLabel="name" optionValue="name" [filter]="true"
                     filterBy="name" [style]="{ 'width': '100%' }" formControlName="country">
                 </p-dropdown>
-                <!-- <div *ngIf="locationForm.get('region')?.hasError('required') && locationForm.get('region')?.touched"
+                <div *ngIf="FteForm.get('country')?.hasError('required') && FteForm.get('country')?.touched"
                     class="error-message">
-                    Region is required.
-                </div> -->
+                    Country is required.
+                </div>
             </div>
             <div class="field col-12 md:col-6">
                 <label>Location <span class="required">*</span></label>
@@ -114,10 +114,10 @@
                     placeholder="Select Location" optionLabel="name" optionValue="name" [filter]="true"
                     filterBy="name" [style]="{ 'width': '100%' }" formControlName="location">
                 </p-dropdown>
-                <!-- <div *ngIf="locationForm.get('region')?.hasError('required') && locationForm.get('region')?.touched"
+                <div *ngIf="FteForm.get('location')?.hasError('required') && FteForm.get('location')?.touched"
                     class="error-message">
-                    Region is required.
-                </div> -->
+                    Location is required.
+                </div>
             </div>
             <div class="field col-12 md:col-6">
                 <label>FTE/Month (USD)<span class="required">*</span></label>
