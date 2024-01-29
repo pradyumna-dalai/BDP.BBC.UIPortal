@@ -15,90 +15,90 @@ export class ProcessConfigComponent implements OnInit {
 editModes: boolean[] = [];
 visible: boolean = false;
 
-  jsonData = {
-    "status": 200,
-    "message": "success",
-    "data": {
-      "processConfigurable": [
-        {
-          "createdBy": 1,
-          "updatedBy": 2,
-          "createdDate": "2023-11-28T07:28:26.000+00:00",
-          "updatedDate": "2023-11-28T07:28:26.000+00:00",
-          "productId": 1,
-          "productName": "LLP",
-          "scopeId": 1,
-          "scopeName": "General",
-          "categoryId": 1,
-          "categoryName": "Onboarding",
-          "buildingBlockId": 1,
-          "buildingBlockName": "1stMileCoordination",
-          "originDestination": "Origin",
-          "processNumber": 1,
-          "operationStep": "Customer send booking request",
-          "uomId": 1,
-          "uomName": "Order",
-          "configurationId": 1,
-          "configurationName": "Manual",
-          "location_takTime": [
-            {
-              "locationId": 1,
-              "locationName": "Singapore",
-              "takTime": 7.1
-            },
-            {
-              "locationId": 2,
-              "locationName": "Shanghai",
-              "takTime": 10.1
-            }
-          ],
-          "status": true,
-          "isDeleted": false
-        },
-        {
-          "createdBy": 1,
-          "updatedBy": 2,
-          "createdDate": "2023-11-28T07:28:26.000+00:00",
-          "updatedDate": "2023-11-28T07:28:26.000+00:00",
-          "productId": 1,
-          "productName": "Contract Logistic",
-          "scopeId": 1,
-          "scopeName": "Distribution",
-          "categoryId": 1,
-          "categoryName": "Onboarding",
-          "buildingBlockId": 1,
-          "buildingBlockName": "1stMileCoordination",
-          "originDestination": "Origin",
-          "processNumber": 1,
-          "operationStep": "Customer send booking request",
-          "uomId": 1,
-          "uomName": "Order",
-          "configurationId": 1,
-          "configurationName": "Manual",
-          "location_takTime": [
-            {
-              "locationId": 1,
-              "locationName": "Singapore",
-              "takTime": 7.1
-            },
-            {
-              "locationId": 2,
-              "locationName": "Shanghai",
-              "takTime": 10.1
-            }
-          ],
-          "status": true,
-          "isDeleted": false
-        }
-      ],
-      "pageNo": 0,
-      "pageSize": 1,
-      "totalPages": 1,
-      "totalElements": 10,
-      "isLast": false,
-      "isFirst": true
-    }
-  };
+jsonData = {
+  "status": 200,
+  "message": "success",
+  "data": {
+    "processConfigurable": [
+      {
+        "createdBy": 1,
+        "updatedBy": 2,
+        "createdDate": "2023-11-28T07:28:26.000+00:00",
+        "updatedDate": "2023-11-28T07:28:26.000+00:00",
+        "productId": 1,
+        "productName": "LLP",
+        "scopeId": 1,
+        "scopeName": "General",
+        "categoryId": 1,
+        "categoryName": "Onboarding",
+        "buildingBlockId": 1,
+        "buildingBlockName": "1stMileCoordination",
+        "originDestination": "Origin",
+        "processNumber": 1,
+        "operationStep": "Customer send booking request",
+        "uomId": 1,
+        "uomName": "Order",
+        "configurationId": 1,
+        "configurationName": "Manual",
+        "location_takTime": [
+          {
+            "locationId": 1,
+            "locationName": "Singapore",
+            "takTime": 7.1
+          },
+          {
+            "locationId": 2,
+            "locationName": "Shanghai",
+            "takTime": 10.1
+          }
+        ],
+        "status": true,
+        "isDeleted": false
+      },
+      {
+        "createdBy": 1,
+        "updatedBy": 2,
+        "createdDate": "2023-11-28T07:28:26.000+00:00",
+        "updatedDate": "2023-11-28T07:28:26.000+00:00",
+        "productId": 1,
+        "productName": "Contract Logistic",
+        "scopeId": 1,
+        "scopeName": "Distribution",
+        "categoryId": 1,
+        "categoryName": "Onboarding",
+        "buildingBlockId": 1,
+        "buildingBlockName": "1stMileCoordination",
+        "originDestination": "Origin",
+        "processNumber": 1,
+        "operationStep": "Customer send booking request",
+        "uomId": 1,
+        "uomName": "Order",
+        "configurationId": 1,
+        "configurationName": "Manual",
+        "location_takTime": [
+          {
+            "locationId": 1,
+            "locationName": "Singapore",
+            "takTime": 7.1
+          },
+          {
+            "locationId": 2,
+            "locationName": "Shanghai",
+            "takTime": 10.1
+          }
+        ],
+        "status": true,
+        "isDeleted": false
+      }
+    ],
+    "pageNo": 0,
+    "pageSize": 1,
+    "totalPages": 1,
+    "totalElements": 10,
+    "isLast": false,
+    "isFirst": true
+  }
+};
   // jsonData:any= "";
 
   data: any[] = []; // Add your data array here

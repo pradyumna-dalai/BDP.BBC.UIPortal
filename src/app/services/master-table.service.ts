@@ -10,24 +10,21 @@ export class MasterTableService {
 
   constructor(protected http: HttpClient) { }
 
-   // ********************master data: Product *********************//
-   public getProductName() 
-   {
-    
-    return this.http.get<any>(url+settings.AppRoutes.Auth.getProductName);
+  // ********************master data: Product *********************//
+  public getProductName() {
+
+    return this.http.get<any>(url + settings.AppRoutes.Auth.getProductName);
   }
-  public getProductScope(body,id) 
-  {
-  
-    return this.http.get<any>(url+id+`/`+settings.AppRoutes.Auth.getProductScope, body);
+  public getProductScope(body, id) {
+
+    return this.http.get<any>(url + id + `/` + settings.AppRoutes.Auth.getProductScope, body);
   }
-  public getProductCategory(body,id) 
-  {
-    return this.http.get<any>(url+id+`/`+settings.AppRoutes.Auth.getProductCtegory, body);
+  public getProductCategory(body, id) {
+    return this.http.get<any>(url + id + `/` + settings.AppRoutes.Auth.getProductCtegory, body);
   }
   public getChargeCode() {
 
-    return this.http.get<any>(url+settings.AppRoutes.Auth.getchargeCode);
+    return this.http.get<any>(url + settings.AppRoutes.Auth.getchargeCode);
   }
   public getUom() {
 
@@ -39,37 +36,48 @@ export class MasterTableService {
   }
   public getModeOfTransport() {
 
-    return this.http.get<any>(url+settings.AppRoutes.Auth.getModeofTransport);
+    return this.http.get<any>(url + settings.AppRoutes.Auth.getModeofTransport);
   }
 
-  // ********************master data:  Project *********************//
-  public getProjectStatus(projectStageId:string) {
+  // ********************master data:  Project  create *********************//
+  public getProjectStatus(projectStageId: string) {
 
-    return this.http.get<any>(url+projectStageId+`/`+settings.AppRoutes.Auth.getProjectStatus);
+    return this.http.get<any>(url + projectStageId + `/` + settings.AppRoutes.Auth.getProjectStatus);
   }
   public getRegion() {
 
-    return this.http.get<any>(url+settings.AppRoutes.Auth.getRegion);
+    return this.http.get<any>(url + settings.AppRoutes.Auth.getRegion);
   }
   public getCompany() {
 
-    return this.http.get<any>(url+settings.AppRoutes.Auth.getCompany);
+    return this.http.get<any>(url + settings.AppRoutes.Auth.getCompany);
   }
   public getProjectStage() {
 
-    return this.http.get<any>(url+settings.AppRoutes.Auth.getProjectStage);
+    return this.http.get<any>(url + settings.AppRoutes.Auth.getProjectStage);
   }
   public getOpportunityManger() {
 
-    return this.http.get<any>(url+settings.AppRoutes.Auth.getOpportunityManger);
+    return this.http.get<any>(url + settings.AppRoutes.Auth.getOpportunityManger);
   }
-  public getOpportunityName(companyId: string) 
-  {
-  
-    return this.http.get<any>(url+companyId+`/`+settings.AppRoutes.Auth.getOpportunityName);
+  public getOpportunityName(companyId: string) {
+
+    return this.http.get<any>(url + companyId + `/` + settings.AppRoutes.Auth.getOpportunityName);
   }
   public getIndustryVertical(opportunityId: string) {
-    
-    return this.http.get<any>(url+opportunityId+`/`+settings.AppRoutes.Auth.getIndustryVertical);
+
+    return this.http.get<any>(url + opportunityId + `/` + settings.AppRoutes.Auth.getIndustryVertical);
   }
+
+  public getAllActiveLocation() {
+
+    return this.http.get<any>(url + settings.AppRoutes.Auth.activeLocation);
+  }
+
+  public getAllActiveUOM() {
+
+    return this.http.get<any>(url + settings.AppRoutes.Auth.activeUom);
+  }
+
+  //----------------------------------------------------------------------------------//
 }
