@@ -32,6 +32,7 @@ export class UOMComponent implements AfterViewInit{
     rows: any = 10;
   newSortField: any;
   newSortOrder: any;
+  searchTimeout: any;
  
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
     private fb: FormBuilder, private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService) {
@@ -73,12 +74,13 @@ export class UOMComponent implements AfterViewInit{
   });
     this.editMode= false;
   }
-  fetchAllUOMDetails() {
+  fetchAllUOMDetails(keyword: string = ''): void {
     const params = {
       pageNo: isNaN(this.currentPage) ? 0 : this.currentPage - 1,
       pageSize: isNaN(this.pageSize) ? 10 : this.pageSize,
       sortBy: this.sortField,
-      sortDir: this.sortOrder
+      sortDir: this.sortOrder,
+      keyword: keyword // Add the keyword parameter
     };
   
     this.masterDataService.getAllUom(params).subscribe((res: any) => {
@@ -104,6 +106,17 @@ export class UOMComponent implements AfterViewInit{
       }
     });
   }
+  onGlobalSearch(keyword: string): void {
+    // Clear any existing timeout
+    if (this.searchTimeout) {
+     clearTimeout(this.searchTimeout);
+ }
+ 
+ // Set a new timeout to trigger the search after 500 milliseconds (adjust as needed)
+ this.searchTimeout = setTimeout(() => {
+     this.fetchAllUOMDetails(keyword);
+ }, 500);
+ }
   clear(table: Table) {
     table.clear();
 }

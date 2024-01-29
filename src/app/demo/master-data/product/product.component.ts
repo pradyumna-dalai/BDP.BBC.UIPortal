@@ -32,6 +32,7 @@ export class ProductComponent {
     rows: any = 10;
   newSortField: any;
   newSortOrder: any;
+  searchTimeout: number;
 
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
     private fb: FormBuilder, private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService) {
@@ -73,13 +74,14 @@ export class ProductComponent {
     this.editMode= false;
   }
  
-  fetchAllProdcutDetails() {
+  fetchAllProdcutDetails(keyword: string = ''): void{
    
     const params = {
       pageNo: isNaN(this.currentPage) ? 0 : this.currentPage - 1,
       pageSize: isNaN(this.pageSize) ? 10 : this.pageSize,
       sortBy: this.sortField,
-      sortDir: this.sortOrder
+      sortDir: this.sortOrder,
+      keyword: keyword // Add the keyword parameter
   };
     this.masterDataService.getAllProdcut(params).subscribe((res: any) => {
       if (res?.message == "success") {
@@ -104,6 +106,17 @@ export class ProductComponent {
       }
     });
   }
+  onGlobalSearch(keyword: string): void {
+    // Clear any existing timeout
+    if (this.searchTimeout) {
+     clearTimeout(this.searchTimeout);
+ }
+ 
+ // Set a new timeout to trigger the search after 500 milliseconds (adjust as needed)
+ this.searchTimeout = setTimeout(() => {
+     this.fetchAllProdcutDetails(keyword);
+ }, 500);
+ }
   clear(table: Table) {
     table.clear();
 }

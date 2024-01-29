@@ -35,6 +35,7 @@ export class ChargeCodeComponent {
   rows: any = 10;
   newSortField: any;
   newSortOrder: any;
+  searchTimeout: any;
 
 
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,private fb: FormBuilder,
@@ -77,36 +78,48 @@ export class ChargeCodeComponent {
     this.editMode= false;
   }
  
-  fetchAllChargeCodeDetails() {
+  fetchAllChargeCodeDetails(keyword: string = ''): void {
     const params = {
-      pageNo: isNaN(this.currentPage) ? 0 : this.currentPage - 1,
-      pageSize: isNaN(this.pageSize) ? 10 : this.pageSize,
-      sortBy: this.sortField,
-      sortDir: this.sortOrder
+        pageNo: isNaN(this.currentPage) ? 0 : this.currentPage - 1,
+        pageSize: isNaN(this.pageSize) ? 10 : this.pageSize,
+        sortBy: this.sortField,
+        sortDir: this.sortOrder,
+        keyword: keyword // Add the keyword parameter
     };
-  
+
     this.masterDataService.getAllChargecode(params).subscribe((res: any) => {
-      if (res?.message === "success") {
-        this.chargeCodedetails = res.data.chargeCode.map((item: any) => {
-          return {
-            id: item.id, 
-            name: item.name,
-            description: item.description,
-            status: item.status,
-            createdBy: item.createdBy,
-            updatedBy: item.updatedBy,
-            createdDate: item.createdDate,
-            updatedDate: item.updatedDate,
-          };
-        });
-  
-        this.totalRecords = res?.data.totalElements;
-      } else {
-        this.chargeCodedetails = [];
-        this.totalRecords = 0;
-      }
+        if (res?.message === "success") {
+            this.chargeCodedetails = res.data.chargeCode.map((item: any) => {
+                return {
+                    id: item.id,
+                    name: item.name,
+                    description: item.description,
+                    status: item.status,
+                    createdBy: item.createdBy,
+                    updatedBy: item.updatedBy,
+                    createdDate: item.createdDate,
+                    updatedDate: item.updatedDate,
+                };
+            });
+
+            this.totalRecords = res?.data.totalElements;
+        } else {
+            this.chargeCodedetails = [];
+            this.totalRecords = 0;
+        }
     });
-  }
+}
+  onGlobalSearch(keyword: string): void {
+   // Clear any existing timeout
+   if (this.searchTimeout) {
+    clearTimeout(this.searchTimeout);
+}
+
+// Set a new timeout to trigger the search after 500 milliseconds (adjust as needed)
+this.searchTimeout = setTimeout(() => {
+    this.fetchAllChargeCodeDetails(keyword);
+}, 500);
+}
   clear(table: Table) {
     table.clear();
   
