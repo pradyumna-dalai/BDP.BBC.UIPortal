@@ -18,7 +18,7 @@
 
 
     <p-table #dt2 [value]="Ftedetails" responsiveLayout="scroll" scrollHeight="530px" styleClass="p-datatable-gridlines" [resizableColumns]="true"
-    [globalFilterFields]="['status', 'region', 'country','location']" (onPage)="onPageChange($event)" (onSort)="onSort($event)" >
+    [globalFilterFields]="['status', 'region.name', 'country.name','location.name']" (onPage)="onPageChange($event)" (onSort)="onSort($event)" >
         <ng-template pTemplate="header">
             <tr>
             
