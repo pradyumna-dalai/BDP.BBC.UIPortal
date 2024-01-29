@@ -32,6 +32,7 @@ export class ScopeComponent {
   rows: any = 10;
   modeTitle: string = 'Add';
   searchTimeout: any;
+  processing: boolean = false;
 
 
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
@@ -85,6 +86,7 @@ export class ScopeComponent {
 
   createProductScope() {
     if (this.ScopeForm.valid) {
+      this.processing = true;
       const body = {
         id: this.ScopeForm.get('id').value || '',
         name: this.ScopeForm.value.productScope,
@@ -107,10 +109,11 @@ export class ScopeComponent {
             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Scope updated successfully!' });
             this.editMode = false;
             this.fetchProductScope();
+            this.processing = false; 
           },
           (error) => {
             console.error(error);
-
+            this.processing = false; 
           }
         );
       } else {
@@ -122,7 +125,9 @@ export class ScopeComponent {
             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Scope added successfully!' });
             this.totalRecords += 1;
             this.fetchProductScope();
+            this.processing = false;
           },
+          
           (error) => {
             console.error(error);
             if (error.status === 400 && error.error?.message === 'Fill required field(s)') {
