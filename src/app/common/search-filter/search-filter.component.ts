@@ -3,6 +3,7 @@ import { FilterService } from '../filter/filter.service';
 import { MasterTableService } from 'src/app/services/master-table.service';
 import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
 import dayjs from 'dayjs';
+import { MessageService } from 'primeng/api';
 
 
 @Component({
@@ -23,6 +24,8 @@ export class SearchFilterComponent {
   statusOptions: any[]
   projectSuggestions: any[] = [];
   managerOptions: any[]
+  projectName:any[];
+  project_name:any;
   opportunityManagers: any[];
   projectStageOptions: any[];
   isCompanySelected: boolean = false;
@@ -31,7 +34,7 @@ export class SearchFilterComponent {
   isapply: boolean = false;
   newSearchfilter: []
   constructor(private filterService: FilterService, public MasterTableservice: MasterTableService,
-    private projectService: ProjectsService) {
+    private projectService: ProjectsService ,private messageService: MessageService,) {
 
   }
 
@@ -40,6 +43,7 @@ export class SearchFilterComponent {
     this.fetchOpportunityManagers();
     this.fetchProjectbyCompany();
     this.fetchProjectStage();
+    this.fetchProjectName()
   }
 
   searchProjects(query: string) {
@@ -70,6 +74,7 @@ export class SearchFilterComponent {
     this.fetchOpprNameOnCompanySelect(event);
     this.selected = null;
     this.newSearchfilter = null;
+    this.project_name = null;
     this.isapply = false;
     this.projectService.updateData([]);
   }
@@ -136,6 +141,21 @@ export class SearchFilterComponent {
       }
     })
   }
+
+  fetchProjectName(){
+    this.filterService.getProjectDropdown().subscribe((res)=>{
+      console.log("ProjectDropdown",res);
+      if (res?.message === "success") {
+        this.projectName = res?.data.map((project: any) => ({
+          label: project.projectName,
+          id: project.id,
+        }));
+      } else {
+        this.projectName = [];
+      }
+    })
+  }
+
   managerId: any;
   fecthOppManager() {
     let managerId = this.opportunityManagers.map((ele) => ele.value);
@@ -149,7 +169,7 @@ export class SearchFilterComponent {
       "status": {
         "id": this.selectedStatus
       },
-      // "projectName": null,
+      "projectName": this.project_name,
       "projectStage": {
         "id": this.selectedStage
       },
@@ -181,14 +201,34 @@ export class SearchFilterComponent {
     if (payload.endDate === 'Invalid Date') {
       payload.endDate = null;
     }
+    if (payload.projectName === undefined ||  payload.projectName === '') {
+      payload.projectName = null;
+    }
     console.log("payload", payload)
     this.projectService.advanceSearchFilter(payload).subscribe(
       (response) => {
+        
         this.newSearchfilter = response
         this.projectService.updateData(this.newSearchfilter);
+        if(response.length >0){
+          this.messageService.add({
+            key: 'successToast',
+            severity: 'success',
+            summary: 'Success!',
+            detail: 'Filter Data'
+          });
+        }else{
+          this.messageService.add({
+            key: 'errorToast',
+            severity: 'error',
+            summary: 'Error!',
+            detail: 'No Data' 
+          });
+        }
       },
       (error) => {
         console.error('Error:', error);
+       
       }
     );
     this.visible = false;

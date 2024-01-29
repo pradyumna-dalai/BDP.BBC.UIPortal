@@ -32,6 +32,7 @@ export class UOMComponent implements AfterViewInit{
     rows: any = 10;
   newSortField: any;
   newSortOrder: any;
+  searchTimeout: any;
  
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
     private fb: FormBuilder, private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService) {
@@ -73,12 +74,13 @@ export class UOMComponent implements AfterViewInit{
   });
     this.editMode= false;
   }
-  fetchAllUOMDetails() {
+  fetchAllUOMDetails(keyword: string = ''): void {
     const params = {
       pageNo: isNaN(this.currentPage) ? 0 : this.currentPage - 1,
       pageSize: isNaN(this.pageSize) ? 10 : this.pageSize,
       sortBy: this.sortField,
-      sortDir: this.sortOrder
+      sortDir: this.sortOrder,
+      keyword: keyword // Add the keyword parameter
     };
   
     this.masterDataService.getAllUom(params).subscribe((res: any) => {
@@ -104,6 +106,17 @@ export class UOMComponent implements AfterViewInit{
       }
     });
   }
+  onGlobalSearch(keyword: string): void {
+    // Clear any existing timeout
+    if (this.searchTimeout) {
+     clearTimeout(this.searchTimeout);
+ }
+ 
+ // Set a new timeout to trigger the search after 500 milliseconds (adjust as needed)
+ this.searchTimeout = setTimeout(() => {
+     this.fetchAllUOMDetails(keyword);
+ }, 500);
+ }
   clear(table: Table) {
     table.clear();
 }
@@ -168,7 +181,27 @@ export class UOMComponent implements AfterViewInit{
                 this.handleSuccess();
             },
             (error) => {
-                this.handleError();
+              if (error.status === 400) {
+                if(error.error.data[0] == 'Name should not be more than 50 words'){
+                  this.messageService.add({
+                    key: 'errorToast',
+                    severity: 'error',
+                    summary: 'Error!',
+                    detail: 'Name should not be more than 50 words.'
+                  });
+                }
+                else if(error.error.data[0] == 'Description exceed length'){
+                this.messageService.add({
+                  key: 'errorToast',
+                  severity: 'error',
+                  summary: 'Error!',
+                  detail: 'Description should not be more than 1000 words'
+                });
+            }
+            else{
+              this.handleError();
+            }
+          }
             }
         );
     } else {
@@ -179,7 +212,28 @@ export class UOMComponent implements AfterViewInit{
                 this.handleSuccess();
             },
             (error) => {
+               
+                if (error.status === 400) {
+                  if(error.error.data[0] == 'Name should not be more than 50 words'){
+                    this.messageService.add({
+                      key: 'errorToast',
+                      severity: 'error',
+                      summary: 'Error!',
+                      detail: 'Name should not be more than 50 words.'
+                    });
+                  }
+                  else if(error.error.data[0] == 'Description exceed length'){
+                  this.messageService.add({
+                    key: 'errorToast',
+                    severity: 'error',
+                    summary: 'Error!',
+                    detail: 'Description should not be more than 1000 words'
+                  });
+              }
+              else{
                 this.handleError();
+              }
+            }
             }
         );
     }
@@ -208,7 +262,7 @@ export class UOMComponent implements AfterViewInit{
         key: 'errorToast',
         severity: 'error',
         summary: 'Error!',
-        detail: this.editMode ? 'Failed To Update UOM.' : 'Failed to save UOM'
+        detail: 'Name should not exceed 50 characters; description exceeds limit—please shorten it'
     });
   }
 
