@@ -145,7 +145,6 @@ jsonData = {
        rowData['Location'] = '';
        rowData['UOM'] = item.uomId;
        rowData['Configuration'] = item.configurationName;
-       // ... map other static columns ...
  
        // Map dynamic columns based on location_takTime
        this.locations.forEach((location) => {

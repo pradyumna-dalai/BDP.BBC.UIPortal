@@ -14,7 +14,7 @@
     </div>
 <p-table #dt1 [showCurrentPageReport]="true" 
 selectionMode="single" dataKey="id" styleClass="p-datatable-gridlines" responsiveLayout="scroll"
-scrollHeight="530px" scrollDirection="both" [columns]="columns" [value]="data">
+scrollHeight="530px" scrollDirection="both" [columns]="columns" [value]="data" [tableStyle]="{'min-width': '50rem'}">
 
 <ng-template pTemplate="header" let-columns>
     <tr>
@@ -26,15 +26,15 @@ scrollHeight="530px" scrollDirection="both" [columns]="columns" [value]="data">
 <!-- Modify the body template to conditionally render the input field or display the current value -->
 <ng-template pTemplate="body" let-rowData let-columns="columns" let-i="rowIndex">
     <tr>
-        <td style="text-align: center;">
-            <span style="cursor: pointer;" (click)="toggleEditMode(i)">
-                <i class="pi pi-{{ editModes[i] ? 'check' : 'pencil' }}"></i>
-              </span>&nbsp;
-              <span style="cursor: pointer;" >
-                <i class="pi pi-{{ editModes[i] ? 'times' : 'plus' }}" *ngIf="!editModes[i]" (click)="addNewRow()"></i>
-                <i class="pi pi-times" *ngIf="editModes[i]" (click)="toggleEditMode(i)"></i>
-              </span>
-        </td>
+        <td style="text-align: center; white-space: nowrap;">
+            <span style="cursor: pointer; display: inline-block;" (click)="toggleEditMode(i)">
+              <button pButton pRipple type="button" class="p-button-rounded p-button-text" icon="pi pi-{{ editModes[i] ? 'check' : 'pencil' }}"></button>
+            </span>&nbsp;
+            <span style="cursor: pointer; display: inline-block;">
+              <button pButton pRipple type="button" class="p-button-rounded p-button-text" icon="pi pi-{{ editModes[i] ? 'times' : 'plus' }}" *ngIf="!editModes[i]" ></button>
+              <button pButton pRipple type="button" class="p-button-rounded p-button-text" icon="pi pi-times" *ngIf="editModes[i]" (click)="toggleEditMode(i)"></button>
+            </span>
+          </td>
         <td style="text-align: center;" *ngFor="let col of columns">
             <!-- Conditionally render input field or display the current value -->
             <ng-container *ngIf="!editModes[i] || !isEditableColumn(col.field)">
@@ -48,6 +48,7 @@ scrollHeight="530px" scrollDirection="both" [columns]="columns" [value]="data">
                         [(ngModel)]="rowData[col.field]"
                         optionLabel="locationName"
                         placeholder="Select Origin/Destination"
+                        [appendTo]="'body'"
                         ></p-dropdown>
                 </ng-container>
                 <ng-container *ngIf="col.field === 'UOM'">
@@ -57,6 +58,7 @@ scrollHeight="530px" scrollDirection="both" [columns]="columns" [value]="data">
                         [(ngModel)]="rowData[col.field]"
                         optionLabel="name" optionValue="id"
                         placeholder="Select UOM"
+                        [appendTo]="'body'"
                     ></p-dropdown>
                 </ng-container>
                 <ng-container *ngIf="col.field === 'Configuration'">
@@ -66,6 +68,7 @@ scrollHeight="530px" scrollDirection="both" [columns]="columns" [value]="data">
                         [(ngModel)]="rowData[col.field]"
                         optionLabel="name" optionValue="id"
                         placeholder="Select Configuration"
+                        [appendTo]="'body'"
                     ></p-dropdown>
                 </ng-container>
             </ng-container>
