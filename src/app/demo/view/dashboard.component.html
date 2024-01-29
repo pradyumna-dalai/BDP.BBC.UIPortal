@@ -261,6 +261,11 @@
                     <p-accordionTab header="Configurable" [selected]="isExpanded">
                         <div [innerHTML]="buildingBlockDetails?.data?.commercialCard?.configurable"></div>
                     </p-accordionTab>
+                    <p-accordionTab header="Mode Of Transport" [selected]="isExpanded">
+                        <ng-container *ngFor="let mode of buildingBlockDetails?.data?.modeOfTransport">
+                            <p>{{ mode?.name }}</p>
+                        </ng-container>
+                    </p-accordionTab>
                 </p-accordion>
             </div>
         </ng-container>

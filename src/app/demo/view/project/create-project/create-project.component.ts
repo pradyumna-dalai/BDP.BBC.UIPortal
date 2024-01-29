@@ -6,6 +6,7 @@ import { ProjectsService } from 'src/app/services/project-serivce/projects.servi
 import { ConfirmationService, MessageService } from 'primeng/api';
 import dayjs from 'dayjs';
 import { DatePipe } from '@angular/common';
+import { Product } from 'src/app/demo/domain/product';
 
 @Component({
   selector: 'app-create-project',
@@ -42,7 +43,17 @@ export class CreateProjectComponent implements OnInit {
   opportunityManger: any;
   saveError: string;
   dateRange: any;
+  locationOptions: any[] = [];
+  originLocations: any[] = [];
+  destinationLocations: any[] = [];
+  uomOptions: any[];
+//dummny
+ // products: any;
 
+ 
+
+  clonedProducts: { [s: string]: Product } = {};
+  products = [{'id':1,'name':'Asia'},{'id':2,'name':'Delhi'}];
 
 
   constructor(private breadcrumbService: AppBreadcrumbService,
@@ -73,13 +84,15 @@ export class CreateProjectComponent implements OnInit {
       // Add more fields as needed
 
     });
-    //this.getProjectStatus();
+    this.fetchActiveUom();
     this.getRegion();
     this.getCompany();
     this.getProjectStage();
     this.getOpportunityManger();
-
-
+    this.fetchActiveLocation();
+   
+     
+   
 
   }
 
@@ -252,6 +265,63 @@ const body = {
 }
 
 
+
+//-----------------------------location Information-----------------------------//
+fetchActiveLocation() {
+  this.MasterTableservice.getAllActiveLocation().subscribe((res: any) => {
+    if (res?.message === "success") {
+      this.locationOptions = res?.data.map((location: any) => ({ id: location.id, name: location.name }));
+
+      this.originLocations = [...this.locationOptions];
+      this.destinationLocations = [...this.locationOptions];
+    } else {
+      this.locationOptions = [];
+      this.originLocations = [];
+      this.destinationLocations = [];
+    }
+  });
+}
+onOriginLocationChange(event: any) {
+  const selectedLocationIds = event.value;
+  console.log('fdf4', this.destinationLocations);
+
+  if (selectedLocationIds && selectedLocationIds.length > 0) {
+    this.destinationLocations = this.locationOptions.filter(loc => !selectedLocationIds.includes(loc.id));
+  } else {
+   
+    this.destinationLocations = [...this.locationOptions];
+  }
+
+  console.log('fdf5', this.destinationLocations);
+  console.log('fdf5', selectedLocationIds);
+}
+
+onDestinationLocationChange(event: any) {
+  const selectedLocationIds = event.value;
+  console.log('fdf2', this.originLocations);
+
+  if (selectedLocationIds && selectedLocationIds.length > 0) {
+    this.originLocations = this.locationOptions.filter(loc => !selectedLocationIds.includes(loc.id));
+  } else {
+    
+    this.originLocations = [...this.locationOptions];
+  }
+}
+
+
+fetchActiveUom(){
+  this.uomOptions = [];
+  this.MasterTableservice.getAllActiveUOM().subscribe((res: any) => {
+    if (res?.message == "success") {
+      this.uomOptions = res?.data;
+    } else {
+      this.uomOptions = [];
+    }
+  })
+}
+
+
+//---------------------------------dummy UI--------------------------------------------//
 
 
 }
