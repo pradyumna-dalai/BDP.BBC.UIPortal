@@ -107,7 +107,7 @@ export namespace AppRoutes {
 
         //------FTE-----------------------//
         public static readonly fte = "fte"
-
+        public static readonly downloadfte = "download-fte"
 
 
     }

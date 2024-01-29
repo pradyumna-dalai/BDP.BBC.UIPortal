@@ -20,7 +20,7 @@ export class FteComponent {
   countryOptions:any;
   locationOptions:any;
   Ftedetails:any;
-
+  editMode: boolean = false;
   currentPage: number = 1;
   pageSize: number = 10;
   sortField: string = ''; // Initial sort field
@@ -28,6 +28,7 @@ export class FteComponent {
   totalRecords: any = 10;
   first: any = 0;
   rows: any = 10;
+  modeTitle: string = 'Add';
   constructor(private breadcrumbService: AppBreadcrumbService,
     private messageService: MessageService, 
     private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService, private masterTableService: MasterTableService,private fb: FormBuilder,) {
@@ -59,8 +60,18 @@ export class FteComponent {
     this.fetchLocationRegion();
     this.fetchLocationCountry();
     this.fetchLocation();
+    this.FteForm = this.fb.group({
+      region : ['',Validators.required],
+      country : ['',Validators.required],
+      location: ['',Validators.required],
+      fte_month: ['',Validators.required],
+      ftf_year : ['',Validators.required],
+      Work_Time_Year: ['',Validators.required],
+      status : ['']
+    })
   }
 
+ 
 
   getSeverity(status: boolean): string {
     return status ? 'success' : 'danger';
@@ -71,11 +82,11 @@ export class FteComponent {
 
   showCreateFteDialog() {
     this.displayCreateFteDialog = true;
-    // this.locationForm.reset({
-    //   status: 'inactive'
-    // });
-    // this.editMode = false;
-    // this.modeTitle = 'Add';
+    this.FteForm.reset({
+      status: 'inactive'
+    });
+    this.editMode = false;
+    this.modeTitle = 'Add';
     
   }
 
@@ -150,30 +161,66 @@ fetchAllFteDetails() {
 
 /**@edit function here*/
 
-
-editFteRow(){
-  let rowData:any;
-  this.FteForm.patchValue({
-    region: rowData.region,
-    country: rowData.country,
-    location: rowData.location,
-    fte_month: rowData.fte_month,
-    ftf_year: rowData.ftf_year,
-    Work_Time_Year: rowData.Work_Time_Year,
-    status: rowData.status
-  });
+fteRowData:any;
+editFteRow(ftes: any){
+this.fteRowData = ftes;
+  this.updateLocationDetails()
 }
-
-  addFteData(){
+updateLocationDetails() {
+  this.editMode = true;
+  this.modeTitle = 'Edit';
+    this.FteForm.patchValue({
+      region: this.fteRowData.region,
+      country: this.fteRowData.country,
+      location: this.fteRowData.location,
+      fte_month: this.fteRowData.fte_month,
+      ftf_year: this.fteRowData.ftf_year,
+      Work_Time_Year: this.fteRowData.Work_Time_Year,
+      status: this.fteRowData.status ? 'active' : 'inactive',
+    });
+    console.log('df', this.fteRowData)
+    this.displayCreateFteDialog = true;
+}
+  addFteData(fte:any){
     console.log(this.FteForm.value)
   }
 
-  onSort(event){
-    console.log(event)
-  }
-  onPageChange(event){
-    
+  onPageChange(event: any) {
+    this.currentPage = event.page + 1;
+    this.pageSize = event.rows;
+    this.fetchAllFteDetails();
   }
 
+  onSort(event: any) {
+    const newSortField = event.field;
+    const newSortOrder = event.order === 1 ? 'asc' : 'desc';
+
+    if (newSortField !== this.sortField || newSortOrder !== this.sortOrder) {
+      this.sortField = newSortField;
+      this.sortOrder = newSortOrder;
+      this.currentPage = 1;
+      this.fetchAllFteDetails();
+    }
+  }
+  downloadExcel(event: Event) {
+    event.preventDefault();
+
+    this.masterDataService.downloadFteDetails().subscribe((res: any) => {
+      const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = 'FTEDetails.xlsx';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      this.messageService.add({
+        key: 'successToast',
+        severity: 'success',
+        summary: 'Success!',
+        detail: 'Excel File Downloaded successfully.'
+      });
+    });
+  }
   
 }

@@ -167,4 +167,8 @@ export class MasterDataService {
     });
     return this.http.get<any>(url + settings.AppRoutes.Auth.fte,{ params: httpParams});
   }
+
+  downloadFteDetails(){
+    return this.http.get(`${url}${settings.AppRoutes.Auth.downloadfte}`, { responseType: 'arraybuffer' as 'json' });
+  }
 }
