@@ -6,6 +6,7 @@ import { MasterTableService } from 'src/app/services/master-table.service';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Table } from 'primeng/table';
 @Component({
   selector: 'app-fte',
   templateUrl: './fte.component.html',
@@ -19,6 +20,16 @@ export class FteComponent {
   regionOptions:any;
   countryOptions:any;
   locationOptions:any;
+  Ftedetails:any;
+  editMode: boolean = false;
+  currentPage: number = 1;
+  pageSize: number = 10;
+  sortField: string = ''; // Initial sort field
+  sortOrder: string = 'asc'; // 1 for ascending, -1 for descending
+  totalRecords: any = 10;
+  first: any = 0;
+  rows: any = 10;
+  modeTitle: string = 'Add';
   constructor(private breadcrumbService: AppBreadcrumbService,
     private messageService: MessageService, 
     private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService, private masterTableService: MasterTableService,private fb: FormBuilder,) {
@@ -32,6 +43,7 @@ export class FteComponent {
      */
 
     this.FteForm = this.fb.group({
+      id: [''],
       region : ['',Validators.required],
       country : ['',Validators.required],
       location: ['',Validators.required],
@@ -46,18 +58,41 @@ export class FteComponent {
   }
 
   ngOnInit(){
+    this.fetchAllFteDetails();
     this.fetchLocationRegion();
     this.fetchLocationCountry();
     this.fetchLocation();
+    this.FteForm = this.fb.group({
+      id: [''],
+      region : ['',Validators.required],
+      country : ['',Validators.required],
+      location: ['',Validators.required],
+      fte_month: ['',Validators.required],
+      ftf_year : ['',Validators.required],
+      Work_Time_Year: ['',Validators.required],
+      status : ['']
+    })
+  }
+
+  clear(table: Table) {
+    table.clear();
+    this.onSort(Event);
+  }
+
+  getSeverity(status: boolean): string {
+    return status ? 'success' : 'danger';
+  }
+  getSeverityLabel(status: boolean | string): string {
+    return status === true || status === 'active' ? 'Active' : 'Inactive';
   }
 
   showCreateFteDialog() {
     this.displayCreateFteDialog = true;
-    // this.locationForm.reset({
-    //   status: 'inactive'
-    // });
-    // this.editMode = false;
-    // this.modeTitle = 'Add';
+    this.FteForm.reset({
+      status: 'inactive'
+    });
+    this.editMode = false;
+    this.modeTitle = 'Add';
     
   }
 
@@ -106,30 +141,169 @@ fetchLocation() {
   })
 }
 
+
+/**getFTE Details */
+
+fetchAllFteDetails() {
+  const params = {
+    pageNo: isNaN(this.currentPage) ? 0 : this.currentPage - 1,
+    pageSize: isNaN(this.pageSize) ? 10 : this.pageSize,
+    sortBy: this.sortField,
+    sortDir: this.sortOrder
+  };
+  this.masterDataService.getAllFteDetails(params).subscribe((res: any) => {
+    if (res?.message === 'success') {
+      this.Ftedetails = res.data.fte;
+      this.totalRecords = res?.data.totalElements;
+      console.log('fetch Fte details:', this.totalRecords);
+    } else {
+      console.error('Failed to fetch Fte details:', res);
+    }
+  });
+} 
+
+
+
+
 /**@edit function here*/
 
+fteRowData:any;
+editDisable:boolean = false;
+editFteRow(ftes: any){
+this.fteRowData = ftes;
 
-editFteRow(){
-  let rowData:any;
-  this.FteForm.patchValue({
-    region: rowData.region,
-    country: rowData.country,
-    location: rowData.location,
-    fte_month: rowData.fte_month,
-    ftf_year: rowData.ftf_year,
-    Work_Time_Year: rowData.Work_Time_Year,
-    status: rowData.status
-  });
+  this.updateLocationDetails()
+}
+updateLocationDetails() {
+  this.editMode = true;
+  this.modeTitle = 'Edit';
+    this.FteForm.patchValue({
+      region: this.fteRowData.region.id,
+      country: this.fteRowData.country.id,
+      location: this.fteRowData.location.id,
+      fte_month: this.fteRowData.yearlyCost,
+      ftf_year: this.fteRowData.yearlyCost,
+      Work_Time_Year: this.fteRowData.yearlyWorkingMin,
+      status: this.fteRowData.status ? 'active' : 'inactive',
+    });
+    console.log('df', this.fteRowData)
+    this.displayCreateFteDialog = true;
 }
 
+/**@Add_FTE_Data Form*/
+
   addFteData(){
-    console.log(this.FteForm.value)
+    console.log(this.FteForm.value);
+    if (this.FteForm.valid) {
+   const body = { 
+        region: {
+            id: this.FteForm.value.region
+        },
+        country: {
+            id: this.FteForm.value.country
+        },
+        location: {
+            id: this.FteForm.value.location
+        },
+        monthlyCost: this.FteForm.value.fte_month,
+        yearlyCost:this.FteForm.value.ftf_year,
+        yearlyWorkingMin: this.FteForm.value.Work_Time_Year,
+        status: this.FteForm.value.status === 'active' ? true : false,
+  
+    }
+    if (this.editMode) {
+      this.modeTitle = 'Edit';
+      body['id'] = this.fteRowData.id
+      this.masterDataService.updateFte(body).subscribe(
+        (response) => {
+          console.log(response);
+          this.displayCreateFteDialog = false;
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Fte updated successfully!' });
+          //   this.createForm();
+          this.editMode = false;
+          this.fetchAllFteDetails();
+        },
+        (error) => {
+          console.error(error);
+
+        }
+      );
+    } else {
+      this.modeTitle = 'Add';
+      this.masterDataService.addFteDetails(body).subscribe(
+        (response) => {
+          console.log(response);
+          this.displayCreateFteDialog = false;
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Fte added successfully!' });
+          this.totalRecords += 1;
+          this.fetchAllFteDetails();
+        },
+        (error) => {
+          console.error(error);
+          if (error.status === 400 && error.error?.message === 'Fill required field(s)') {
+            const errorMessage = error.error.data?.join(', ') || 'Error in adding Fte';
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: errorMessage });
+          } else {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error in adding Fte' });
+          }
+        }
+      );
+    }
+
+    } else {
+      this.messageService.add({ severity: 'error', summary: 'Validation Error', detail: 'Form is invalid!' });
+    }
+
+
+    
+   
+    this.displayCreateFteDialog = false;
   }
 
-  onSort(event){
-    console.log(event)
+  onPageChange(event: any) {
+    this.currentPage = event.page + 1;
+    this.pageSize = event.rows;
+    this.fetchAllFteDetails();
   }
-  onPageChange(event){
-    
+
+  onSort(event: any) {
+    const newSortField = event.field;
+    const newSortOrder = event.order === 1 ? 'asc' : 'desc';
+
+    if (newSortField !== this.sortField || newSortOrder !== this.sortOrder) {
+      this.sortField = newSortField;
+      this.sortOrder = newSortOrder;
+      this.currentPage = 1;
+      this.fetchAllFteDetails();
+    }
   }
+  downloadExcel(event: Event) {
+    event.preventDefault();
+
+    this.masterDataService.downloadFteDetails().subscribe((res: any) => {
+      const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = 'FTEDetails.xlsx';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      this.messageService.add({
+        key: 'successToast',
+        severity: 'success',
+        summary: 'Success!',
+        detail: 'Excel File Downloaded successfully.'
+      });
+    });
+  }
+
+  cancelUpdate() {
+    // Reset the form when the "Cancel" button is clicked
+    this.FteForm.reset();
+    this.displayCreateFteDialog = false;
+    this.editMode = false;
+
+  }
+  
 }
