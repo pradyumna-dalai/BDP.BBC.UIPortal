@@ -6,6 +6,7 @@ import { MasterTableService } from 'src/app/services/master-table.service';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Table } from 'primeng/table';
 @Component({
   selector: 'app-fte',
   templateUrl: './fte.component.html',
@@ -42,6 +43,7 @@ export class FteComponent {
      */
 
     this.FteForm = this.fb.group({
+      id: [''],
       region : ['',Validators.required],
       country : ['',Validators.required],
       location: ['',Validators.required],
@@ -61,6 +63,7 @@ export class FteComponent {
     this.fetchLocationCountry();
     this.fetchLocation();
     this.FteForm = this.fb.group({
+      id: [''],
       region : ['',Validators.required],
       country : ['',Validators.required],
       location: ['',Validators.required],
@@ -71,7 +74,10 @@ export class FteComponent {
     })
   }
 
- 
+  clear(table: Table) {
+    table.clear();
+    this.onSort(Event);
+  }
 
   getSeverity(status: boolean): string {
     return status ? 'success' : 'danger';
@@ -162,27 +168,96 @@ fetchAllFteDetails() {
 /**@edit function here*/
 
 fteRowData:any;
+editDisable:boolean = false;
 editFteRow(ftes: any){
 this.fteRowData = ftes;
+
   this.updateLocationDetails()
 }
 updateLocationDetails() {
   this.editMode = true;
   this.modeTitle = 'Edit';
     this.FteForm.patchValue({
-      region: this.fteRowData.region,
-      country: this.fteRowData.country,
-      location: this.fteRowData.location,
-      fte_month: this.fteRowData.fte_month,
-      ftf_year: this.fteRowData.ftf_year,
-      Work_Time_Year: this.fteRowData.Work_Time_Year,
+      region: this.fteRowData.region.id,
+      country: this.fteRowData.country.id,
+      location: this.fteRowData.location.id,
+      fte_month: this.fteRowData.yearlyCost,
+      ftf_year: this.fteRowData.yearlyCost,
+      Work_Time_Year: this.fteRowData.yearlyWorkingMin,
       status: this.fteRowData.status ? 'active' : 'inactive',
     });
     console.log('df', this.fteRowData)
     this.displayCreateFteDialog = true;
 }
-  addFteData(fte:any){
-    console.log(this.FteForm.value)
+
+/**@Add_FTE_Data Form*/
+
+  addFteData(){
+    console.log(this.FteForm.value);
+    if (this.FteForm.valid) {
+   const body = { 
+        region: {
+            id: this.FteForm.value.region
+        },
+        country: {
+            id: this.FteForm.value.country
+        },
+        location: {
+            id: this.FteForm.value.location
+        },
+        monthlyCost: this.FteForm.value.fte_month,
+        yearlyCost:this.FteForm.value.ftf_year,
+        yearlyWorkingMin: this.FteForm.value.Work_Time_Year,
+        status: this.FteForm.value.status === 'active' ? true : false,
+  
+    }
+    if (this.editMode) {
+      this.modeTitle = 'Edit';
+      body['id'] = this.fteRowData.id
+      this.masterDataService.updateFte(body).subscribe(
+        (response) => {
+          console.log(response);
+          this.displayCreateFteDialog = false;
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Fte updated successfully!' });
+          //   this.createForm();
+          this.editMode = false;
+          this.fetchAllFteDetails();
+        },
+        (error) => {
+          console.error(error);
+
+        }
+      );
+    } else {
+      this.modeTitle = 'Add';
+      this.masterDataService.addFteDetails(body).subscribe(
+        (response) => {
+          console.log(response);
+          this.displayCreateFteDialog = false;
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Fte added successfully!' });
+          this.totalRecords += 1;
+          this.fetchAllFteDetails();
+        },
+        (error) => {
+          console.error(error);
+          if (error.status === 400 && error.error?.message === 'Fill required field(s)') {
+            const errorMessage = error.error.data?.join(', ') || 'Error in adding Fte';
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: errorMessage });
+          } else {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error in adding Fte' });
+          }
+        }
+      );
+    }
+
+    } else {
+      this.messageService.add({ severity: 'error', summary: 'Validation Error', detail: 'Form is invalid!' });
+    }
+
+
+    
+   
+    this.displayCreateFteDialog = false;
   }
 
   onPageChange(event: any) {
@@ -221,6 +296,14 @@ updateLocationDetails() {
         detail: 'Excel File Downloaded successfully.'
       });
     });
+  }
+
+  cancelUpdate() {
+    // Reset the form when the "Cancel" button is clicked
+    this.FteForm.reset();
+    this.displayCreateFteDialog = false;
+    this.editMode = false;
+
   }
   
 }

@@ -8,7 +8,7 @@
             </span>
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
-            <button type="button" pButton pRipple label="Clear" class="mr-2 mb-2"></button>
+            <button type="button" pButton pRipple label="Clear" class="mr-2 mb-2" (click)="clear(dt2)"></button>
             <button type="button" pButton pRipple label="Export" class="mr-2 mb-2" pTooltip="Export in Excel File" (click)="downloadExcel($event)"
                 tooltipPosition="top"></button>
             <button type="button" pButton pRipple label=" Add " icon="pi pi-plus" class="mr-2 mb-2"
@@ -25,9 +25,18 @@
                 <th style="text-align: center;width: 50px" [frozen]="true" class="sticky-header">Action</th>
                 <th pSortableColumn="status" style="width:30%; text-align: center;" class="sticky-header">Status
                     <p-sortIcon field="status"></p-sortIcon></th> 
-                <th pSortableColumn="region"  style="text-align: center; width: 20%" class="sticky-header">Region <p-sortIcon field="region"></p-sortIcon></th>
-                <th pSortableColumn="country" style="text-align: center;width:20%" class="sticky-header">Country  <p-sortIcon field="country "></p-sortIcon></th>
-                <th pSortableColumn="location" style="text-align: center;width:20%" class="sticky-header">Location <p-sortIcon field="location"></p-sortIcon></th>
+                <th pSortableColumn="region"  style="text-align: center; width: 20%" class="sticky-header">Region <p-sortIcon field="region"></p-sortIcon>
+                    <p-columnFilter type="text" display="menu" field="region.name" pTooltip="Filter" tooltipPosition="right"
+                    class="column-filter icon-align"></p-columnFilter>
+                </th>
+                <th pSortableColumn="country" style="text-align: center;width:20%" class="sticky-header">Country  <p-sortIcon field="country"></p-sortIcon>
+                    <p-columnFilter type="text" display="menu" field="country.name" pTooltip="Filter" tooltipPosition="right"
+                    class="column-filter icon-align"></p-columnFilter>
+                </th>
+                <th pSortableColumn="location" style="text-align: center;width:20%" class="sticky-header">Location <p-sortIcon field="location"></p-sortIcon>
+                    <p-columnFilter type="text" display="menu" field="location.name" pTooltip="Filter" tooltipPosition="right"
+                    class="column-filter icon-align"></p-columnFilter>
+                </th>
                 <th pSortableColumn="name" style="text-align: center;width:20%" class="sticky-header">FTE/Month(USD) <p-sortIcon field="name"></p-sortIcon></th>
                 <th pSortableColumn="name" style="text-align: center;width:20%" class="sticky-header">FTE/Year(USD)<p-sortIcon field="name"></p-sortIcon></th>
                 <th pSortableColumn="name" style="text-align: center;width:30%" class="sticky-header">Working Time/Year (min)<p-sortIcon field="name"></p-sortIcon></th>
@@ -88,7 +97,7 @@
         <div class="formgrid grid">
             <div class="field col-12 md:col-6">
                 <label>Region<span class="required">*</span></label>
-                <p-dropdown [options]="regionOptions" appendTo="body" 
+                <p-dropdown [options]="regionOptions" appendTo="body" [readonly]="editMode"
                     placeholder="Select Region" optionLabel="name" formControlName="region" optionValue="id" [filter]="true"
                     filterBy="name" [style]="{ 'width': '100%' }">
                 </p-dropdown>
@@ -99,8 +108,8 @@
             </div>
             <div class="field col-12 md:col-6">
                 <label>Country <span class="required">*</span></label>
-                <p-dropdown [options]="countryOptions" appendTo="body" 
-                    placeholder="Select Country" optionLabel="name" optionValue="name" [filter]="true"
+                <p-dropdown [options]="countryOptions" appendTo="body" [readonly]="editMode"
+                    placeholder="Select Country" optionLabel="name" optionValue="id" [filter]="true"
                     filterBy="name" [style]="{ 'width': '100%' }" formControlName="country">
                 </p-dropdown>
                 <div *ngIf="FteForm.get('country')?.hasError('required') && FteForm.get('country')?.touched"
@@ -110,8 +119,8 @@
             </div>
             <div class="field col-12 md:col-6">
                 <label>Location <span class="required">*</span></label>
-                <p-dropdown [options]="locationOptions" appendTo="body" 
-                    placeholder="Select Location" optionLabel="name" optionValue="name" [filter]="true"
+                <p-dropdown [options]="locationOptions" appendTo="body" [readonly]="editMode"
+                    placeholder="Select Location" optionLabel="name" optionValue="id" [filter]="true"
                     filterBy="name" [style]="{ 'width': '100%' }" formControlName="location">
                 </p-dropdown>
                 <div *ngIf="FteForm.get('location')?.hasError('required') && FteForm.get('location')?.touched"
@@ -121,17 +130,17 @@
             </div>
             <div class="field col-12 md:col-6">
                 <label>FTE/Month (USD)<span class="required">*</span></label>
-                <input id="name" type="text"  placeholder="FTE/Month" formControlName="fte_month"
+                <input id="name" type="number"  placeholder="FTE/Month" formControlName="fte_month"
                     class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
             </div>
             <div class="field col-12 md:col-6">
                 <label>FTE/Year (USD)<span class="required">*</span></label>
-                <input id="name" type="text"  placeholder="FTE/Year "  formControlName="ftf_year"
+                <input id="name" type="number"  placeholder="FTE/Year "  formControlName="ftf_year" [readonly]="editMode"
                     class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
             </div>
             <div class="field col-12 md:col-6">
                 <label>Working Time/Year<span class="required">*</span></label>
-                <input id="name" type="text"  placeholder="Working Time/Year" formControlName="Work_Time_Year"
+                <input id="name" type="number"  placeholder="Working Time/Year" formControlName="Work_Time_Year"
                     class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
             </div>
             <div class="field col-12 md:col-6"
@@ -140,9 +149,9 @@
                     <div class="p-field-radiobutton" style=" margin-top: 3px;">
                         <div class="p-radio">
                             <p-radioButton name="status" value="active" label="Active"
-                               ></p-radioButton>
-                            <p-radioButton name="status" value="inactive" label="Inactive" 
-                                style="margin-left: 25px;"></p-radioButton>
+                            formControlName="status"  ></p-radioButton>
+                            <p-radioButton name="status" value="inactive" label="Inactive" formControlName="status"
+                                style="margin-left: 25px;" ></p-radioButton>
                         </div>
                     </div>
                 </div>

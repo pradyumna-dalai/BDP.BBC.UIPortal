@@ -171,4 +171,12 @@ export class MasterDataService {
   downloadFteDetails(){
     return this.http.get(`${url}${settings.AppRoutes.Auth.downloadfte}`, { responseType: 'arraybuffer' as 'json' });
   }
+
+  updateFte(body:any){
+    return this.http.put<any>(url + settings.AppRoutes.Auth.fte,body);
+  }
+
+  addFteDetails(body:any){
+    return this.http.post<any>(url + settings.AppRoutes.Auth.fte,body);
+  }
 }
