@@ -33,6 +33,7 @@ export class CategoryComponent {
   rows: any = 10;
   modeTitle: string = 'Add';
   searchTimeout: number;
+  processing: boolean = false;
 
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService, public MasterTableservice: MasterTableService,
     private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService, private fb: FormBuilder,) {
@@ -108,6 +109,7 @@ export class CategoryComponent {
 
   createProductCategory() {
     if (this.CategoryForm.valid) {
+      this.processing = false;
       const body = {
         id: this.CategoryForm.get('id').value || '',
         name: this.CategoryForm.value.productCategory,
@@ -133,10 +135,11 @@ export class CategoryComponent {
             //  this.createForm();
             this.editMode = false;
             this.fetchProductCategory();
+            this.processing = false; 
           },
           (error) => {
             console.error(error);
-
+            this.processing = false; 
           }
         );
       } else {
@@ -148,6 +151,7 @@ export class CategoryComponent {
             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Category added successfully!' });
             this.totalRecords += 1;
             this.fetchProductCategory();
+            this.processing = false;
           },
           (error) => {
             //  console.error(error);

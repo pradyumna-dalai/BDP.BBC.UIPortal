@@ -174,7 +174,7 @@
     </form>
     <ng-template pTemplate="footer">
         <p-button label="{{ editMode ? 'Update' : 'Add' }}" (click)="createProductCategory()"
-            [disabled]="!CategoryForm.valid"></p-button>&nbsp;&nbsp;
+            [disabled]="!CategoryForm.valid|| processing"></p-button>&nbsp;&nbsp;
         <p-button label="Cancel" (click)="cancelUpdate()"></p-button>
     </ng-template>
 </p-dialog>

@@ -37,6 +37,7 @@ export class LocationsComponent {
   rows: any = 10;
   modeTitle: string = 'Add';
   searchTimeout: number;
+  processing: boolean = false;
 
 
   constructor(private breadcrumbService: AppBreadcrumbService,
@@ -189,6 +190,7 @@ export class LocationsComponent {
 
   addLocationsDetails() {
     if (this.locationForm.valid) {
+      this.processing = false;
       const body = {
         id: this.locationForm.get('id').value || '',
         name: this.locationForm.value.name,
@@ -216,10 +218,11 @@ export class LocationsComponent {
             //   this.createForm();
             this.editMode = false;
             this.fetchAllLocationDetails();
+            this.processing = false; 
           },
           (error) => {
             console.error(error);
-
+            this.processing = false; 
           }
         );
       } else {
@@ -231,6 +234,7 @@ export class LocationsComponent {
             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Location added successfully!' });
             this.totalRecords += 1;
             this.fetchAllLocationDetails();
+            this.processing = false; 
           },
           (error) => {
             console.error(error);
