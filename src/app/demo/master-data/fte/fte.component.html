@@ -4,7 +4,7 @@
             <span class="p-input-icon-right">
                 <i class="pi pi-search"></i>
                 <input pInputText type="text" 
-                    placeholder="Search Keyword" (input)="dt2.filterGlobal($event.target.value, 'contains')" />
+                    placeholder="Search Keyword" (input)="onGlobalSearch($event.target.value)"/>
             </span>
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
@@ -17,8 +17,9 @@
     </div>
 
 
-    <p-table #dt2 [value]="Ftedetails" responsiveLayout="scroll" scrollHeight="530px" styleClass="p-datatable-gridlines" [resizableColumns]="true"
-    [globalFilterFields]="['status', 'region.name', 'country.name','location.name']" (onPage)="onPageChange($event)" (onSort)="onSort($event)" >
+    <p-table #dt2 [value]="Ftedetails"  dataKey="id" responsiveLayout="scroll" scrollHeight="530px" styleClass="p-datatable-gridlines" [resizableColumns]="true"
+    scrollDirection="both"
+    [globalFilterFields]="['status', 'region.name', 'country.name','location.name','status','createdBy','updatedBy','updatedDate','createdDate']" (onPage)="onPageChange($event)" (onSort)="onSort($event)" >
         <ng-template pTemplate="header">
             <tr>
             

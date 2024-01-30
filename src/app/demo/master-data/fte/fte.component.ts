@@ -30,6 +30,7 @@ export class FteComponent {
   first: any = 0;
   rows: any = 10;
   modeTitle: string = 'Add';
+  searchTimeout: number;
   constructor(private breadcrumbService: AppBreadcrumbService,
     private messageService: MessageService, 
     private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService, private masterTableService: MasterTableService,private fb: FormBuilder,) {
@@ -144,12 +145,13 @@ fetchLocation() {
 
 /**getFTE Details */
 
-fetchAllFteDetails() {
+fetchAllFteDetails(keyword: string = '') {
   const params = {
     pageNo: isNaN(this.currentPage) ? 0 : this.currentPage - 1,
     pageSize: isNaN(this.pageSize) ? 10 : this.pageSize,
     sortBy: this.sortField,
-    sortDir: this.sortOrder
+    sortDir: this.sortOrder,
+    keyword: keyword 
   };
   this.masterDataService.getAllFteDetails(params).subscribe((res: any) => {
     if (res?.message === 'success') {
@@ -162,7 +164,17 @@ fetchAllFteDetails() {
   });
 } 
 
+onGlobalSearch(keyword: string): void {
+  // Clear any existing timeout
+  if (this.searchTimeout) {
+   clearTimeout(this.searchTimeout);
+}
 
+// Set a new timeout to trigger the search after 500 milliseconds (adjust as needed)
+this.searchTimeout = setTimeout(() => {
+   this.fetchAllFteDetails(keyword);
+}, 500);
+}
 
 
 /**@edit function here*/
