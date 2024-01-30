@@ -34,6 +34,18 @@ export class ProjectComponent {
   dateRange: Date[];
   endDateString: string;
   startDateString: string;
+  // Pagination properties
+ currentPage: number = 1;
+ pageSize: number = 10;
+ sortField: string = ''; // Initial sort field
+ sortOrder: number = 1; // 1 for ascending, -1 for descending
+
+  totalRecords: any = 10;
+  first: any = 0;
+  rows: any = 10;
+  newSortField: any;
+  newSortOrder: any;
+
   predefinedDateRanges: SelectItem[] = [
     { label: 'Last 1 Year', value: 'last1Year' },
     { label: 'Last 2 Years', value: 'last2Years' },
@@ -77,15 +89,15 @@ export class ProjectComponent {
           const formattedStartDate = this.datePipe.transform(item.projectInformation?.startDate, 'dd-MM-yyyy');
           const formattedEndDate = this.datePipe.transform(item.projectInformation?.endDate, 'dd-MM-yyyy');
           return {
-            comp_name: item.projectInformation?.company?.name,
-            proj_id: item?.id,
-            proj_name: item.projectInformation?.projectName,
-            oppourtunity_name: item.projectInformation?.opportunityName?.name,
-            proj_stage: item.projectInformation?.projectStage?.name,
-            proj_status: item.projectInformation?.projectStatus?.name,
+            companyname: item.projectInformation?.company?.name,
+            id: item?.id,
+            projectName: item.projectInformation?.projectName,
+            opportunityName: item.projectInformation?.opportunityName?.name,
+            projectStage: item.projectInformation?.projectStage?.name,
+            projectStatus: item.projectInformation?.projectStatus?.name,
             oppourtunity_manager: opportunityManagers,
-            start_date: formattedStartDate,
-            end_date: formattedEndDate,
+            startDate: formattedStartDate,
+            endDate: formattedEndDate,
           };
         });
         if (res.length >0) {
@@ -164,23 +176,29 @@ export class ProjectComponent {
 
 
   fetchAllProjectDetails() {
-    this.projectsService.getAllProjectDetails().subscribe((res: any) => {
+    const params = {
+      pageNo: isNaN(this.currentPage) ? 0 : this.currentPage - 1,
+      pageSize: isNaN(this.pageSize) ? 10 : this.pageSize,
+      sortBy: this.sortField,
+      sortDir: this.sortOrder
+  };
+    this.projectsService.getAllProjectDetails(params).subscribe((res: any) => {
       if (res?.message == "success") {
-        this.proejctdetails = res?.data.map((item: any) => {
+        this.proejctdetails = res?.data.projects.map((item: any) => {
           const opportunityManagers = item.projectInformation?.opportunityManager?.map(manager => manager?.name).join(', ');
           //console.log('opp',opportunityManagers);
           const formattedStartDate = this.datePipe.transform(item.projectInformation?.startDate, 'dd-MM-yyyy');
           const formattedEndDate = this.datePipe.transform(item.projectInformation?.endDate, 'dd-MM-yyyy');
           return {
-            comp_name: item.projectInformation?.company?.name,
-            proj_id: item?.id,
-            proj_name: item.projectInformation?.projectName,
-            oppourtunity_name: item.projectInformation?.opportunityName?.name,
-            proj_stage: item.projectInformation?.projectStage?.name,
-            proj_status: item.projectInformation?.projectStatus?.name,
+            companyname: item.projectInformation?.company?.name,
+            id: item?.id,
+            projectName: item.projectInformation?.projectName,
+            opportunityName: item.projectInformation?.opportunityName?.name,
+            projectStage: item.projectInformation?.projectStage?.name,
+            projectStatus: item.projectInformation?.projectStatus?.name,
             oppourtunity_manager: opportunityManagers,
-            start_date: formattedStartDate,
-            end_date: formattedEndDate,
+            startDate: formattedStartDate,
+            endDate: formattedEndDate,
           };
         });
         //console.log('fbggf', this.proejctdetails);
@@ -189,8 +207,24 @@ export class ProjectComponent {
       }
     });
   }
-
-
+  onPageChange(event: any) {
+    this.currentPage = event.page + 1;
+    this.pageSize = event.rows;
+    this.fetchAllProjectDetails();
+  }
+  onSort(event: any) {
+  
+    this.newSortField = event.field;
+    this.newSortOrder = (event.order === 1) ? 'asc' : 'desc';
+  
+    if (this.newSortField !== this.sortField || this.newSortOrder !== this.sortOrder) {
+      this.sortField = this.newSortField;
+      this.sortOrder = this.newSortOrder;
+      this.currentPage = 1;
+      this.fetchAllProjectDetails();
+    }
+   
+  }
   exportData() {
     this.startDateString = this.selectedStartDate.toISOString();
     this.endDateString = this.selectedEndDate.toISOString();
