@@ -120,7 +120,7 @@
                             <p-tabPanel header="Origin Location">
                                
                                     <p-toast></p-toast>
-                                    <p-table [value]="products" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+                                    <p-table  [value]="products" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
                                         <ng-template pTemplate="header">
                                             <tr>
                                                 <th style="width:20%">Action</th>
@@ -143,35 +143,36 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <p-cellEditor>
-                                                        <ng-template pTemplate="input">
-                                                            <input pInputText type="text" >
-                                                        </ng-template>
-                                                        <ng-template pTemplate="output">
-                                                          Asia
-                                                        </ng-template>
-                                                    </p-cellEditor>
-                                                </td>
-                                                <td>
-                                                    <p-cellEditor>
-                                                        <ng-template pTemplate="input">
-                                                            <input pInputText type="text" required>
-                                                        </ng-template>
-                                                        <ng-template pTemplate="output">
-                                                           123
-                                                        </ng-template>
-                                                    </p-cellEditor>
-                                                </td>
-                                                <td>
-                                                    <p-cellEditor>
-                                                        <ng-template pTemplate="input">
-                                                            <p-dropdown [options]="uomOptions" optionLabel="name" appendTo="body" [(ngModel)]="product.inventoryStatus" [style]="{'width':'100%'}"></p-dropdown>
-                                                        </ng-template>
-                                                        <ng-template pTemplate="output">
-                                                        UOM
-                                                        </ng-template>
-                                                    </p-cellEditor>
-                                                </td>
+                                                        <p-cellEditor>
+                                                            <ng-template pTemplate="input">
+                                                                <input pInputText type="text" [(ngModel)]="product.location" disabled>
+                                                            </ng-template>
+                                                            <ng-template pTemplate="output">
+                                                                {{ product.location }}
+                                                            </ng-template>
+                                                        </p-cellEditor>
+                                                    </td>
+                                                      <td *ngIf="editing">
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="text" [(ngModel)]="product.volume" required>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ product.volume }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td *ngIf="editing">
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <p-dropdown [options]="uomOptions" optionLabel="name" appendTo="body" [(ngModel)]="product.uom"
+                          [style]="{'width':'100%'}"></p-dropdown>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{ product.uom }}
+            </ng-template>
+          </p-cellEditor>
+        </td>
                                                
                                                 
                                             </tr>

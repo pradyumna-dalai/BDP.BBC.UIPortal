@@ -181,7 +181,7 @@
     <!-- <hr> -->
     <ng-template pTemplate="footer">
         <p-button label="{{ editMode ? 'Update' : 'Add' }}" (click)="addLocationsDetails()"
-            [disabled]="!locationForm.valid"></p-button>&nbsp;&nbsp;
+            [disabled]="!locationForm.valid || processing"></p-button>&nbsp;&nbsp;
         <p-button label="Cancel" (click)="cancelUpdate()"></p-button>
     </ng-template>
 </p-dialog>
