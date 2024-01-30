@@ -32,6 +32,8 @@ export class CategoryComponent {
   first: any = 0;
   rows: any = 10;
   modeTitle: string = 'Add';
+  searchTimeout: number;
+  processing: boolean = false;
 
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService, public MasterTableservice: MasterTableService,
     private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService, private fb: FormBuilder,) {
@@ -107,6 +109,7 @@ export class CategoryComponent {
 
   createProductCategory() {
     if (this.CategoryForm.valid) {
+      this.processing = false;
       const body = {
         id: this.CategoryForm.get('id').value || '',
         name: this.CategoryForm.value.productCategory,
@@ -132,10 +135,11 @@ export class CategoryComponent {
             //  this.createForm();
             this.editMode = false;
             this.fetchProductCategory();
+            this.processing = false; 
           },
           (error) => {
             console.error(error);
-
+            this.processing = false; 
           }
         );
       } else {
@@ -147,6 +151,7 @@ export class CategoryComponent {
             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Category added successfully!' });
             this.totalRecords += 1;
             this.fetchProductCategory();
+            this.processing = false;
           },
           (error) => {
             //  console.error(error);
@@ -173,12 +178,13 @@ export class CategoryComponent {
   }
 
 
-  fetchProductCategory() {
+  fetchProductCategory(keyword: string = ''): void {
     const params = {
       pageNo: isNaN(this.currentPage) ? 0 : this.currentPage - 1,
       pageSize: isNaN(this.pageSize) ? 10 : this.pageSize,
       sortBy: this.sortField,
-      sortDir: this.sortOrder
+      sortDir: this.sortOrder,
+      keyword: keyword // Add the keyword parameter
     };
     this.masterDataService.getCategoryDetails(params).subscribe((res: any) => {
       if (res?.message === 'success') {
@@ -190,6 +196,17 @@ export class CategoryComponent {
       }
     });
   }
+  onGlobalSearch(keyword: string): void {
+    // Clear any existing timeout
+    if (this.searchTimeout) {
+     clearTimeout(this.searchTimeout);
+ }
+ 
+ // Set a new timeout to trigger the search after 500 milliseconds (adjust as needed)
+ this.searchTimeout = setTimeout(() => {
+     this.fetchProductCategory(keyword);
+ }, 500);
+ }
 
   onPageChange(event: any) {
     this.currentPage = event.page + 1;

@@ -7,13 +7,15 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import dayjs from 'dayjs';
 import { DatePipe } from '@angular/common';
 import { Product } from 'src/app/demo/domain/product';
-
+import { Table } from 'primeng/table'; 
 @Component({
   selector: 'app-create-project',
   templateUrl: './create-project.component.html',
   styleUrls: ['./create-project.component.scss'],
   providers: [MessageService, ConfirmationService]
 })
+
+
 export class CreateProjectComponent implements OnInit {
 
   date: Date | undefined;
@@ -47,13 +49,12 @@ export class CreateProjectComponent implements OnInit {
   originLocations: any[] = [];
   destinationLocations: any[] = [];
   uomOptions: any[];
-//dummny
- // products: any;
+  selectedLocationForEditing: any;
 
  
 
   clonedProducts: { [s: string]: Product } = {};
-  products = [{'id':1,'name':'Asia'},{'id':2,'name':'Delhi'}];
+  products = [];
 
 
   constructor(private breadcrumbService: AppBreadcrumbService,
@@ -281,6 +282,30 @@ fetchActiveLocation() {
     }
   });
 }
+
+
+addRowsForOriginLocations(selectedLocationIds: any[]) {
+  // Clear existing products array
+  this.products = [];
+
+  // Create rows based on selected origin locations
+  selectedLocationIds.forEach(locationId => {
+    const selectedLocation = this.locationOptions.find(loc => loc.id === locationId);
+
+    if (selectedLocation) {
+      const newRow = {
+        id: this.products.length + 1,  // Assign a unique ID for each row
+        location: selectedLocation.name,
+        volume: '',
+        uom: '',  // You can set a default UOM or leave it empty,
+        editing: true
+      };
+
+      this.products.push(newRow);
+    }
+  });
+}
+
 onOriginLocationChange(event: any) {
   const selectedLocationIds = event.value;
   console.log('fdf4', this.destinationLocations);
@@ -291,7 +316,7 @@ onOriginLocationChange(event: any) {
    
     this.destinationLocations = [...this.locationOptions];
   }
-
+  this.addRowsForOriginLocations(selectedLocationIds);
   console.log('fdf5', this.destinationLocations);
   console.log('fdf5', selectedLocationIds);
 }

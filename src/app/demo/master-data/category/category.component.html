@@ -3,8 +3,8 @@
         <div class="col-6">
             <span class="p-input-icon-right">
                 <i class="pi pi-search"></i>
-                <input pInputText type="text" (input)="dt2.filterGlobal($event.target.value, 'contains')"
-                    placeholder="Search Keyword" />
+                <input pInputText type="text" (input)="onGlobalSearch($event.target.value)"
+                placeholder="Search Keyword" />
             </span>
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
@@ -174,7 +174,7 @@
     </form>
     <ng-template pTemplate="footer">
         <p-button label="{{ editMode ? 'Update' : 'Add' }}" (click)="createProductCategory()"
-            [disabled]="!CategoryForm.valid"></p-button>&nbsp;&nbsp;
+            [disabled]="!CategoryForm.valid|| processing"></p-button>&nbsp;&nbsp;
         <p-button label="Cancel" (click)="cancelUpdate()"></p-button>
     </ng-template>
 </p-dialog>

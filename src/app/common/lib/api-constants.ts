@@ -64,7 +64,7 @@ export namespace AppRoutes {
 
         public static readonly saveProjectDraft = "project";
 
-        public static readonly getallProjects = "projects";
+        public static readonly getallProjects = "all-projects";
 
         public static readonly exportProjectsinExcel = "export-project";
 
@@ -107,6 +107,10 @@ export namespace AppRoutes {
     
         public static readonly active_location = "active-location"
 
+        //------FTE-----------------------//
+        public static readonly fte = "fte"
+        public static readonly downloadfte = "download-fte"
+        public static readonly projectName = "project-name"
     }
 
 }

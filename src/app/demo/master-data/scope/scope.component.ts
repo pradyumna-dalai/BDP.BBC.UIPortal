@@ -31,6 +31,8 @@ export class ScopeComponent {
   first: any = 0;
   rows: any = 10;
   modeTitle: string = 'Add';
+  searchTimeout: any;
+  processing: boolean = false;
 
 
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
@@ -84,6 +86,7 @@ export class ScopeComponent {
 
   createProductScope() {
     if (this.ScopeForm.valid) {
+      this.processing = true;
       const body = {
         id: this.ScopeForm.get('id').value || '',
         name: this.ScopeForm.value.productScope,
@@ -106,10 +109,11 @@ export class ScopeComponent {
             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Scope updated successfully!' });
             this.editMode = false;
             this.fetchProductScope();
+            this.processing = false; 
           },
           (error) => {
             console.error(error);
-
+            this.processing = false; 
           }
         );
       } else {
@@ -121,7 +125,9 @@ export class ScopeComponent {
             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Scope added successfully!' });
             this.totalRecords += 1;
             this.fetchProductScope();
+            this.processing = false;
           },
+          
           (error) => {
             console.error(error);
             if (error.status === 400 && error.error?.message === 'Fill required field(s)') {
@@ -147,12 +153,13 @@ export class ScopeComponent {
     return status === true || status === 'active' ? 'Active' : 'Inactive';
   }
 
-  fetchProductScope() {
+  fetchProductScope(keyword: string = ''): void {
     const params = {
       pageNo: isNaN(this.currentPage) ? 0 : this.currentPage - 1,
       pageSize: isNaN(this.pageSize) ? 10 : this.pageSize,
       sortBy: this.sortField,
-      sortDir: this.sortOrder
+      sortDir: this.sortOrder,
+      keyword: keyword // Add the keyword parameter
     };
     this.masterDataService.getScopeDetails(params).subscribe((res: any) => {
       if (res?.message === 'success') {
@@ -164,7 +171,17 @@ export class ScopeComponent {
       }
     });
   }
-
+  onGlobalSearch(keyword: string): void {
+    // Clear any existing timeout
+    if (this.searchTimeout) {
+     clearTimeout(this.searchTimeout);
+ }
+ 
+ // Set a new timeout to trigger the search after 500 milliseconds (adjust as needed)
+ this.searchTimeout = setTimeout(() => {
+     this.fetchProductScope(keyword);
+ }, 500);
+ }
 
   onPageChange(event: any) {
     this.currentPage = event.page + 1;

@@ -3,7 +3,7 @@
         <div class="col-6">
             <span class="p-input-icon-right">
                 <i class="pi pi-search"></i>
-                <input pInputText type="text" (input)="dt2.filterGlobal($event.target.value, 'contains')"
+                <input pInputText type="text" (input)="onGlobalSearch($event.target.value)"
                     placeholder="Search Keyword" />
             </span>
         </div>
@@ -181,7 +181,7 @@
     <!-- <hr> -->
     <ng-template pTemplate="footer">
         <p-button label="{{ editMode ? 'Update' : 'Add' }}" (click)="addLocationsDetails()"
-            [disabled]="!locationForm.valid"></p-button>&nbsp;&nbsp;
+            [disabled]="!locationForm.valid || processing"></p-button>&nbsp;&nbsp;
         <p-button label="Cancel" (click)="cancelUpdate()"></p-button>
     </ng-template>
 </p-dialog>
