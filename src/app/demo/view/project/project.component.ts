@@ -95,7 +95,7 @@ export class ProjectComponent {
             opportunityName: item.projectInformation?.opportunityName?.name,
             projectStage: item.projectInformation?.projectStage?.name,
             projectStatus: item.projectInformation?.projectStatus?.name,
-            oppourtunity_manager: opportunityManagers,
+            opportunitymanager: opportunityManagers,
             startDate: formattedStartDate,
             endDate: formattedEndDate,
           };
@@ -196,7 +196,7 @@ export class ProjectComponent {
             opportunityName: item.projectInformation?.opportunityName?.name,
             projectStage: item.projectInformation?.projectStage?.name,
             projectStatus: item.projectInformation?.projectStatus?.name,
-            oppourtunity_manager: opportunityManagers,
+            opportunitymanager: opportunityManagers,
             startDate: formattedStartDate,
             endDate: formattedEndDate,
           };
