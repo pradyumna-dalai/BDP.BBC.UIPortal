@@ -97,7 +97,12 @@ export class CreateProjectComponent implements OnInit {
 
   }
 
-
+  goToNextTab() {
+    this.activeIndex = (this.activeIndex + 1) % 8; // Assuming you have 3 tabs
+  }
+  submit(){
+    
+  }
   // ---------------get Region------------------------//
   getRegion() {
     this.regionOptions = [];

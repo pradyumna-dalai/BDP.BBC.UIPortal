@@ -248,7 +248,7 @@
             <div class="col-12" style="display: flex;justify-content: flex-end;">
                 <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
                     (click)="SaveAsDraftProjects()" class="p-button-outlined mr-2 mb-2"></button>
-                <button type="submit" pButton pRipple label="Continue" (click)="activeIndex = 1"
+                    <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()"
                     class="mr-2 mb-2"></button>
             </div>
             <p-toast key="successToast"></p-toast>
@@ -280,6 +280,12 @@
             ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos
             qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
         </p>
+        <div class="col-12" style="display: flex;justify-content: flex-end;">
+            <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
+                (click)="SaveAsDraftProjects()" class="p-button-outlined mr-2 mb-2"></button>
+                <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()"
+                class="mr-2 mb-2"></button>
+        </div>
     </p-tabPanel>
     <p-tabPanel header="Configurable">
         <p>
@@ -289,10 +295,22 @@
             qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et
             expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
         </p>
+        <div class="col-12" style="display: flex;justify-content: flex-end;">
+            <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
+                (click)="SaveAsDraftProjects()" class="p-button-outlined mr-2 mb-2"></button>
+                <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()"
+                class="mr-2 mb-2"></button>
+        </div>
     </p-tabPanel>
     <p-tabPanel header="Add Volume">
         <div class="col-12">
 
+        </div>
+        <div class="col-12" style="display: flex;justify-content: flex-end;">
+            <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
+                (click)="SaveAsDraftProjects()" class="p-button-outlined mr-2 mb-2"></button>
+                <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()"
+                class="mr-2 mb-2"></button>
         </div>
     </p-tabPanel>
     <p-tabPanel header="Cost Line Item">
@@ -303,6 +321,12 @@
             qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et
             expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
         </p>
+        <div class="col-12" style="display: flex;justify-content: flex-end;">
+            <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
+                (click)="SaveAsDraftProjects()" class="p-button-outlined mr-2 mb-2"></button>
+                <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()"
+                class="mr-2 mb-2"></button>
+        </div>
     </p-tabPanel>
     <p-tabPanel header="Additional Cost">
         <p>
@@ -312,6 +336,12 @@
             qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et
             expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
         </p>
+        <div class="col-12" style="display: flex;justify-content: flex-end;">
+            <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
+                (click)="SaveAsDraftProjects()" class="p-button-outlined mr-2 mb-2"></button>
+                <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()"
+                class="mr-2 mb-2"></button>
+        </div>
     </p-tabPanel>
     <p-tabPanel header="Revenue">
         <p>
@@ -321,6 +351,12 @@
             qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et
             expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
         </p>
+        <div class="col-12" style="display: flex;justify-content: flex-end;">
+            <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
+                (click)="SaveAsDraftProjects()" class="p-button-outlined mr-2 mb-2"></button>
+                <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()"
+                class="mr-2 mb-2"></button>
+        </div>
     </p-tabPanel>
     <p-tabPanel header="Cost Output">
         <p>
@@ -330,5 +366,11 @@
             qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et
             expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
         </p>
+        <div class="col-12" style="display: flex;justify-content: flex-end;">
+            <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
+                (click)="SaveAsDraftProjects()" class="p-button-outlined mr-2 mb-2"></button>
+                <button type="submit" pButton pRipple label="Submit" (click)="submit()"
+                class="mr-2 mb-2"></button>
+        </div>
     </p-tabPanel>
 </p-tabView>
