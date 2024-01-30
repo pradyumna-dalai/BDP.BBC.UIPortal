@@ -49,7 +49,7 @@ export class FteComponent {
       country : ['',Validators.required],
       location: ['',Validators.required],
       fte_month: ['',Validators.required],
-      ftf_year : ['',Validators.required],
+      ftf_year :[''],
       Work_Time_Year: ['',Validators.required],
       status : ['']
     })
@@ -69,12 +69,17 @@ export class FteComponent {
       country : ['',Validators.required],
       location: ['',Validators.required],
       fte_month: ['',Validators.required],
-      ftf_year : ['',Validators.required],
+      ftf_year : [''],
       Work_Time_Year: ['',Validators.required],
       status : ['']
-    })
+    });
+    this.FteForm.get('fte_month').valueChanges.subscribe((value: any) => {
+      this.FteForm.patchValue({
+        ftf_year: value*13
+      })
+    });
   }
-
+  
   clear(table: Table) {
     table.clear();
     this.onSort(Event);
