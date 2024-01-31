@@ -1,11 +1,6 @@
 <div class="card">
     <div class="grid">
         <div class="col-6">
-            <!-- <span class="p-input-icon-right">
-                <i class="pi pi-search"></i>
-                <input pInputText type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')"
-                    placeholder="Search Keyword" />
-            </span> -->
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
             <button type="button" pButton pRipple label="Export"  class="mr-2 mb-2" ></button>
@@ -28,14 +23,14 @@ scrollHeight="530px" scrollDirection="both" [columns]="columns" [value]="data" [
     <tr>
         <td style="text-align: center; white-space: nowrap;">
             <span style="cursor: pointer; display: inline-block;" (click)="toggleEditMode(i)">
-              <button pButton pRipple type="button" class="p-button-rounded p-button-text" icon="pi pi-{{ editModes[i] ? 'check' : 'pencil' }}"></button>
+              <button pButton pRipple type="button" class="p-button-rounded p-button-text" icon="pi pi-{{ editModes[i] ? 'check' : 'pencil' }}" ></button>
             </span>&nbsp;
             <span style="cursor: pointer; display: inline-block;">
-              <button pButton pRipple type="button" class="p-button-rounded p-button-text" icon="pi pi-{{ editModes[i] ? 'times' : 'plus' }}" *ngIf="!editModes[i]" ></button>
+              <button pButton pRipple type="button" class="p-button-rounded p-button-text" icon="pi pi-{{ editModes[i] ? 'times' : 'plus' }}" *ngIf="!editModes[i]" (click)="addNewRow()"></button>
               <button pButton pRipple type="button" class="p-button-rounded p-button-text" icon="pi pi-times" *ngIf="editModes[i]" (click)="toggleEditMode(i)"></button>
             </span>
           </td>
-        <td style="text-align: center;" *ngFor="let col of columns">
+        <td style="text-align: center;white-space: nowrap;" *ngFor="let col of columns">
             <!-- Conditionally render input field or display the current value -->
             <ng-container *ngIf="!editModes[i] || !isEditableColumn(col.field)">
                 {{ rowData[col.field] }}
