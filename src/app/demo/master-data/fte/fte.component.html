@@ -4,7 +4,7 @@
             <span class="p-input-icon-right">
                 <i class="pi pi-search"></i>
                 <input pInputText type="text" 
-                    placeholder="Search Keyword" (input)="dt2.filterGlobal($event.target.value, 'contains')" />
+                    placeholder="Search Keyword" (input)="onGlobalSearch($event.target.value)"/>
             </span>
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
@@ -17,15 +17,16 @@
     </div>
 
 
-    <p-table #dt2 [value]="Ftedetails" responsiveLayout="scroll" scrollHeight="530px" styleClass="p-datatable-gridlines" [resizableColumns]="true"
-    [globalFilterFields]="['status', 'region.name', 'country.name','location.name']" (onPage)="onPageChange($event)" (onSort)="onSort($event)" >
+    <p-table #dt2 [value]="Ftedetails"  dataKey="id" responsiveLayout="scroll" scrollHeight="530px" styleClass="p-datatable-gridlines" [resizableColumns]="true"
+    scrollDirection="both" 
+    [globalFilterFields]="['status', 'region.name', 'country.name.','location.name','createdBy','updatedBy','updatedDate','createdDate']" (onPage)="onPageChange($event)" (onSort)="onSort($event)" >
         <ng-template pTemplate="header">
             <tr>
             
                 <th style="text-align: center;width: 50px" [frozen]="true" class="sticky-header">Action</th>
                 <th pSortableColumn="status" style="width:30%; text-align: center;" class="sticky-header">Status
                     <p-sortIcon field="status"></p-sortIcon></th> 
-                <th pSortableColumn="region"  style="text-align: center; width: 20%" class="sticky-header">Region <p-sortIcon field="region"></p-sortIcon>
+                <th pSortableColumn="region.name"  style="text-align: center; width: 20%" class="sticky-header">Region <p-sortIcon field="region.name"></p-sortIcon>
                     <p-columnFilter type="text" display="menu" field="region.name" pTooltip="Filter" tooltipPosition="right"
                     class="column-filter icon-align"></p-columnFilter>
                 </th>
@@ -33,7 +34,7 @@
                     <p-columnFilter type="text" display="menu" field="country.name" pTooltip="Filter" tooltipPosition="right"
                     class="column-filter icon-align"></p-columnFilter>
                 </th>
-                <th pSortableColumn="location" style="text-align: center;width:20%" class="sticky-header">Location <p-sortIcon field="location"></p-sortIcon>
+                <th pSortableColumn="location.name" style="text-align: center;width:20%" class="sticky-header">Location <p-sortIcon field="location.name"></p-sortIcon>
                     <p-columnFilter type="text" display="menu" field="location.name" pTooltip="Filter" tooltipPosition="right"
                     class="column-filter icon-align"></p-columnFilter>
                 </th>
@@ -130,12 +131,17 @@
             </div>
             <div class="field col-12 md:col-6">
                 <label>FTE/Month (USD)<span class="required">*</span></label>
-                <input id="name" type="number"  placeholder="FTE/Month" formControlName="fte_month"
+                <input id="name" type="number"  placeholder="FTE/Month" formControlName="fte_month" pattern="^[1-9][0-9]*$" oninput="if(!this.value.match('^[1-9][0-9]*$'))this.value='';"
                     class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                    <div *ngIf="FteForm.get('fte_month')?.hasError('required') && FteForm.get('fte_month')?.touched"
+                    class="error-message">
+                    FTE/Month is required.
+                </div>
+
             </div>
             <div class="field col-12 md:col-6">
                 <label>FTE/Year (USD)<span class="required">*</span></label>
-                <input id="name" type="number"  placeholder="FTE/Year "  formControlName="ftf_year" [readonly]="editMode"
+                <input id="name" type="number"  placeholder="FTE/Year " [readonly]="true"  formControlName="ftf_year" oninput="if(!this.value.match('^[1-9][0-9]*$'))this.value='';"
                     class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
             </div>
             <div class="field col-12 md:col-6">
