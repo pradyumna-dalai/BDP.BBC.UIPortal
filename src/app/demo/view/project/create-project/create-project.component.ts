@@ -51,6 +51,9 @@ export class CreateProjectComponent implements OnInit {
   uomOptions: any[];
   selectedLocationForEditing: any;
 
+enableOriginLocation: boolean = false;
+enableDestinationLocation: boolean = false;
+
  
 
   clonedProducts: { [s: string]: Product } = {};
@@ -349,4 +352,10 @@ fetchActiveUom(){
 //---------------------------------dummy UI--------------------------------------------//
 
 
+toggleOriginCheckbox() {
+  this.enableOriginLocation = !this.enableOriginLocation;
+}
+toggleDestinationCheckbox() {
+  this.enableDestinationLocation = !this.enableDestinationLocation;
+}
 }
