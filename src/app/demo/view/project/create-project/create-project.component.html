@@ -331,24 +331,10 @@
                 class="mr-2 mb-2"></button>
         </div>
     </p-tabPanel>
-    <p-tabPanel header="Configurable">
-        <p>
-            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti
-            atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique
-            sunt in culpa
-            qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et
-            expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
-        </p>
-        <div class="col-12" style="display: flex;justify-content: flex-end;">
-            <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
-                (click)="SaveAsDraftProjects()" class="p-button-outlined mr-2 mb-2"></button>
-                <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()"
-                class="mr-2 mb-2"></button>
-        </div>
-    </p-tabPanel>
+   
     <p-tabPanel header="Add Volume">
         <div class="col-12">
-
+            <app-add-volume></app-add-volume>
         </div>
         <div class="col-12" style="display: flex;justify-content: flex-end;">
             <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
@@ -358,13 +344,9 @@
         </div>
     </p-tabPanel>
     <p-tabPanel header="Cost Line Item">
-        <p>
-            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti
-            atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique
-            sunt in culpa
-            qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et
-            expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
-        </p>
+       <div>
+        <app-cost-line-item></app-cost-line-item>
+       </div>
         <div class="col-12" style="display: flex;justify-content: flex-end;">
             <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
                 (click)="SaveAsDraftProjects()" class="p-button-outlined mr-2 mb-2"></button>

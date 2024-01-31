@@ -21,7 +21,12 @@ saveAsDraftProject(body: any){
   return this.http.post<any>(url + settings.AppRoutes.Auth.saveProjectDraft, body);
 }
 
+private buildingDataSubject = new BehaviorSubject<any>('');
+  buildingData$ = this.buildingDataSubject.asObservable();
 
+  shareBuildingData(newData: string) {
+    this.dataSubject.next(newData);
+  }
 
 getAllProjectDetails(params: any): Observable<any>{
   let httpParams = new HttpParams();
