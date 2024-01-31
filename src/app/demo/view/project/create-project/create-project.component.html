@@ -318,6 +318,12 @@
             ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos
             qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
         </p>
+        <div>
+            <ng-container >
+                <app-building-block [createProject]="myForm"></app-building-block>
+
+            </ng-container>
+        </div>
         <div class="col-12" style="display: flex;justify-content: flex-end;">
             <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
                 (click)="SaveAsDraftProjects()" class="p-button-outlined mr-2 mb-2"></button>

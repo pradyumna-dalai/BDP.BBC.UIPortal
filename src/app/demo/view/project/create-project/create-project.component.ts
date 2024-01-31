@@ -99,13 +99,15 @@ enableDestinationLocation: boolean = false;
    
 
   }
-
-  goToNextTab() {
-    this.activeIndex = (this.activeIndex + 1) % 8; // Assuming you have 3 tabs
+  getForm(): FormGroup {
+    return this.myForm;
   }
-  submit(){
+  goToNextTab() {
+    this.activeIndex = (this.activeIndex + 1) % 8; 
+    console.log(this.myForm.value)
     
   }
+  submit(){}
   // ---------------get Region------------------------//
   getRegion() {
     this.regionOptions = [];
