@@ -13,7 +13,7 @@
                         filterBy="name"></p-dropdown>
                 </div>
                 <div class="field col-12 md:col-4">
-                    <div class="p-d-block"><label>Customer Code</label></div>
+                    <div class="p-d-block"><label>Company Code</label></div>
                     <input placeholder="Enter Customer Code" formControlName="customerCode" type="text" pInputText>
                 </div>
                 <div class="field col-12 md:col-4">
@@ -24,6 +24,7 @@
                     <!-- <input   placeholder="Enter Opportunity Name" formControlName="opportunityName" type="text" 
                         pInputText> -->
                 </div>
+               
                 <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>Industry Vertical<span class="requiredField">*</span></label></div>
                     <p-dropdown [options]="IVOptions" optionLabel="name" optionValue="id"
@@ -37,6 +38,9 @@
                     <p-dropdown [options]="regionOptions" formControlName="region" placeholder="Select Region"
                         optionLabel="name" optionValue="id" [filter]="true" filterBy="name"></p-dropdown>
                 </div>
+                <br>
+                <hr class="aligndown">
+
                 <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>Project Name<span class="requiredField">*</span></label></div>
                     <input formControlName="projectName" placeholder="Enter Project Name" type="text" id="inputtext"
@@ -60,20 +64,12 @@
                         optionLabel="name" optionValue="id" placeholder="Select Opportunity Manager" [filter]="true"
                         filterBy="name"></p-multiSelect>
                 </div>
-                <!-- <div class="field col-12 md:col-2">
-                    <div class="p-d-block"><label>Start Date<span class="requiredField">*</span></label></div>
-                    <p-calendar formControlName="startDate" [showIcon]="true"></p-calendar>
-                </div>
-                <div class="field col-12 md:col-2">
-                    <div class="p-d-block"><label>End Date<span class="requiredField">*</span></label></div>
-                    <p-calendar formControlName="endDate" [showIcon]="true"></p-calendar>
-                </div> -->
                 <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>Date Range<span class="requiredField">*</span></label></div>
                     <input type="text" ngxDaterangepickerMd [lockStartDate]="false" formControlName="selectedDateRange"
                         placeholder="Start Date-End Date" class="date_pick" />
                 </div>
-                <div class="field col-12 md:col-4">
+                <div class="field col-12">
                     <div class="p-d-block"><label>Design Notes<span class="requiredField">*</span></label></div>
                     <textarea rows="4" cols="30" pInputTextarea formControlName="designNotes"
                         placeholder="Enter Design Notes" id="inputtext"></textarea>
@@ -82,7 +78,7 @@
                         Maximum character limit exceeded (1000 characters).
                     </div>
                 </div>
-                <div class="field col-12 md:col-4">
+                <div class="field col-12">
                     <div class="p-d-block"><label>Implementation Notes<span class="requiredField">*</span></label></div>
                     <!-- <input formControlName="impleNotes" placeholder="Enter Implementation Notes"  type="text" id="inputtext"
                     pInputText> -->
@@ -98,147 +94,189 @@
             <p>Please Select Location and add them for the project</p>
             <div class="p-fluid grid">
                 <div class="field col-12 md:col-5">
-                  <div class="p-d-block"><label>Origin Location<span class="requiredField">*</span></label></div>
-                  <p-multiSelect placeholder="Select Origin Location" optionLabel="name"  optionValue="id" display="chip" [showClear]="true"
-                    [options]="originLocations" (onChange)="onOriginLocationChange($event)">
-                  </p-multiSelect>
+                    <div class="p-d-flex p-align-center" style="padding-bottom: 8px;">
+                        <p-checkbox [binary]="true" inputId="ny" [ngModel]="enableOriginLocation" (onChange)="toggleOriginCheckbox()"></p-checkbox>
+                        <label for="ny" style="padding-left: 6px;">Origin Location</label>
+                    </div>
+                      <p-multiSelect placeholder="Select Origin Location" optionLabel="name" optionValue="id"
+                        display="chip" [showClear]="true" [options]="originLocations"  [disabled]="!enableOriginLocation"
+                        (onChange)="onOriginLocationChange($event)">
+                    </p-multiSelect>
                 </div>
-              
+
                 <div class="field col-12 md:col-5">
-                  <div class="p-d-block"><label>Destination Location<span class="requiredField">*</span></label></div>
-                  <p-multiSelect placeholder="Select Destination Location" optionLabel="name"  optionValue="id" display="chip" [showClear]="true"
-                    [options]="destinationLocations" (onChange)="onDestinationLocationChange($event)">
-                  </p-multiSelect>
+                    <div class="p-d-flex p-align-center" style="padding-bottom: 8px;">
+                            <p-checkbox  value="Destination Location" inputId="nyz" [binary]="true"  [ngModel]="enableDestinationLocation" (onChange)="toggleDestinationCheckbox()"></p-checkbox>
+                            <label for="nyz" style="padding-left: 6px;">Destination Location</label>
+                    </div>
+                    <p-multiSelect placeholder="Select Destination Location"  optionLabel="name" optionValue="id"
+                        display="chip" [showClear]="true" [options]="destinationLocations" [disabled]="!enableDestinationLocation"
+                        (onChange)="onDestinationLocationChange($event)">
+                    </p-multiSelect>
                 </div>
-              </div>
-              
-              
+            </div>
+
+
             <p-accordion [activeIndex]="0">
                 <p-accordionTab header="Selected Location Volume and UOM">
                     <div class="card">
                         <p-tabView>
                             <p-tabPanel header="Origin Location">
-                               
-                                    <p-toast></p-toast>
-                                    <p-table  [value]="products" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
-                                        <ng-template pTemplate="header">
-                                            <tr>
-                                                <th style="width:20%">Action</th>
-                                                <th style="width:20%">Location</th>
-                                                <th style="width:20%">Volume</th>
-                                                <th style="width:20%">UOM</th>
-                                                
-                                            </tr>
-                                        </ng-template>
-                                        <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
-                                            <tr [pEditableRow]="product">
-                                                <td>
-                                                    <div>
-                                                        <button *ngIf="!editing" pButton pRipple type="button" icon="pi pi-plus" class="p-button-rounded p-button-text" (click)="onAddRowBelow(ri)"></button>
-                                                        <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(product)" class="p-button-rounded p-button-text"></button>
-                                                        <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(product)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                                                        <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(product, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
-                                                        <button *ngIf="!editing" pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger" (click)="onDeleteRow(ri)"></button>
-  
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                        <p-cellEditor>
-                                                            <ng-template pTemplate="input">
-                                                                <input pInputText type="text" [(ngModel)]="product.location" disabled>
-                                                            </ng-template>
-                                                            <ng-template pTemplate="output">
-                                                                {{ product.location }}
-                                                            </ng-template>
-                                                        </p-cellEditor>
-                                                    </td>
-                                                      <td *ngIf="editing">
-          <p-cellEditor>
-            <ng-template pTemplate="input">
-              <input pInputText type="text" [(ngModel)]="product.volume" required>
-            </ng-template>
-            <ng-template pTemplate="output">
-              {{ product.volume }}
-            </ng-template>
-          </p-cellEditor>
-        </td>
-        <td *ngIf="editing">
-          <p-cellEditor>
-            <ng-template pTemplate="input">
-              <p-dropdown [options]="uomOptions" optionLabel="name" appendTo="body" [(ngModel)]="product.uom"
-                          [style]="{'width':'100%'}"></p-dropdown>
-            </ng-template>
-            <ng-template pTemplate="output">
-              {{ product.uom }}
-            </ng-template>
-          </p-cellEditor>
-        </td>
-                                               
-                                                
-                                            </tr>
-                                        </ng-template>
-                                    </p-table>
-                              
+
+                                <p-toast></p-toast>
+                                <p-table [value]="products" dataKey="id" editMode="row"
+                                    [tableStyle]="{'min-width': '50rem'}">
+                                    <ng-template pTemplate="header">
+                                        <tr>
+                                            <th style="width:20%">Action</th>
+                                            <th style="width:20%">Location</th>
+                                            <th style="width:20%">Volume</th>
+                                            <th style="width:20%">UOM</th>
+
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
+                                        <tr [pEditableRow]="product">
+                                            <td>
+                                                <div>
+                                                    <button *ngIf="!editing" pButton pRipple type="button"
+                                                        icon="pi pi-plus" class="p-button-rounded p-button-text"
+                                                        (click)="onAddRowBelow(ri)"></button>
+                                                    <button *ngIf="!editing" pButton pRipple type="button"
+                                                        pInitEditableRow icon="pi pi-pencil"
+                                                        (click)="onRowEditInit(product)"
+                                                        class="p-button-rounded p-button-text"></button>
+                                                    <button *ngIf="editing" pButton pRipple type="button"
+                                                        pSaveEditableRow icon="pi pi-check"
+                                                        (click)="onRowEditSave(product)"
+                                                        class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                                                    <button *ngIf="editing" pButton pRipple type="button"
+                                                        pCancelEditableRow icon="pi pi-times"
+                                                        (click)="onRowEditCancel(product, ri)"
+                                                        class="p-button-rounded p-button-text p-button-danger"></button>
+                                                    <button *ngIf="!editing" pButton pRipple type="button"
+                                                        icon="pi pi-trash"
+                                                        class="p-button-rounded p-button-text p-button-danger"
+                                                        (click)="onDeleteRow(ri)"></button>
+
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <p-cellEditor>
+                                                    <ng-template pTemplate="input">
+                                                        <input pInputText type="text" [(ngModel)]="product.location"
+                                                            disabled>
+                                                    </ng-template>
+                                                    <ng-template pTemplate="output">
+                                                        {{ product.location }}
+                                                    </ng-template>
+                                                </p-cellEditor>
+                                            </td>
+                                            <td *ngIf="editing">
+                                                <p-cellEditor>
+                                                    <ng-template pTemplate="input">
+                                                        <input pInputText type="text" [(ngModel)]="product.volume"
+                                                            required>
+                                                    </ng-template>
+                                                    <ng-template pTemplate="output">
+                                                        {{ product.volume }}
+                                                    </ng-template>
+                                                </p-cellEditor>
+                                            </td>
+                                            <td *ngIf="editing">
+                                                <p-cellEditor>
+                                                    <ng-template pTemplate="input">
+                                                        <p-dropdown [options]="uomOptions" optionLabel="name"
+                                                            appendTo="body" [(ngModel)]="product.uom"
+                                                            [style]="{'width':'100%'}"></p-dropdown>
+                                                    </ng-template>
+                                                    <ng-template pTemplate="output">
+                                                        {{ product.uom }}
+                                                    </ng-template>
+                                                </p-cellEditor>
+                                            </td>
+
+
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+
                             </p-tabPanel>
                             <p-tabPanel header="Destination Location">
                                 <p-toast></p-toast>
-                                    <p-table [value]="products" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
-                                        <ng-template pTemplate="header">
-                                            <tr>
-                                                <th style="width:20%">Action</th>
-                                                <th style="width:20%">Location</th>
-                                                <th style="width:20%">Volume</th>
-                                                <th style="width:20%">UOM</th>
-                                                
-                                            </tr>
-                                        </ng-template>
-                                        <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
-                                            <tr [pEditableRow]="product">
-                                                <td>
-                                                    <div >
-                                                        <button *ngIf="!editing" pButton pRipple type="button" icon="pi pi-plus" class="p-button-rounded p-button-text" (click)="onAddRowBelow(ri)"></button>
-                                                        <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(product)" class="p-button-rounded p-button-text"></button>
-                                                        <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(product)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                                                        <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(product, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
-                                                        <button *ngIf="!editing" pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger" (click)="onDeleteRow(ri)"></button>
+                                <p-table [value]="products" dataKey="id" editMode="row"
+                                    [tableStyle]="{'min-width': '50rem'}">
+                                    <ng-template pTemplate="header">
+                                        <tr>
+                                            <th style="width:20%">Action</th>
+                                            <th style="width:20%">Location</th>
+                                            <th style="width:20%">Volume</th>
+                                            <th style="width:20%">UOM</th>
 
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <p-cellEditor>
-                                                        <ng-template pTemplate="input">
-                                                            <input pInputText type="text" >
-                                                        </ng-template>
-                                                        <ng-template pTemplate="output">
-                                                          Delhi
-                                                        </ng-template>
-                                                    </p-cellEditor>
-                                                </td>
-                                                <td>
-                                                    <p-cellEditor>
-                                                        <ng-template pTemplate="input">
-                                                            <input pInputText type="text" required>
-                                                        </ng-template>
-                                                        <ng-template pTemplate="output">
-                                                           123
-                                                        </ng-template>
-                                                    </p-cellEditor>
-                                                </td>
-                                                <td>
-                                                    <p-cellEditor>
-                                                        <ng-template pTemplate="input">
-                                                            <p-dropdown [options]="uomOptions" optionLabel="name" appendTo="body"  [style]="{'width':'100%'}"></p-dropdown>
-                                                        </ng-template>
-                                                        <ng-template pTemplate="output">
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
+                                        <tr [pEditableRow]="product">
+                                            <td>
+                                                <div>
+                                                    <button *ngIf="!editing" pButton pRipple type="button"
+                                                        icon="pi pi-plus" class="p-button-rounded p-button-text"
+                                                        (click)="onAddRowBelow(ri)"></button>
+                                                    <button *ngIf="!editing" pButton pRipple type="button"
+                                                        pInitEditableRow icon="pi pi-pencil"
+                                                        (click)="onRowEditInit(product)"
+                                                        class="p-button-rounded p-button-text"></button>
+                                                    <button *ngIf="editing" pButton pRipple type="button"
+                                                        pSaveEditableRow icon="pi pi-check"
+                                                        (click)="onRowEditSave(product)"
+                                                        class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                                                    <button *ngIf="editing" pButton pRipple type="button"
+                                                        pCancelEditableRow icon="pi pi-times"
+                                                        (click)="onRowEditCancel(product, ri)"
+                                                        class="p-button-rounded p-button-text p-button-danger"></button>
+                                                    <button *ngIf="!editing" pButton pRipple type="button"
+                                                        icon="pi pi-trash"
+                                                        class="p-button-rounded p-button-text p-button-danger"
+                                                        (click)="onDeleteRow(ri)"></button>
+
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <p-cellEditor>
+                                                    <ng-template pTemplate="input">
+                                                        <input pInputText type="text">
+                                                    </ng-template>
+                                                    <ng-template pTemplate="output">
+                                                        Delhi
+                                                    </ng-template>
+                                                </p-cellEditor>
+                                            </td>
+                                            <td>
+                                                <p-cellEditor>
+                                                    <ng-template pTemplate="input">
+                                                        <input pInputText type="text" required>
+                                                    </ng-template>
+                                                    <ng-template pTemplate="output">
+                                                        123
+                                                    </ng-template>
+                                                </p-cellEditor>
+                                            </td>
+                                            <td>
+                                                <p-cellEditor>
+                                                    <ng-template pTemplate="input">
+                                                        <p-dropdown [options]="uomOptions" optionLabel="name"
+                                                            appendTo="body" [style]="{'width':'100%'}"></p-dropdown>
+                                                    </ng-template>
+                                                    <ng-template pTemplate="output">
                                                         UOM
-                                                        </ng-template>
-                                                    </p-cellEditor>
-                                                </td>
-                                               
-                                                
-                                            </tr>
-                                        </ng-template>
-                                    </p-table>
+                                                    </ng-template>
+                                                </p-cellEditor>
+                                            </td>
+
+
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
                             </p-tabPanel>
                         </p-tabView>
                     </div>
