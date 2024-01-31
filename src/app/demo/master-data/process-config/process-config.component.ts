@@ -22,7 +22,7 @@ visible: boolean = false;
     "message": "success",
     "data": [
       {
-
+        "id":1,
         "product": "LLP",
 
         "scope": "Export Facilitation",
@@ -117,117 +117,20 @@ visible: boolean = false;
 
         ]
 
-    },
-    {
+      },
+      {
+        "id":2,
+        "product": "LLP",
 
-      "product": "LLP",
+        "scope": "Export Facilitation",
 
-      "scope": "Export Facilitation",
+        "category": "Supply Chain Insights",
 
-      "category": "Supply Chain Insights",
-
-      "block": "Customer Onboarding & Training",
-
-      "origin": "Origin",
-
-      "process": "2",
-
-      "operationStep": "Customer send booking request for pre-leg. ",
-
-      "uom": "Order",
-
-      "configuration": null,
-
-      "location": [{
-
-              "name": "EPIM",
-
-              "takTime": "NA"
-
-          }, {
-
-              "name": "EPIY",
-
-              "takTime": "NA"
-
-          }, {
-
-              "name": "EPIP",
-
-              "takTime": "NA"
-
-          }, {
-
-              "name": "Singapore",
-
-              "takTime": "NA"
-
-          }, {
-
-              "name": "Shanghai",
-
-              "takTime": "NA"
-
-          }, {
-
-              "name": "Mumbai",
-
-              "takTime": "NA"
-
-          }, {
-
-              "name": "Houston",
-
-              "takTime": "NA"
-
-          }, {
-
-              "name": "Ashton",
-
-              "takTime": "NA"
-
-          }, {
-
-              "name": "Antwerp",
-
-              "takTime": "NA"
-
-          }, {
-
-              "name": "Rotterdam",
-
-              "takTime": "NA"
-
-          }, {
-
-              "name": "Istanbul",
-
-              "takTime": "NA"
-
-          }, {
-
-              "name": "Saudi Arabia",
-
-              "takTime": "NA"
-
-          }
-
-      ]
-
-  },
-{
-
-        "product": "Trade Management & Customs",
-
-        "scope": "Warehousing",
-
-        "category": "Warehousing",
-
-        "block": "Vendor Onboarding",
+        "block": "Customer Onboarding & Training",
 
         "origin": "Origin",
 
-        "process": "3",
+        "process": "2",
 
         "operationStep": "Customer send booking request for pre-leg. ",
 
@@ -239,7 +142,7 @@ visible: boolean = false;
 
                 "name": "EPIM",
 
-                "takTime": "3.5"
+                "takTime": "NA"
 
             }, {
 
@@ -263,7 +166,7 @@ visible: boolean = false;
 
                 "name": "Shanghai",
 
-                "takTime": "1.2"
+                "takTime": "NA"
 
             }, {
 
@@ -311,8 +214,105 @@ visible: boolean = false;
 
         ]
 
-    },{
+      },
+      {
+          "id":3,
+          "product": "Trade Management & Customs",
 
+          "scope": "Warehousing",
+
+          "category": "Warehousing",
+
+          "block": "Vendor Onboarding",
+
+          "origin": "Origin",
+
+          "process": "1",
+
+          "operationStep": "Customer send booking request for pre-leg. ",
+
+          "uom": "Order",
+
+          "configuration": null,
+
+          "location": [{
+
+                  "name": "EPIM",
+
+                  "takTime": "3.5"
+
+              }, {
+
+                  "name": "EPIY",
+
+                  "takTime": "NA"
+
+              }, {
+
+                  "name": "EPIP",
+
+                  "takTime": "NA"
+
+              }, {
+
+                  "name": "Singapore",
+
+                  "takTime": "NA"
+
+              }, {
+
+                  "name": "Shanghai",
+
+                  "takTime": "1.2"
+
+              }, {
+
+                  "name": "Mumbai",
+
+                  "takTime": "NA"
+
+              }, {
+
+                  "name": "Houston",
+
+                  "takTime": "NA"
+
+              }, {
+
+                  "name": "Ashton",
+
+                  "takTime": "NA"
+
+              }, {
+
+                  "name": "Antwerp",
+
+                  "takTime": "NA"
+
+              }, {
+
+                  "name": "Rotterdam",
+
+                  "takTime": "NA"
+
+              }, {
+
+                  "name": "Istanbul",
+
+                  "takTime": "NA"
+
+              }, {
+
+                  "name": "Saudi Arabia",
+
+                  "takTime": "NA"
+
+              }
+
+          ]
+
+      },{
+      "id":4,
         "product": "Trade Management & Customs",
 
         "scope": "Warehousing",
@@ -323,7 +323,7 @@ visible: boolean = false;
 
         "origin": "Origin",
 
-        "process": "4",
+        "process": "2",
 
         "operationStep": "Customer send booking request for pre-leg. ",
 
@@ -488,12 +488,16 @@ cancelAllEdits() {
   // Toggle back to the original grid for all rows
   this.editModes = Array(this.data.length).fill(false);
 }
-addNewRow() {
-  // Create a new row with the same data as the first row
-  const newRow = { ...this.data[0] };
+addNewRow(index: number) {
+  // Create a new row with the same data as the clicked row
+  const newRow = { ...this.data[index] };
   newRow.id = null;
-  this.data.push(newRow);
-  this.editModes.push(true);
+  
+  // Insert the new row just below the clicked row
+  this.data.splice(index + 1, 0, newRow);
+  
+  // Set edit mode to true for the new row
+  this.editModes.splice(index + 1, 0, true);
 }
    initializeColumns() {
      // Initialize static columns
