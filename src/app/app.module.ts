@@ -119,6 +119,9 @@ import { ProductComponent } from './demo/master-data/product/product.component';
 import { UOMComponent } from './demo/master-data/uom/uom.component';
 import { FteComponent } from './demo/master-data/fte/fte.component';
 import { ProcessConfigComponent } from './demo/master-data/process-config/process-config.component';
+import { BuildingBlockComponent } from './demo/view/project/create-project/building-block/building-block.component';
+import { AddVolumeComponent } from './demo/view/project/create-project/add-volume/add-volume.component';
+import { CostLineItemComponent } from './demo/view/project/create-project/cost-line-item/cost-line-item.component';
 
 
 
@@ -238,6 +241,9 @@ import { ProcessConfigComponent } from './demo/master-data/process-config/proces
         UOMComponent,
         FteComponent,
         ProcessConfigComponent,
+        BuildingBlockComponent,
+        AddVolumeComponent,
+        CostLineItemComponent,
 
     ],
     providers: [

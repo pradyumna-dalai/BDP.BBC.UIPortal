@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AppBreadcrumbService } from '../../../../app.breadcrumb.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { MasterTableService } from '../../../../services/master-table.service';
@@ -8,6 +8,7 @@ import dayjs from 'dayjs';
 import { DatePipe } from '@angular/common';
 import { Product } from 'src/app/demo/domain/product';
 import { Table } from 'primeng/table'; 
+import { AddVolumeComponent } from './add-volume/add-volume.component';
 @Component({
   selector: 'app-create-project',
   templateUrl: './create-project.component.html',
@@ -17,7 +18,7 @@ import { Table } from 'primeng/table';
 
 
 export class CreateProjectComponent implements OnInit {
-
+  @ViewChild(AddVolumeComponent) addVolume!: AddVolumeComponent;
   date: Date | undefined;
   activeIndex: number = 0;
   myForm: FormGroup;
@@ -54,7 +55,6 @@ export class CreateProjectComponent implements OnInit {
 enableOriginLocation: boolean = false;
 enableDestinationLocation: boolean = false;
 
- 
 
   clonedProducts: { [s: string]: Product } = {};
   products = [];
@@ -100,7 +100,19 @@ enableDestinationLocation: boolean = false;
 
   }
 
-
+  getForm(): FormGroup {
+    return this.myForm;
+  }
+  goToNextTab() {
+    // this.activeIndex = (this.activeIndex + 1) % 8; 
+    console.log(this.myForm.value);
+    this.activeIndex = (this.activeIndex + 1) % 8
+      // this.addVolume.shareFunctionAddVolume()
+    
+   
+    
+  }
+  submit(){}
   // ---------------get Region------------------------//
   getRegion() {
     this.regionOptions = [];
@@ -358,4 +370,6 @@ toggleOriginCheckbox() {
 toggleDestinationCheckbox() {
   this.enableDestinationLocation = !this.enableDestinationLocation;
 }
+
+
 }
