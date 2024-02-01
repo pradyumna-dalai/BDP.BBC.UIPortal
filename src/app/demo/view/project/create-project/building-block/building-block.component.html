@@ -1,3 +1,81 @@
-<p>building-block works!</p>
+<div class="grid p-fluid">
+    <div class="col-12 md:col-4">
+        <div class="card" style="min-height: 669px;">
+            <div class="grid" style="margin-top: 4px;">
+                <div class="col-12">
+                    <h5 id="heading">Building Blocks</h5>
+                    <hr
+                        style="margin-top: 1px;margin-bottom: 22px;color: gray;background-color: #d9d2d2;height: 1px;border: none;">
+                </div>
 
-<div>{{createProject}}</div>
+                <div class="col-12">
+                    <span class="p-input-icon-left" style="margin-top: -19px;">
+                        <i class="pi pi-search"></i>
+                        <input type="text" pInputText placeholder="Search..." [(ngModel)]="searchText"
+                            (input)="onSearchChange()" />
+                    </span>
+                </div>
+                <div class="col-12">
+                    <!-- <p-tabView>
+                        <p-tabPanel header="Building Blocks"> -->
+                            <p-tree [value]="treeDataNew">
+                                <ng-template let-node pTemplate="default">
+                                    <span>
+
+                                        <!-- Add icons for each child based on the item type -->
+                                        <span *ngIf="node.data?.type === 1" class="fas fa-folder"></span>
+                                        <span *ngIf="node.data?.type === 2" class="fa-regular fa-folder"></span>
+                                        <span *ngIf="node.data?.type === 3" class="far fa-folder-open"></span>
+                                        <span *ngIf="node.data?.type === 4" class="fas fa-boxes"></span>
+                                        {{ node.label }}
+                                    </span>
+                                </ng-template>
+                            </p-tree>
+                         
+                        <!-- </p-tabPanel>
+                 
+                    </p-tabView> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 md:col-4">
+        <div class="card" style="min-height: 669px;">
+            <div>
+                <div class="col-12">
+                    <h5 id="heading">Selected Building Blocks</h5>
+                    <hr
+                        style="margin-top: 1px;margin-bottom: 22px;color: gray;background-color: #d9d2d2;height: 1px;border: none;">
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <div class="col-12 md:col-4">
+
+
+        <div class="card" style="min-height: 669px;">
+            <div>
+                <div class="col-12">
+                    <h5 id="heading">Location Configuration</h5>
+
+                    <hr
+                        style="margin-top: 1px;margin-bottom: 22px;color: gray;background-color: #d9d2d2;height: 1px;border: none;">
+                </div>
+                <p>Validate pre-leg carrier booking information</p>
+                <div
+                    style="display: flex;background-color: rgb(0, 110, 255);padding: 10px;width: 20rem;border-radius: 8px;">
+                    <button type="button" [style.border-radius]="originButtonBorderRadius"
+                        [style.background-color]="originButtonColor" [style.border]="originButtonBorder"
+                        (click)="showOriginSection()"> Origin Location</button>
+                    <button type="button" [style.border-radius]="destinationButtonBorderRadius"
+                        [style.background-color]="destinationButtonColor" [style.border]="destinationButtonBorder"
+                        (click)="showDestinationSection()"> Destination Location</button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
