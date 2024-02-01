@@ -6,7 +6,7 @@ import { ProjectsService } from 'src/app/services/project-serivce/projects.servi
 import { ConfirmationService, MessageService } from 'primeng/api';
 import dayjs from 'dayjs';
 import { DatePipe } from '@angular/common';
-import { EditableRow, Table } from 'primeng/table'; 
+import { EditableRow, Table } from 'primeng/table';
 @Component({
   selector: 'app-create-project',
   templateUrl: './create-project.component.html',
@@ -22,14 +22,12 @@ export class CreateProjectComponent implements OnInit {
   myForm: FormGroup;
   projectStatusOptions = [];
   regionOptions = [];
-  // companyOptions = [];
   IVOptions = [];
   projectStageOptions = [];
   opportunityManagerOptions = [];
   companyOptions: any[] = [];
   opportunityNameOptions: any[] = [];
-  // body//
-  projectName:string;
+  projectName: string;
   customerCode: any;
   opportunityName: any;
   companyName: any;
@@ -51,14 +49,15 @@ export class CreateProjectComponent implements OnInit {
   selectedLocationForEditing: any;
   products: any[] = [];
   originTableData: any[] = [];
-enableOriginLocation: boolean = false;
-enableDestinationLocation: boolean = false;
-isRowEditMode: boolean[] = [];
- originTableControls: FormArray;
+  enableOriginLocation: boolean = false;
+  enableDestinationLocation: boolean = false;
+  isRowEditMode: boolean[] = [];
+  originTableControls: FormArray;
   isAddingRow: boolean;
+  isActionButtonsVisible = false;
 
-  constructor(private breadcrumbService: AppBreadcrumbService, 
-    private datePipe: DatePipe, private messageService: MessageService,private fb: FormBuilder, public MasterTableservice: MasterTableService, public projectService: ProjectsService) {
+  constructor(private breadcrumbService: AppBreadcrumbService,
+    private datePipe: DatePipe, private messageService: MessageService, private fb: FormBuilder, public MasterTableservice: MasterTableService, public projectService: ProjectsService) {
     this.breadcrumbService.setItems([
       {
         label: 'PROJECT',
@@ -83,7 +82,7 @@ isRowEditMode: boolean[] = [];
       designNotes: ['', [Validators.maxLength(1000)]],
       impleNotes: ['', [Validators.maxLength(1000)]],
       originTable: this.fb.array([])
-      
+
 
     });
     this.fetchActiveUom();
@@ -92,11 +91,16 @@ isRowEditMode: boolean[] = [];
     this.getProjectStage();
     this.getOpportunityManger();
     this.fetchActiveLocation();
-   
+
     this.originTableControls = this.myForm.get('originTable') as FormArray;
     this.isRowEditMode = new Array(this.originTableControls.length).fill(false);
-    
-    this.isRowEditMode = new Array(this.originTableControls.length).fill(false);
+    this.originTableControls = this.fb.array([
+      this.fb.group({
+        location: [''],
+        volume: [''],
+        uom: ['']
+      })
+    ]);
   }
 
 
@@ -161,9 +165,9 @@ isRowEditMode: boolean[] = [];
       }
     })
   }
-   // ---------------get project status------------------------//
-   OnStageSelectProjectstatus(event) {
-   // this.projectStatusOptions = [];
+  // ---------------get project status------------------------//
+  OnStageSelectProjectstatus(event) {
+    // this.projectStatusOptions = [];
     const selectedStageId = event.value;
     this.MasterTableservice.getProjectStatus(selectedStageId).subscribe((res: any) => {
       if (res?.message == "success") {
@@ -199,246 +203,254 @@ isRowEditMode: boolean[] = [];
     this.dateRange = this.myForm.get('selectedDateRange').value;
     let dateRangevalStartDate = this.dateRange.startDate;
     let dateRangevalEndDate = this.dateRange.endDate;
-   
-const body = {
-  description: "",
-  projectInformation: {
-      customerCode: this.myForm.get('customerCode').value,
-      projectName: this.myForm.get('projectName').value,
-      startDate: this.formatDate(dateRangevalStartDate),
-      endDate: this.formatDate(dateRangevalEndDate),
-      designNote: this.myForm.get('designNotes').value,
-      implementationNote: this.myForm.get('impleNotes').value,
-      company: {
+
+    const projectLocationData = this.originTableControls.controls.map((control: FormGroup) => {
+      const uomValue = control.get('uom').value;
+      return {
+        volume: control.get('volume').value,
+        originDestination: 'Origin',
+        location: {
+          id: control.get('location').value
+        },
+        uom: {
+          id: uomValue
+        }
+      };
+    });
+    const body = {
+      description: "",
+      projectInformation: {
+        customerCode: this.myForm.get('customerCode').value,
+        projectName: this.myForm.get('projectName').value,
+        startDate: this.formatDate(dateRangevalStartDate),
+        endDate: this.formatDate(dateRangevalEndDate),
+        designNote: this.myForm.get('designNotes').value,
+        implementationNote: this.myForm.get('impleNotes').value,
+        company: {
           "id": this.myForm.get('companyName').value,
-      },
-      opportunityName: {
-        "id": this.myForm.get('opportunityName').value,
-    },
-    industryVertical: {
-        "id":this.myForm.get('industryVertical').value,
-    },
-    region: {
-        "id": this.myForm.get('region').value,
-    },
-    projectStage: {
-        "id": this.myForm.get('projectStage').value,
-    },
-    projectStatus: {
-        "id": this.myForm.get('projectStatus').value,
-    },
-    opportunityManager: opportunityMangers
-  }
-}
+        },
+        opportunityName: {
+          "id": this.myForm.get('opportunityName').value,
+        },
+        industryVertical: {
+          "id": this.myForm.get('industryVertical').value,
+        },
+        region: {
+          "id": this.myForm.get('region').value,
+        },
+        projectStage: {
+          "id": this.myForm.get('projectStage').value,
+        },
+        projectStatus: {
+          "id": this.myForm.get('projectStatus').value,
+        },
+        opportunityManager: opportunityMangers,
+        projectLocation: projectLocationData,
+      }
+    }
     this.projectService.saveAsDraftProject(body).subscribe(
-    (res) => {
-      console.log('Draft saved successfully:', res);
+      (res) => {
+        console.log('Draft saved successfully:', res);
 
-      this.messageService.add({
-        key: 'successToast',
-        severity: 'success',
-        summary: 'Success!',
-        detail: 'Project draft is saved Successfully.'
-      });
-    },
-    (error) => {
+        this.messageService.add({
+          key: 'successToast',
+          severity: 'success',
+          summary: 'Success!',
+          detail: 'Project draft is saved Successfully.'
+        });
+      },
+      (error) => {
 
-      if (error.status === 400) {
-        // console.log('Bad Request Error:', error);
-        if(error.error.data[0] == 'Project name exist'){
+        if (error.status === 400) {
+          // console.log('Bad Request Error:', error);
+          if (error.error.data[0] == 'Project name exist') {
+            this.messageService.add({
+              key: 'errorToast',
+              severity: 'error',
+              summary: 'Error!',
+              detail: 'Project Name already exists.'
+            });
+          }
+        } else {
           this.messageService.add({
             key: 'errorToast',
             severity: 'error',
             summary: 'Error!',
-            detail: 'Project Name already exists.'
+            detail: 'Failed to save Project draft.'
           });
         }
-      }else{
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Failed to save Project draft.'
-      });
-    }
-    }
-  
-  );
-  
-}
+      }
+
+    );
+
+  }
 
 
 
-//-----------------------------location Information-----------------------------//
-fetchActiveLocation() {
-  this.MasterTableservice.getAllActiveLocation().subscribe((res: any) => {
-    if (res?.message === "success") {
-      this.locationOptions = res?.data.map((location: any) => ({ id: location.id, name: location.name }));
+  //-----------------------------location Information-----------------------------//
+  fetchActiveLocation() {
+    this.MasterTableservice.getAllActiveLocation().subscribe((res: any) => {
+      if (res?.message === "success") {
+        this.locationOptions = res?.data.map((location: any) => ({ id: location.id, name: location.name }));
+
+        this.originLocations = [...this.locationOptions];
+        this.destinationLocations = [...this.locationOptions];
+      } else {
+        this.locationOptions = [];
+        this.originLocations = [];
+        this.destinationLocations = [];
+      }
+    });
+  }
+  onDestinationLocationChange(event: any) {
+    const selectedLocationIds = event.value;
+    if (selectedLocationIds && selectedLocationIds.length > 0) {
+      this.originLocations = this.locationOptions.filter(loc => !selectedLocationIds.includes(loc.id));
+    } else {
 
       this.originLocations = [...this.locationOptions];
+    }
+  }
+
+
+  fetchActiveUom() {
+    this.uomOptions = [];
+    this.MasterTableservice.getAllActiveUOM().subscribe((res: any) => {
+      if (res?.message == "success") {
+        this.uomOptions = res?.data;
+      } else {
+        this.uomOptions = [];
+      }
+    })
+  }
+
+  toggleOriginCheckbox() {
+    this.enableOriginLocation = !this.enableOriginLocation;
+  }
+  toggleDestinationCheckbox() {
+    this.enableDestinationLocation = !this.enableDestinationLocation;
+  }
+  getLocationName(locationId: any): string {
+    const location = this.locationOptions.find(loc => loc.id === locationId);
+    return location ? location.name : '';
+  }
+
+  onOriginLocationChange(event: any) {
+    const selectedLocationIds = event.value;
+    if (selectedLocationIds && selectedLocationIds.length > 0) {
+      this.isActionButtonsVisible = true;
+      this.destinationLocations = this.locationOptions.filter(loc => !selectedLocationIds.includes(loc.id));
+    } else {
+      this.isActionButtonsVisible = false;
       this.destinationLocations = [...this.locationOptions];
-    } else {
-      this.locationOptions = [];
-      this.originLocations = [];
-      this.destinationLocations = [];
     }
-  });
-}
-onDestinationLocationChange(event: any) {
-  const selectedLocationIds = event.value;
-  console.log('fdf2', this.originLocations);
-
-  if (selectedLocationIds && selectedLocationIds.length > 0) {
-    this.originLocations = this.locationOptions.filter(loc => !selectedLocationIds.includes(loc.id));
-  } else {
-    
-    this.originLocations = [...this.locationOptions];
-  }
-}
-
-
-fetchActiveUom(){
-  this.uomOptions = [];
-  this.MasterTableservice.getAllActiveUOM().subscribe((res: any) => {
-    if (res?.message == "success") {
-      this.uomOptions = res?.data;
-    } else {
-      this.uomOptions = [];
+    while (this.originTableControls.length !== 0) {
+      this.originTableControls.removeAt(0);
     }
-  })
-}
+    selectedLocationIds.forEach((locationId: any) => {
+      const newRow = this.fb.group({
+        location: [locationId, Validators.required],
+        volume: ['', Validators.required],
+        uom: ['']
+      });
 
-
-
-onOriginLocationChange(event: any) {
-  const selectedLocationIds = event.value;
- // console.log('fdf4', this.destinationLocations);
-
-  if (selectedLocationIds && selectedLocationIds.length > 0) {
-    this.destinationLocations = this.locationOptions.filter(loc => !selectedLocationIds.includes(loc.id));
-  } else {
-   
-    this.destinationLocations = [...this.locationOptions];
-  }
-  while (this.originTableControls.length !== 0) {
-    this.originTableControls.removeAt(0);
-  }
-  selectedLocationIds.forEach((locationId: any) => {
-    const newRow = this.fb.group({
-      location: [locationId, Validators.required], 
-      volume: ['', Validators.required],
-      uom: ['']
+      this.originTableControls.push(newRow);
+      //console.log('t1', this.originTableControls)
     });
-
-   this.originTableControls.push(newRow);
-   console.log( 't1',this.originTableControls)
-  });
-}
+  }
 
 
-getLocationName(locationId: any): string {
-  const location = this.locationOptions.find(loc => loc.id === locationId);
-  return location ? location.name : '';
-}
-
-//---------------------------------dummy UI--------------------------------------------//
-
-
-toggleOriginCheckbox() {
-  this.enableOriginLocation = !this.enableOriginLocation;
-}
-toggleDestinationCheckbox() {
-  this.enableDestinationLocation = !this.enableDestinationLocation;
-}
-
-removeRowFromOriginTable(index: number) {
-  (this.myForm.get('originTable') as FormArray).removeAt(index);
-}
-
-
-onSave(event: Event, product: FormGroup) {
-  event.preventDefault();
-
-  const newRowData = {
+  onSave(event: Event, product: FormGroup) {
+    event.preventDefault();
+    const uomControl = product.get('uom');
+    const newRowData = {
       location: product.get('location').value,
       volume: product.get('volume').value,
-      uom: product.get('uom').value ? product.get('uom').value.name : ''
-  };
-
-  this.originTableData.push(newRowData);
-
-  console.log( 't2',this.originTableData)
-  const newRow = this.fb.group({
-      location: [newRowData.location, Validators.required],
-      volume: [newRowData.volume, Validators.required],
-      uom: [newRowData.uom]
-  });
-  console.log('t3', this.originTableControls);
-  this.originTableControls.push(newRow);
-  console.log('t4:', this.originTableControls);
-  this.isAddingRow = false;
-  product.reset();
-
-  console.log('t5', this.originTableData);
-}
-
-
-
-onRowEditCancel(product: FormGroup, rowIndex: number): void {
-  console.log('Row Edit Canceled:', product);
-}
-
-onDeleteRow(rowIndex: number): void {
-  console.log('Deleting Row at index:', rowIndex);
-  this.originTableControls.removeAt(rowIndex);
-}
-
-addRowToOriginTable(data: any) {
-  const newRow = this.fb.group({
-    location: [data.location, Validators.required],
-    volume: [data.volume, Validators.required],
-    uom: [data.uom]
-  });
-
-  (this.myForm.get('originTable') as FormArray).push(newRow);
-  //this.isAddingRow = true;
-}
-onAddRowBelow(rowIndex: number) {
-  const selectedRow = this.originTableControls.at(rowIndex);
-
-  const newRow = this.fb.group({
-    location: [selectedRow.get('location').value, Validators.required],
-    volume: ['', Validators.required],
-    uom: ['']
-  });
-
-  this.isAddingRow = true;
-  this.originTableControls.insert(rowIndex + 1, newRow); 
-  this.products.splice(rowIndex + 1, 0, {
-    id: this.products.length + 1,
-    location: selectedRow.get('location').value,
-    volume: '',
-    uom: '',
-    editing: true
-  });
-
-  this.originTableControls.controls.forEach((control, index) => {
-    if (index === rowIndex + 1) {
-      this.isRowEditMode.splice(index, 0, true);
-    } else {
-    
-      this.isRowEditMode[index] = false;
+      uom: uomControl.value
+    };
+ //   console.log('uomControl value:', uomControl.value);
+    this.originTableData.push(newRowData);
+    while (this.originTableControls.length !== 0) {
+      this.originTableControls.removeAt(0);
     }
-  });
-}
+    this.originTableData.forEach((data: any) => {
+      const newRow = this.fb.group({
+        location: [data.location, Validators.required],
+        volume: [data.volume, Validators.required],
+        uom: [data.uom]
+      });
+      this.originTableControls.push(newRow);
+    });
 
+    //console.log('t4:', this.originTableControls);
+    product.reset();
+  }
 
-onRowEditInit(product: FormGroup, rowIndex: number) {
-  this.isRowEditMode[rowIndex] = true;
-  this.products[rowIndex] = {
+  getUOMName(uomId: any): string {
+    const uom = this.uomOptions.find(u => u.id === uomId);
+    return uom ? uom.name : '';
+  }
+  removeRowFromOriginTable(index: number) {
+    (this.myForm.get('originTable') as FormArray).removeAt(index);
+  }
+  onRowEditCancel(product: FormGroup, rowIndex: number): void {
+ //   console.log('Row Edit Canceled:', product);
+  }
+
+  onDeleteRow(rowIndex: number): void {
+   // console.log('Deleting Row at index:', rowIndex);
+    this.originTableControls.removeAt(rowIndex);
+  }
+
+  addRowToOriginTable(data: any) {
+    const newRow = this.fb.group({
+      location: [data.location, Validators.required],
+      volume: [data.volume, Validators.required],
+      uom: [data.uom]
+    });
+
+    (this.myForm.get('originTable') as FormArray).push(newRow);
+    //this.isAddingRow = true;
+  }
+  onAddRowBelow(rowIndex: number) {
+    const selectedRow = this.originTableControls.at(rowIndex);
+
+    const newRow = this.fb.group({
+      location: [selectedRow.get('location').value, Validators.required],
+      volume: ['', Validators.required],
+      uom: [selectedRow.get('uom').value]
+    });
+
+    this.isAddingRow = true;
+    this.originTableControls.insert(rowIndex + 1, newRow);
+    this.products.splice(rowIndex + 1, 0, {
+      id: this.products.length + 1,
+      location: selectedRow.get('location').value,
+      volume: '',
+      uom: '',
+      editing: true
+    });
+
+    this.originTableControls.controls.forEach((control, index) => {
+      if (index === rowIndex + 1) {
+        this.isRowEditMode.splice(index, 0, true);
+      } else {
+
+        this.isRowEditMode[index] = false;
+      }
+    });
+  }
+
+  onRowEditInit(product: FormGroup, rowIndex: number) {
+    this.isRowEditMode[rowIndex] = true;
+    this.products[rowIndex] = {
       ...product.value,
       editing: true
-  };
-}
+    };
+  }
+
+
+
+
 
 }

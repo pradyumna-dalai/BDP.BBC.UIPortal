@@ -142,8 +142,8 @@
                                     <ng-template pTemplate="body" let-product let-ri="rowIndex">
                                         <tr>
                                             <td>
-                                                <div>
-                                                    <div>
+                                                <div *ngIf="isActionButtonsVisible">
+                                                    <div  >
                                                     <button pButton pRipple type="button" icon="pi pi-plus"
                                                         class="p-button-rounded p-button-text p-button-success"
                                                         (click)="onAddRowBelow(ri)"></button>
@@ -155,7 +155,7 @@
                                                         icon="pi pi-times" (click)="onRowEditCancel(product, ri)"
                                                         class="p-button-rounded p-button-text p-button-danger"></button>
                                                     <button pButton pRipple type="button" icon="pi pi-pencil"
-                                                        *ngIf="!isRowEditMode[ri]" (click)="onRowEditInit(product, ri)"
+                                                        (click)="onRowEditInit(product, ri)"
                                                         class="p-button-rounded p-button-text p-button-warning"></button>
                                                     <button pButton pRipple type="button" icon="pi pi-trash"
                                                         class="p-button-rounded p-button-text p-button-danger"
@@ -170,14 +170,14 @@
                                                 <span *ngIf="!isRowEditMode[ri] || isAddingRow">{{
                                                     product.get('volume').value }}</span>
                                                 <input *ngIf="(isRowEditMode[ri] && !isAddingRow)" pInputText
-                                                    type="text" placeholder="Enter Volume"
+                                                type="number" placeholder="Enter Volume"
                                                     [formControl]="product.get('volume')" required>
                                             </td>
                                             <td>
                                                 <span *ngIf="!isRowEditMode[ri] || isAddingRow">{{
                                                     product.get('uom').value }}</span>
                                                 <p-dropdown *ngIf="(isRowEditMode[ri] && !isAddingRow)"
-                                                    [options]="uomOptions" optionLabel="name"
+                                                    [options]="uomOptions" optionLabel="name" optionValue="id"
                                                     [formControl]="product.get('uom')" [appendTo]="'body'"
                                                     placeholder="Select UOM" [style]="{'width':'100%'}"></p-dropdown>
                                             </td>
