@@ -1,18 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { AppBreadcrumbService } from '../../../../app.breadcrumb.service';
-import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormControl, FormGroup, Validators, FormBuilder, FormArray, AbstractControl } from '@angular/forms';
 import { MasterTableService } from '../../../../services/master-table.service';
 import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import dayjs from 'dayjs';
 import { DatePipe } from '@angular/common';
-import { Product } from 'src/app/demo/domain/product';
-import { Table } from 'primeng/table'; 
+import { EditableRow, Table } from 'primeng/table'; 
 @Component({
   selector: 'app-create-project',
   templateUrl: './create-project.component.html',
   styleUrls: ['./create-project.component.scss'],
-  providers: [MessageService, ConfirmationService]
+  providers: [MessageService, ConfirmationService, EditableRow]
 })
 
 
@@ -50,17 +49,15 @@ export class CreateProjectComponent implements OnInit {
   destinationLocations: any[] = [];
   uomOptions: any[];
   selectedLocationForEditing: any;
-
+  products: any[] = [];
+  originTableData: any[] = [];
 enableOriginLocation: boolean = false;
 enableDestinationLocation: boolean = false;
+isRowEditMode: boolean[] = [];
+ originTableControls: FormArray;
+  isAddingRow: boolean;
 
- 
-
-  clonedProducts: { [s: string]: Product } = {};
-  products = [];
-
-
-  constructor(private breadcrumbService: AppBreadcrumbService,
+  constructor(private breadcrumbService: AppBreadcrumbService, 
     private datePipe: DatePipe, private messageService: MessageService,private fb: FormBuilder, public MasterTableservice: MasterTableService, public projectService: ProjectsService) {
     this.breadcrumbService.setItems([
       {
@@ -85,7 +82,8 @@ enableDestinationLocation: boolean = false;
       selectedDateRange: [''],
       designNotes: ['', [Validators.maxLength(1000)]],
       impleNotes: ['', [Validators.maxLength(1000)]],
-      // Add more fields as needed
+      originTable: this.fb.array([])
+      
 
     });
     this.fetchActiveUom();
@@ -95,9 +93,10 @@ enableDestinationLocation: boolean = false;
     this.getOpportunityManger();
     this.fetchActiveLocation();
    
-     
-   
-
+    this.originTableControls = this.myForm.get('originTable') as FormArray;
+    this.isRowEditMode = new Array(this.originTableControls.length).fill(false);
+    
+    this.isRowEditMode = new Array(this.originTableControls.length).fill(false);
   }
 
 
@@ -285,45 +284,6 @@ fetchActiveLocation() {
     }
   });
 }
-
-
-addRowsForOriginLocations(selectedLocationIds: any[]) {
-  // Clear existing products array
-  this.products = [];
-
-  // Create rows based on selected origin locations
-  selectedLocationIds.forEach(locationId => {
-    const selectedLocation = this.locationOptions.find(loc => loc.id === locationId);
-
-    if (selectedLocation) {
-      const newRow = {
-        id: this.products.length + 1,  // Assign a unique ID for each row
-        location: selectedLocation.name,
-        volume: '',
-        uom: '',  // You can set a default UOM or leave it empty,
-        editing: true
-      };
-
-      this.products.push(newRow);
-    }
-  });
-}
-
-onOriginLocationChange(event: any) {
-  const selectedLocationIds = event.value;
-  console.log('fdf4', this.destinationLocations);
-
-  if (selectedLocationIds && selectedLocationIds.length > 0) {
-    this.destinationLocations = this.locationOptions.filter(loc => !selectedLocationIds.includes(loc.id));
-  } else {
-   
-    this.destinationLocations = [...this.locationOptions];
-  }
-  this.addRowsForOriginLocations(selectedLocationIds);
-  console.log('fdf5', this.destinationLocations);
-  console.log('fdf5', selectedLocationIds);
-}
-
 onDestinationLocationChange(event: any) {
   const selectedLocationIds = event.value;
   console.log('fdf2', this.originLocations);
@@ -349,6 +309,38 @@ fetchActiveUom(){
 }
 
 
+
+onOriginLocationChange(event: any) {
+  const selectedLocationIds = event.value;
+ // console.log('fdf4', this.destinationLocations);
+
+  if (selectedLocationIds && selectedLocationIds.length > 0) {
+    this.destinationLocations = this.locationOptions.filter(loc => !selectedLocationIds.includes(loc.id));
+  } else {
+   
+    this.destinationLocations = [...this.locationOptions];
+  }
+  while (this.originTableControls.length !== 0) {
+    this.originTableControls.removeAt(0);
+  }
+  selectedLocationIds.forEach((locationId: any) => {
+    const newRow = this.fb.group({
+      location: [locationId, Validators.required], 
+      volume: ['', Validators.required],
+      uom: ['']
+    });
+
+   this.originTableControls.push(newRow);
+   console.log( 't1',this.originTableControls)
+  });
+}
+
+
+getLocationName(locationId: any): string {
+  const location = this.locationOptions.find(loc => loc.id === locationId);
+  return location ? location.name : '';
+}
+
 //---------------------------------dummy UI--------------------------------------------//
 
 
@@ -358,4 +350,95 @@ toggleOriginCheckbox() {
 toggleDestinationCheckbox() {
   this.enableDestinationLocation = !this.enableDestinationLocation;
 }
+
+removeRowFromOriginTable(index: number) {
+  (this.myForm.get('originTable') as FormArray).removeAt(index);
+}
+
+
+onSave(event: Event, product: FormGroup) {
+  event.preventDefault();
+
+  const newRowData = {
+      location: product.get('location').value,
+      volume: product.get('volume').value,
+      uom: product.get('uom').value ? product.get('uom').value.name : ''
+  };
+
+  this.originTableData.push(newRowData);
+
+  console.log( 't2',this.originTableData)
+  const newRow = this.fb.group({
+      location: [newRowData.location, Validators.required],
+      volume: [newRowData.volume, Validators.required],
+      uom: [newRowData.uom]
+  });
+  console.log('t3', this.originTableControls);
+  this.originTableControls.push(newRow);
+  console.log('t4:', this.originTableControls);
+  this.isAddingRow = false;
+  product.reset();
+
+  console.log('t5', this.originTableData);
+}
+
+
+
+onRowEditCancel(product: FormGroup, rowIndex: number): void {
+  console.log('Row Edit Canceled:', product);
+}
+
+onDeleteRow(rowIndex: number): void {
+  console.log('Deleting Row at index:', rowIndex);
+  this.originTableControls.removeAt(rowIndex);
+}
+
+addRowToOriginTable(data: any) {
+  const newRow = this.fb.group({
+    location: [data.location, Validators.required],
+    volume: [data.volume, Validators.required],
+    uom: [data.uom]
+  });
+
+  (this.myForm.get('originTable') as FormArray).push(newRow);
+  //this.isAddingRow = true;
+}
+onAddRowBelow(rowIndex: number) {
+  const selectedRow = this.originTableControls.at(rowIndex);
+
+  const newRow = this.fb.group({
+    location: [selectedRow.get('location').value, Validators.required],
+    volume: ['', Validators.required],
+    uom: ['']
+  });
+
+  this.isAddingRow = true;
+  this.originTableControls.insert(rowIndex + 1, newRow); 
+  this.products.splice(rowIndex + 1, 0, {
+    id: this.products.length + 1,
+    location: selectedRow.get('location').value,
+    volume: '',
+    uom: '',
+    editing: true
+  });
+
+  this.originTableControls.controls.forEach((control, index) => {
+    if (index === rowIndex + 1) {
+      this.isRowEditMode.splice(index, 0, true);
+    } else {
+    
+      this.isRowEditMode[index] = false;
+    }
+  });
+}
+
+
+onRowEditInit(product: FormGroup, rowIndex: number) {
+  this.isRowEditMode[rowIndex] = true;
+  this.products[rowIndex] = {
+      ...product.value,
+      editing: true
+  };
+}
+
 }
