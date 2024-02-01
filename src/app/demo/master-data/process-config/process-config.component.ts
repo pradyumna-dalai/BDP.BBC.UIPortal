@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { AppBreadcrumbService } from 'src/app/app.breadcrumb.service';
 import { MasterTableService } from './../../../services/master-table.service';
+import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
 
 @Component({
   selector: 'app-process-config',
@@ -15,403 +16,404 @@ export class ProcessConfigComponent implements OnInit {
 editModes: boolean[] = [];
 visible: boolean = false;
 
+//   jsonData= {
+//     "status": 200,
+//     "message": "success",
+//     "data": [
+//       {
+//         "id":1,
+//         "product": "LLP",
 
+//         "scope": "Export Facilitation",
 
-  jsonData= {
-    "status": 200,
-    "message": "success",
-    "data": [
-      {
-        "id":1,
-        "product": "LLP",
+//         "category": "Supply Chain Insights",
 
-        "scope": "Export Facilitation",
+//         "block": "Customer Onboarding & Training",
 
-        "category": "Supply Chain Insights",
+//         "origin": "Origin",
 
-        "block": "Customer Onboarding & Training",
+//         "process": "1",
 
-        "origin": "Origin",
+//         "operationStep": "Customer send booking request for pre-leg. ",
 
-        "process": "1",
+//         "uom": "Order",
 
-        "operationStep": "Customer send booking request for pre-leg. ",
+//         "configuration": null,
 
-        "uom": "Order",
+//         "location": [{
 
-        "configuration": null,
+//                 "name": "EPIM",
 
-        "location": [{
+//                 "takTime": "NA"
 
-                "name": "EPIM",
+//             }, {
 
-                "takTime": "NA"
+//                 "name": "EPIY",
 
-            }, {
+//                 "takTime": "NA"
 
-                "name": "EPIY",
+//             }, {
 
-                "takTime": "NA"
+//                 "name": "EPIP",
 
-            }, {
+//                 "takTime": "NA"
 
-                "name": "EPIP",
+//             }, {
 
-                "takTime": "NA"
+//                 "name": "Singapore",
 
-            }, {
+//                 "takTime": "NA"
 
-                "name": "Singapore",
+//             }, {
 
-                "takTime": "NA"
+//                 "name": "Shanghai",
 
-            }, {
+//                 "takTime": "NA"
 
-                "name": "Shanghai",
+//             }, {
 
-                "takTime": "NA"
+//                 "name": "Mumbai",
 
-            }, {
+//                 "takTime": "NA"
 
-                "name": "Mumbai",
+//             }, {
 
-                "takTime": "NA"
+//                 "name": "Houston",
 
-            }, {
+//                 "takTime": "NA"
 
-                "name": "Houston",
+//             }, {
 
-                "takTime": "NA"
+//                 "name": "Ashton",
 
-            }, {
+//                 "takTime": "NA"
 
-                "name": "Ashton",
+//             }, {
 
-                "takTime": "NA"
+//                 "name": "Antwerp",
 
-            }, {
+//                 "takTime": "NA"
 
-                "name": "Antwerp",
+//             }, {
 
-                "takTime": "NA"
+//                 "name": "Rotterdam",
 
-            }, {
+//                 "takTime": "NA"
 
-                "name": "Rotterdam",
+//             }, {
 
-                "takTime": "NA"
+//                 "name": "Istanbul",
 
-            }, {
+//                 "takTime": "NA"
 
-                "name": "Istanbul",
+//             }, {
 
-                "takTime": "NA"
+//                 "name": "Saudi Arabia",
 
-            }, {
+//                 "takTime": "NA"
 
-                "name": "Saudi Arabia",
+//             }
 
-                "takTime": "NA"
+//         ]
 
-            }
+//       },
+//       {
+//         "id":2,
+//         "product": "LLP",
 
-        ]
+//         "scope": "Export Facilitation",
 
-      },
-      {
-        "id":2,
-        "product": "LLP",
+//         "category": "Supply Chain Insights",
 
-        "scope": "Export Facilitation",
+//         "block": "Customer Onboarding & Training",
 
-        "category": "Supply Chain Insights",
+//         "origin": "Origin",
 
-        "block": "Customer Onboarding & Training",
+//         "process": "2",
 
-        "origin": "Origin",
+//         "operationStep": "Customer send booking request for pre-leg. ",
 
-        "process": "2",
+//         "uom": "Order",
 
-        "operationStep": "Customer send booking request for pre-leg. ",
+//         "configuration": null,
 
-        "uom": "Order",
+//         "location": [{
 
-        "configuration": null,
+//                 "name": "EPIM",
 
-        "location": [{
+//                 "takTime": "NA"
 
-                "name": "EPIM",
+//             }, {
 
-                "takTime": "NA"
+//                 "name": "EPIY",
 
-            }, {
+//                 "takTime": "NA"
 
-                "name": "EPIY",
+//             }, {
 
-                "takTime": "NA"
+//                 "name": "EPIP",
 
-            }, {
+//                 "takTime": "NA"
 
-                "name": "EPIP",
+//             }, {
 
-                "takTime": "NA"
+//                 "name": "Singapore",
 
-            }, {
+//                 "takTime": "NA"
 
-                "name": "Singapore",
+//             }, {
 
-                "takTime": "NA"
+//                 "name": "Shanghai",
 
-            }, {
+//                 "takTime": "NA"
 
-                "name": "Shanghai",
+//             }, {
 
-                "takTime": "NA"
+//                 "name": "Mumbai",
 
-            }, {
+//                 "takTime": "NA"
 
-                "name": "Mumbai",
+//             }, {
 
-                "takTime": "NA"
+//                 "name": "Houston",
 
-            }, {
+//                 "takTime": "NA"
 
-                "name": "Houston",
+//             }, {
 
-                "takTime": "NA"
+//                 "name": "Ashton",
 
-            }, {
+//                 "takTime": "NA"
 
-                "name": "Ashton",
+//             }, {
 
-                "takTime": "NA"
+//                 "name": "Antwerp",
 
-            }, {
+//                 "takTime": "NA"
 
-                "name": "Antwerp",
+//             }, {
 
-                "takTime": "NA"
+//                 "name": "Rotterdam",
 
-            }, {
+//                 "takTime": "NA"
 
-                "name": "Rotterdam",
+//             }, {
 
-                "takTime": "NA"
+//                 "name": "Istanbul",
 
-            }, {
+//                 "takTime": "NA"
 
-                "name": "Istanbul",
+//             }, {
 
-                "takTime": "NA"
+//                 "name": "Saudi Arabia",
 
-            }, {
+//                 "takTime": "NA"
 
-                "name": "Saudi Arabia",
+//             }
 
-                "takTime": "NA"
+//         ]
 
-            }
+//       },
+//       {
+//           "id":3,
+//           "product": "Trade Management & Customs",
 
-        ]
+//           "scope": "Warehousing",
 
-      },
-      {
-          "id":3,
-          "product": "Trade Management & Customs",
+//           "category": "Warehousing",
 
-          "scope": "Warehousing",
+//           "block": "Vendor Onboarding",
 
-          "category": "Warehousing",
+//           "origin": "Origin",
 
-          "block": "Vendor Onboarding",
+//           "process": "1",
 
-          "origin": "Origin",
+//           "operationStep": "Customer send booking request for pre-leg. ",
 
-          "process": "1",
+//           "uom": "Order",
 
-          "operationStep": "Customer send booking request for pre-leg. ",
+//           "configuration": null,
 
-          "uom": "Order",
+//           "location": [{
 
-          "configuration": null,
+//                   "name": "EPIM",
 
-          "location": [{
+//                   "takTime": "3.5"
 
-                  "name": "EPIM",
+//               }, {
 
-                  "takTime": "3.5"
+//                   "name": "EPIY",
 
-              }, {
+//                   "takTime": "NA"
 
-                  "name": "EPIY",
+//               }, {
 
-                  "takTime": "NA"
+//                   "name": "EPIP",
 
-              }, {
+//                   "takTime": "NA"
 
-                  "name": "EPIP",
+//               }, {
 
-                  "takTime": "NA"
+//                   "name": "Singapore",
 
-              }, {
+//                   "takTime": "NA"
 
-                  "name": "Singapore",
+//               }, {
 
-                  "takTime": "NA"
+//                   "name": "Shanghai",
 
-              }, {
+//                   "takTime": "1.2"
 
-                  "name": "Shanghai",
+//               }, {
 
-                  "takTime": "1.2"
+//                   "name": "Mumbai",
 
-              }, {
+//                   "takTime": "NA"
 
-                  "name": "Mumbai",
+//               }, {
 
-                  "takTime": "NA"
+//                   "name": "Houston",
 
-              }, {
+//                   "takTime": "NA"
 
-                  "name": "Houston",
+//               }, {
 
-                  "takTime": "NA"
+//                   "name": "Ashton",
 
-              }, {
+//                   "takTime": "NA"
 
-                  "name": "Ashton",
+//               }, {
 
-                  "takTime": "NA"
+//                   "name": "Antwerp",
 
-              }, {
+//                   "takTime": "NA"
 
-                  "name": "Antwerp",
+//               }, {
 
-                  "takTime": "NA"
+//                   "name": "Rotterdam",
 
-              }, {
+//                   "takTime": "NA"
 
-                  "name": "Rotterdam",
+//               }, {
 
-                  "takTime": "NA"
+//                   "name": "Istanbul",
 
-              }, {
+//                   "takTime": "NA"
 
-                  "name": "Istanbul",
+//               }, {
 
-                  "takTime": "NA"
+//                   "name": "Saudi Arabia",
 
-              }, {
+//                   "takTime": "NA"
 
-                  "name": "Saudi Arabia",
+//               }
 
-                  "takTime": "NA"
+//           ]
 
-              }
+//       },{
+//       "id":4,
+//         "product": "Trade Management & Customs",
 
-          ]
+//         "scope": "Warehousing",
 
-      },{
-      "id":4,
-        "product": "Trade Management & Customs",
+//         "category": "Warehousing",
 
-        "scope": "Warehousing",
+//         "block": "Vendor Onboarding",
 
-        "category": "Warehousing",
+//         "origin": "Origin",
 
-        "block": "Vendor Onboarding",
+//         "process": "2",
 
-        "origin": "Origin",
+//         "operationStep": "Customer send booking request for pre-leg. ",
 
-        "process": "2",
+//         "uom": "Order",
 
-        "operationStep": "Customer send booking request for pre-leg. ",
+//         "configuration": null,
 
-        "uom": "Order",
+//         "location": [{
 
-        "configuration": null,
+//                 "name": "EPIM",
 
-        "location": [{
+//                 "takTime": "3.5"
 
-                "name": "EPIM",
+//             }, {
 
-                "takTime": "3.5"
+//                 "name": "EPIY",
 
-            }, {
+//                 "takTime": "NA"
 
-                "name": "EPIY",
+//             }, {
 
-                "takTime": "NA"
+//                 "name": "EPIP",
 
-            }, {
+//                 "takTime": "NA"
 
-                "name": "EPIP",
+//             }, {
 
-                "takTime": "NA"
+//                 "name": "Singapore",
 
-            }, {
+//                 "takTime": "NA"
 
-                "name": "Singapore",
+//             }, {
 
-                "takTime": "NA"
+//                 "name": "Shanghai",
 
-            }, {
+//                 "takTime": "1.2"
 
-                "name": "Shanghai",
+//             }, {
 
-                "takTime": "1.2"
+//                 "name": "Mumbai",
 
-            }, {
+//                 "takTime": "NA"
 
-                "name": "Mumbai",
+//             }, {
 
-                "takTime": "NA"
+//                 "name": "Houston",
 
-            }, {
+//                 "takTime": "NA"
 
-                "name": "Houston",
+//             }, {
 
-                "takTime": "NA"
+//                 "name": "Ashton",
 
-            }, {
+//                 "takTime": "NA"
 
-                "name": "Ashton",
+//             }, {
 
-                "takTime": "NA"
+//                 "name": "Antwerp",
 
-            }, {
+//                 "takTime": "NA"
 
-                "name": "Antwerp",
+//             }, {
 
-                "takTime": "NA"
+//                 "name": "Rotterdam",
 
-            }, {
+//                 "takTime": "NA"
 
-                "name": "Rotterdam",
+//             }, {
 
-                "takTime": "NA"
+//                 "name": "Istanbul",
 
-            }, {
+//                 "takTime": "NA"
 
-                "name": "Istanbul",
+//             }, {
 
-                "takTime": "NA"
+//                 "name": "Saudi Arabia",
 
-            }, {
+//                 "takTime": "NA"
 
-                "name": "Saudi Arabia",
+//             }
 
-                "takTime": "NA"
+//         ]
 
-            }
+//     }
+//     ]
+// };
 
-        ]
-
-    }
-    ]
-};
-
-  data: any[] = []; // Add your data array here
+ 
+jsonData:any;
+loading: boolean = true;
+data: any[] = []; // Add your data array here
 
   columns: any[] = []; // Dynamic columns
   locations: any[] = []; // Locations array from the JSON data
@@ -422,7 +424,12 @@ visible: boolean = false;
     { locationName: 'Destination', value: 'destination' }
     // Add more options as needed
   ];
-  constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
+  fileName: string;
+  uploadFile: File;
+  uploadInProgress: boolean = false;
+  showUploaderror: boolean = false;
+  uploadErrors: { key: string; value: string }[] = [];
+  constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,private projectService: ProjectsService ,
     private confirmationService: ConfirmationService, private router: Router,public MasterTableservice: MasterTableService,
     ) {
     this.breadcrumbService.setItems([
@@ -433,41 +440,41 @@ visible: boolean = false;
 
   }
   ngOnInit() {
-    // Access the JSON data using this.jsonData
-    const processConfigurable = this.jsonData.data;
-     // Extract locations and initialize dynamic columns
-     this.locations = processConfigurable[0].location;
-     this.initializeColumns();
+    // // Access the JSON data using this.jsonData
+    // const processConfigurable = this.jsonData.data;
+    //  // Extract locations and initialize dynamic columns
+    //  this.locations = processConfigurable[0].location;
+    //  this.initializeColumns();
  
-     // Process the data and map it to dynamic columns
-     this.data = processConfigurable.map((item) => {
-       const rowData: any = {};
+    //  // Process the data and map it to dynamic columns
+    //  this.data = processConfigurable.map((item) => {
+    //    const rowData: any = {};
  
-       // Map static columns
-      //  rowData['Actions'] = `<span style="cursor: pointer;"><i class="pi pi-pencil"></i></span>`;
-       rowData['Product Name'] = item.product;
-       rowData['Product Scope'] = item.scope;
-       rowData['Product Category'] = item.category;
-       rowData['Building Block Name'] = item.block;
-       rowData['Origin / Destination'] = item.origin;
-       rowData['Process No.'] = item.process;
-       rowData['Operations Steps'] = item.operationStep;
-       rowData['Location'] = '';
-       rowData['UOM'] = item.uom;
-       rowData['Configuration'] = item.configuration;
+    //    // Map static columns
+    //   //  rowData['Actions'] = `<span style="cursor: pointer;"><i class="pi pi-pencil"></i></span>`;
+    //    rowData['Product Name'] = item.product;
+    //    rowData['Product Scope'] = item.scope;
+    //    rowData['Product Category'] = item.category;
+    //    rowData['Building Block Name'] = item.block;
+    //    rowData['Origin / Destination'] = item.origin;
+    //    rowData['Process No.'] = item.process;
+    //    rowData['Operations Steps'] = item.operationStep;
+    //    rowData['Location'] = '';
+    //    rowData['UOM'] = item.uom;
+    //    rowData['Configuration'] = item.configuration;
  
-       // Map dynamic columns based on location_takTime
-       this.locations.forEach((location) => {
-         rowData[location.locationName] = item.location.find(
-           (loc) => loc.name === location.name
-         )?.takTime;
-       });
+    //    // Map dynamic columns based on location_takTime
+    //    this.locations.forEach((location) => {
+    //      rowData[location.locationName] = item.location.find(
+    //        (loc) => loc.name === location.name
+    //      )?.takTime;
+    //    });
  
-       return rowData;
-     });
-     // Initialize edit mode for each row to false
-    this.editModes = Array(this.data.length).fill(false);
-
+    //    return rowData;
+    //  });
+    //  // Initialize edit mode for each row to false
+    // this.editModes = Array(this.data.length).fill(false);
+    this.processConfigGetImportExcelData();
     this.getUom();
     this.getConfigurable();
    }
@@ -526,6 +533,143 @@ addNewRow(index: number) {
    showDialog(){
     this.visible = true;
    }
+   onUploadSCExcel(event: any) {
+    const file:File = event.target.files[0];
+    if (file) {
+        this.fileName = file.name;
+        const formData = new FormData();
+        formData.append("file", file);
+        this.uploadFile = file;
+    }
+  }
+// ---------------upload Excel------------------------//
+   excelUploadcall(){
+  this.fileName = this.uploadFile.name;
+  const formData = new FormData();
+  formData.append("file", this.uploadFile);
+  this.uploadInProgress = true;
+    this.projectService.processConfigImportExcel(formData).subscribe(
+      (res: any) => {
+        this.jsonData = res;
+        // Access the JSON data using this.jsonData
+        const processConfigurable = this.jsonData.data;
+        // Extract locations and initialize dynamic columns
+        this.locations = processConfigurable[0].location;
+        this.initializeColumns();
+    
+        // Process the data and map it to dynamic columns
+        this.data = processConfigurable.map((item) => {
+          const rowData: any = {};
+    
+          // Map static columns
+          //  rowData['Actions'] = `<span style="cursor: pointer;"><i class="pi pi-pencil"></i></span>`;
+          rowData['Product Name'] = item.product;
+          rowData['Product Scope'] = item.scope;
+          rowData['Product Category'] = item.category;
+          rowData['Building Block Name'] = item.block;
+          rowData['Origin / Destination'] = item.origin;
+          rowData['Process No.'] = item.processNumber;
+          rowData['Operations Steps'] = item.operationStep;
+          rowData['Location'] = '';
+          rowData['UOM'] = item.uom;
+          rowData['Configuration'] = item.configuration;
+    
+          // Map dynamic columns based on location_takTime
+          this.locations.forEach((location) => {
+            rowData[location.locationName] = item.location.find(
+              (loc) => loc.name === location.name
+            )?.takTime;
+          });
+    
+          return rowData;
+        });
+        // Initialize edit mode for each row to false
+        this.editModes = Array(this.data.length).fill(false);
+        this.uploadInProgress = false;
+      },
+      (error) => {
+        // Handle HTTP errors here
+        console.log(error);
+        this.showUploaderror = true;
+        this.uploadInProgress = false;
+        // Extract error messages and keys from the response and store them in uploadErrors
+        if (error.status === 400 && error.error && error.error.data) {
+          this.uploadErrors = Object.entries(error.error.data).map(([key, value]) => ({ key, value: String(value) }));
+        }
+      }
+    );
+   }
+  onPopupCancelclick()
+  {
+    this.visible = false;
+      this.fileName = "";
+      this.uploadFile = null;
+      // Add the following line to reset the file input
+      const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
+      if (fileInput) {
+        fileInput.value = ''; // Clear the file input value
+      }
+   }
+   onCancelClick(){
+    this.showUploaderror = false;
+    this.fileName = "";
+    this.uploadFile = null;
+  
+    // Add the following line to reset the file input
+    const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = ''; // Clear the file input value
+    }
+   }
+  // ---------------get process config excel data------------------------//
+  processConfigGetImportExcelData() {
+    this.loading = true; // Set loading to true before making the API call
+    this.projectService.processConfigGetImportExcelData().subscribe((res: any) => {
+      if (res?.message == "success") {
+         this.jsonData = res;
+
+        // Access the JSON data using this.jsonData
+    const processConfigurable = this.jsonData.data;
+     // Extract locations and initialize dynamic columns
+     this.locations = processConfigurable[0].location;
+     this.initializeColumns();
+ 
+     // Process the data and map it to dynamic columns
+     this.data = processConfigurable.map((item) => {
+       const rowData: any = {};
+ 
+       // Map static columns
+      //  rowData['Actions'] = `<span style="cursor: pointer;"><i class="pi pi-pencil"></i></span>`;
+       rowData['Product Name'] = item.product;
+       rowData['Product Scope'] = item.scope;
+       rowData['Product Category'] = item.category;
+       rowData['Building Block Name'] = item.block;
+       rowData['Origin / Destination'] = item.origin;
+       rowData['Process No.'] = item.processNumber;
+       rowData['Operations Steps'] = item.operationStep;
+       rowData['Location'] = '';
+       rowData['UOM'] = item.uom;
+       rowData['Configuration'] = item.configuration;
+ 
+       // Map dynamic columns based on location_takTime
+       this.locations.forEach((location) => {
+         rowData[location.locationName] = item.location.find(
+           (loc) => loc.name === location.name
+         )?.takTime;
+       });
+ 
+       return rowData;
+     });
+     // Initialize edit mode for each row to false
+    this.editModes = Array(this.data.length).fill(false);
+      } else {
+        console.log("error");
+      }
+      this.loading = false; 
+    })
+  }
+
+
    // ---------------get UOM data------------------------//
    getUom() {
     this.uomOptions = [];
