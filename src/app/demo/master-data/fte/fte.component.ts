@@ -162,9 +162,8 @@ fetchAllFteDetails(keyword: string = '') {
     if (res?.message === 'success') {
       this.Ftedetails = res.data.fte;
       this.totalRecords = res?.data.totalElements;
-      console.log('fetch Fte details:', this.totalRecords);
     } else {
-      console.error('Failed to fetch Fte details:', res);
+      // console.error('Failed to fetch Fte details:', res);
     }
   });
 } 
@@ -210,14 +209,13 @@ updateLocationDetails() {
       Work_Time_Year: this.fteRowData.yearlyWorkingMin,
       status: this.fteRowData.status ? 'active' : 'inactive',
     });
-    console.log('df', this.fteRowData)
     this.displayCreateFteDialog = true;
 }
 
 /**@Add_FTE_Data Form*/
 
   addFteData(){
-    console.log(this.FteForm.value);
+
     if (this.FteForm.valid) {
    const body = { 
         region: {
@@ -240,7 +238,6 @@ updateLocationDetails() {
       body['id'] = this.fteRowData.id
       this.masterDataService.updateFte(body).subscribe(
         (response) => {
-          console.log(response);
           this.displayCreateFteDialog = false;
           this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Fte updated successfully!' });
           //   this.createForm();
@@ -248,7 +245,7 @@ updateLocationDetails() {
           this.fetchAllFteDetails();
         },
         (error) => {
-          console.error(error);
+          // console.error(error);
 
         }
       );
@@ -256,14 +253,12 @@ updateLocationDetails() {
       this.modeTitle = 'Add';
       this.masterDataService.addFteDetails(body).subscribe(
         (response) => {
-          console.log(response);
           this.displayCreateFteDialog = false;
           this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Fte added successfully!' });
           this.totalRecords += 1;
           this.fetchAllFteDetails();
         },
         (error) => {
-          console.error(error);
           if (error.status === 400 && error.error?.message === 'Fill required field(s)') {
             const errorMessage = error.error.data?.join(', ') || 'Error in adding Fte';
             this.messageService.add({ severity: 'error', summary: 'Error', detail: errorMessage });
