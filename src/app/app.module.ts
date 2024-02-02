@@ -122,6 +122,7 @@ import { ProcessConfigComponent } from './demo/master-data/process-config/proces
 import { BuildingBlockComponent } from './demo/view/project/create-project/building-block/building-block.component';
 import { AddVolumeComponent } from './demo/view/project/create-project/add-volume/add-volume.component';
 import { CostLineItemComponent } from './demo/view/project/create-project/cost-line-item/cost-line-item.component';
+import { OtherCostComponent } from './demo/view/project/create-project/other-cost/other-cost.component';
 
 
 
@@ -244,6 +245,7 @@ import { CostLineItemComponent } from './demo/view/project/create-project/cost-l
         BuildingBlockComponent,
         AddVolumeComponent,
         CostLineItemComponent,
+        OtherCostComponent,
 
     ],
     providers: [
