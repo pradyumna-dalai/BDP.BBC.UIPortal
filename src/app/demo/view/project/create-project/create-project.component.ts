@@ -6,14 +6,26 @@ import { ProjectsService } from 'src/app/services/project-serivce/projects.servi
 import { ConfirmationService, MessageService } from 'primeng/api';
 import dayjs from 'dayjs';
 import { DatePipe } from '@angular/common';
-import { Product } from 'src/app/demo/domain/product';
-import { Table } from 'primeng/table'; 
+import { EditableRow, Table } from 'primeng/table';
 import { AddVolumeComponent } from './add-volume/add-volume.component';
+
+interface UomData {
+  id: number;
+  name: string;
+}
+
+interface TableRow {
+  city: string;
+  Volume: string;
+  Uom: null;
+  editing: boolean;
+  adding: boolean;
+}
 @Component({
   selector: 'app-create-project',
   templateUrl: './create-project.component.html',
   styleUrls: ['./create-project.component.scss'],
-  providers: [MessageService, ConfirmationService]
+  providers: [MessageService, ConfirmationService, EditableRow]
 })
 
 
@@ -47,7 +59,6 @@ export class CreateProjectComponent implements OnInit {
   locationOptions: any[] = [];
   originLocations: any[] = [];
   destinationLocations: any[] = [];
-  uomOptions: any[];
   selectedLocationForEditing: any;
   products: any[] = [];
   originTableData: any[] = [];
@@ -58,8 +69,20 @@ export class CreateProjectComponent implements OnInit {
   isAddingRow: boolean;
   isActionButtonsVisible = false;
   selectedFile: any;
-  visibleOperationBox:boolean=false;
+  visibleOperationBox: boolean = false;
   fileNameOC: string;
+  uomOptions: UomData[] = [];
+  tableData: TableRow[] = [];//Destination table data
+  selectedCity: any[] = [];
+  selectedCities: any[] = [];
+  selectedCitiesOrign: any[] = [];
+  OtableData: TableRow[] = [];//Orign table data
+
+  enableOriginLocationTab: boolean = false;
+  enableDestinationLocationTab: boolean = false;
+
+  selectedLocationIsOrigin: boolean = true;
+
   constructor(private breadcrumbService: AppBreadcrumbService,
     private datePipe: DatePipe, private messageService: MessageService, private fb: FormBuilder, public MasterTableservice: MasterTableService, public projectService: ProjectsService) {
     this.breadcrumbService.setItems([
@@ -84,8 +107,7 @@ export class CreateProjectComponent implements OnInit {
       opportunityManger: [''],
       selectedDateRange: [''],
       designNotes: ['', [Validators.maxLength(1000)]],
-      impleNotes: ['', [Validators.maxLength(1000)]],
-      originTable: this.fb.array([])
+      impleNotes: ['', [Validators.maxLength(1000)]]
 
 
     });
@@ -95,17 +117,8 @@ export class CreateProjectComponent implements OnInit {
     this.getProjectStage();
     this.getOpportunityManger();
     this.fetchActiveLocation();
-
-    this.originTableControls = this.myForm.get('originTable') as FormArray;
-    this.isRowEditMode = new Array(this.originTableControls.length).fill(false);
-    this.originTableControls = this.fb.array([
-      this.fb.group({
-        location: [''],
-        volume: [''],
-        uom: ['']
-      })
-    ]);
   }
+
 
   getForm(): FormGroup {
     return this.myForm;
@@ -114,12 +127,12 @@ export class CreateProjectComponent implements OnInit {
     // this.activeIndex = (this.activeIndex + 1) % 8; 
     console.log(this.myForm.value);
     this.activeIndex = (this.activeIndex + 1) % 8
-      // this.addVolume.shareFunctionAddVolume()
-    
-   
-    
+    // this.addVolume.shareFunctionAddVolume()
+
+
+
   }
-  submit(){}
+  submit() { }
   // ---------------get Region------------------------//
   getRegion() {
     this.regionOptions = [];
@@ -220,19 +233,27 @@ export class CreateProjectComponent implements OnInit {
     let dateRangevalStartDate = this.dateRange.startDate;
     let dateRangevalEndDate = this.dateRange.endDate;
 
-    const projectLocationData = this.originTableControls.controls.map((control: FormGroup) => {
-      const uomValue = control.get('uom').value;
-      return {
-        volume: control.get('volume').value,
-        originDestination: 'Origin',
-        location: {
-          id: control.get('location').value
-        },
-        uom: {
-          id: uomValue
-        }
-      };
-    });
+    const originProjectLocationData = this.OtableData.map((row: TableRow) => ({
+      volume: row.Volume,
+      originDestination: 'Origin',
+      location: {
+        id: this.locationOptions.find(loc => loc.name === row.city)?.id
+      },
+      uom: {
+        id: row.Uom
+      }
+    }));
+
+    const destinationProjectLocationData = this.tableData.map((row: TableRow) => ({
+      volume: row.Volume,
+      originDestination: 'Destination',
+      location: {
+        id: this.locationOptions.find(loc => loc.name === row.city)?.id
+      },
+      uom: {
+        id: row.Uom
+      }
+    }));
     const body = {
       description: "",
       projectInformation: {
@@ -261,7 +282,7 @@ export class CreateProjectComponent implements OnInit {
           "id": this.myForm.get('projectStatus').value,
         },
         opportunityManager: opportunityMangers,
-        projectLocation: projectLocationData,
+        projectLocation: [...originProjectLocationData, ...destinationProjectLocationData],
       }
     }
     this.projectService.saveAsDraftProject(body).subscribe(
@@ -301,8 +322,6 @@ export class CreateProjectComponent implements OnInit {
 
   }
 
-
-
   //-----------------------------location Information-----------------------------//
   fetchActiveLocation() {
     this.MasterTableservice.getAllActiveLocation().subscribe((res: any) => {
@@ -318,22 +337,14 @@ export class CreateProjectComponent implements OnInit {
       }
     });
   }
-  onDestinationLocationChange(event: any) {
-    const selectedLocationIds = event.value;
-    if (selectedLocationIds && selectedLocationIds.length > 0) {
-      this.originLocations = this.locationOptions.filter(loc => !selectedLocationIds.includes(loc.id));
-    } else {
-
-      this.originLocations = [...this.locationOptions];
-    }
-  }
-
-
   fetchActiveUom() {
     this.uomOptions = [];
     this.MasterTableservice.getAllActiveUOM().subscribe((res: any) => {
       if (res?.message == "success") {
-        this.uomOptions = res?.data;
+        this.uomOptions = res?.data.map((uom: any) => ({
+          id: uom.id,
+          name: uom.name
+        }));
       } else {
         this.uomOptions = [];
       }
@@ -342,15 +353,56 @@ export class CreateProjectComponent implements OnInit {
 
   toggleOriginCheckbox() {
     this.enableOriginLocation = !this.enableOriginLocation;
+    // this.enableOriginLocationTab = this.enableOriginLocation;
+    this.selectedLocationIsOrigin = this.enableOriginLocation;
+    if (!this.enableOriginLocation) {
+      this.selectedCitiesOrign = [];
+      this.OtableData = [];
+    }
   }
   toggleDestinationCheckbox() {
     this.enableDestinationLocation = !this.enableDestinationLocation;
-  }
-  getLocationName(locationId: any): string {
-    const location = this.locationOptions.find(loc => loc.id === locationId);
-    return location ? location.name : '';
+    //  this.enableDestinationLocationTab = this.enableDestinationLocation;
+    this.selectedLocationIsOrigin = !this.enableDestinationLocation;
+    if (!this.enableDestinationLocation) {
+      this.selectedCities = [];
+      this.tableData = [];
+    }
   }
 
+
+  //-----------------------upload doct------------------//
+  downloadSampleOpExcel(event: Event) {
+    event.preventDefault();
+  }
+  showDialogOperationCard() {
+    this.visibleOperationBox = true;
+  }
+
+  onOperarationCancelClick() {
+    this.visibleOperationBox = false;
+  }
+
+  onFileSelected(event: any) {
+  }
+
+  onUploadClick() {
+
+  }
+  onRemoveOperationClick() {
+    //  this.showUploaderror = false;
+    this.fileNameOC = "";
+    // this.uploadFileOC = null;
+    this.selectedFile = null;
+  }
+  showSuccessMessage(message: string) {
+    this.messageService.add({ key: 'successToast', severity: 'success', summary: 'Success', detail: message });
+  }
+
+  //---end-----------------------------------------------//
+
+
+  ///------------------------------Orign Location Table------------------//
   onOriginLocationChange(event: any) {
     const selectedLocationIds = event.value;
     if (selectedLocationIds && selectedLocationIds.length > 0) {
@@ -360,177 +412,125 @@ export class CreateProjectComponent implements OnInit {
       this.isActionButtonsVisible = false;
       this.destinationLocations = [...this.locationOptions];
     }
-    while (this.originTableControls.length !== 0) {
-      this.originTableControls.removeAt(0);
-    }
-    selectedLocationIds.forEach((locationId: any) => {
-      const newRow = this.fb.group({
-        location: [locationId, Validators.required],
-        volume: ['', Validators.required],
-        uom: ['']
-      });
+    const selectedCitiesOrign = this.locationOptions
+      .filter(loc => selectedLocationIds.includes(loc.id))
+      .map(city => ({ name: city.name }));
 
-      this.originTableControls.push(newRow);
-      //console.log('t1', this.originTableControls)
-    });
-  }
-
-
-  onSave(event: Event, product: FormGroup) {
-    event.preventDefault();
-    const uomControl = product.get('uom');
-    const newRowData = {
-      location: product.get('location').value,
-      volume: product.get('volume').value,
-      uom: uomControl.value
-    };
- //   console.log('uomControl value:', uomControl.value);
-    this.originTableData.push(newRowData);
-    while (this.originTableControls.length !== 0) {
-      this.originTableControls.removeAt(0);
-    }
-    this.originTableData.forEach((data: any) => {
-      const newRow = this.fb.group({
-        location: [data.location, Validators.required],
-        volume: [data.volume, Validators.required],
-        uom: [data.uom]
-      });
-      this.originTableControls.push(newRow);
-    });
-
-    //console.log('t4:', this.originTableControls);
-    product.reset();
-  }
-
-  getUOMName(uomId: any): string {
-    const uom = this.uomOptions.find(u => u.id === uomId);
-    return uom ? uom.name : '';
-  }
-  removeRowFromOriginTable(index: number) {
-    (this.myForm.get('originTable') as FormArray).removeAt(index);
-  }
-  onRowEditCancel(product: FormGroup, rowIndex: number): void {
- //   console.log('Row Edit Canceled:', product);
-  }
-
-  onDeleteRow(rowIndex: number): void {
-   // console.log('Deleting Row at index:', rowIndex);
-    this.originTableControls.removeAt(rowIndex);
-  }
-
-  addRowToOriginTable(data: any) {
-    const newRow = this.fb.group({
-      location: [data.location, Validators.required],
-      volume: [data.volume, Validators.required],
-      uom: [data.uom]
-    });
-
-    (this.myForm.get('originTable') as FormArray).push(newRow);
-    //this.isAddingRow = true;
-  }
-  onAddRowBelow(rowIndex: number) {
-    const selectedRow = this.originTableControls.at(rowIndex);
-
-    const newRow = this.fb.group({
-      location: [selectedRow.get('location').value, Validators.required],
-      volume: ['', Validators.required],
-      uom: [selectedRow.get('uom').value]
-    });
-
-    this.isAddingRow = true;
-    this.originTableControls.insert(rowIndex + 1, newRow);
-    this.products.splice(rowIndex + 1, 0, {
-      id: this.products.length + 1,
-      location: selectedRow.get('location').value,
-      volume: '',
-      uom: '',
-      editing: true
-    });
-
-    this.originTableControls.controls.forEach((control, index) => {
-      if (index === rowIndex + 1) {
-        this.isRowEditMode.splice(index, 0, true);
-      } else {
-
-        this.isRowEditMode[index] = false;
+    selectedCitiesOrign.forEach(city => {
+      const existingCity = this.OtableData.find(item => item.city === city.name);
+      if (!existingCity) {
+        this.OtableData.push({
+          city: city.name,
+          Volume: '',
+          editing: true,
+          adding: false,
+          Uom: null
+        });
       }
     });
   }
 
-  onRowEditInit(product: FormGroup, rowIndex: number) {
-    this.isRowEditMode[rowIndex] = true;
-    this.products[rowIndex] = {
-      ...product.value,
-      editing: true
+  OrignaddRow(rowIndex: number) {
+    const newRow = {
+      city: this.OtableData[rowIndex].city,
+      Volume: '',
+      Uom: null,
+      editing: true,
+      adding: true
     };
+    this.OtableData.splice(rowIndex + 1, 0, newRow);
+
+  }
+  OrigneditRow(rowIndex: number) {
+    this.OtableData[rowIndex].editing = true;
+    this.initializeOriginalDataO();
+  }
+  OrignsaveRow(rowIndex: number) {
+    this.OtableData[rowIndex].editing = false;
+  }
+  OrigndiscardRow(rowIndex: any) {
+    if (this.OtableData[rowIndex].adding || this.OtableData[rowIndex].editing) {
+      this.OtableData.splice(rowIndex, 1);
+    }
+  }
+
+  initializeOriginalDataO() {
+    this.OtableData.forEach(row => {
+    });
+  }
+
+  OrigndeleteRow(rowIndex: number) {
+    this.OtableData.splice(rowIndex, 1);
+  }
+  OrigngetUomName(uomId: number): string {
+    const selectedUom = this.uomOptions.find(uom => uom.id === uomId);
+    return selectedUom ? selectedUom.name : '';
+  }
+  //-----------------------------------Destination Location Table----------------------------------------------//
+  onDestinationLocationChange(event: any) {
+    let selectedLocationIds = event.value;
+    if (selectedLocationIds && selectedLocationIds.length > 0) {
+      this.originLocations = this.locationOptions.filter(loc => !selectedLocationIds.includes(loc.id));
+    } else {
+
+      this.originLocations = [...this.locationOptions];
+    }
+    const selectedCities = this.locationOptions
+      .filter(loc => selectedLocationIds.includes(loc.id))
+      .map(city => ({ name: city.name }));
+
+    selectedCities.forEach(city => {
+      const existingCity = this.tableData.find(item => item.city === city.name);
+      if (!existingCity) {
+        this.tableData.push({
+          city: city.name,
+          Volume: '',
+          editing: true,
+          adding: false,
+          Uom: null
+        });
+      }
+    });
+  }
+
+  addRow(rowIndex: number) {
+    const newRow = {
+      city: this.tableData[rowIndex].city,
+      Volume: '',
+      Uom: null,
+      editing: true,
+      adding: true
+    };
+    this.tableData.splice(rowIndex + 1, 0, newRow);
+    console.log(this.tableData);
+  }
+  editRow(rowIndex: number) {
+    this.tableData[rowIndex].editing = true;
+    this.initializeOriginalData();
+  }
+  saveRow(rowIndex: number) {
+    this.tableData[rowIndex].editing = false;
+  }
+  discardRow(rowIndex: any) {
+    if (this.tableData[rowIndex] && (this.tableData[rowIndex].adding || this.tableData[rowIndex].editing)) {
+      this.tableData.splice(rowIndex, 1);
+    }
   }
 
 
+  initializeOriginalData() {
+    this.tableData.forEach(row => {
+    });
+  }
 
+  deleteRow(rowIndex: number) {
+    this.tableData.splice(rowIndex, 1);
+  }
+  getUomName(uomId: number): string {
+    const selectedUom = this.uomOptions.find(uom => uom.id === uomId);
+    return selectedUom ? selectedUom.name : '';
+  }
+  //-----------------------------destination end----------------------------------//
 
-
-
-
-
-
-
-
- 
-
-
-
-//--------------------Upload Document Details----------------//
-downloadSampleOpExcel(event: Event) {
-  event.preventDefault();
-
-  // this.createBuildingBlockservice.downloadSampleOPExcel().subscribe((res: any) => {
-  //   // Assuming the response contains the file content
-  //   const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-
-  //   // Creating an anchor element to trigger the download
-  //   const link = document.createElement('a');
-  //   link.href = window.URL.createObjectURL(blob);
-  //   link.download = 'OperationCard.xlsx';
-  //   document.body.appendChild(link);
-
-  //   // Triggering the download
-  //   link.click();
-
-  //   // Removing the anchor element
-  //   document.body.removeChild(link);
-  //   this.messageService.add({
-  //     key: 'successToast',
-  //     severity: 'success',
-  //     summary: 'Success!',
-  //     detail: 'Sample Excel Downloaded successfully.'
-  //   });
-  // });
-}
-showDialogOperationCard() {
-  this.visibleOperationBox = true;
-}
-
-onOperarationCancelClick() {
-  this.visibleOperationBox = false;
-}
-
-onFileSelected(event: any) {
-}
-
-onUploadClick() {
- 
-}
-onRemoveOperationClick(){
-//  this.showUploaderror = false;
-  this.fileNameOC = "";
- // this.uploadFileOC = null;
- this.selectedFile = null;
-}
-showSuccessMessage(message: string) {
-  this.messageService.add({ key: 'successToast', severity: 'success', summary: 'Success', detail: message });
-}
-
-  //---end-----------------------------------------------//
-  //---end-----------------------------------------------//
 }
 
