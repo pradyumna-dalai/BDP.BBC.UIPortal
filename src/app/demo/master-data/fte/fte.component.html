@@ -90,7 +90,7 @@
 <p-dialog header="Header" [(visible)]="displayCreateFteDialog" [modal]="true" [style]="{ width: '50rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
     <ng-template pTemplate="header">
         <div class="inline-flex align-items-center justify-content-center gap-2">
-            <span class="font-bold white-space-nowrap">FTE</span>
+            <h5 style="display: contents;">{{ modeTitle }}&nbsp;FTE</h5>
         </div>
     </ng-template>
 <div>
@@ -149,6 +149,10 @@
                 <label>Working Time/Year(min)<span class="required">*</span></label>
                 <input id="name" type="number"  placeholder="Working Time/Year" formControlName="Work_Time_Year" onlyNumber
                     class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                    <div *ngIf="FteForm.get('Work_Time_Year')?.hasError('required') && FteForm.get('Work_Time_Year')?.touched"
+                    class="error-message">
+                    Working Time is required.
+                </div>
             </div>
             <div class="field col-12 md:col-6"
                     style="display: flex; flex-direction: column; align-items: flex-start;margin-top: 4px;">
