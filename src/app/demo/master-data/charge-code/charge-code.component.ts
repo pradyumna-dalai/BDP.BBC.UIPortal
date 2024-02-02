@@ -14,7 +14,6 @@ import { Table } from 'primeng/table';
   providers: [MessageService, ConfirmationService]
 })
 export class ChargeCodeComponent {
-
   visibleDialog: boolean = false;
   chargeCode: string = '';
   description: string = '';

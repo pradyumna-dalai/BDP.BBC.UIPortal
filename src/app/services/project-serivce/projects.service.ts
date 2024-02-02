@@ -4,6 +4,9 @@ import * as settings from "../../../app/common/lib/api-constants";
 import { HttpClient, HttpContext, HttpHeaders, HttpParams, HttpResponse } from "@angular/common/http";
 // import {Http, Headers} from '@angular/http';
 import { BehaviorSubject } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
+
 
 var url = "/buildingblocks/api/v1/"
 
@@ -21,7 +24,12 @@ saveAsDraftProject(body: any){
   return this.http.post<any>(url + settings.AppRoutes.Auth.saveProjectDraft, body);
 }
 
+private buildingDataSubject = new BehaviorSubject<any>('');
+  buildingData$ = this.buildingDataSubject.asObservable();
 
+  shareBuildingData(newData: string) {
+    this.dataSubject.next(newData);
+  }
 
 getAllProjectDetails(params: any): Observable<any>{
   let httpParams = new HttpParams();
@@ -72,5 +80,23 @@ advanceSearchFilter(body: any): Observable<any> {
   // Use http.post instead of http.get for a POST request
   return this.http.post<any>(url + settings.AppRoutes.Auth.searchProject, body, options);
 }
+
+ //------process configurable-----------------------//
+
+ processConfigImportExcel(formData: FormData) {
+  return this.http.post(url+settings.AppRoutes.Auth.uploadConfigurable, formData).pipe(
+    catchError((error: any) => {
+      return throwError(error); // Pass the error to the subscriber
+    })
+  );
+}
+processConfigGetImportExcelData() {
+  return this.http.get(url+settings.AppRoutes.Auth.processConfigurable).pipe(
+    catchError((error: any) => {
+      return throwError(error); // Pass the error to the subscriber
+    })
+  );
+}
+
 }
 

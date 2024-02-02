@@ -552,7 +552,6 @@ showDialogCommercialCard() {
   }
   
   
-
   // ---------------get product data------------------------//
   getProdname() {
     this.procuctCategoryOptions = [];

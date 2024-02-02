@@ -6,17 +6,17 @@
         <hr class="align">
         <form [formGroup]="myForm">
             <div class="p-fluid grid">
-                <div class="field col-12 md:col-4">
+                <div class="field col-12 md:col-3">
                     <div class="p-d-block"><label>Company Name<span class="requiredField">*</span></label></div>
                     <p-dropdown [options]="companyOptions" (onChange)="onCompanySelect($event)" optionLabel="name"
                         optionValue="id" formControlName="companyName" placeholder="Select Company Name" [filter]="true"
                         filterBy="name"></p-dropdown>
                 </div>
-                <div class="field col-12 md:col-4">
+                <div class="field col-12 md:col-3">
                     <div class="p-d-block"><label>Company Code</label></div>
                     <input placeholder="Enter Customer Code" formControlName="customerCode" type="text" pInputText>
                 </div>
-                <div class="field col-12 md:col-4">
+                <div class="field col-12 md:col-3">
                     <div class="p-d-block"><label>Opportunity Name<span class="requiredField">*</span></label></div>
                     <p-dropdown [options]="opportunityNameOptions" optionLabel="name"
                         (onChange)="onOpportunitySelect($event)" optionValue="id" formControlName="opportunityName"
@@ -24,8 +24,8 @@
                     <!-- <input   placeholder="Enter Opportunity Name" formControlName="opportunityName" type="text" 
                         pInputText> -->
                 </div>
-               
-                <div class="field col-12 md:col-4">
+
+                <div class="field col-12 md:col-3">
                     <div class="p-d-block"><label>Industry Vertical<span class="requiredField">*</span></label></div>
                     <p-dropdown [options]="IVOptions" optionLabel="name" optionValue="id"
                         formControlName="industryVertical" placeholder="Enter Industry Vertical" [filter]="true"
@@ -33,43 +33,43 @@
                     <!-- <input  placeholder="Enter Industry Vertical" formControlName="industryVertical" type="text"
                     pInputText> -->
                 </div>
-                <div class="field col-12 md:col-4">
+                <div class="field col-12 md:col-3">
                     <div class="p-d-block"><label>Region<span class="requiredField">*</span></label></div>
                     <p-dropdown [options]="regionOptions" formControlName="region" placeholder="Select Region"
                         optionLabel="name" optionValue="id" [filter]="true" filterBy="name"></p-dropdown>
                 </div>
                 <br>
-                <hr class="aligndown">
 
-                <div class="field col-12 md:col-4">
+
+                <div class="field col-12 md:col-3">
                     <div class="p-d-block"><label>Project Name<span class="requiredField">*</span></label></div>
                     <input formControlName="projectName" placeholder="Enter Project Name" type="text" id="inputtext"
                         pInputText>
                 </div>
-                <div class="field col-12 md:col-4">
+                <div class="field col-12 md:col-3">
                     <div class="p-d-block"><label>Project Stage<span class="requiredField">*</span></label></div>
                     <p-dropdown [options]="projectStageOptions" formControlName="projectStage"
                         (onChange)="OnStageSelectProjectstatus($event)" placeholder="Select Project Stage"
                         optionLabel="name" optionValue="id" [filter]="true" filterBy="name"></p-dropdown>
                 </div>
-                <div class="field col-12 md:col-4">
+                <div class="field col-12 md:col-3">
                     <div class="p-d-block"><label>Project Status<span class="requiredField">*</span></label></div>
                     <p-dropdown [options]="projectStatusOptions" formControlName="projectStatus"
                         placeholder="Select Project Status" optionLabel="name" optionValue="id" [filter]="true"
                         filterBy="name"></p-dropdown>
                 </div>
-                <div class="field col-12 md:col-4">
+                <div class="field col-12 md:col-6">
                     <div class="p-d-block"><label>Opportunity Manager<span class="requiredField">*</span></label></div>
                     <p-multiSelect [options]="opportunityManagerOptions" formControlName="opportunityManger"
                         optionLabel="name" optionValue="id" placeholder="Select Opportunity Manager" [filter]="true"
                         filterBy="name"></p-multiSelect>
                 </div>
-                <div class="field col-12 md:col-4">
+                <div class="field col-12 md:col-6">
                     <div class="p-d-block"><label>Date Range<span class="requiredField">*</span></label></div>
                     <input type="text" ngxDaterangepickerMd [lockStartDate]="false" formControlName="selectedDateRange"
                         placeholder="Start Date-End Date" class="date_pick" />
                 </div>
-                <div class="field col-12">
+                <div class="field col-12 md:col-6">
                     <div class="p-d-block"><label>Design Notes<span class="requiredField">*</span></label></div>
                     <textarea rows="4" cols="30" pInputTextarea formControlName="designNotes"
                         placeholder="Enter Design Notes" id="inputtext"></textarea>
@@ -78,7 +78,7 @@
                         Maximum character limit exceeded (1000 characters).
                     </div>
                 </div>
-                <div class="field col-12">
+                <div class="field col-12 md:col-6">
                     <div class="p-d-block"><label>Implementation Notes<span class="requiredField">*</span></label></div>
                     <!-- <input formControlName="impleNotes" placeholder="Enter Implementation Notes"  type="text" id="inputtext"
                     pInputText> -->
@@ -95,23 +95,26 @@
             <div class="p-fluid grid">
                 <div class="field col-12 md:col-5">
                     <div class="p-d-flex p-align-center" style="padding-bottom: 8px;">
-                        <p-checkbox [binary]="true" inputId="ny" [ngModel]="enableOriginLocation" (onChange)="toggleOriginCheckbox()"></p-checkbox>
+                        <p-checkbox [binary]="true" inputId="ny" [ngModel]="enableOriginLocation"
+                            (onChange)="toggleOriginCheckbox()"></p-checkbox>
                         <label for="ny" style="padding-left: 6px;">Origin Location</label>
                     </div>
-                      <p-multiSelect placeholder="Select Origin Location" optionLabel="name" optionValue="id"
-                        display="chip" [showClear]="true" [options]="originLocations"  [disabled]="!enableOriginLocation"
+                    <p-multiSelect placeholder="Select Origin Location" optionLabel="name" optionValue="id"
+                        display="chip" [showClear]="true" [options]="originLocations" [disabled]="!enableOriginLocation"
                         (onChange)="onOriginLocationChange($event)">
                     </p-multiSelect>
+
                 </div>
 
                 <div class="field col-12 md:col-5">
                     <div class="p-d-flex p-align-center" style="padding-bottom: 8px;">
-                            <p-checkbox  value="Destination Location" inputId="nyz" [binary]="true"  [ngModel]="enableDestinationLocation" (onChange)="toggleDestinationCheckbox()"></p-checkbox>
-                            <label for="nyz" style="padding-left: 6px;">Destination Location</label>
+                        <p-checkbox value="Destination Location" inputId="nyz" [binary]="true"
+                            [ngModel]="enableDestinationLocation" (onChange)="toggleDestinationCheckbox()"></p-checkbox>
+                        <label for="nyz" style="padding-left: 6px;">Destination Location</label>
                     </div>
-                    <p-multiSelect placeholder="Select Destination Location"  optionLabel="name" optionValue="id"
-                        display="chip" [showClear]="true" [options]="destinationLocations" [disabled]="!enableDestinationLocation"
-                        (onChange)="onDestinationLocationChange($event)">
+                    <p-multiSelect placeholder="Select Destination Location" optionLabel="name" optionValue="id"
+                        display="chip" [showClear]="true" [options]="destinationLocations"
+                        [disabled]="!enableDestinationLocation" (onChange)="onDestinationLocationChange($event)">
                     </p-multiSelect>
                 </div>
             </div>
@@ -124,7 +127,8 @@
                             <p-tabPanel header="Origin Location">
 
                                 <p-toast></p-toast>
-                                <p-table [value]="products" dataKey="id" editMode="row"
+
+                                <p-table [value]="originTableControls.controls" dataKey="id" editMode="row"
                                     [tableStyle]="{'min-width': '50rem'}">
                                     <ng-template pTemplate="header">
                                         <tr>
@@ -135,68 +139,48 @@
 
                                         </tr>
                                     </ng-template>
-                                    <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
-                                        <tr [pEditableRow]="product">
+                                    <ng-template pTemplate="body" let-product let-ri="rowIndex">
+                                        <tr>
                                             <td>
-                                                <div>
-                                                    <button *ngIf="!editing" pButton pRipple type="button"
-                                                        icon="pi pi-plus" class="p-button-rounded p-button-text"
+                                                <div *ngIf="isActionButtonsVisible">
+                                                    <div  >
+                                                    <button pButton pRipple type="button" icon="pi pi-plus"
+                                                        class="p-button-rounded p-button-text p-button-success"
                                                         (click)="onAddRowBelow(ri)"></button>
-                                                    <button *ngIf="!editing" pButton pRipple type="button"
-                                                        pInitEditableRow icon="pi pi-pencil"
-                                                        (click)="onRowEditInit(product)"
-                                                        class="p-button-rounded p-button-text"></button>
-                                                    <button *ngIf="editing" pButton pRipple type="button"
-                                                        pSaveEditableRow icon="pi pi-check"
-                                                        (click)="onRowEditSave(product)"
+                                                    </div>
+                                                    <button pButton pRipple type="button" icon="pi pi-check"
+                                                        (click)="onSave($event, product)"
                                                         class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                                                    <button *ngIf="editing" pButton pRipple type="button"
-                                                        pCancelEditableRow icon="pi pi-times"
-                                                        (click)="onRowEditCancel(product, ri)"
+                                                    <button pButton pRipple type="button" pCancelEditableRow
+                                                        icon="pi pi-times" (click)="onRowEditCancel(product, ri)"
                                                         class="p-button-rounded p-button-text p-button-danger"></button>
-                                                    <button *ngIf="!editing" pButton pRipple type="button"
-                                                        icon="pi pi-trash"
+                                                    <button pButton pRipple type="button" icon="pi pi-pencil"
+                                                        (click)="onRowEditInit(product, ri)"
+                                                        class="p-button-rounded p-button-text p-button-warning"></button>
+                                                    <button pButton pRipple type="button" icon="pi pi-trash"
                                                         class="p-button-rounded p-button-text p-button-danger"
                                                         (click)="onDeleteRow(ri)"></button>
-
                                                 </div>
+
+                                            <td>
+                                                {{ getLocationName(product.get('location').value) }}
+
                                             </td>
                                             <td>
-                                                <p-cellEditor>
-                                                    <ng-template pTemplate="input">
-                                                        <input pInputText type="text" [(ngModel)]="product.location"
-                                                            disabled>
-                                                    </ng-template>
-                                                    <ng-template pTemplate="output">
-                                                        {{ product.location }}
-                                                    </ng-template>
-                                                </p-cellEditor>
+                                                <span *ngIf="!isRowEditMode[ri] || isAddingRow">{{
+                                                    product.get('volume').value }}</span>
+                                                <input *ngIf="(isRowEditMode[ri] && !isAddingRow)" pInputText
+                                                type="number" placeholder="Enter Volume"
+                                                    [formControl]="product.get('volume')" required>
                                             </td>
-                                            <td *ngIf="editing">
-                                                <p-cellEditor>
-                                                    <ng-template pTemplate="input">
-                                                        <input pInputText type="text" [(ngModel)]="product.volume"
-                                                            required>
-                                                    </ng-template>
-                                                    <ng-template pTemplate="output">
-                                                        {{ product.volume }}
-                                                    </ng-template>
-                                                </p-cellEditor>
+                                            <td>
+                                                <span *ngIf="!isRowEditMode[ri] || isAddingRow">{{
+                                                    product.get('uom').value }}</span>
+                                                <p-dropdown *ngIf="(isRowEditMode[ri] && !isAddingRow)"
+                                                    [options]="uomOptions" optionLabel="name" optionValue="id"
+                                                    [formControl]="product.get('uom')" [appendTo]="'body'"
+                                                    placeholder="Select UOM" [style]="{'width':'100%'}"></p-dropdown>
                                             </td>
-                                            <td *ngIf="editing">
-                                                <p-cellEditor>
-                                                    <ng-template pTemplate="input">
-                                                        <p-dropdown [options]="uomOptions" optionLabel="name"
-                                                            appendTo="body" [(ngModel)]="product.uom"
-                                                            [style]="{'width':'100%'}"></p-dropdown>
-                                                    </ng-template>
-                                                    <ng-template pTemplate="output">
-                                                        {{ product.uom }}
-                                                    </ng-template>
-                                                </p-cellEditor>
-                                            </td>
-
-
                                         </tr>
                                     </ng-template>
                                 </p-table>
@@ -286,7 +270,7 @@
             <div class="col-12" style="display: flex;justify-content: flex-end;">
                 <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
                     (click)="SaveAsDraftProjects()" class="p-button-outlined mr-2 mb-2"></button>
-                <button type="submit" pButton pRipple label="Continue" (click)="activeIndex = 1"
+                    <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()"
                     class="mr-2 mb-2"></button>
             </div>
             <p-toast key="successToast"></p-toast>
@@ -311,47 +295,58 @@
             </div> -->
     </p-tabPanel>
     <p-tabPanel header="Building Block">
-        <p>
-            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem
-            aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-            Nemo enim
-            ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos
-            qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
-        </p>
-    </p-tabPanel>
-    <p-tabPanel header="Configurable">
-        <p>
-            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti
-            atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique
-            sunt in culpa
-            qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et
-            expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
-        </p>
-    </p-tabPanel>
-    <p-tabPanel header="Add Volume">
-        <div class="col-12">
+        <div>
+          
+                <app-building-block></app-building-block>
 
+          
+        </div>
+        <div class="col-12" style="display: flex;justify-content: flex-end;">
+            <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
+                (click)="SaveAsDraftProjects()" class="p-button-outlined mr-2 mb-2"></button>
+                <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()"
+                class="mr-2 mb-2"></button>
         </div>
     </p-tabPanel>
+   
+    <p-tabPanel header="Add Volume">
+            <div>
+                <app-add-volume></app-add-volume>
+                
+                
+            </div>
+            <div class="col-12" style="display: flex;justify-content: flex-end;">
+                <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
+                    (click)="SaveAsDraftProjects()" class="p-button-outlined mr-2 mb-2"></button>
+                    <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()"
+                    class="mr-2 mb-2"></button>
+            </div>
+    </p-tabPanel>
     <p-tabPanel header="Cost Line Item">
-        <p>
-            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti
-            atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique
-            sunt in culpa
-            qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et
-            expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
-        </p>
+        <div>
+            <app-cost-line-item></app-cost-line-item>
+           
+            
+        </div>
+        <div class="col-12" style="display: flex;justify-content: flex-end;">
+            <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
+                (click)="SaveAsDraftProjects()" class="p-button-outlined mr-2 mb-2"></button>
+                <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()"
+                class="mr-2 mb-2"></button>
+        </div>
     </p-tabPanel>
-    <p-tabPanel header="Additional Cost">
-        <p>
-            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti
-            atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique
-            sunt in culpa
-            qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et
-            expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
-        </p>
+    <p-tabPanel header="Other Cost(Optional)">
+        <div>
+       <app-other-cost></app-other-cost>
+        </div>
+        <div class="col-12" style="display: flex;justify-content: flex-end;">
+            <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
+                (click)="SaveAsDraftProjects()" class="p-button-outlined mr-2 mb-2"></button>
+                <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()"
+                class="mr-2 mb-2"></button>
+        </div>
     </p-tabPanel>
-    <p-tabPanel header="Revenue">
+    <p-tabPanel header="Project Cost">
         <p>
             At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti
             atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique
@@ -359,14 +354,11 @@
             qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et
             expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
         </p>
-    </p-tabPanel>
-    <p-tabPanel header="Cost Output">
-        <p>
-            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti
-            atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique
-            sunt in culpa
-            qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et
-            expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
-        </p>
+        <div class="col-12" style="display: flex;justify-content: flex-end;">
+            <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
+                (click)="SaveAsDraftProjects()" class="p-button-outlined mr-2 mb-2"></button>
+                <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()"
+                class="mr-2 mb-2"></button>
+        </div>
     </p-tabPanel>
 </p-tabView>
