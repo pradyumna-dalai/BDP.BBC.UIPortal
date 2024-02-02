@@ -58,13 +58,15 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       });
     }
   }
+  expandNodesBasedOnSearchResults() {
+    this.treeDataNew.forEach((node) => {
+      node.expanded = true;
+      this.expandNode(node);
+    });
+  }
   loadTreeDataNew() {
     this.createBuildingBlockservice.getExplorerData(2).subscribe((data: any) => {
       this.treeDataNew = this.transformData(data.data);
-      this.treeDataNew.forEach(node => {
-        node.expanded = true;
-        this.expandNode(node);
-      });
     },
       (error) => {
         console.error('Error loading tree data:', error);
@@ -76,7 +78,9 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
     if (this.searchText.trim() === '') {
       this.loadTreeDataNew();
     } else {
+     // this.loadTreeDataNew(); 
       this.treeDataNew = this.filterTreeData(this.treeDataNew, this.searchText);
+      this.expandNodesBasedOnSearchResults(); 
     }
   }
 
