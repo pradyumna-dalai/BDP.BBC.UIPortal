@@ -31,6 +31,7 @@ export class FteComponent {
   rows: any = 10;
   modeTitle: string = 'Add';
   searchTimeout: number;
+  isSearchClear:boolean =false;
   constructor(private breadcrumbService: AppBreadcrumbService,
     private messageService: MessageService, 
     private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService, private masterTableService: MasterTableService,private fb: FormBuilder,) {
@@ -53,7 +54,6 @@ export class FteComponent {
       Work_Time_Year: ['',Validators.required],
       status : ['']
     })
-
 
 
   }
@@ -82,7 +82,7 @@ export class FteComponent {
   
   clear(table: Table) {
     table.clear();
-    this.onSort(Event);
+    this.fetchAllFteDetails();
   }
 
   getSeverity(status: boolean): string {
@@ -156,18 +156,24 @@ fetchAllFteDetails(keyword: string = '') {
     pageSize: isNaN(this.pageSize) ? 10 : this.pageSize,
     sortBy: this.sortField,
     sortDir: this.sortOrder,
-    keyword: keyword 
+    keyword: keyword
   };
   this.masterDataService.getAllFteDetails(params).subscribe((res: any) => {
     if (res?.message === 'success') {
       this.Ftedetails = res.data.fte;
       this.totalRecords = res?.data.totalElements;
-      console.log('fetch Fte details:', this.totalRecords);
     } else {
-      console.error('Failed to fetch Fte details:', res);
+      // console.error('Failed to fetch Fte details:', res);
     }
   });
 } 
+
+clearKeyword(event){
+if(event.type === 'click'){
+  this.isSearchClear = true;
+}
+
+}
 
 onGlobalSearch(keyword: string): void {
   // Clear any existing timeout
@@ -198,19 +204,18 @@ updateLocationDetails() {
       region: this.fteRowData.region.id,
       country: this.fteRowData.country.id,
       location: this.fteRowData.location.id,
-      fte_month: this.fteRowData.yearlyCost,
+      fte_month: this.fteRowData.monthlyCost,
       ftf_year: this.fteRowData.yearlyCost,
       Work_Time_Year: this.fteRowData.yearlyWorkingMin,
       status: this.fteRowData.status ? 'active' : 'inactive',
     });
-    console.log('df', this.fteRowData)
     this.displayCreateFteDialog = true;
 }
 
 /**@Add_FTE_Data Form*/
 
   addFteData(){
-    console.log(this.FteForm.value);
+
     if (this.FteForm.valid) {
    const body = { 
         region: {
@@ -233,7 +238,6 @@ updateLocationDetails() {
       body['id'] = this.fteRowData.id
       this.masterDataService.updateFte(body).subscribe(
         (response) => {
-          console.log(response);
           this.displayCreateFteDialog = false;
           this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Fte updated successfully!' });
           //   this.createForm();
@@ -241,7 +245,7 @@ updateLocationDetails() {
           this.fetchAllFteDetails();
         },
         (error) => {
-          console.error(error);
+          // console.error(error);
 
         }
       );
@@ -249,14 +253,12 @@ updateLocationDetails() {
       this.modeTitle = 'Add';
       this.masterDataService.addFteDetails(body).subscribe(
         (response) => {
-          console.log(response);
           this.displayCreateFteDialog = false;
           this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Fte added successfully!' });
           this.totalRecords += 1;
           this.fetchAllFteDetails();
         },
         (error) => {
-          console.error(error);
           if (error.status === 400 && error.error?.message === 'Fill required field(s)') {
             const errorMessage = error.error.data?.join(', ') || 'Error in adding Fte';
             this.messageService.add({ severity: 'error', summary: 'Error', detail: errorMessage });

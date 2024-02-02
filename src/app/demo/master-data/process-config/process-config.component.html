@@ -7,78 +7,92 @@
             <button type="button" pButton pRipple label="Import" (click)="showDialog()"  class="mr-2 mb-2" ></button>
     </div>
     </div>
-<p-table #dt1 [showCurrentPageReport]="true" 
-selectionMode="single" dataKey="id" styleClass="p-datatable-gridlines" responsiveLayout="scroll"
-scrollHeight="530px" scrollDirection="both" [columns]="columns" [value]="data" [tableStyle]="{'min-width': '50rem'}">
+    <p-table *ngIf="!loading" #dt1 [showCurrentPageReport]="true" 
+    selectionMode="single" dataKey="id" styleClass="p-datatable-gridlines" responsiveLayout="scroll"
+    scrollHeight="530px" scrollDirection="both" [columns]="columns" [value]="data" [tableStyle]="{'min-width': '50rem'}">
 
-<ng-template pTemplate="header" let-columns>
-    <tr>
-        <th style="text-align: center;width: 50px" [frozen]="true" class="sticky-header">Actions</th>
-        <th *ngFor="let col of columns"  [style]="col.style">{{ col.header }}</th>
-    </tr>
-</ng-template>
+    <ng-template pTemplate="header" let-columns>
+        <tr>
+            <th style="text-align: center;width: 50px" [frozen]="true" class="sticky-header">Actions</th>
+            <th *ngFor="let col of columns"  [style]="col.style">{{ col.header }}</th>
+        </tr>
+    </ng-template>
 
-<!-- Modify the body template to conditionally render the input field or display the current value -->
-<ng-template pTemplate="body" let-rowData let-columns="columns" let-i="rowIndex">
-    <tr>
-        <td style="text-align: center; white-space: nowrap;">
-            <span style="cursor: pointer; display: inline-block;" (click)="toggleEditMode(i)">
-              <button pButton pRipple type="button" class="p-button-rounded p-button-text" icon="pi pi-{{ editModes[i] ? 'check' : 'pencil' }}" ></button>
-            </span>&nbsp;
-            <span style="cursor: pointer; display: inline-block;">
-              <button pButton pRipple type="button" class="p-button-rounded p-button-text" icon="pi pi-{{ editModes[i] ? 'times' : 'plus' }}" *ngIf="!editModes[i]" (click)="addNewRow()"></button>
-              <button pButton pRipple type="button" class="p-button-rounded p-button-text" icon="pi pi-times" *ngIf="editModes[i]" (click)="toggleEditMode(i)"></button>
-            </span>
-          </td>
-        <td style="text-align: center;white-space: nowrap;" *ngFor="let col of columns">
-            <!-- Conditionally render input field or display the current value -->
-            <ng-container *ngIf="!editModes[i] || !isEditableColumn(col.field)">
-                {{ rowData[col.field] }}
-            </ng-container>
-            <ng-container *ngIf="editModes[i] && isEditableColumn(col.field)">
-                <input pInputText *ngIf="col.field !== 'Origin / Destination' && col.field !== 'UOM' && col.field !== 'Configuration'" [(ngModel)]="rowData[col.field]" />
-                <ng-container *ngIf="col.field === 'Origin / Destination'">
-                    <p-dropdown
-                        [options]="locationss"
-                        [(ngModel)]="rowData[col.field]"
-                        optionLabel="locationName"
-                        placeholder="Select Origin/Destination"
-                        [appendTo]="'body'"
+    <!-- Modify the body template to conditionally render the input field or display the current value -->
+    <ng-template pTemplate="body" let-rowData let-columns="columns" let-i="rowIndex">
+        <tr>
+            <td style="text-align: center; white-space: nowrap;">
+                <span style="cursor: pointer; display: inline-block;" (click)="toggleEditMode(i)">
+                <button pButton pRipple type="button" class="p-button-rounded p-button-text" icon="pi pi-{{ editModes[i] ? 'check' : 'pencil' }}"></button>
+                </span>&nbsp;
+                <span style="cursor: pointer; display: inline-block;">
+                <button pButton pRipple type="button" class="p-button-rounded p-button-text" icon="pi pi-{{ editModes[i] ? 'times' : 'plus' }}" *ngIf="!editModes[i]" (click)="addNewRow(i)"></button>
+                <button pButton pRipple type="button" class="p-button-rounded p-button-text" icon="pi pi-times" *ngIf="editModes[i]" (click)="toggleEditMode(i)"></button>
+                </span>
+            </td>
+            <td style="text-align: center;white-space: nowrap;" *ngFor="let col of columns">
+                <!-- Conditionally render input field or display the current value -->
+                <ng-container *ngIf="!editModes[i] || !isEditableColumn(col.field)">
+                    {{ rowData[col.field] }}
+                </ng-container>
+                <ng-container *ngIf="editModes[i] && isEditableColumn(col.field)">
+                    <input pInputText *ngIf="col.field !== 'Origin / Destination' && col.field !== 'UOM' && col.field !== 'Configuration' && col.field !== 'Operations Steps' && col.field !== 'Location'"
+                    [(ngModel)]="rowData[col.field]" style="width: 50px;" />
+                    <ng-container *ngIf="col.field === 'Origin / Destination'">
+                        <p-dropdown 
+                            [options]="locationss"
+                            [(ngModel)]="rowData[col.field]"
+                            optionLabel="locationName"
+                            placeholder="Select Origin/Destination"
+                            [appendTo]="'body'"
+                            ></p-dropdown>
+                    </ng-container>
+                    <ng-container *ngIf="col.field === 'UOM'">
+                        <!-- Replace 'UOM' with your actual data source for UOM -->
+                        <p-dropdown
+                            [options]="uomOptions"
+                            [(ngModel)]="rowData[col.field]"
+                            optionLabel="name" optionValue="id"
+                            placeholder="Select UOM"
+                            [appendTo]="'body'"
                         ></p-dropdown>
+                    </ng-container>
+                    <ng-container *ngIf="col.field === 'Configuration'">
+                        <!-- Replace 'Configuration' with your actual data source for Configuration -->
+                        <p-dropdown
+                            [options]="configOptions"
+                            [(ngModel)]="rowData[col.field]"
+                            optionLabel="name" optionValue="id"
+                            placeholder="Select Configuration"
+                            [appendTo]="'body'"
+                        ></p-dropdown>
+                    </ng-container>
+                    <!-- Adjust the width for specific columns -->
+                    <ng-container *ngIf="col.field === 'Operations Steps'">
+                        <input pInputText [(ngModel)]="rowData[col.field]" style="width: 300px;" />
+                    </ng-container>
+                    <ng-container *ngIf="col.field === 'Location'">
+                        <input pInputText [(ngModel)]="rowData[col.field]" style="width: 100px;" />
+                    </ng-container>
                 </ng-container>
-                <ng-container *ngIf="col.field === 'UOM'">
-                    <!-- Replace 'UOM' with your actual data source for UOM -->
-                    <p-dropdown
-                        [options]="uomOptions"
-                        [(ngModel)]="rowData[col.field]"
-                        optionLabel="name" optionValue="id"
-                        placeholder="Select UOM"
-                        [appendTo]="'body'"
-                    ></p-dropdown>
-                </ng-container>
-                <ng-container *ngIf="col.field === 'Configuration'">
-                    <!-- Replace 'Configuration' with your actual data source for Configuration -->
-                    <p-dropdown
-                        [options]="configOptions"
-                        [(ngModel)]="rowData[col.field]"
-                        optionLabel="name" optionValue="id"
-                        placeholder="Select Configuration"
-                        [appendTo]="'body'"
-                    ></p-dropdown>
-                </ng-container>
-            </ng-container>
-        </td>
-    </tr>
-</ng-template>
-        <ng-template pTemplate="emptymessage">
-            <tr>
-                <td style="text-align: center;" colspan="18">No Data found.</td>
-            </tr>
-        </ng-template>
+            </td>
+        </tr>
+    </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <!-- <tr>
+                    <td style="text-align: center;" colspan="18">No Data found.</td>
+                </tr> -->
+                <div class="dataLoaders">
+                    <div class="loaders"></div>
+                </div>
+            </ng-template>
     </p-table>
+    <div class="dataLoaders" *ngIf="loading" >
+        <div class="loaders"></div>
+    </div>
 </div>
 
-<p-dialog header="Import Excel" [(visible)]="visible" [style]="{width: '50vw'}" >
+<p-dialog header="Import Excel" [(visible)]="visible" [style]="{width: '50vw'}" [modal]="true" >
     <!-- <div class="page-under-construction">
         <img src="assets/layout/images/page-under-construction.jpg" alt="No Building Blocks Found">
     </div> -->
@@ -99,7 +113,7 @@ scrollHeight="530px" scrollDirection="both" [columns]="columns" [value]="data" [
                 <h6><b>Instructions</b></h6>
                 <ul class="list">
                 <li>Maximum File Size: 2MB</li>
-                <li>File Format: CSV,xlsx</li>
+                <li>File Format: xlsx</li>
                 </ul>
                 <ol class="list" type="1">
                 <li>Make sure to provide valid data</li>
@@ -111,22 +125,12 @@ scrollHeight="530px" scrollDirection="both" [columns]="columns" [value]="data" [
             <div class="col-12 md:col-12">
                 <div class="custom-container">
                     <h6><b>Upload</b></h6>
-                    <!-- <div *ngIf="showUploaderror" style="color: red;">
-                        <b>Upload error: Review the file before uploading.</b>
-                        <div *ngIf="!uploadError">
-                            <div *ngIf="deliverablesError">{{ deliverablesError }}</div>
-                        <div *ngIf="valueToPSABDPError">{{ valueToPSABDPError }}</div>
-                        <div *ngIf="parametersError">{{ parametersError }}</div>
-                        <div *ngIf="serviceDescriptionError">{{ serviceDescriptionError }}</div>
-                        <div *ngIf="stakeholdersAudienceError">{{ stakeholdersAudienceError }}</div>
-                        <div *ngIf="customerRequirementsError">{{ customerRequirementsError }}</div>
-                        <div *ngIf="configurableError">{{ configurableError }}</div> 
+                    <div *ngIf="showUploaderror" style="color: red;">
+                        <div *ngFor="let error of uploadErrors">
+                            <p>{{ error.key }}: {{ error.value }}</p>
                         </div>
                        
-                      </div> -->
-                      <div  style="color: red;">
-                        
-                      </div>
+                    </div>
                     <div class="box">
                         <div class="card-body">
                         <div class="container">
@@ -135,24 +139,24 @@ scrollHeight="530px" scrollDirection="both" [columns]="columns" [value]="data" [
                                 <i class="pi pi-upload" style="font-size: 30px;display: block;"></i>
                                 <div class="upload_name">Upload</div>
                             </label>
-                            <p style="text-align: center;"></p>
-                            <input type="file" id="fileUpload" style="display: none;" accept=".xlsx, .csv">
+                            <p style="text-align: center;">{{fileName}}</p>
+                            <input type="file" id="fileUpload" (change)="onUploadSCExcel($event)" style="display: none;" accept=".xlsx">
                         </div>
                         </div>
                     </div>
-                    <!-- <p-progressBar *ngIf="uploadInProgress" mode="indeterminate" [style]="{'height': '6px', 'marginBottom':'1rem'}">
-                    </p-progressBar> -->
+                    <p-progressBar *ngIf="uploadInProgress" mode="indeterminate" [style]="{'height': '6px', 'marginBottom':'1rem'}">
+                    </p-progressBar>
                     <div class="card_footer">
                         <div>
-                            <button type="submit" pButton pRipple class=" btn" >
+                            <button type="submit" pButton pRipple class=" btn" (click)="onCancelClick()">
                             Remove File
                         </button> 
                         </div>
                         <div class="uplodBtn_right">
-                        <button type="submit" pButton pRipple class=" btn" >
+                        <button type="submit" pButton pRipple class="btn" (click)="excelUploadcall()">
                             Submit
                         </button>
-                        <button type="submit"  pButton pRipple class=" btn">Cancel</button>
+                        <button type="submit" (click)="onPopupCancelclick()"  pButton pRipple class=" btn">Cancel</button>
                         </div>
                     </div>
                     </div>
