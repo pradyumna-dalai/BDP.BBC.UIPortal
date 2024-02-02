@@ -39,19 +39,32 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     console.log('BuildingBlockComponent: ngOnInit');
-    //this.projectService.shareBuildingData(this.createProject);
+  
+
     this.loadTreeDataNew();
   }
+
   ngOnDestroy() {
     console.log('BuildingBlockComponent: ngOnDestroy');
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
-
+  expandNode(node: TreeNode) {
+    if (node.children) {
+      node.expanded = true;
+      node.children.forEach(childNode => {
+        this.expandNode(childNode);
+      });
+    }
+  }
   loadTreeDataNew() {
     this.createBuildingBlockservice.getExplorerData(2).subscribe((data: any) => {
       this.treeDataNew = this.transformData(data.data);
+      this.treeDataNew.forEach(node => {
+        node.expanded = true;
+        this.expandNode(node);
+      });
     },
       (error) => {
         console.error('Error loading tree data:', error);
