@@ -31,6 +31,7 @@ export class FteComponent {
   rows: any = 10;
   modeTitle: string = 'Add';
   searchTimeout: number;
+  isSearchClear:boolean =false;
   constructor(private breadcrumbService: AppBreadcrumbService,
     private messageService: MessageService, 
     private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService, private masterTableService: MasterTableService,private fb: FormBuilder,) {
@@ -82,7 +83,7 @@ export class FteComponent {
   
   clear(table: Table) {
     table.clear();
-    this.onSort(Event);
+    this.fetchAllFteDetails();
   }
 
   getSeverity(status: boolean): string {
@@ -156,7 +157,7 @@ fetchAllFteDetails(keyword: string = '') {
     pageSize: isNaN(this.pageSize) ? 10 : this.pageSize,
     sortBy: this.sortField,
     sortDir: this.sortOrder,
-    keyword: keyword 
+    keyword: keyword
   };
   this.masterDataService.getAllFteDetails(params).subscribe((res: any) => {
     if (res?.message === 'success') {
@@ -168,6 +169,13 @@ fetchAllFteDetails(keyword: string = '') {
     }
   });
 } 
+
+clearKeyword(event){
+if(event.type === 'click'){
+  this.isSearchClear = true;
+}
+
+}
 
 onGlobalSearch(keyword: string): void {
   // Clear any existing timeout
@@ -198,7 +206,7 @@ updateLocationDetails() {
       region: this.fteRowData.region.id,
       country: this.fteRowData.country.id,
       location: this.fteRowData.location.id,
-      fte_month: this.fteRowData.yearlyCost,
+      fte_month: this.fteRowData.monthlyCost,
       ftf_year: this.fteRowData.yearlyCost,
       Work_Time_Year: this.fteRowData.yearlyWorkingMin,
       status: this.fteRowData.status ? 'active' : 'inactive',
