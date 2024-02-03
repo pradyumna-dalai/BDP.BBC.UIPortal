@@ -57,7 +57,9 @@ export class CreateProjectComponent implements OnInit {
   originTableControls: FormArray;
   isAddingRow: boolean;
   isActionButtonsVisible = false;
-
+  selectedFile: any;
+  visibleOperationBox:boolean=false;
+  fileNameOC: string;
   constructor(private breadcrumbService: AppBreadcrumbService,
     private datePipe: DatePipe, private messageService: MessageService, private fb: FormBuilder, public MasterTableservice: MasterTableService, public projectService: ProjectsService) {
     this.breadcrumbService.setItems([
@@ -467,4 +469,68 @@ export class CreateProjectComponent implements OnInit {
 
 
 
+
+
+
+
+
+
+ 
+
+
+
+//--------------------Upload Document Details----------------//
+downloadSampleOpExcel(event: Event) {
+  event.preventDefault();
+
+  // this.createBuildingBlockservice.downloadSampleOPExcel().subscribe((res: any) => {
+  //   // Assuming the response contains the file content
+  //   const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+  //   // Creating an anchor element to trigger the download
+  //   const link = document.createElement('a');
+  //   link.href = window.URL.createObjectURL(blob);
+  //   link.download = 'OperationCard.xlsx';
+  //   document.body.appendChild(link);
+
+  //   // Triggering the download
+  //   link.click();
+
+  //   // Removing the anchor element
+  //   document.body.removeChild(link);
+  //   this.messageService.add({
+  //     key: 'successToast',
+  //     severity: 'success',
+  //     summary: 'Success!',
+  //     detail: 'Sample Excel Downloaded successfully.'
+  //   });
+  // });
 }
+showDialogOperationCard() {
+  this.visibleOperationBox = true;
+}
+
+onOperarationCancelClick() {
+  this.visibleOperationBox = false;
+}
+
+onFileSelected(event: any) {
+}
+
+onUploadClick() {
+ 
+}
+onRemoveOperationClick(){
+//  this.showUploaderror = false;
+  this.fileNameOC = "";
+ // this.uploadFileOC = null;
+ this.selectedFile = null;
+}
+showSuccessMessage(message: string) {
+  this.messageService.add({ key: 'successToast', severity: 'success', summary: 'Success', detail: message });
+}
+
+  //---end-----------------------------------------------//
+  //---end-----------------------------------------------//
+}
+

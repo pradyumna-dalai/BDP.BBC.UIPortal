@@ -81,8 +81,8 @@ export class FteComponent {
   }
   
   clear(table: Table) {
-    table.clear();
-    this.fetchAllFteDetails();
+    table.reset();
+    this.onSort(Event);
   }
 
   getSeverity(status: boolean): string {
