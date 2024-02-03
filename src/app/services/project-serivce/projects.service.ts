@@ -98,5 +98,23 @@ processConfigGetImportExcelData() {
   );
 }
 
+
+
+//--------------------------Common Upload----------------------------//
+UploadProjectArtifact(file: File, scopeId: number, entityId: number): Observable<any> {
+  const formData: FormData = new FormData();
+  formData.append('file', file, file.name);
+
+  const params = new HttpParams()
+    .set('scopeId', scopeId.toString())
+    .set('entityId', entityId.toString());
+
+  return this.http.post(url+settings.AppRoutes.Auth.CommonUpload, formData,  { params }).pipe(
+    catchError((error: any) => {
+      return throwError(error);
+    })
+  );
+}
+
 }
 

@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import * as XLSX from 'xlsx';
 import { HttpClient } from '@angular/common/http';
-
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-create-bb',
@@ -96,6 +96,7 @@ export class CreateBbComponent {
   service_desc_error: any;
   customer_requirement_error: any;
   cvalue_to_psa_bdp_error: any;
+  blockId:number;
 
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
     public MasterTableservice: MasterTableService, private confirmationService: ConfirmationService,
@@ -124,17 +125,12 @@ export class CreateBbComponent {
 
   }
 
-
   ngOnInit() {
-
     this.getProdname();
     this.getChargeCode();
     this.getModeOfTransport();
 
   }
-
-
-
 
   onCancelClickSC() {
     this.showUploaderror = false;
@@ -679,7 +675,8 @@ export class CreateBbComponent {
     this.CreateBuildingBlockservice.saveEditBuildingBlocks(1, body).subscribe(
       (res) => {
         console.log('Draft saved successfully:', res);
-
+        this.blockId = res.data?.id;
+        console.log('bbId',this.blockId);
         this.messageService.add({
           key: 'successToast',
           severity: 'success',
@@ -687,21 +684,17 @@ export class CreateBbComponent {
           detail: 'Building block draft is saved successfully.'
         });
         setTimeout(() => {
-          this.router.navigateByUrl('/building-block');
+      //    this.router.navigateByUrl('/building-block');
         }, 1000);
       },
       (error) => {
-        // console.error('Error saving draft:', error);
         if (error && error.status === 400) {
           const errorMessage = error.error?.message;
           const data = error.error?.data;
-          //  console.log('error', errorMessage)
-          //  console.log('error', data)
           if (data && data.length > 0) {
             this.formattedErrors = data.join('\n');
           }
           if (data && data.includes('Block name exist')) {
-            // Handle the case where the block name already exists
             this.messageService.add({
               key: 'errorToast',
               severity: 'error',
@@ -984,7 +977,8 @@ export class CreateBbComponent {
   onUploadClick(event: any): void {
     if (this.selectedFile) {
       const scopeId = 1;
-      const entityId = 1;
+      const entityId = this.blockId;
+   //   console.log('bbId',this.blockId);
       this.readExcelFile(this.selectedFile);
       this.visibleOperationBox = false;
   
@@ -1009,8 +1003,5 @@ export class CreateBbComponent {
   }
 
   downloadUploadedFile(): void {
-    // const yourFileURL = 'yourFileURL';
-    // const fileName = 'yourFileName.xlsx'; 
-    // saveAs(yourFileURL, fileName);
   }
 }  

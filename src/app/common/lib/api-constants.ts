@@ -48,7 +48,9 @@ export namespace AppRoutes {
 
         public static readonly downloadSampleOPExcel = "download-file?file=op";
 
-        public static readonly operationCardUpload = "file/upload";
+        public static readonly CommonUpload = "file/upload";
+
+        public static readonly downloadOperationExcel = "file/download";
 
 
         //--------------------Project filter--------//

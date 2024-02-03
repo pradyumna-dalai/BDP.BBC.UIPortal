@@ -25,7 +25,7 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
     buildingBlockDetails: any;
     private _isExpanded = false;
     loading: boolean = false;
-
+    itemId:number;
     constructor(private breadcrumbService: AppBreadcrumbService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
         this.breadcrumbService.setItems([
             { label: 'Building Blocks' }
@@ -41,6 +41,8 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
 
         this.loadTreeData();
         this.loadTreeDataNew();
+        this.onDraftItemClick();
+
 
     }
     expandNode(node: TreeNode) {
@@ -186,8 +188,8 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
     }
     onDraftItemClick(): void {
         if (this.selectedNode) {
-            const itemId = this.selectedNode.data.id;
-            this.createBuildingBlockservice.getBuildingBlockDetails(itemId).subscribe(
+            this.itemId = this.selectedNode.data.id;
+            this.createBuildingBlockservice.getBuildingBlockDetails(this.itemId).subscribe(
                 (data: any) => {
                     this.buildingBlockDetails = data;
                     console.log('Building Block Details for explore view:', this.buildingBlockDetails);
@@ -208,6 +210,27 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
         this._isExpanded = value;
     }
 
+    downloadOperationCardExcel(){
+        if(this.itemId!=null){
+            this.createBuildingBlockservice.downloadUploadedOperationCard(this.itemId).subscribe(
+                (data: ArrayBuffer) => {
+                  const blob = new Blob([data]);
+                  const url = window.URL.createObjectURL(blob);
+                  const link = document.createElement('a');
+                  link.href = url;
+                  link.download = 'downloaded_file.xlsx';
+                  link.click();
+                  window.URL.revokeObjectURL(url);
+                },
+                (error) => {
+                  console.error('Error downloading file:', error);
+                }
+              );
+            } else {
+              console.error('Building block ID is null or undefined.');
+            }
+        }
+    
 }
 
 

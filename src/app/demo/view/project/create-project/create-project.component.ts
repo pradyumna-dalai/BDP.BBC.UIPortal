@@ -83,8 +83,10 @@ export class CreateProjectComponent implements OnInit {
 
   selectedLocationIsOrigin: boolean = true;
   activeTabIndex: number = 0; // default to Origin Location
-
+  uploadedFiles: { name: string, file: File }[] = [];
   selectedFiles: File[] = [];
+  uploadedResponseFiles: { name: string, file: File }[] = [];
+  uploadedOtherFiles: { name: string, file: File }[] = [];
   constructor(private breadcrumbService: AppBreadcrumbService,
     private datePipe: DatePipe, private messageService: MessageService, private fb: FormBuilder, public MasterTableservice: MasterTableService, public projectService: ProjectsService) {
     this.breadcrumbService.setItems([
@@ -374,40 +376,7 @@ export class CreateProjectComponent implements OnInit {
   }
 
 
-  //-----------------------upload doct------------------//
-  downloadSampleOpExcel(event: Event) {
-    event.preventDefault();
-  }
-  showDialogOperationCard() {
-    this.visibleOperationBox = true;
-  }
-
-  onOperarationCancelClick() {
-    this.visibleOperationBox = false;
-  }
-
-  onFileSelected(event: any) {
-    const files: FileList = event.target.files;
-    this.selectedFiles = [];
-    for (let i = 0; i < files.length; i++) {
-      const file: File = files[i];
-      this.selectedFiles.push(file);
-    }
-  }
-
-  onUploadClick() {
-
-  }
-  onRemoveOperationClick() {
-    //  this.showUploaderror = false;
-    this.fileNameOC = "";
-    // this.uploadFileOC = null;
-    this.selectedFile = null;
-  }
-  showSuccessMessage(message: string) {
-    this.messageService.add({ key: 'successToast', severity: 'success', summary: 'Success', detail: message });
-  }
-
+  //-----------------------upload doct------------------/
   //---end-----------------------------------------------//
 
 
@@ -561,5 +530,90 @@ export class CreateProjectComponent implements OnInit {
   }
   //-----------------------------destination end----------------------------------//
 
-}
+  //-----------------------------Artifact Upload------------------------------------//
+  downloadSampleOpExcel(event: Event) {
+    event.preventDefault();
+  }
+  showDialogOperationCard() {
+    this.visibleOperationBox = true;
+  }
 
+  onOperarationCancelClick() {
+    this.visibleOperationBox = false;
+  }
+
+  onFileSelected(event: any) {
+    const newFiles: File[] = Array.from(event.target.files);
+  
+    this.selectedFiles = [...this.selectedFiles, ...newFiles];
+  
+    if (this.selectedFiles.length > 0) {
+      // Display the names of selected files
+      this.fileNameOC = this.selectedFiles.map(file => file.name).join(', ');
+    } else {
+      this.fileNameOC = "";
+    }
+  }
+  
+  onRemoveOperationClick() {
+    // this.selectedFiles.splice(index, 1);
+  
+    // if (this.selectedFiles.length > 0) {
+    //   // Display the names of remaining files
+    //   this.fileNameOC = this.selectedFiles.map(file => file.name).join(', ');
+    // } else {
+    //   this.fileNameOC = "";
+    // }
+    this.fileNameOC = "";
+    this.selectedFile = null;
+  }
+  showSuccessMessage(message: string) {
+    this.messageService.add({ key: 'successToast', severity: 'success', summary: 'Success', detail: message });
+  }
+
+  onUploadClick(): void {
+    if (this.selectedFiles.length > 0) {
+      const scopeId = 2;
+      const entityId = 2;
+
+      this.visibleOperationBox = false;
+
+      // Upload each file separately
+      for (const file of this.selectedFiles) {
+        this.projectService.UploadProjectArtifact(file, scopeId, entityId).subscribe(
+          (res: any) => {
+            if (res?.message === 'Excel Upload Successfully') {
+              console.log('File uploaded successfully:', res);
+              // Update the list of uploaded files
+              this.uploadedFiles.push({ name: file.name, file: file });
+              console.log('uploadedFiles:', this.uploadedFiles);
+              this.showSuccessMessage('File uploaded successfully!');
+            } else {
+              console.log('Unexpected response:', res);
+              this.uploadedFiles.push({ name: file.name, file: file });
+              console.log('uploadedFiles:', this.uploadedFiles);
+            }
+          },
+          (error) => {
+            console.error('Error uploading file:', error);
+          }
+        );
+      }
+
+      // Reset selectedFiles and file input
+      this.selectedFiles = [];
+      const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+      if (fileInput) {
+        fileInput.value = '';
+      }
+    } else {
+      console.log('No file selected.');
+    }
+  }
+  onRemoveUploadedFile(index: number): void {
+    this.uploadedFiles.splice(index, 1);
+  }
+
+
+  
+}

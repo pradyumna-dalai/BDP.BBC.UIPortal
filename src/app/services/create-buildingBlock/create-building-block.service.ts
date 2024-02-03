@@ -57,7 +57,6 @@ export class CreateBuildingBlockService {
   }
   downloadSampleOPExcel()
   {
-   
     return this.http.get(`${url}${settings.AppRoutes.Auth.downloadSampleOPExcel}`, { responseType: 'arraybuffer' as 'json' });
   }
 
@@ -69,11 +68,15 @@ export class CreateBuildingBlockService {
       .set('scopeId', scopeId.toString())
       .set('entityId', entityId.toString());
 
-    return this.http.post(url+settings.AppRoutes.Auth.operationCardUpload, formData,  { params }).pipe(
+    return this.http.post(url+settings.AppRoutes.Auth.CommonUpload, formData,  { params }).pipe(
       catchError((error: any) => {
         return throwError(error);
       })
     );
   }
 
+  downloadUploadedOperationCard(id:number ) {
+    const downloadUrl = `${url}${settings.AppRoutes.Auth.downloadOperationExcel}/${id}`;
+    return this.http.get(downloadUrl, { responseType: 'arraybuffer' as 'json' });
+  }
 }
