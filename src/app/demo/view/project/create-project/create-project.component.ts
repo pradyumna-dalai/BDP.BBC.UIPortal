@@ -446,7 +446,17 @@ export class CreateProjectComponent implements OnInit {
     this.initializeOriginalDataO();
   }
   OrignsaveRow(rowIndex: number) {
-    this.OtableData[rowIndex].editing = false;
+    const rowData = this.OtableData[rowIndex];
+  if (!rowData.Volume || rowData.Uom === null) {
+    this.messageService.add({
+      key: 'errorToast',
+      severity: 'error',
+      summary: 'Error!',
+      detail: 'Volume and UOM are required for each row in Origin Location.'
+    });
+  } else {
+    rowData.editing = false;
+  }
   }
   OrigndiscardRow(rowIndex: any) {
     if (this.OtableData[rowIndex].adding || this.OtableData[rowIndex].editing) {
@@ -509,7 +519,17 @@ export class CreateProjectComponent implements OnInit {
     this.initializeOriginalData();
   }
   saveRow(rowIndex: number) {
-    this.tableData[rowIndex].editing = false;
+    const rowData = this.tableData[rowIndex];
+    if (!rowData.Volume || rowData.Uom === null) {
+      this.messageService.add({
+        key: 'errorToast',
+        severity: 'error',
+        summary: 'Error!',
+        detail: 'Volume and UOM are required for each row in Destination Location.'
+      });
+    } else {
+      rowData.editing = false;
+    }
   }
   discardRow(rowIndex: any) {
     if (this.tableData[rowIndex] && (this.tableData[rowIndex].adding || this.tableData[rowIndex].editing)) {
