@@ -84,7 +84,7 @@ export class CreateProjectComponent implements OnInit {
   selectedLocationIsOrigin: boolean = true;
   activeTabIndex: number = 0; // default to Origin Location
 
-
+  selectedFiles: File[] = [];
   constructor(private breadcrumbService: AppBreadcrumbService,
     private datePipe: DatePipe, private messageService: MessageService, private fb: FormBuilder, public MasterTableservice: MasterTableService, public projectService: ProjectsService) {
     this.breadcrumbService.setItems([
@@ -388,10 +388,10 @@ export class CreateProjectComponent implements OnInit {
 
   onFileSelected(event: any) {
     const files: FileList = event.target.files;
-
+    this.selectedFiles = [];
     for (let i = 0; i < files.length; i++) {
       const file: File = files[i];
-      console.log('Selected File:', file);
+      this.selectedFiles.push(file);
     }
   }
 

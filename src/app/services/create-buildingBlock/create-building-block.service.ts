@@ -61,6 +61,19 @@ export class CreateBuildingBlockService {
     return this.http.get(`${url}${settings.AppRoutes.Auth.downloadSampleOPExcel}`, { responseType: 'arraybuffer' as 'json' });
   }
 
+  operationCardUploadExcel(file: File, scopeId: number, entityId: number): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('file', file, file.name);
 
+    const params = new HttpParams()
+      .set('scopeId', scopeId.toString())
+      .set('entityId', entityId.toString());
+
+    return this.http.post(url+settings.AppRoutes.Auth.operationCardUpload, formData,  { params }).pipe(
+      catchError((error: any) => {
+        return throwError(error);
+      })
+    );
+  }
 
 }
