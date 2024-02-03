@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-cost-line-item',
-  templateUrl: './cost-line-item.component.html',
-  styleUrls: ['./cost-line-item.component.scss']
+  selector: 'app-project-cost',
+  templateUrl: './project-cost.component.html',
+  styleUrls: ['./project-cost.component.scss']
 })
-export class CostLineItemComponent {
-  editing:boolean
+export class ProjectCostComponent {
 
   ///add voulume & CLI///
 showOriginVolume: boolean = true;
@@ -20,22 +19,10 @@ destinationButtonBorderRadius: string = '5px';
 showOriginCLI: boolean = true;
 showDestinationCLI:boolean = false;
 //end//
-private _isExpanded = false;
-  onRowEditInit(event:any){
 
-  }
-  onRowEditSave(event:any){
-
-  }
-  onRowEditCancel(){
-    
-  }
-
-  //---------------------------------Cost line item--------------------------------------------//
-
-showOriginSectionCLI() {
-  this.showOriginCLI = true;
-  this.showDestinationCLI = false;
+shoSOWSection() {
+  this.showOriginVolume = true;
+  this.showDestinationVolume = false;
   this.originButtonColor = 'white';
   this.destinationButtonColor = 'rgb(0, 110, 255)';
   this.originButtonBorder = '1px solid rgb(0, 110, 255)';
@@ -44,22 +31,14 @@ showOriginSectionCLI() {
   this.destinationButtonBorderRadius = '5px';
 }
 
-showDestinationSectionCLI() {
-  this.showOriginCLI = false;
-  this.showDestinationCLI = true;
+showplStatement() {
+  this.showOriginVolume = false;
+  this.showDestinationVolume = true;
   this.originButtonColor = 'rgb(0, 110, 255)';
   this.destinationButtonColor = 'white';
   this.originButtonBorder = '1px solid rgb(0, 110, 255)';
   this.destinationButtonBorder = '1px solid rgb(0, 110, 255)';
   this.originButtonBorderRadius = '5px';
   this.destinationButtonBorderRadius = '5px';
-}
-//---------------------------------End--------------------------------------------//
-public get isExpanded() {
-  return this._isExpanded;
-}
-
-public set isExpanded(value: boolean) {
-  this._isExpanded = value;
 }
 }

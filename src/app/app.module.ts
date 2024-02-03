@@ -123,6 +123,7 @@ import { BuildingBlockComponent } from './demo/view/project/create-project/build
 import { AddVolumeComponent } from './demo/view/project/create-project/add-volume/add-volume.component';
 import { CostLineItemComponent } from './demo/view/project/create-project/cost-line-item/cost-line-item.component';
 import { OtherCostComponent } from './demo/view/project/create-project/other-cost/other-cost.component';
+import { ProjectCostComponent } from './demo/view/project/create-project/project-cost/project-cost.component';
 
 
 
@@ -246,6 +247,7 @@ import { OtherCostComponent } from './demo/view/project/create-project/other-cos
         AddVolumeComponent,
         CostLineItemComponent,
         OtherCostComponent,
+        ProjectCostComponent,
 
     ],
     providers: [
