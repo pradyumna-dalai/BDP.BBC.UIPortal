@@ -43,6 +43,26 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
         this.loadTreeDataNew();
 
     }
+    expandNode(node: TreeNode) {
+        if (node.children) {
+          node.expanded = true;
+          node.children.forEach(childNode => {
+            this.expandNode(childNode);
+          });
+        }
+      }
+      expandNodesBasedOnSearchResults() {
+        this.treeDataNew.forEach((node) => {
+          node.expanded = true;
+          this.expandNode(node);
+        });
+      }
+      expandNodesBasedOnDraftSearchResults() {
+        this.treeData.forEach((node) => {
+          node.expanded = true;
+          this.expandNode(node);
+        });
+      }
 
     loadTreeData() {
         this.createBuildingBlockservice.getExplorerData(1).subscribe((data: any) => {
@@ -56,6 +76,7 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
     loadTreeDataNew() {
         this.createBuildingBlockservice.getExplorerData(2).subscribe((data: any) => {
             this.treeDataNew = this.transformData(data.data);
+            
         },
             (error) => {
                 console.error('Error loading tree data:', error);
@@ -68,9 +89,12 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
             // If search text is empty, reload the original data
             this.loadTreeData();
             this.loadTreeDataNew();
+            
         } else {
             this.treeData = this.filterTreeData(this.treeData, this.searchText);
             this.treeDataNew = this.filterTreeData(this.treeDataNew, this.searchText);
+            this.expandNodesBasedOnSearchResults();
+            this.expandNodesBasedOnDraftSearchResults();
         }
     }
 
