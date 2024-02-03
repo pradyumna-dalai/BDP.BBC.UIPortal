@@ -128,7 +128,7 @@
 
                     <div class="card">
                         <p-tabView>
-                            <p-tabPanel header="Origin Location" *ngIf="selectedLocationIsOrigin">
+                            <p-tabPanel header="Origin Location" >
 
                                 <p-table [value]="OtableData" [tableStyle]="{'min-width': '50rem'}">
                                     <ng-template pTemplate="header">
@@ -193,7 +193,7 @@
                                 </p-table>
 
                             </p-tabPanel>
-                            <p-tabPanel header="Destination Location" *ngIf="!selectedLocationIsOrigin">
+                            <p-tabPanel header="Destination Location">
 
                                 <p-table [value]="tableData" [tableStyle]="{'min-width': '50rem'}">
                                     <ng-template pTemplate="header">

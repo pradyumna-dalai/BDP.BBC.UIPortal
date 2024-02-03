@@ -82,6 +82,8 @@ export class CreateProjectComponent implements OnInit {
   enableDestinationLocationTab: boolean = false;
 
   selectedLocationIsOrigin: boolean = true;
+  activeTabIndex: number = 0; // default to Origin Location
+
 
   constructor(private breadcrumbService: AppBreadcrumbService,
     private datePipe: DatePipe, private messageService: MessageService, private fb: FormBuilder, public MasterTableservice: MasterTableService, public projectService: ProjectsService) {
@@ -354,16 +356,17 @@ export class CreateProjectComponent implements OnInit {
   toggleOriginCheckbox() {
     this.enableOriginLocation = !this.enableOriginLocation;
     // this.enableOriginLocationTab = this.enableOriginLocation;
-    this.selectedLocationIsOrigin = this.enableOriginLocation;
+   // this.selectedLocationIsOrigin = this.enableOriginLocation;
     if (!this.enableOriginLocation) {
       this.selectedCitiesOrign = [];
       this.OtableData = [];
     }
+    
   }
   toggleDestinationCheckbox() {
     this.enableDestinationLocation = !this.enableDestinationLocation;
     //  this.enableDestinationLocationTab = this.enableDestinationLocation;
-    this.selectedLocationIsOrigin = !this.enableDestinationLocation;
+   // this.selectedLocationIsOrigin = !this.enableDestinationLocation;
     if (!this.enableDestinationLocation) {
       this.selectedCities = [];
       this.tableData = [];
