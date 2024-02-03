@@ -101,7 +101,8 @@
                     </div>
                     <p-multiSelect placeholder="Select Origin Location" optionLabel="name" optionValue="id"
                         display="chip" [showClear]="true" [options]="originLocations" [disabled]="!enableOriginLocation"
-                        (onChange)="onOriginLocationChange($event)">
+                        (onChange)="onOriginLocationChange($event)" [(ngModel)]="selectedCitiesOrign"
+                        [ngModelOptions]="{standalone: true}">
                     </p-multiSelect>
 
                 </div>
@@ -113,23 +114,23 @@
                         <label for="nyz" style="padding-left: 6px;">Destination Location</label>
                     </div>
                     <p-multiSelect placeholder="Select Destination Location" optionLabel="name" optionValue="id"
-                        display="chip" [showClear]="true" [options]="destinationLocations"
-                        [disabled]="!enableDestinationLocation" (onChange)="onDestinationLocationChange($event)">
+                        display="chip" [showClear]="true" [options]="destinationLocations" [(ngModel)]="selectedCities"
+                        [ngModelOptions]="{standalone: true}" [disabled]="!enableDestinationLocation"
+                        (onChange)="onDestinationLocationChange($event)">
                     </p-multiSelect>
                 </div>
             </div>
-
+            <!-- "enableOriginLocationTab ? 0 : (enableDestinationLocationTab ? 1 : -1)" -->
 
             <p-accordion [activeIndex]="0">
-                <p-accordionTab header="Selected Location Volume and UOM">
+                <p-accordionTab header="Selected Location Volume and UOM"
+                    *ngIf="enableOriginLocation || enableDestinationLocation">
+
                     <div class="card">
                         <p-tabView>
-                            <p-tabPanel header="Origin Location">
+                            <p-tabPanel header="Origin Location" *ngIf="selectedLocationIsOrigin">
 
-                                <p-toast></p-toast>
-
-                                <p-table [value]="originTableControls.controls" dataKey="id" editMode="row"
-                                    [tableStyle]="{'min-width': '50rem'}">
+                                <p-table [value]="OtableData" [tableStyle]="{'min-width': '50rem'}">
                                     <ng-template pTemplate="header">
                                         <tr>
                                             <th style="width:20%">Action</th>
@@ -139,57 +140,62 @@
 
                                         </tr>
                                     </ng-template>
-                                    <ng-template pTemplate="body" let-product let-ri="rowIndex">
+                                    <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
                                         <tr>
                                             <td>
-                                                <div *ngIf="isActionButtonsVisible">
-                                                    <div  >
-                                                    <button pButton pRipple type="button" icon="pi pi-plus"
-                                                        class="p-button-rounded p-button-text p-button-success"
-                                                        (click)="onAddRowBelow(ri)"></button>
-                                                    </div>
-                                                    <button pButton pRipple type="button" icon="pi pi-check"
-                                                        (click)="onSave($event, product)"
+                                                <div>
+                                                    <button pButton pRipple type="button"
+                                                        (click)="OrignaddRow(rowIndex)" *ngIf="!rowData.editing"
+                                                        icon="pi pi-plus"
+                                                        class="p-button-rounded p-button-text"></button>
+                                                    <button pButton pRipple type="button"
+                                                        (click)="OrigneditRow(rowIndex)" *ngIf="!rowData.editing"
+                                                        pInitEditableRow icon="pi pi-pencil"
+                                                        class="p-button-rounded p-button-text"></button>
+                                                    <button pButton pRipple type="button" pSaveEditableRow
+                                                        icon="pi pi-check" (click)="OrignsaveRow(rowIndex)"
+                                                        *ngIf="rowData.editing"
                                                         class="p-button-rounded p-button-text p-button-success mr-2"></button>
                                                     <button pButton pRipple type="button" pCancelEditableRow
-                                                        icon="pi pi-times" (click)="onRowEditCancel(product, ri)"
+                                                        icon="pi pi-times" (click)="OrigndiscardRow(rowIndex)"
+                                                        *ngIf="rowData.editing"
                                                         class="p-button-rounded p-button-text p-button-danger"></button>
-                                                    <button pButton pRipple type="button" icon="pi pi-pencil"
-                                                        (click)="onRowEditInit(product, ri)"
-                                                        class="p-button-rounded p-button-text p-button-warning"></button>
                                                     <button pButton pRipple type="button" icon="pi pi-trash"
-                                                        class="p-button-rounded p-button-text p-button-danger"
-                                                        (click)="onDeleteRow(ri)"></button>
+                                                        (click)="OrigndeleteRow(rowIndex)" *ngIf="!rowData.editing"
+                                                        class="p-button-rounded p-button-text p-button-danger"></button>
+
                                                 </div>
+                                            </td>
+                                            <td>
+                                                {{ rowData.city }}
+                                            </td>
+                                            <td>
+                                                <span *ngIf="!rowData.editing">{{ rowData.Volume }}</span>
+                                                <input [(ngModel)]="rowData.Volume" *ngIf="rowData.editing"
+                                                    [ngModelOptions]="{standalone: true}" pInputText type="number"
+                                                    placeholder="Enter Volume" [min]="0" required>
+                                            </td>
 
-                                            <td>
-                                                {{ getLocationName(product.get('location').value) }}
+                                            <td *ngIf="rowData.editing">
+                                                <p-dropdown [(ngModel)]="rowData.Uom"
+                                                    [ngModelOptions]="{standalone: true}" [options]="uomOptions"
+                                                    optionLabel="name" optionValue="id" [appendTo]="'body'"
+                                                    placeholder="Select UOM" [style]="{'width':'100%'}"
+                                                    required></p-dropdown>
+                                            </td>
+                                            <td *ngIf="!rowData.editing">
+                                                {{ getUomName(rowData.Uom) }}
+                                            </td>
 
-                                            </td>
-                                            <td>
-                                                <span *ngIf="!isRowEditMode[ri] || isAddingRow">{{
-                                                    product.get('volume').value }}</span>
-                                                <input *ngIf="(isRowEditMode[ri] && !isAddingRow)" pInputText
-                                                type="number" placeholder="Enter Volume"
-                                                    [formControl]="product.get('volume')" required>
-                                            </td>
-                                            <td>
-                                                <span *ngIf="!isRowEditMode[ri] || isAddingRow">{{
-                                                    product.get('uom').value }}</span>
-                                                <p-dropdown *ngIf="(isRowEditMode[ri] && !isAddingRow)"
-                                                    [options]="uomOptions" optionLabel="name" optionValue="id"
-                                                    [formControl]="product.get('uom')" [appendTo]="'body'"
-                                                    placeholder="Select UOM" [style]="{'width':'100%'}"></p-dropdown>
-                                            </td>
+
                                         </tr>
                                     </ng-template>
                                 </p-table>
 
                             </p-tabPanel>
-                            <p-tabPanel header="Destination Location">
-                                <p-toast></p-toast>
-                                <p-table [value]="products" dataKey="id" editMode="row"
-                                    [tableStyle]="{'min-width': '50rem'}">
+                            <p-tabPanel header="Destination Location" *ngIf="!selectedLocationIsOrigin">
+
+                                <p-table [value]="tableData" [tableStyle]="{'min-width': '50rem'}">
                                     <ng-template pTemplate="header">
                                         <tr>
                                             <th style="width:20%">Action</th>
@@ -199,62 +205,49 @@
 
                                         </tr>
                                     </ng-template>
-                                    <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
-                                        <tr [pEditableRow]="product">
+                                    <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+                                        <tr>
                                             <td>
                                                 <div>
-                                                    <button *ngIf="!editing" pButton pRipple type="button"
-                                                        icon="pi pi-plus" class="p-button-rounded p-button-text"
-                                                        (click)="onAddRowBelow(ri)"></button>
-                                                    <button *ngIf="!editing" pButton pRipple type="button"
-                                                        pInitEditableRow icon="pi pi-pencil"
-                                                        (click)="onRowEditInit(product)"
+                                                    <button pButton pRipple type="button" (click)="addRow(rowIndex)"
+                                                        *ngIf="!rowData.editing" icon="pi pi-plus"
                                                         class="p-button-rounded p-button-text"></button>
-                                                    <button *ngIf="editing" pButton pRipple type="button"
-                                                        pSaveEditableRow icon="pi pi-check"
-                                                        (click)="onRowEditSave(product)"
+                                                    <button pButton pRipple type="button" (click)="editRow(rowIndex)"
+                                                        *ngIf="!rowData.editing" pInitEditableRow icon="pi pi-pencil"
+                                                        class="p-button-rounded p-button-text"></button>
+                                                    <button pButton pRipple type="button" pSaveEditableRow
+                                                        icon="pi pi-check" (click)="saveRow(rowIndex)"
+                                                        *ngIf="rowData.editing"
                                                         class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                                                    <button *ngIf="editing" pButton pRipple type="button"
-                                                        pCancelEditableRow icon="pi pi-times"
-                                                        (click)="onRowEditCancel(product, ri)"
+                                                    <button pButton pRipple type="button" pCancelEditableRow
+                                                        icon="pi pi-times" (click)="discardRow(rowIndex)"
+                                                        *ngIf="rowData.editing"
                                                         class="p-button-rounded p-button-text p-button-danger"></button>
-                                                    <button *ngIf="!editing" pButton pRipple type="button"
-                                                        icon="pi pi-trash"
-                                                        class="p-button-rounded p-button-text p-button-danger"
-                                                        (click)="onDeleteRow(ri)"></button>
+                                                    <button pButton pRipple type="button" icon="pi pi-trash"
+                                                        (click)="deleteRow(rowIndex)" *ngIf="!rowData.editing"
+                                                        class="p-button-rounded p-button-text p-button-danger"></button>
 
                                                 </div>
                                             </td>
                                             <td>
-                                                <p-cellEditor>
-                                                    <ng-template pTemplate="input">
-                                                        <input pInputText type="text">
-                                                    </ng-template>
-                                                    <ng-template pTemplate="output">
-                                                        Delhi
-                                                    </ng-template>
-                                                </p-cellEditor>
+                                                {{ rowData.city }}
                                             </td>
                                             <td>
-                                                <p-cellEditor>
-                                                    <ng-template pTemplate="input">
-                                                        <input pInputText type="text" required>
-                                                    </ng-template>
-                                                    <ng-template pTemplate="output">
-                                                        123
-                                                    </ng-template>
-                                                </p-cellEditor>
+                                                <span *ngIf="!rowData.editing">{{ rowData.Volume }}</span>
+                                                <input [(ngModel)]="rowData.Volume" *ngIf="rowData.editing"
+                                                    [ngModelOptions]="{standalone: true}" pInputText type="number"
+                                                    placeholder="Enter Volume" [min]="0" required>
                                             </td>
-                                            <td>
-                                                <p-cellEditor>
-                                                    <ng-template pTemplate="input">
-                                                        <p-dropdown [options]="uomOptions" optionLabel="name"
-                                                            appendTo="body" [style]="{'width':'100%'}"></p-dropdown>
-                                                    </ng-template>
-                                                    <ng-template pTemplate="output">
-                                                        UOM
-                                                    </ng-template>
-                                                </p-cellEditor>
+
+                                            <td *ngIf="rowData.editing">
+                                                <p-dropdown [(ngModel)]="rowData.Uom"
+                                                    [ngModelOptions]="{standalone: true}" [options]="uomOptions"
+                                                    optionLabel="name" optionValue="id" [appendTo]="'body'"
+                                                    placeholder="Select UOM" [style]="{'width':'100%'}"
+                                                    required></p-dropdown>
+                                            </td>
+                                            <td *ngIf="!rowData.editing">
+                                                {{ getUomName(rowData.Uom) }}
                                             </td>
 
 
@@ -269,29 +262,38 @@
 
             <h6><b>Documents</b></h6>
             <p>Upload the following documnets: File Size < 5 mb,Format CSV,JPEG,Excel,PDF</p>
-            <div class="p-fluid grid">
-                <div class="field col-12 md:col-4">
-                    <div class="p-d-block" ><p><b>1.</b> Value Document&nbsp; <a (click)="showDialogOperationCard()" style="text-decoration: underline;">Upload</a></p></div>
-                    <!-- <p-fileUpload name="file" url="/your-upload-url" chooseLabel="Choose" uploadLabel="Upload" cancelLabel="Cancel"></p-fileUpload> -->
-                </div>
-                <div class="field col-12 md:col-4">
-                    <div class="p-d-block"><p><b>2.</b> Response Document&nbsp; <a (click)="showDialogOperationCard()" style="text-decoration: underline;">Upload</a></p></div>
-                    <!-- <p-fileUpload name="file" url="/your-upload-url" chooseLabel="Choose" uploadLabel="Upload" cancelLabel="Cancel"></p-fileUpload> -->
-                </div>
-                <div class="field col-12 md:col-4">
-                    <div class="p-d-block" ><p><b>3.</b> Others&nbsp; <a (click)="showDialogOperationCard()" style="text-decoration: underline;">Upload</a></p></div>
-                    <!-- <p-fileUpload name="file" url="/your-upload-url" chooseLabel="Choose" uploadLabel="Upload" cancelLabel="Cancel"></p-fileUpload> -->
-                </div>
-            </div>
-            <hr class="aligndown">
-            <div class="col-12" style="display: flex;justify-content: flex-end;">
-                <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
-                    (click)="SaveAsDraftProjects()" class="p-button-outlined mr-2 mb-2"></button>
-                    <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()"
-                    class="mr-2 mb-2"></button>
-            </div>
-            <p-toast key="successToast"></p-toast>
-            <p-toast key="errorToast"></p-toast>
+                    <div class="p-fluid grid">
+                        <div class="field col-12 md:col-4">
+                            <div class="p-d-block">
+                                <p><b>1.</b> Value Document&nbsp; <a (click)="showDialogOperationCard()"
+                                        style="text-decoration: underline;">Upload</a></p>
+                            </div>
+                            <!-- <p-fileUpload name="file" url="/your-upload-url" chooseLabel="Choose" uploadLabel="Upload" cancelLabel="Cancel"></p-fileUpload> -->
+                        </div>
+                        <div class="field col-12 md:col-4">
+                            <div class="p-d-block">
+                                <p><b>2.</b> Response Document&nbsp; <a (click)="showDialogOperationCard()"
+                                        style="text-decoration: underline;">Upload</a></p>
+                            </div>
+                            <!-- <p-fileUpload name="file" url="/your-upload-url" chooseLabel="Choose" uploadLabel="Upload" cancelLabel="Cancel"></p-fileUpload> -->
+                        </div>
+                        <div class="field col-12 md:col-4">
+                            <div class="p-d-block">
+                                <p><b>3.</b> Others&nbsp; <a (click)="showDialogOperationCard()"
+                                        style="text-decoration: underline;">Upload</a></p>
+                            </div>
+                            <!-- <p-fileUpload name="file" url="/your-upload-url" chooseLabel="Choose" uploadLabel="Upload" cancelLabel="Cancel"></p-fileUpload> -->
+                        </div>
+                    </div>
+                    <hr class="aligndown">
+                    <div class="col-12" style="display: flex;justify-content: flex-end;">
+                        <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
+                            (click)="SaveAsDraftProjects()" class="p-button-outlined mr-2 mb-2"></button>
+                        <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()"
+                            class="mr-2 mb-2"></button>
+                    </div>
+                    <p-toast key="successToast"></p-toast>
+                    <p-toast key="errorToast"></p-toast>
         </form>
         <!-- <hr>
             <h6><b>Documents</b></h6>
@@ -313,54 +315,50 @@
     </p-tabPanel>
     <p-tabPanel header="Building Block">
         <div>
-          
-                <app-building-block></app-building-block>
 
-          
+            <app-building-block></app-building-block>
+
+
         </div>
         <div class="col-12" style="display: flex;justify-content: flex-end;">
             <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
                 (click)="SaveAsDraftProjects()" class="p-button-outlined mr-2 mb-2"></button>
-                <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()"
-                class="mr-2 mb-2"></button>
+            <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()" class="mr-2 mb-2"></button>
         </div>
     </p-tabPanel>
-   
+
     <p-tabPanel header="Add Volume">
-            <div>
-                <app-add-volume></app-add-volume>
-                
-                
-            </div>
-            <div class="col-12" style="display: flex;justify-content: flex-end;">
-                <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
-                    (click)="SaveAsDraftProjects()" class="p-button-outlined mr-2 mb-2"></button>
-                    <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()"
-                    class="mr-2 mb-2"></button>
-            </div>
+        <div>
+            <app-add-volume></app-add-volume>
+
+
+        </div>
+        <div class="col-12" style="display: flex;justify-content: flex-end;">
+            <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
+                (click)="SaveAsDraftProjects()" class="p-button-outlined mr-2 mb-2"></button>
+            <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()" class="mr-2 mb-2"></button>
+        </div>
     </p-tabPanel>
     <p-tabPanel header="Cost Line Item">
         <div>
             <app-cost-line-item></app-cost-line-item>
-           
-            
+
+
         </div>
         <div class="col-12" style="display: flex;justify-content: flex-end;">
             <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
                 (click)="SaveAsDraftProjects()" class="p-button-outlined mr-2 mb-2"></button>
-                <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()"
-                class="mr-2 mb-2"></button>
+            <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()" class="mr-2 mb-2"></button>
         </div>
     </p-tabPanel>
     <p-tabPanel header="Other Cost(Optional)">
         <div>
-       <app-other-cost></app-other-cost>
+            <app-other-cost></app-other-cost>
         </div>
         <div class="col-12" style="display: flex;justify-content: flex-end;">
             <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
                 (click)="SaveAsDraftProjects()" class="p-button-outlined mr-2 mb-2"></button>
-                <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()"
-                class="mr-2 mb-2"></button>
+            <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()" class="mr-2 mb-2"></button>
         </div>
     </p-tabPanel>
     <p-tabPanel header="Project Cost">
@@ -374,8 +372,7 @@
         <div class="col-12" style="display: flex;justify-content: flex-end;">
             <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
                 (click)="SaveAsDraftProjects()" class="p-button-outlined mr-2 mb-2"></button>
-                <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()"
-                class="mr-2 mb-2"></button>
+            <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()" class="mr-2 mb-2"></button>
         </div>
     </p-tabPanel>
 </p-tabView>
@@ -386,8 +383,9 @@
         <div style="width: 100%;">
             <h5 style="display: contents;">Upload Document</h5>&nbsp;&nbsp;&nbsp;
             <h5 style="display: contents;">
-                <a href="#" (click)="downloadSampleOpExcel($event)" style="text-decoration: underline;">Download Sample File</a>
-              </h5>
+                <a href="#" (click)="downloadSampleOpExcel($event)" style="text-decoration: underline;">Download Sample
+                    File</a>
+            </h5>
         </div>
     </ng-template>
     <hr>
@@ -420,21 +418,25 @@
                                     <div class="upload_name">Upload</div>
                                 </label>
                                 <p style="text-align: center;">{{fileNameOC}}</p>
-                                <input type="file" id="fileInput" (change)="onFileSelected($event)" style="display: none;" accept=".xlsx, .csv">
+                                <input type="file" id="fileInput" (change)="onFileSelected($event)"
+                                    style="display: none;" accept=".xlsx, .csv">
                             </div>
                         </div>
                     </div>
                     <div class="card_footer">
                         <div>
-                            <button type="submit" pButton pRipple class="btn"  [disabled]="!selectedFile" (click)="onRemoveOperationClick()">
+                            <button type="submit" pButton pRipple class="btn" [disabled]="!selectedFile"
+                                (click)="onRemoveOperationClick()">
                                 Remove File
                             </button>
                         </div>
                         <div class="uplodBtn_right">
-                            <button type="submit" pButton pRipple class="btn"    [disabled]="!selectedFile" (click)="onUploadClick()">
+                            <button type="submit" pButton pRipple class="btn" [disabled]="!selectedFile"
+                                (click)="onUploadClick()">
                                 Submit
                             </button>
-                            <button type="submit" (click)="onOperarationCancelClick()" pButton pRipple class="btn">Cancel</button>
+                            <button type="submit" (click)="onOperarationCancelClick()" pButton pRipple
+                                class="btn">Cancel</button>
                         </div>
                     </div>
                 </div>
