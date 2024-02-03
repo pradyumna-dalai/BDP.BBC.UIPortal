@@ -387,6 +387,12 @@ export class CreateProjectComponent implements OnInit {
   }
 
   onFileSelected(event: any) {
+    const files: FileList = event.target.files;
+
+    for (let i = 0; i < files.length; i++) {
+      const file: File = files[i];
+      console.log('Selected File:', file);
+    }
   }
 
   onUploadClick() {

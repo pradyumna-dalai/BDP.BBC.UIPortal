@@ -418,8 +418,9 @@
                                     <div class="upload_name">Upload</div>
                                 </label>
                                 <p style="text-align: center;">{{fileNameOC}}</p>
-                                <input type="file" id="fileInput" (change)="onFileSelected($event)"
-                                    style="display: none;" accept=".xlsx, .csv">
+                                <input type="file" id="fileInput" (change)="onFileSelected($event)" multiple
+                                    style="display: none;" accept=".csv, .jpeg, .jpg, .png, .xls, .xlsx, .pdf">
+                             
                             </div>
                         </div>
                     </div>
