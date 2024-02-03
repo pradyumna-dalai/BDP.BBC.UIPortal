@@ -22,6 +22,7 @@ destinationButtonBorderRadius: string = '5px';
 showOriginCLI: boolean = true;
 showDestinationCLI:boolean = false;
 //end//
+private _isExpanded = false;
   constructor(private projectService:ProjectsService){
 
   }
@@ -29,7 +30,13 @@ showDestinationCLI:boolean = false;
   ngOnInit(){
 
   }
+  public get isExpanded() {
+    return this._isExpanded;
+}
 
+public set isExpanded(value: boolean) {
+    this._isExpanded = value;
+}
   shareFunctionAddVolume(){
     this.projectService.buildingData$.subscribe((res)=>{
       console.log("call Add",res);
