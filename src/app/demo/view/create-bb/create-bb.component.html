@@ -58,6 +58,7 @@
             <h5>Scoping Card</h5>
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
+        
             <a (click)="showDialogScopingCard()" style="text-decoration: underline;">Import From Excel</a>
         </div>
     </div>
@@ -236,7 +237,8 @@
     <div class="col-6">
         <h5>Operation Card</h5>
     </div>
-    <div class="col-6" style="display: flex;justify-content: flex-end;">
+    <div class="col-6" style="display: flex;justify-content: flex-end;"> 
+        <a style="text-decoration: underline;">Download Excel</a> &nbsp;&nbsp;
         <a (click)="showDialogOperationCard()" style="text-decoration: underline;">Import From Excel</a>
     </div>
       </div>
@@ -765,8 +767,8 @@
                 <div class="custom-container">
                     <h6><b>Instructions</b></h6>
                     <ul class="list">
-                        <li>Maximum File Size: 2MB</li>
-                        <li>File Format: CSV,xlsx</li>
+                        <li>Maximum File Size: 5MB</li>
+                        <li>File Format: xlsx</li>
                     </ul>
                     <ol class="list" type="1">
                         <li>Make sure to provide valid data</li>
