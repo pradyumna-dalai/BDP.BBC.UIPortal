@@ -265,7 +265,7 @@
             <div class="p-fluid grid">
                 <div class="field col-12 md:col-4">
                   <div class="p-d-block">
-                    <p><b>1.</b> Value Document&nbsp; <a (click)="showDialogOperationCard(2, 2)"
+                    <p><b>1.</b> Value Document&nbsp; <a (click)="showDialogOperationCard()"
                         style="text-decoration: underline;">Upload</a></p>
                     <ul *ngIf="uploadedFiles.length > 0">
                       <li *ngFor="let file of uploadedFiles; let i = index" class="file-item">
@@ -278,7 +278,7 @@
                 </div>
                 <div class="field col-12 md:col-4">
                   <div class="p-d-block">
-                    <p><b>2.</b> Response Document&nbsp; <a (click)="showDialogOperationCard(3, 1)"
+                    <p><b>2.</b> Response Document&nbsp; <a (click)="showDialogOperationCard()"
                         style="text-decoration: underline;">Upload</a></p>
                     <ul *ngIf="uploadedResponseFiles.length > 0">
                       <li *ngFor="let file of uploadedResponseFiles; let i = index" class="file-item">
@@ -291,7 +291,7 @@
                 </div>
                 <div class="field col-12 md:col-4">
                   <div class="p-d-block">
-                    <p><b>3.</b> Others&nbsp; <a (click)="showDialogOperationCard(4, 1)"
+                    <p><b>3.</b> Others&nbsp; <a (click)="showDialogOperationCard()"
                         style="text-decoration: underline;">Upload</a></p>
                     <ul *ngIf="uploadedOtherFiles.length > 0">
                       <li *ngFor="let file of uploadedOtherFiles; let i = index" class="file-item">
@@ -302,6 +302,7 @@
                     </ul>
                   </div>
                 </div>
+            </div>
                     <hr class="aligndown">
                     <div class="col-12" style="display: flex;justify-content: flex-end;">
                         <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
