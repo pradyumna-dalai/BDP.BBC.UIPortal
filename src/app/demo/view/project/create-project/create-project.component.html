@@ -262,33 +262,51 @@
 
             <h6><b>Documents</b></h6>
             <p>Upload the following documnets: File Size < 5 mb,Format CSV,JPEG,Excel,PDF</p>
-                    <div class="p-fluid grid">
-                        <div class="field col-12 md:col-4">
-                            <div class="p-d-block">
-                                <p><b>1.</b> Value Document&nbsp; <a (click)="showDialogOperationCard()"
-                                        style="text-decoration: underline;">Upload</a></p>
-                            </div>
-                            <!-- <p-fileUpload name="file" url="/your-upload-url" chooseLabel="Choose" uploadLabel="Upload" cancelLabel="Cancel"></p-fileUpload> -->
-                        </div>
-                        <div class="field col-12 md:col-4">
-                            <div class="p-d-block">
-                                <p><b>2.</b> Response Document&nbsp; <a (click)="showDialogOperationCard()"
-                                        style="text-decoration: underline;">Upload</a></p>
-                            </div>
-                            <!-- <p-fileUpload name="file" url="/your-upload-url" chooseLabel="Choose" uploadLabel="Upload" cancelLabel="Cancel"></p-fileUpload> -->
-                        </div>
-                        <div class="field col-12 md:col-4">
-                            <div class="p-d-block">
-                                <p><b>3.</b> Others&nbsp; <a (click)="showDialogOperationCard()"
-                                        style="text-decoration: underline;">Upload</a></p>
-                            </div>
-                            <!-- <p-fileUpload name="file" url="/your-upload-url" chooseLabel="Choose" uploadLabel="Upload" cancelLabel="Cancel"></p-fileUpload> -->
-                        </div>
-                    </div>
+            <div class="p-fluid grid">
+                <div class="field col-12 md:col-4">
+                  <div class="p-d-block">
+                    <p><b>1.</b> Value Document&nbsp; <a (click)="showDialogOperationCard()"
+                        style="text-decoration: underline;">Upload</a></p>
+                    <ul *ngIf="uploadedFiles.length > 0">
+                      <li *ngFor="let file of uploadedFiles; let i = index" class="file-item">
+                        {{ i + 1 }}. {{ file.name }}
+                        <button pButton pRipple type="button" icon="pi pi-trash" (click)="onRemoveUploadedFile(i)"
+                          style="margin-left: 8px;" class="p-button-rounded p-button-text p-button-danger"></button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="field col-12 md:col-4">
+                  <div class="p-d-block">
+                    <p><b>2.</b> Response Document&nbsp; <a (click)="showDialogResponse()"
+                        style="text-decoration: underline;">Upload</a></p>
+                    <ul *ngIf="uploadedResponseFiles.length > 0">
+                      <li *ngFor="let file of uploadedResponseFiles; let i = index" class="file-item">
+                        {{ i + 1 }}. {{ file.name }}
+                        <button pButton pRipple type="button" icon="pi pi-trash" (click)="onRemoveUploadedResponseFile(i)"
+                          style="margin-left: 8px;" class="p-button-rounded p-button-text p-button-danger"></button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="field col-12 md:col-4">
+                  <div class="p-d-block">
+                    <p><b>3.</b> Others&nbsp; <a  (click)="showDialogOthers()"
+                        style="text-decoration: underline;">Upload</a></p>
+                    <ul *ngIf="uploadedOtherFiles.length > 0">
+                      <li *ngFor="let file of uploadedOtherFiles; let i = index" class="file-item">
+                        {{ i + 1 }}. {{ file.name }}
+                        <button pButton pRipple type="button" icon="pi pi-trash" (click)="onRemoveUploadedOtherFile(i)"
+                          style="margin-left: 8px;" class="p-button-rounded p-button-text p-button-danger"></button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+            </div>
                     <hr class="aligndown">
                     <div class="col-12" style="display: flex;justify-content: flex-end;">
                         <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
-                            (click)="SaveAsDraftProjects()" class="p-button-outlined mr-2 mb-2"></button>
+                            (click)= "onSaveAsDraftClick()" class="p-button-outlined mr-2 mb-2"></button>
                         <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()"
                             class="mr-2 mb-2"></button>
                     </div>
@@ -379,8 +397,8 @@
         <div style="width: 100%;">
             <h5 style="display: contents;">Upload Document</h5>&nbsp;&nbsp;&nbsp;
             <h5 style="display: contents;">
-                <a href="#" (click)="downloadSampleOpExcel($event)" style="text-decoration: underline;">Download Sample
-                    File</a>
+                <!-- <a href="#" (click)="downloadSampleOpExcel($event)" style="text-decoration: underline;">Download Sample
+                    File</a> -->
             </h5>
         </div>
     </ng-template>
@@ -422,14 +440,154 @@
                     </div>
                     <div class="card_footer">
                         <div>
-                            <button type="submit" pButton pRipple class="btn" [disabled]="!selectedFile"
-                                (click)="onRemoveOperationClick()">
+                            <button type="submit" pButton pRipple class="btn" 
+                                (click)="onRemoveOperationClick()" >
                                 Remove File
                             </button>
                         </div>
                         <div class="uplodBtn_right">
-                            <button type="submit" pButton pRipple class="btn" [disabled]="!selectedFile"
+                            <button type="submit" pButton pRipple class="btn" 
                                 (click)="onUploadClick()">
+                                Submit
+                            </button>
+                            <button type="submit" (click)="onOperarationCancelClick()" pButton pRipple
+                                class="btn">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Add this inside your p-dialog or any suitable place -->
+
+
+</p-dialog>
+<p-dialog header="Import Excel" [(visible)]="visibleResponseBox" [style]="{width: '50vw'}">
+    <ng-template pTemplate="header">
+        <div style="width: 100%;">
+            <h5 style="display: contents;">Upload Document</h5>&nbsp;&nbsp;&nbsp;
+            <h5 style="display: contents;">
+                <!-- <a href="#" (click)="downloadSampleOpExcel($event)" style="text-decoration: underline;">Download Sample
+                    File</a> -->
+            </h5>
+        </div>
+    </ng-template>
+    <hr>
+    <div>
+        <div class="p-fluid grid">
+            <div class="col-12 md:col-12">
+                <div class="custom-container">
+                    <h6><b>Instructions</b></h6>
+                    <ul class="list">
+                        <li>Maximum File Size: 5MB</li>
+                        <li>Format CSV,JPEG,Excel,PDF</li>
+                    </ul>
+                    <ol class="list" type="1">
+                        <li>Make sure to provide valid data</li>
+                        <li>Keep file name recognizable</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="col-12 md:col-12">
+                <div class="custom-container">
+                    <h6><b>Upload</b></h6>
+                    <!-- <div *ngIf="showUploaderror" style="color: red;">
+                        Upload error: All fields empty or exceeds 1000 characters. Review the file before uploading.
+                    </div> -->
+                    <div class="box">
+                        <div class="card-body">
+                            <div class="container">
+                                <label for="fileInput" class="custom-file-input">
+                                    <i class="pi pi-upload" style="font-size: 30px;display: block;"></i>
+                                    <div class="upload_name">Upload</div>
+                                </label>
+                                <p style="text-align: center;">{{fileNameOC}}</p>
+                                <input type="file" id="fileInput" (change)="onFileSelected($event)" multiple
+                                    style="display: none;" accept=".csv, .jpeg, .jpg, .png, .xls, .xlsx, .pdf">
+                             
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card_footer">
+                        <div>
+                            <button type="submit" pButton pRipple class="btn" 
+                                (click)="onRemoveOperationClick()"  >
+                                Remove File
+                            </button>
+                        </div>
+                        <div class="uplodBtn_right">
+                            <button type="submit" pButton pRipple class="btn" 
+                                (click)="onUploadResponseClick()">
+                                Submit
+                            </button>
+                            <button type="submit" (click)="onOperarationCancelClick()" pButton pRipple
+                                class="btn">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Add this inside your p-dialog or any suitable place -->
+
+
+</p-dialog>
+<p-dialog header="Import Excel" [(visible)]="visibleOthersBox" [style]="{width: '50vw'}">
+    <ng-template pTemplate="header">
+        <div style="width: 100%;">
+            <h5 style="display: contents;">Upload Document</h5>&nbsp;&nbsp;&nbsp;
+            <h5 style="display: contents;">
+                <!-- <a href="#" (click)="downloadSampleOpExcel($event)" style="text-decoration: underline;">Download Sample
+                    File</a> -->
+            </h5>
+        </div>
+    </ng-template>
+    <hr>
+    <div>
+        <div class="p-fluid grid">
+            <div class="col-12 md:col-12">
+                <div class="custom-container">
+                    <h6><b>Instructions</b></h6>
+                    <ul class="list">
+                        <li>Maximum File Size: 5MB</li>
+                        <li>Format CSV,JPEG,Excel,PDF</li>
+                    </ul>
+                    <ol class="list" type="1">
+                        <li>Make sure to provide valid data</li>
+                        <li>Keep file name recognizable</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="col-12 md:col-12">
+                <div class="custom-container">
+                    <h6><b>Upload</b></h6>
+                    <!-- <div *ngIf="showUploaderror" style="color: red;">
+                        Upload error: All fields empty or exceeds 1000 characters. Review the file before uploading.
+                    </div> -->
+                    <div class="box">
+                        <div class="card-body">
+                            <div class="container">
+                                <label for="fileInput" class="custom-file-input">
+                                    <i class="pi pi-upload" style="font-size: 30px;display: block;"></i>
+                                    <div class="upload_name">Upload</div>
+                                </label>
+                                <p style="text-align: center;">{{fileNameOC}}</p>
+                                <input type="file" id="fileInput" (change)="onFileSelected($event)" multiple
+                                    style="display: none;" accept=".csv, .jpeg, .jpg, .png, .xls, .xlsx, .pdf">
+                             
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card_footer">
+                        <div>
+                            <button type="submit" pButton pRipple class="btn" 
+                                (click)="onRemoveOperationClick()" >
+                                Remove File
+                            </button>
+                        </div>
+                        <div class="uplodBtn_right">
+                            <button type="submit" pButton pRipple class="btn" 
+                                (click)="onUploadOtherClick()">
                                 Submit
                             </button>
                             <button type="submit" (click)="onOperarationCancelClick()" pButton pRipple

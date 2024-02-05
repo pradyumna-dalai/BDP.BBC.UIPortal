@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import * as XLSX from 'xlsx';
 import { HttpClient } from '@angular/common/http';
-
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-create-bb',
@@ -33,7 +33,7 @@ export class CreateBbComponent {
   showOperationCrad: boolean = false;
   visibleSC: boolean = false;
   visibleCC: boolean = false;
-  visibleOperationBox:boolean=false;
+  visibleOperationBox: boolean = false;
   product_name: any;
   selected: boolean = true;
 
@@ -42,12 +42,12 @@ export class CreateBbComponent {
   value_to_psa_bdp: any;
   customer_requirement: any;
   cvalue_to_psa_bdp: any;
-   parameters: any;
+  parameters: any;
   deliverables: any;
   stakeholders_audience: any;
   configurables: any;
   standard_service: any;
-  sow: string='';
+  sow: string = '';
   pre_requisite_info: any;
   combined_value: any;
   do_s: any;
@@ -69,11 +69,11 @@ export class CreateBbComponent {
   uploadedFiles: any[] = [];
   uploadInProgress: boolean = false;
   excelData: any;
-  excelDataSheet2:any;
+  excelDataSheet2: any;
   excelDataSheet1: any;
   showUploaderror: boolean = false;
   selectedFile: any;
- 
+
   fileNameSC: string;
   fileNameCC: string;
   fileNameOC: string;
@@ -96,10 +96,11 @@ export class CreateBbComponent {
   service_desc_error: any;
   customer_requirement_error: any;
   cvalue_to_psa_bdp_error: any;
+  blockId:number;
 
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
     public MasterTableservice: MasterTableService, private confirmationService: ConfirmationService,
-    public CreateBuildingBlockservice: CreateBuildingBlockService, private router: Router,private httpClient: HttpClient,
+    public CreateBuildingBlockservice: CreateBuildingBlockService, private router: Router, private httpClient: HttpClient,
     private route: ActivatedRoute, private createBuildingBlockservice: CreateBuildingBlockService, private sanitizer: DomSanitizer) {
     //  this.fetchBuildingBlockDetails('id');
     const id = this.route.snapshot.paramMap.get('id');
@@ -124,24 +125,19 @@ export class CreateBbComponent {
 
   }
 
-
   ngOnInit() {
-
     this.getProdname();
     this.getChargeCode();
     this.getModeOfTransport();
 
   }
- 
-
-
 
   onCancelClickSC() {
     this.showUploaderror = false;
     this.uploadError = "";
     this.fileNameSC = "";
     this.uploadFilesc = null;
-  
+
     // Add the following line to reset the file input
     const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
     if (fileInput) {
@@ -160,350 +156,348 @@ export class CreateBbComponent {
     }
   }
 
-onUploadSCExcel(event: any) {
-  const file:File = event.target.files[0];
-  if (file) {
+  onUploadSCExcel(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
       this.fileNameSC = file.name;
       const formData = new FormData();
       formData.append("file", file);
       this.uploadFilesc = file;
+    }
   }
-}
-uploadFilesc: File | null = null;
-makeScopingCardApiServiceCall()
- {
-  this.fileNameSC = this.uploadFilesc.name;
-  const formData = new FormData();
-  formData.append("file", this.uploadFilesc);
-  this.uploadInProgress = true;
-  this.createBuildingBlockservice.scopingCradImportExcel(formData).subscribe(
-    (res: any) => {
-      
-      if (res?.message === 'Excel Upload Sucessfully') {
-        // Process successful response
-        this.excelData = res?.data;
-        // Update UI variables with the response data
-        this.seervice_desc = this.excelData['Service Description'];
-        this.value_to_psa_bdp = this.excelData["Value to PSA BDP"];
-        this.customer_requirement = this.excelData["Customer Requirements"];
-        this.parameters = this.excelData["Parameters"];
-        this.deliverables = this.excelData["Deliverables"];
-        this.configurables = this.excelData["Configurable"];
-        this.stakeholders_audience = this.excelData["Stakeholders / Audience"];
-        // ... (similar updates for other variables)
+  uploadFilesc: File | null = null;
+  makeScopingCardApiServiceCall() {
+    this.fileNameSC = this.uploadFilesc.name;
+    const formData = new FormData();
+    formData.append("file", this.uploadFilesc);
+    this.uploadInProgress = true;
+    this.createBuildingBlockservice.scopingCradImportExcel(formData).subscribe(
+      (res: any) => {
 
-        this.visibleSC = false;
-        this.onPopupCancelSCClick();
-        // Reset the upload screen
-        this.resetUploadScreen();
-        this.uploadInProgress = false;
-        this.showUploaderror = false;
-        this.messageService.add({
-          key: 'successToast',
-          severity: 'success',
-          summary: 'Success!',
-          detail: 'Excel Uploaded successfully.'
-        });
-         // Reset the file input value
-        const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
-        if (fileInput) {
-          fileInput.value = '';
-        }
-      }
-       else {
-        console.log('Unexpected response:', res);
-      }
-    },
-    (error) => {
-      // Handle HTTP errors here
-      if (error.status === 400) {
+        if (res?.message === 'Excel Upload Sucessfully') {
+          // Process successful response
+          this.excelData = res?.data;
+          // Update UI variables with the response data
+          this.seervice_desc = this.excelData['Service Description'];
+          this.value_to_psa_bdp = this.excelData["Value to PSA BDP"];
+          this.customer_requirement = this.excelData["Customer Requirements"];
+          this.parameters = this.excelData["Parameters"];
+          this.deliverables = this.excelData["Deliverables"];
+          this.configurables = this.excelData["Configurable"];
+          this.stakeholders_audience = this.excelData["Stakeholders / Audience"];
+          // ... (similar updates for other variables)
 
-      console.log('Bad Request Error:', error);
-       if (error.error?.data?.message === 'All Field Are Empty') {
-          // Handle case where all fields are empty in the uploaded Excel file
-          this.showUploaderror = true;
+          this.visibleSC = false;
+          this.onPopupCancelSCClick();
+          // Reset the upload screen
+          this.resetUploadScreen();
           this.uploadInProgress = false;
-          this.uploadError = 'All fields are empty.';
-        } else if (error.error?.data) {
-          Object.keys(error.error.data).forEach((key) => {
-            const maxLength = error.error.data[key];
-            switch (key) {
-              case 'Deliverables':
-                this.deliverablesError = `Deliverables: ${maxLength}`;
-                break;
-              case 'Value to PSA BDP':
-                this.valueToPSABDPError = `Value to PSA BDP: ${maxLength}`;
-                break;
-              case 'Parameters':
-                this.parametersError = `Parameters: ${maxLength}`;
-                break;
-              case 'Service Description':
-                this.serviceDescriptionError = `Service Description: ${maxLength}`;
-                break;
-              case 'Stakeholders / Audience':
-                this.stakeholdersAudienceError = `Stakeholders / Audience: ${maxLength}`;
-                break;
-              case 'Customer Requirements':
-                this.customerRequirementsError = `Customer Requirements: ${maxLength}`;
-                break;
-              case 'Configurable':
-                this.configurableError = `Configurable: ${maxLength}`;
-                break;
-              // Add additional cases for other fields as needed
-              default:
-                console.log(`Unhandled field: ${key}`);
-                break;
-            }
+          this.showUploaderror = false;
+          this.messageService.add({
+            key: 'successToast',
+            severity: 'success',
+            summary: 'Success!',
+            detail: 'Excel Uploaded successfully.'
           });
-          if(error.error?.data == 'please upload scoping card excel file'){
-            this.uploadError = 'Please upload scoping card excel file';
+          // Reset the file input value
+          const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
+          if (fileInput) {
+            fileInput.value = '';
           }
         }
+        else {
+          console.log('Unexpected response:', res);
+        }
+      },
+      (error) => {
+        // Handle HTTP errors here
+        if (error.status === 400) {
 
-        // Set flag to show error message
-        this.showUploaderror = true;
-       
-      } 
+          console.log('Bad Request Error:', error);
+          if (error.error?.data?.message === 'All Field Are Empty') {
+            // Handle case where all fields are empty in the uploaded Excel file
+            this.showUploaderror = true;
+            this.uploadInProgress = false;
+            this.uploadError = 'All fields are empty.';
+          } else if (error.error?.data) {
+            Object.keys(error.error.data).forEach((key) => {
+              const maxLength = error.error.data[key];
+              switch (key) {
+                case 'Deliverables':
+                  this.deliverablesError = `Deliverables: ${maxLength}`;
+                  break;
+                case 'Value to PSA BDP':
+                  this.valueToPSABDPError = `Value to PSA BDP: ${maxLength}`;
+                  break;
+                case 'Parameters':
+                  this.parametersError = `Parameters: ${maxLength}`;
+                  break;
+                case 'Service Description':
+                  this.serviceDescriptionError = `Service Description: ${maxLength}`;
+                  break;
+                case 'Stakeholders / Audience':
+                  this.stakeholdersAudienceError = `Stakeholders / Audience: ${maxLength}`;
+                  break;
+                case 'Customer Requirements':
+                  this.customerRequirementsError = `Customer Requirements: ${maxLength}`;
+                  break;
+                case 'Configurable':
+                  this.configurableError = `Configurable: ${maxLength}`;
+                  break;
+                // Add additional cases for other fields as needed
+                default:
+                  console.log(`Unhandled field: ${key}`);
+                  break;
+              }
+            });
+            if (error.error?.data == 'please upload scoping card excel file') {
+              this.uploadError = 'Please upload scoping card excel file';
+            }
+          }
 
-      else {
-        console.log('Unexpected Error:', error);
-        // Handle other errors accordingly
-      }
+          // Set flag to show error message
+          this.showUploaderror = true;
 
-      // Reset the upload screen
-      this.resetUploadScreen();
-      this.uploadInProgress = false;
-    }
-  );
-}
-onPopupCancelSCClick(){
-  this.visibleSC = false;
-  this.showUploaderror = false;
-  this.uploadError = "";
-  this.fileNameSC = "";
-  this.uploadFilesc = null;
-  // Add the following line to reset the file input
-  const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
-  if (fileInput) {
-    fileInput.value = ''; // Clear the file input value
-  }
-}
-uploadFilecc: File | null = null;
-onUploadCCExcel(event) 
-{
+        }
 
-    const file:File = event.target.files[0];
-    if (file) {
-        this.fileNameCC = file.name;
-        const formData = new FormData();
-        formData.append("file", file);
-        this.uploadFilecc = file;
-    }
-}
-makeCommercialCardApiServiceCall() {
+        else {
+          console.log('Unexpected Error:', error);
+          // Handle other errors accordingly
+        }
 
-  this.fileNameCC = this.uploadFilecc.name;
-  const formData = new FormData();
-  formData.append("file", this.uploadFilecc);
-  this.uploadInProgress = true;
-
-  this.createBuildingBlockservice.commercialCradImportExcel(formData).subscribe(
-    (res: any) => {
-      if (res?.message === 'Excel Upload Sucessfully') {
-        // Process successful response
-        this.excelDataSheet1 = res?.data?.['General Information']
-        this.excelDataSheet2 = res?.data?.['Commercial Reference']
-
-        // Update UI variables with the response data for Sheet2
-        this.standard_service = this.excelDataSheet2['Standard Service'];
-        this.sow = this.excelDataSheet2['SOW'];
-        this.pre_requisite_info = this.excelDataSheet2['Pre-requsites information'];
-        this.combined_value = this.excelDataSheet2['Combined Value'];
-        this.do_s = this.excelDataSheet2['Dos'];
-        this.don_s = this.excelDataSheet2["Don'ts"];
-        this.configurables = this.excelDataSheet2['Configurable'];
-
-        // Update UI variables with the response data for Sheet1
-        this.seervice_desc = this.excelDataSheet1['Service Description'];
-        this.customer_requirement = this.excelDataSheet1['Customer Requirements'];
-        this.cvalue_to_psa_bdp = this.excelDataSheet1['PSA BDP Value Statement'];
-
-        this.visibleCC = false;
-        this.onPopupCancelCClick();
         // Reset the upload screen
         this.resetUploadScreen();
         this.uploadInProgress = false;
-        this.showUploaderror = false;
-        this.messageService.add({
-          key: 'successToast',
-          severity: 'success',
-          summary: 'Success!',
-          detail: 'Excel Uploaded successfully.'
-        });
-  //        // Reset the file input value
-  // const fileInput = document.getElementById('fileUploadCC') as HTMLInputElement;
-  // if (fileInput) {
-  //   fileInput.value = ''; // Clear the file input value
-  // }
-  // Reset the file input value
-  const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
-  if (fileInput) {
-    fileInput.value = '';
+      }
+    );
   }
-      } else {
-        console.log('Unexpected response:', res);
-      }
-    },
-    (error) => {
-      
-      // Handle HTTP errors here
-      if (error.status === 400) {
-        console.log('Bad Request Error:', error);
-        if(error.error.data == 'please upload commercial card excel file'){
-          this.uploadError = 'Please upload commercial card excel file';
-        }
-        // Map the error response to UI variables
-        if (error.error?.data) {
-          const commercialReferenceErrors = error.error.data['Commercial Reference'];
-          const generalInformationErrors = error.error.data['General Information'];
-          if (
-            commercialReferenceErrors?.message === 'All Field Are Empty' &&
-            generalInformationErrors?.message === 'All Field Are Empty'
-          ) {
-            this.uploadError = 'All fields are empty.';
-          } 
-          // Map errors to UI variables for Commercial Reference
-          if(commercialReferenceErrors?.['Standard Service'] == 'maximum length 1000'){
-            this.standard_service_error = commercialReferenceErrors?.['Standard Service'];
-          }
-          
-          if(commercialReferenceErrors?.['Dos'] == 'maximum length 1000'){
-            this.dos_error = commercialReferenceErrors?.['Dos'];
-          }
-          if(commercialReferenceErrors?.['SOW'] == 'maximum length 1000'){
-            this.sow_error = commercialReferenceErrors?.['SOW'];
-          }
-          
-          if(commercialReferenceErrors?.["Combined Value"] == 'maximum length 1000'){
-            this.combined_value_error = commercialReferenceErrors?.['Combined Value'];
-          }
-       
-          if(commercialReferenceErrors?.["Don'ts"] == 'maximum length 1000'){
-            this.donts_error = commercialReferenceErrors?.["Don'ts"];
-          }
-          
-          if(commercialReferenceErrors?.['Configurable'] == 'maximum length 1000'){
-            this.configurables_error = commercialReferenceErrors?.['Configurable'];
-          }
-          
-          if(commercialReferenceErrors?.['Pre-requsites information'] == 'maximum length 1000'){
-            this.pre_requisite_info_error = commercialReferenceErrors?.['Pre-requsites information'];
-          }
-         
-
-          // Map errors to UI variables for General Information
-          if(generalInformationErrors?.['Service Description'] == 'maximum length 1000'){
-            this.service_desc_error = generalInformationErrors?.['Service Description'];
-          }
-          if(generalInformationErrors?.['Customer Requirements'] == 'maximum length 1000'){
-            this.customer_requirement_error = generalInformationErrors?.['Customer Requirements'];
-          }
-          if(generalInformationErrors?.['PSA BDP Value Statement'] == 'maximum length 1000'){
-            this.cvalue_to_psa_bdp_error = generalInformationErrors?.['PSA BDP Value Statement'];
-          }
-
-          // Set showUploaderror to true to display the error in the UI
-          this.showUploaderror = true;
-        
-        }
-      } else {
-        console.log('Unexpected Error:', error);
-      }
-
-      // Reset the upload screen
-      this.resetUploadScreen();
-      this.uploadInProgress = false;
+  onPopupCancelSCClick() {
+    this.visibleSC = false;
+    this.showUploaderror = false;
+    this.uploadError = "";
+    this.fileNameSC = "";
+    this.uploadFilesc = null;
+    // Add the following line to reset the file input
+    const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = ''; // Clear the file input value
     }
-  );
-  
-}
-onPopupCancelCClick(){
-  this.visibleCC = false;
-  this.showUploaderror = false;
-  this.uploadError = "";
-  this.fileNameCC = "";
-  this.uploadFilecc = null;
-  // Reset the file input value
-  const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
-  if (fileInput) {
-    fileInput.value = '';
   }
-}
-downloadSampleSCExcel(event: Event) {
-  event.preventDefault();
+  uploadFilecc: File | null = null;
+  onUploadCCExcel(event) {
 
-  this.createBuildingBlockservice.downloadSamplescExcel().subscribe((res: any) => {
-    // Assuming the response contains the file content
-    const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const file: File = event.target.files[0];
+    if (file) {
+      this.fileNameCC = file.name;
+      const formData = new FormData();
+      formData.append("file", file);
+      this.uploadFilecc = file;
+    }
+  }
+  makeCommercialCardApiServiceCall() {
 
-    // Creating an anchor element to trigger the download
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = 'ScopingCard.xlsx';
-    document.body.appendChild(link);
+    this.fileNameCC = this.uploadFilecc.name;
+    const formData = new FormData();
+    formData.append("file", this.uploadFilecc);
+    this.uploadInProgress = true;
 
-    // Triggering the download
-    link.click();
+    this.createBuildingBlockservice.commercialCradImportExcel(formData).subscribe(
+      (res: any) => {
+        if (res?.message === 'Excel Upload Sucessfully') {
+          // Process successful response
+          this.excelDataSheet1 = res?.data?.['General Information']
+          this.excelDataSheet2 = res?.data?.['Commercial Reference']
 
-    // Removing the anchor element
-    document.body.removeChild(link);
-    this.messageService.add({
-      key: 'successToast',
-      severity: 'success',
-      summary: 'Success!',
-      detail: 'Sample Excel Downloaded successfully.'
+          // Update UI variables with the response data for Sheet2
+          this.standard_service = this.excelDataSheet2['Standard Service'];
+          this.sow = this.excelDataSheet2['SOW'];
+          this.pre_requisite_info = this.excelDataSheet2['Pre-requsites information'];
+          this.combined_value = this.excelDataSheet2['Combined Value'];
+          this.do_s = this.excelDataSheet2['Dos'];
+          this.don_s = this.excelDataSheet2["Don'ts"];
+          this.configurables = this.excelDataSheet2['Configurable'];
+
+          // Update UI variables with the response data for Sheet1
+          this.seervice_desc = this.excelDataSheet1['Service Description'];
+          this.customer_requirement = this.excelDataSheet1['Customer Requirements'];
+          this.cvalue_to_psa_bdp = this.excelDataSheet1['PSA BDP Value Statement'];
+
+          this.visibleCC = false;
+          this.onPopupCancelCClick();
+          // Reset the upload screen
+          this.resetUploadScreen();
+          this.uploadInProgress = false;
+          this.showUploaderror = false;
+          this.messageService.add({
+            key: 'successToast',
+            severity: 'success',
+            summary: 'Success!',
+            detail: 'Excel Uploaded successfully.'
+          });
+          //        // Reset the file input value
+          // const fileInput = document.getElementById('fileUploadCC') as HTMLInputElement;
+          // if (fileInput) {
+          //   fileInput.value = ''; // Clear the file input value
+          // }
+          // Reset the file input value
+          const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
+          if (fileInput) {
+            fileInput.value = '';
+          }
+        } else {
+          console.log('Unexpected response:', res);
+        }
+      },
+      (error) => {
+
+        // Handle HTTP errors here
+        if (error.status === 400) {
+          console.log('Bad Request Error:', error);
+          if (error.error.data == 'please upload commercial card excel file') {
+            this.uploadError = 'Please upload commercial card excel file';
+          }
+          // Map the error response to UI variables
+          if (error.error?.data) {
+            const commercialReferenceErrors = error.error.data['Commercial Reference'];
+            const generalInformationErrors = error.error.data['General Information'];
+            if (
+              commercialReferenceErrors?.message === 'All Field Are Empty' &&
+              generalInformationErrors?.message === 'All Field Are Empty'
+            ) {
+              this.uploadError = 'All fields are empty.';
+            }
+            // Map errors to UI variables for Commercial Reference
+            if (commercialReferenceErrors?.['Standard Service'] == 'maximum length 1000') {
+              this.standard_service_error = commercialReferenceErrors?.['Standard Service'];
+            }
+
+            if (commercialReferenceErrors?.['Dos'] == 'maximum length 1000') {
+              this.dos_error = commercialReferenceErrors?.['Dos'];
+            }
+            if (commercialReferenceErrors?.['SOW'] == 'maximum length 1000') {
+              this.sow_error = commercialReferenceErrors?.['SOW'];
+            }
+
+            if (commercialReferenceErrors?.["Combined Value"] == 'maximum length 1000') {
+              this.combined_value_error = commercialReferenceErrors?.['Combined Value'];
+            }
+
+            if (commercialReferenceErrors?.["Don'ts"] == 'maximum length 1000') {
+              this.donts_error = commercialReferenceErrors?.["Don'ts"];
+            }
+
+            if (commercialReferenceErrors?.['Configurable'] == 'maximum length 1000') {
+              this.configurables_error = commercialReferenceErrors?.['Configurable'];
+            }
+
+            if (commercialReferenceErrors?.['Pre-requsites information'] == 'maximum length 1000') {
+              this.pre_requisite_info_error = commercialReferenceErrors?.['Pre-requsites information'];
+            }
+
+
+            // Map errors to UI variables for General Information
+            if (generalInformationErrors?.['Service Description'] == 'maximum length 1000') {
+              this.service_desc_error = generalInformationErrors?.['Service Description'];
+            }
+            if (generalInformationErrors?.['Customer Requirements'] == 'maximum length 1000') {
+              this.customer_requirement_error = generalInformationErrors?.['Customer Requirements'];
+            }
+            if (generalInformationErrors?.['PSA BDP Value Statement'] == 'maximum length 1000') {
+              this.cvalue_to_psa_bdp_error = generalInformationErrors?.['PSA BDP Value Statement'];
+            }
+
+            // Set showUploaderror to true to display the error in the UI
+            this.showUploaderror = true;
+
+          }
+        } else {
+          console.log('Unexpected Error:', error);
+        }
+
+        // Reset the upload screen
+        this.resetUploadScreen();
+        this.uploadInProgress = false;
+      }
+    );
+
+  }
+  onPopupCancelCClick() {
+    this.visibleCC = false;
+    this.showUploaderror = false;
+    this.uploadError = "";
+    this.fileNameCC = "";
+    this.uploadFilecc = null;
+    // Reset the file input value
+    const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
+    }
+  }
+  downloadSampleSCExcel(event: Event) {
+    event.preventDefault();
+
+    this.createBuildingBlockservice.downloadSamplescExcel().subscribe((res: any) => {
+      // Assuming the response contains the file content
+      const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+      // Creating an anchor element to trigger the download
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = 'ScopingCard.xlsx';
+      document.body.appendChild(link);
+
+      // Triggering the download
+      link.click();
+
+      // Removing the anchor element
+      document.body.removeChild(link);
+      this.messageService.add({
+        key: 'successToast',
+        severity: 'success',
+        summary: 'Success!',
+        detail: 'Sample Excel Downloaded successfully.'
+      });
     });
-  });
-}
-downloadSampleCCExcel(event: Event){
-  event.preventDefault();
+  }
+  downloadSampleCCExcel(event: Event) {
+    event.preventDefault();
 
-  this.createBuildingBlockservice.downloadSampleCCExcel().subscribe((res: any) => {
-    // Assuming the response contains the file content
-    const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    this.createBuildingBlockservice.downloadSampleCCExcel().subscribe((res: any) => {
+      // Assuming the response contains the file content
+      const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
 
-    // Creating an anchor element to trigger the download
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = 'CommercialCard.xlsx';
-    document.body.appendChild(link);
+      // Creating an anchor element to trigger the download
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = 'CommercialCard.xlsx';
+      document.body.appendChild(link);
 
-    // Triggering the download
-    link.click();
+      // Triggering the download
+      link.click();
 
-    // Removing the anchor element
-    document.body.removeChild(link);
-    this.messageService.add({
-      key: 'successToast',
-      severity: 'success',
-      summary: 'Success!',
-      detail: 'Sample Excel Downloaded successfully.'
+      // Removing the anchor element
+      document.body.removeChild(link);
+      this.messageService.add({
+        key: 'successToast',
+        severity: 'success',
+        summary: 'Success!',
+        detail: 'Sample Excel Downloaded successfully.'
+      });
     });
-  });
-}
+  }
 
-resetUploadScreen() {
+  resetUploadScreen() {
 
-  this.uploadedFiles = [];
-  
-}
+    this.uploadedFiles = [];
 
-showDialogScopingCard() {
+  }
+
+  showDialogScopingCard() {
     this.visibleSC = true;
   }
-showDialogCommercialCard() {
-  this.visibleCC = true;
-}
+  showDialogCommercialCard() {
+    this.visibleCC = true;
+  }
   confirm() {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to cancel this page?',
@@ -549,8 +543,8 @@ showDialogCommercialCard() {
     const onlySpacesOrEmptyPTag = /^(\s*<p[^>]*>\s*(<br\s*\/?>)?\s*<\/p>\s*)*$/;
     return !onlySpacesOrEmptyPTag.test(content);
   }
-  
-  
+
+
   // ---------------get product data------------------------//
   getProdname() {
     this.procuctCategoryOptions = [];
@@ -589,7 +583,7 @@ showDialogCommercialCard() {
 
   }
   // ---------------get charge code data------------------------//
-  
+
   getChargeCode() {
     this.MasterTableservice.getChargeCode().subscribe((res: any) => {
       if (res?.message === "success") {
@@ -681,7 +675,8 @@ showDialogCommercialCard() {
     this.CreateBuildingBlockservice.saveEditBuildingBlocks(1, body).subscribe(
       (res) => {
         console.log('Draft saved successfully:', res);
-
+        this.blockId = res.data?.id;
+        console.log('bbId',this.blockId);
         this.messageService.add({
           key: 'successToast',
           severity: 'success',
@@ -689,21 +684,17 @@ showDialogCommercialCard() {
           detail: 'Building block draft is saved successfully.'
         });
         setTimeout(() => {
-          this.router.navigateByUrl('/building-block');
-        }, 1000); 
+      //    this.router.navigateByUrl('/building-block');
+        }, 1000);
       },
       (error) => {
-       // console.error('Error saving draft:', error);
         if (error && error.status === 400) {
           const errorMessage = error.error?.message;
           const data = error.error?.data;
-        //  console.log('error', errorMessage)
-        //  console.log('error', data)
           if (data && data.length > 0) {
             this.formattedErrors = data.join('\n');
           }
           if (data && data.includes('Block name exist')) {
-            // Handle the case where the block name already exists
             this.messageService.add({
               key: 'errorToast',
               severity: 'error',
@@ -715,7 +706,7 @@ showDialogCommercialCard() {
               key: 'errorToast',
               severity: 'error',
               summary: 'Error!',
-              detail: this.formattedErrors 
+              detail: this.formattedErrors
             });
           } else {
             this.messageService.add({
@@ -723,11 +714,11 @@ showDialogCommercialCard() {
               severity: 'error',
               summary: 'Error!',
               detail: data || 'Failed to save building block Draft.'
-             
+
             });
           }
-      //    console.log('d',data);
-        } 
+          //    console.log('d',data);
+        }
       }
     );
 
@@ -748,7 +739,7 @@ showDialogCommercialCard() {
         this.onScopeSelect(details.data.scope.id);
         this.charge_code = details.data.chargeCode?.id;
         this.seervice_desc = details.data.scopingCard.serviceDescription;
-    //    console.log("service",this.seervice_desc);
+        //    console.log("service",this.seervice_desc);
         this.customer_requirement = details.data.scopingCard.customerRequirement;
         this.deliverables = details.data.scopingCard.deliverable;
         this.stakeholders_audience = details.data.scopingCard.stakeHolder;
@@ -774,12 +765,12 @@ showDialogCommercialCard() {
 
   saveAsBuildingBlock() {
     this.buildingBlockId = this.route.snapshot.paramMap.get('id');
-     if (this.selectedMod == "" || this.selectedMod == undefined || this.selectedMod == null) {
+    if (this.selectedMod == "" || this.selectedMod == undefined || this.selectedMod == null) {
       var mod = []
     } else {
       mod = this.selectedMod.map(id => ({ id }))
     }
-    
+
     this.isloading = true
     const body =
 
@@ -827,30 +818,30 @@ showDialogCommercialCard() {
 
     }
     if (!this.isEditorContentValid(body.scopingCard.serviceDescription) ||
-    !this.isEditorContentValid(body.scopingCard.customerRequirement) ||
-    !this.isEditorContentValid(body.scopingCard.deliverable) ||
-    !this.isEditorContentValid(body.scopingCard.stakeHolder) ||
-    !this.isEditorContentValid(body.scopingCard.valueToPsaBdp) ||
-    !this.isEditorContentValid(body.scopingCard.parameter) ||
-    !this.isEditorContentValid(body.scopingCard.configurable) ||
-    !this.isEditorContentValid(body.commercialCard.psaBdpValueStatement) ||
-    !this.isEditorContentValid(body.commercialCard.standardService) ||
-    !this.isEditorContentValid(body.commercialCard.sow) ||
-    !this.isEditorContentValid(body.commercialCard.prerequisiteInfo) ||
-    !this.isEditorContentValid(body.commercialCard.combinedValue) ||
-    !this.isEditorContentValid(body.commercialCard.dos) ||
-    !this.isEditorContentValid(body.commercialCard.donts)) {
-  
-  this.messageService.add({
-    key: 'errorToast',
-    severity: 'error',
-    summary: 'Error!',
-    detail: 'Invalid content. Please enter meaningful content for all fields.'
-  });
-  return;
-}
+      !this.isEditorContentValid(body.scopingCard.customerRequirement) ||
+      !this.isEditorContentValid(body.scopingCard.deliverable) ||
+      !this.isEditorContentValid(body.scopingCard.stakeHolder) ||
+      !this.isEditorContentValid(body.scopingCard.valueToPsaBdp) ||
+      !this.isEditorContentValid(body.scopingCard.parameter) ||
+      !this.isEditorContentValid(body.scopingCard.configurable) ||
+      !this.isEditorContentValid(body.commercialCard.psaBdpValueStatement) ||
+      !this.isEditorContentValid(body.commercialCard.standardService) ||
+      !this.isEditorContentValid(body.commercialCard.sow) ||
+      !this.isEditorContentValid(body.commercialCard.prerequisiteInfo) ||
+      !this.isEditorContentValid(body.commercialCard.combinedValue) ||
+      !this.isEditorContentValid(body.commercialCard.dos) ||
+      !this.isEditorContentValid(body.commercialCard.donts)) {
 
-   
+      this.messageService.add({
+        key: 'errorToast',
+        severity: 'error',
+        summary: 'Error!',
+        detail: 'Invalid content. Please enter meaningful content for all fields.'
+      });
+      return;
+    }
+
+
     this.CreateBuildingBlockservice.saveEditBuildingBlocks(2, body).subscribe(
       (res) => {
         console.log('Building Block saved successfully:', res);
@@ -863,8 +854,8 @@ showDialogCommercialCard() {
         });
         setTimeout(() => {
           this.router.navigateByUrl('/building-block');
-        }, 1000); 
-     
+        }, 1000);
+
       },
       (error) => {
         console.error('Error saving draft:', error);
@@ -890,7 +881,7 @@ showDialogCommercialCard() {
               key: 'errorToast',
               severity: 'error',
               summary: 'Error!',
-              detail: this.formattedErrors 
+              detail: this.formattedErrors
             });
           } else {
             this.messageService.add({
@@ -898,14 +889,14 @@ showDialogCommercialCard() {
               severity: 'error',
               summary: 'Error!',
               detail: data || 'Failed to save building block .'
-             
+
             });
           }
-      //    console.log('d',data);
-        } 
+          //    console.log('d',data);
+        }
       }
     );
- 
+
   }
 
   isSaveAsDraftDisabled(): boolean {
@@ -913,88 +904,104 @@ showDialogCommercialCard() {
   }
 
 
-//--------------------operation Card Details----------------//
-downloadSampleOpExcel(event: Event) {
-  event.preventDefault();
+  //--------------------operation Card Details----------------//
+  downloadSampleOpExcel(event: Event) {
+    event.preventDefault();
 
-  this.createBuildingBlockservice.downloadSampleOPExcel().subscribe((res: any) => {
-    // Assuming the response contains the file content
-    const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    this.createBuildingBlockservice.downloadSampleOPExcel().subscribe((res: any) => {
+      // Assuming the response contains the file content
+      const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
 
-    // Creating an anchor element to trigger the download
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = 'OperationCard.xlsx';
-    document.body.appendChild(link);
+      // Creating an anchor element to trigger the download
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = 'OperationCard.xlsx';
+      document.body.appendChild(link);
 
-    // Triggering the download
-    link.click();
+      // Triggering the download
+      link.click();
 
-    // Removing the anchor element
-    document.body.removeChild(link);
-    this.messageService.add({
-      key: 'successToast',
-      severity: 'success',
-      summary: 'Success!',
-      detail: 'Sample Excel Downloaded successfully.'
+      // Removing the anchor element
+      document.body.removeChild(link);
+      this.messageService.add({
+        key: 'successToast',
+        severity: 'success',
+        summary: 'Success!',
+        detail: 'Sample Excel Downloaded successfully.'
+      });
     });
-  });
-}
-showDialogOperationCard() {
-  this.visibleOperationBox = true;
-}
-
-onOperarationCancelClick() {
-  this.visibleOperationBox = false;
-}
-
-readExcelFile(file: File) {
-  const reader: FileReader = new FileReader();
-  reader.onload = (e: any) => {
-      const data = new Uint8Array(e.target.result);
-      const workbook = XLSX.read(data, { type: 'array' });
-      const sheetName = workbook.SheetNames[0];
-      const worksheet = workbook.Sheets[sheetName];
-      this.excelDataOpration = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-  };
-  reader.readAsArrayBuffer(file);
-}
-
-onFileSelected(event: any) {
-  this.selectedFile = event.target.files[0];
-
-  if (this.selectedFile) {
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      this.fileNameOC = this.selectedFile.name;
-    };
-    reader.readAsDataURL(this.selectedFile);
-  } else {
-    this.fileNameOC = ""; 
   }
-}
+  showDialogOperationCard() {
+    this.visibleOperationBox = true;
+  }
 
-onUploadClick() {
-  if (this.selectedFile) {
+  onOperarationCancelClick() {
+    this.visibleOperationBox = false;
+  }
+
+  readExcelFile(file: File) {
+    const reader: FileReader = new FileReader();
+    reader.onload = (e: any) => {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+        this.excelDataOpration = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+
+    if (this.selectedFile) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.fileNameOC = this.selectedFile.name;
+      };
+      reader.readAsDataURL(this.selectedFile);
+    } else {
+      this.fileNameOC = ""; 
+    }
+  }
+
+  onRemoveOperationClick() {
+    this.showUploaderror = false;
+    this.fileNameOC = "";
+    this.selectedFile = null;
+  }
+  showSuccessMessage(message: string) {
+    this.messageService.add({ key: 'successToast', severity: 'success', summary: 'Success', detail: message });
+  }
+
+  onUploadClick(event: any): void {
+    if (this.selectedFile) {
+      const scopeId = 1;
+      const entityId = this.blockId;
+   //   console.log('bbId',this.blockId);
       this.readExcelFile(this.selectedFile);
       this.visibleOperationBox = false;
-      console.log('Uploaded Excel Data:', this.excelDataOpration);
-      this.isDataUploaded = true;
-      this.fileNameOC = "";
-      this.showSuccessMessage('File uploaded successfully!');
-  } else {
+  
+      this.createBuildingBlockservice.operationCardUploadExcel(this.selectedFile, scopeId, entityId).subscribe(
+        (res: any) => {
+          if (res?.message === 'Excel Upload Successfully') {
+            console.log('File uploaded successfully:', res);
+            this.fileNameOC = "";
+            this.selectedFile = null;
+            this.showSuccessMessage('File uploaded successfully!');
+          } else {
+            console.log('Unexpected response:', res);
+          }
+        },
+        (error) => {
+          console.error('Error uploading file:', error);
+        }
+      );
+    } else {
       console.log('No file selected.');
+    }
   }
-}
-onRemoveOperationClick(){
-  this.showUploaderror = false;
-  this.fileNameOC = "";
- // this.uploadFileOC = null;
- this.selectedFile = null;
-}
-showSuccessMessage(message: string) {
-  this.messageService.add({ key: 'successToast', severity: 'success', summary: 'Success', detail: message });
-}
 
-  //---end-----------------------------------------------//
-}
+  downloadUploadedFile(): void {
+  }
+}  

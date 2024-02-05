@@ -122,3 +122,17 @@ label{
      overflow-x: auto; /* Enable horizontal scrolling if needed */
   }
 }
+.file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px; 
+  padding: 8px; 
+}
+
+.remove-button {
+  background: none;
+  border: none;
+  color: red; 
+  cursor: pointer;
+}
