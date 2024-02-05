@@ -69,7 +69,7 @@ export class CreateProjectComponent implements OnInit {
   isAddingRow: boolean;
   isActionButtonsVisible = false;
   selectedFile: any;
-  visibleOperationBox: boolean = false;
+  visibleValueBox: boolean = false;
   fileNameOC: string;
   uomOptions: UomData[] = [];
   tableData: TableRow[] = [];//Destination table data
@@ -270,6 +270,7 @@ export class CreateProjectComponent implements OnInit {
       }
     }));
     const body = {
+      id: this.projectId,
       description: "",
       projectInformation: {
         customerCode: this.myForm.get('customerCode').value,
@@ -300,10 +301,15 @@ export class CreateProjectComponent implements OnInit {
         projectLocation: [...originProjectLocationData, ...destinationProjectLocationData],
       }
     }
+
     this.projectService.saveAsDraftProject(body).subscribe(
       (res) => {
-        this.projectId = res.data.id;
-        console.log('Draft saved successfully:', this.projectId);
+        const savedProjectId = res.data.id;
+        console.log('Draft saved successfully:', savedProjectId);
+  
+        if (savedProjectId) {
+          this.projectId = savedProjectId;
+  
         if (this.uploadedFilesToSave.length > 0 && this.projectId !== null) {
           this.uploadFiles();
         }
@@ -319,7 +325,8 @@ export class CreateProjectComponent implements OnInit {
           summary: 'Success!',
           detail: 'Project draft is saved Successfully.'
         });
-      },
+      }
+    },
       (error) => {
 
         if (error.status === 400) {
@@ -341,7 +348,6 @@ export class CreateProjectComponent implements OnInit {
           });
         }
       }
-
     );
 
   }
@@ -394,11 +400,6 @@ export class CreateProjectComponent implements OnInit {
       this.tableData = [];
     }
   }
-
-
-  //-----------------------upload doct------------------/
-  //---end-----------------------------------------------//
-
 
   ///------------------------------Orign Location Table------------------//
   onOriginLocationChange(event: any) {
@@ -555,7 +556,7 @@ export class CreateProjectComponent implements OnInit {
     event.preventDefault();
   }
   showDialogOperationCard() {
-    this.visibleOperationBox = true;
+    this.visibleValueBox = true;
   }
 
   showDialogResponse() {
@@ -565,8 +566,11 @@ export class CreateProjectComponent implements OnInit {
     this.visibleOthersBox = true;
   }
 
-  onOperarationCancelClick() {
-    this.visibleOperationBox = false;
+  onValueCancelClick() {
+    this.fileNameOC = "";
+    this.selectedFiles = [];
+    this.selectedFile = null;
+    this.visibleValueBox = false;
   }
 
   onFileSelected(event: any) {
@@ -582,7 +586,7 @@ export class CreateProjectComponent implements OnInit {
     }
   }
 
-  onRemoveOperationClick() {
+  onRemoveClick() {
     // this.selectedFiles.splice(index, 1);
 
     // if (this.selectedFiles.length > 0) {
@@ -607,7 +611,7 @@ export class CreateProjectComponent implements OnInit {
       if (fileInput) {
         fileInput.value = '';
       }
-      this.visibleOperationBox = false;
+      this.visibleValueBox = false;
       console.log('Files added to save:', this.uploadedFilesToSave);
     } else {
       console.log('No file selected.');
@@ -737,6 +741,20 @@ export class CreateProjectComponent implements OnInit {
 
   onRemoveUploadedOtherFile(index: number): void {
     this.uploadedOtherFiles.splice(index, 1);
+  }
+
+  onResponseCancelClick() {
+    this.fileNameOC = "";
+    this.selectedFiles = [];
+    this.selectedFile = null;
+    this.visibleResponseBox = false;
+  }
+
+  onOthersCancelClick() {
+    this.fileNameOC = "";
+    this.selectedFiles = [];
+    this.selectedFile = null;
+    this.visibleOthersBox = false;
   }
 
 }
