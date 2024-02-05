@@ -1,0 +1,79 @@
+.activeToggel{
+    display: flex;background-color: rgb(0, 110, 255);padding: 10px;width: 19rem;border-radius: 8px;cursor: pointer;
+}
+.toggleButton{
+    cursor: pointer
+}
+input[type="file"] {
+    display: none;
+  }
+  .excel-container {
+    overflow-x: auto;
+  }
+  
+  .excel-table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  .excel-table th, .excel-table td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  .excel-table th {
+    background-color: #f2f2f2;
+  }
+  .box{
+    border: 1px solid #a6d5fa;;
+    padding: 0;
+    border-style: dashed;
+    height: 150px;
+
+  }
+ .btn{
+  display: flex;
+  justify-content: space-between;
+  margin:2px
+ }
+ .container{
+  padding: 6px;
+  padding-left: 15px;
+  
+  height: 60px;
+ }
+  .custom-file-input {
+    // background-color: #0d89ec; 
+    color: #495057;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block;
+    height: 33px;
+    margin-right: 8px;
+    margin-left: 46%;
+    margin-top: 6%;
+  }
+  .card_footer{
+    margin-top: 11px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .uplodBtn_right{
+    display: flex;
+  }
+  .upload_name{
+    font-size: 16px;
+    font-weight: bold;
+    color: #2c83d7;
+    position: relative;
+    right: 10px;
+  }
+  @media only screen and (max-width: 600px) {
+    /* Add styles for small screens */
+    .excel-container {
+       overflow-x: auto; /* Enable horizontal scrolling if needed */
+    }
+  }
