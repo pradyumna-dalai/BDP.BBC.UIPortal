@@ -262,29 +262,47 @@
 
             <h6><b>Documents</b></h6>
             <p>Upload the following documnets: File Size < 5 mb,Format CSV,JPEG,Excel,PDF</p>
-                    <div class="p-fluid grid">
-                        <div class="field col-12 md:col-4">
-                            <div class="p-d-block">
-                                <p><b>1.</b> Value Document&nbsp; <a (click)="showDialogOperationCard()"
-                                        style="text-decoration: underline;">Upload</a></p>
-                            </div>
-                            <!-- <p-fileUpload name="file" url="/your-upload-url" chooseLabel="Choose" uploadLabel="Upload" cancelLabel="Cancel"></p-fileUpload> -->
-                        </div>
-                        <div class="field col-12 md:col-4">
-                            <div class="p-d-block">
-                                <p><b>2.</b> Response Document&nbsp; <a (click)="showDialogOperationCard()"
-                                        style="text-decoration: underline;">Upload</a></p>
-                            </div>
-                            <!-- <p-fileUpload name="file" url="/your-upload-url" chooseLabel="Choose" uploadLabel="Upload" cancelLabel="Cancel"></p-fileUpload> -->
-                        </div>
-                        <div class="field col-12 md:col-4">
-                            <div class="p-d-block">
-                                <p><b>3.</b> Others&nbsp; <a (click)="showDialogOperationCard()"
-                                        style="text-decoration: underline;">Upload</a></p>
-                            </div>
-                            <!-- <p-fileUpload name="file" url="/your-upload-url" chooseLabel="Choose" uploadLabel="Upload" cancelLabel="Cancel"></p-fileUpload> -->
-                        </div>
-                    </div>
+            <div class="p-fluid grid">
+                <div class="field col-12 md:col-4">
+                  <div class="p-d-block">
+                    <p><b>1.</b> Value Document&nbsp; <a (click)="showDialogOperationCard()"
+                        style="text-decoration: underline;">Upload</a></p>
+                    <ul *ngIf="uploadedFiles.length > 0">
+                      <li *ngFor="let file of uploadedFiles; let i = index" class="file-item">
+                        {{ i + 1 }}. {{ file.name }}
+                        <button pButton pRipple type="button" icon="pi pi-trash" (click)="onRemoveUploadedFile(i)"
+                          style="margin-left: 8px;" class="p-button-rounded p-button-text p-button-danger"></button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="field col-12 md:col-4">
+                  <div class="p-d-block">
+                    <p><b>2.</b> Response Document&nbsp; <a (click)="showDialogOperationCard()"
+                        style="text-decoration: underline;">Upload</a></p>
+                    <ul *ngIf="uploadedResponseFiles.length > 0">
+                      <li *ngFor="let file of uploadedResponseFiles; let i = index" class="file-item">
+                        {{ i + 1 }}. {{ file.name }}
+                        <button pButton pRipple type="button" icon="pi pi-trash" (click)="onRemoveUploadedResponseFile(i)"
+                          style="margin-left: 8px;" class="p-button-rounded p-button-text p-button-danger"></button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="field col-12 md:col-4">
+                  <div class="p-d-block">
+                    <p><b>3.</b> Others&nbsp; <a (click)="showDialogOperationCard()"
+                        style="text-decoration: underline;">Upload</a></p>
+                    <ul *ngIf="uploadedOtherFiles.length > 0">
+                      <li *ngFor="let file of uploadedOtherFiles; let i = index" class="file-item">
+                        {{ i + 1 }}. {{ file.name }}
+                        <button pButton pRipple type="button" icon="pi pi-trash" (click)="onRemoveUploadedOtherFile(i)"
+                          style="margin-left: 8px;" class="p-button-rounded p-button-text p-button-danger"></button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+            </div>
                     <hr class="aligndown">
                     <div class="col-12" style="display: flex;justify-content: flex-end;">
                         <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
@@ -422,13 +440,13 @@
                     </div>
                     <div class="card_footer">
                         <div>
-                            <button type="submit" pButton pRipple class="btn" [disabled]="!selectedFile"
-                                (click)="onRemoveOperationClick()">
+                            <button type="submit" pButton pRipple class="btn" 
+                                (click)="onRemoveOperationClick()"  [disabled]="!selectedFile">
                                 Remove File
                             </button>
                         </div>
                         <div class="uplodBtn_right">
-                            <button type="submit" pButton pRipple class="btn" [disabled]="!selectedFile"
+                            <button type="submit" pButton pRipple class="btn" 
                                 (click)="onUploadClick()">
                                 Submit
                             </button>
