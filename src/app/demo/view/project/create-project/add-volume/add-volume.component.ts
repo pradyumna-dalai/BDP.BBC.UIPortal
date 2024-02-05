@@ -23,6 +23,7 @@ showOriginCLI: boolean = true;
 showDestinationCLI:boolean = false;
 //end//
 private _isExpanded = false;
+visible: boolean = false;
   constructor(private projectService:ProjectsService){
 
   }
@@ -36,6 +37,9 @@ private _isExpanded = false;
 
 public set isExpanded(value: boolean) {
     this._isExpanded = value;
+}
+showUploadDialog() {
+  this.visible = true;
 }
   shareFunctionAddVolume(){
     this.projectService.buildingData$.subscribe((res)=>{
