@@ -87,6 +87,12 @@ export class CreateProjectComponent implements OnInit {
   selectedFiles: File[] = [];
   uploadedResponseFiles: { name: string, file: File }[] = [];
   uploadedOtherFiles: { name: string, file: File }[] = [];
+  projectId: number | null = null;
+  visibleResponseBox: boolean = false;
+  visibleOthersBox: boolean = false;
+  uploadedFilesToSave: { name: string; file: File }[] = [];
+  uploadedResponseFilesToSave: { name: string; file: File }[] = [];
+  uploadedOtherFilesToSave: { name: string; file: File }[] = [];
   constructor(private breadcrumbService: AppBreadcrumbService,
     private datePipe: DatePipe, private messageService: MessageService, private fb: FormBuilder, public MasterTableservice: MasterTableService, public projectService: ProjectsService) {
     this.breadcrumbService.setItems([
@@ -136,7 +142,7 @@ export class CreateProjectComponent implements OnInit {
 
 
   }
-  submit() { }
+
   // ---------------get Region------------------------//
   getRegion() {
     this.regionOptions = [];
@@ -225,6 +231,11 @@ export class CreateProjectComponent implements OnInit {
   formatDate(date: Date): string {
     return dayjs(date).format('YYYY-MM-DD');
   }
+
+  onSaveAsDraftClick()
+  {
+    this.SaveAsDraftProjects();
+  }
   //----------------------Save Project as Draft-----------------------//
   SaveAsDraftProjects() {
     var om = this.myForm.get('opportunityManger').value;
@@ -291,8 +302,17 @@ export class CreateProjectComponent implements OnInit {
     }
     this.projectService.saveAsDraftProject(body).subscribe(
       (res) => {
-        console.log('Draft saved successfully:', res);
-
+        this.projectId = res.data.id;
+        console.log('Draft saved successfully:', this.projectId);
+        if (this.uploadedFilesToSave.length > 0 && this.projectId !== null) {
+          this.uploadFiles();
+        }
+        if (this.uploadedResponseFilesToSave.length > 0 && this.projectId !== null) {
+          this.uploadResponseFiles();
+        }
+        if (this.uploadedOtherFilesToSave.length > 0 && this.projectId !== null) {
+          this.uploadOtherFiles();
+        }
         this.messageService.add({
           key: 'successToast',
           severity: 'success',
@@ -358,17 +378,17 @@ export class CreateProjectComponent implements OnInit {
   toggleOriginCheckbox() {
     this.enableOriginLocation = !this.enableOriginLocation;
     // this.enableOriginLocationTab = this.enableOriginLocation;
-   // this.selectedLocationIsOrigin = this.enableOriginLocation;
+    // this.selectedLocationIsOrigin = this.enableOriginLocation;
     if (!this.enableOriginLocation) {
       this.selectedCitiesOrign = [];
       this.OtableData = [];
     }
-    
+
   }
   toggleDestinationCheckbox() {
     this.enableDestinationLocation = !this.enableDestinationLocation;
     //  this.enableDestinationLocationTab = this.enableDestinationLocation;
-   // this.selectedLocationIsOrigin = !this.enableDestinationLocation;
+    // this.selectedLocationIsOrigin = !this.enableDestinationLocation;
     if (!this.enableDestinationLocation) {
       this.selectedCities = [];
       this.tableData = [];
@@ -425,16 +445,16 @@ export class CreateProjectComponent implements OnInit {
   }
   OrignsaveRow(rowIndex: number) {
     const rowData = this.OtableData[rowIndex];
-  if (!rowData.Volume || rowData.Uom === null) {
-    this.messageService.add({
-      key: 'errorToast',
-      severity: 'error',
-      summary: 'Error!',
-      detail: 'Volume and UOM are required for each row in Origin Location.'
-    });
-  } else {
-    rowData.editing = false;
-  }
+    if (!rowData.Volume || rowData.Uom === null) {
+      this.messageService.add({
+        key: 'errorToast',
+        severity: 'error',
+        summary: 'Error!',
+        detail: 'Volume and UOM are required for each row in Origin Location.'
+      });
+    } else {
+      rowData.editing = false;
+    }
   }
   OrigndiscardRow(rowIndex: any) {
     if (this.OtableData[rowIndex].adding || this.OtableData[rowIndex].editing) {
@@ -538,15 +558,22 @@ export class CreateProjectComponent implements OnInit {
     this.visibleOperationBox = true;
   }
 
+  showDialogResponse() {
+    this.visibleResponseBox = true;
+  }
+  showDialogOthers() {
+    this.visibleOthersBox = true;
+  }
+
   onOperarationCancelClick() {
     this.visibleOperationBox = false;
   }
 
   onFileSelected(event: any) {
     const newFiles: File[] = Array.from(event.target.files);
-  
+
     this.selectedFiles = [...this.selectedFiles, ...newFiles];
-  
+
     if (this.selectedFiles.length > 0) {
       // Display the names of selected files
       this.fileNameOC = this.selectedFiles.map(file => file.name).join(', ');
@@ -554,10 +581,10 @@ export class CreateProjectComponent implements OnInit {
       this.fileNameOC = "";
     }
   }
-  
+
   onRemoveOperationClick() {
     // this.selectedFiles.splice(index, 1);
-  
+
     // if (this.selectedFiles.length > 0) {
     //   // Display the names of remaining files
     //   this.fileNameOC = this.selectedFiles.map(file => file.name).join(', ');
@@ -565,6 +592,7 @@ export class CreateProjectComponent implements OnInit {
     //   this.fileNameOC = "";
     // }
     this.fileNameOC = "";
+    this.selectedFiles = [];
     this.selectedFile = null;
   }
   showSuccessMessage(message: string) {
@@ -573,120 +601,142 @@ export class CreateProjectComponent implements OnInit {
 
   onUploadClick(): void {
     if (this.selectedFiles.length > 0) {
-      const scopeId = 2;
-      const entityId = 2;
-
-      this.visibleOperationBox = false;
-
-      for (const file of this.selectedFiles) {
-        this.projectService.UploadProjectArtifact(file, scopeId, entityId).subscribe(
-          (res: any) => {
-            if (res?.message === 'Excel Upload Successfully') {
-              console.log('File uploaded successfully:', res);
-              // Update the list of uploaded files
-              this.uploadedFiles.push({ name: file.name, file: file });
-              console.log('uploadedFiles:', this.uploadedFiles);
-              this.showSuccessMessage('File uploaded successfully!');
-            } else {
-              console.log('Unexpected response:', res);
-              this.uploadedFiles.push({ name: file.name, file: file });
-              console.log('uploadedFiles:', this.uploadedFiles);
-            }
-          },
-          (error) => {
-            console.error('Error uploading file:', error);
-          }
-        );
-      }
-
-      // Reset selectedFiles and file input
+      this.uploadedFilesToSave = [...this.uploadedFilesToSave, ...this.selectedFiles.map(file => ({ name: file.name, file }))];
       this.selectedFiles = [];
       const fileInput = document.getElementById('fileInput') as HTMLInputElement;
       if (fileInput) {
         fileInput.value = '';
       }
+      this.visibleOperationBox = false;
+      console.log('Files added to save:', this.uploadedFilesToSave);
     } else {
       console.log('No file selected.');
     }
   }
+
+  uploadFiles(): void {
+    const scopeId = 2;
+    const entityId = this.projectId;
+    for (const file of this.uploadedFilesToSave) {
+      this.projectService.UploadProjectArtifact(file.file, scopeId, entityId).subscribe(
+        (res: any) => {
+          if (res?.message === 'Excel Upload Successfully') {
+            console.log('File uploaded successfully:', res);
+            this.uploadedFiles.push({ name: file.name, file: file.file });
+            console.log('uploadedFiles:', this.uploadedFiles);
+            this.showSuccessMessage('File uploaded successfully!');
+          } else {
+            console.log('Unexpected response:', res);
+            this.uploadedFiles.push({ name: file.name, file: file.file });
+            console.log('uploadedFiles:', this.uploadedFiles);
+          }
+        },
+        (error) => {
+          console.error('Error uploading file:', error);
+        }
+      );
+    }
+    // Clear the array after uploading
+    this.uploadedFilesToSave = [];
+  }
+
   onRemoveUploadedFile(index: number): void {
     this.uploadedFiles.splice(index, 1);
   }
 
+  //-------------------------------------------------end-----------------------------------------//
+
   onUploadResponseClick(): void {
     if (this.selectedFiles.length > 0) {
-      const scopeId = 3; 
-      const entityId = 1; 
-
-      this.visibleOperationBox = false;
-
-      for (const file of this.selectedFiles) {
-        this.projectService.UploadProjectArtifact(file, scopeId, entityId).subscribe(
-          (res: any) => {
-            if (res?.message === 'Excel Upload Successfully') {
-              this.uploadedResponseFiles.push({ name: file.name, file: file });
-              this.showSuccessMessage('File uploaded successfully for Response!');
-            } else {
-              console.log('Unexpected response for Response upload:', res);
-              this.uploadedResponseFiles.push({ name: file.name, file: file });
-            }
-          },
-          (error) => {
-            console.error('Error uploading file for Response:', error);
-          }
-        );
-      }
-
+      this.uploadedResponseFilesToSave = [...this.uploadedResponseFilesToSave, ...this.selectedFiles.map(file => ({ name: file.name, file }))];
       this.selectedFiles = [];
       const fileInput = document.getElementById('fileInput') as HTMLInputElement;
       if (fileInput) {
         fileInput.value = '';
       }
+      this.visibleResponseBox = false;
+      console.log('Response files added to save:', this.uploadedResponseFilesToSave);
     } else {
       console.log('No file selected for Response.');
     }
   }
 
-  onRemoveUploadedResponseFile(index: number): void {
-    this.uploadedResponseFiles.splice(index, 1);
+  uploadResponseFiles(): void {
+    const scopeId = 3;
+    const entityId = this.projectId;
+
+    for (const file of this.uploadedResponseFilesToSave) {
+      this.projectService.UploadProjectArtifact(file.file, scopeId, entityId).subscribe(
+        (res: any) => {
+          if (res?.message === 'Excel Upload Successfully') {
+            console.log('Response file uploaded successfully:', res);
+            this.uploadedResponseFiles.push({ name: file.name, file: file.file });
+            console.log('uploadedResponseFiles:', this.uploadedResponseFiles);
+            this.showSuccessMessage('File uploaded successfully for Response!');
+          } else {
+            console.log('Unexpected response for Response upload:', res);
+            this.uploadedResponseFiles.push({ name: file.name, file: file.file });
+            console.log('uploadedResponseFiles:', this.uploadedResponseFiles);
+          }
+        },
+        (error) => {
+          console.error('Error uploading file for Response:', error);
+        }
+      );
+    }
+    // Clear the array after uploading
+    this.uploadedResponseFilesToSave = [];
   }
 
   onUploadOtherClick(): void {
     if (this.selectedFiles.length > 0) {
-      const scopeId = 4; 
-      const entityId = 1; 
-
-      this.visibleOperationBox = false;
-
-      for (const file of this.selectedFiles) {
-        this.projectService.UploadProjectArtifact(file, scopeId, entityId).subscribe(
-          (res: any) => {
-            if (res?.message === 'Excel Upload Successfully') {
-              this.uploadedOtherFiles.push({ name: file.name, file: file });
-              this.showSuccessMessage('File uploaded successfully for Others!');
-            } else {
-              console.log('Unexpected response for Others upload:', res);
-              this.uploadedOtherFiles.push({ name: file.name, file: file });
-            }
-          },
-          (error) => {
-            console.error('Error uploading file for Others:', error);
-          }
-        );
-      }
-
+      this.uploadedOtherFilesToSave = [...this.uploadedOtherFilesToSave, ...this.selectedFiles.map(file => ({ name: file.name, file }))];
       this.selectedFiles = [];
       const fileInput = document.getElementById('fileInput') as HTMLInputElement;
       if (fileInput) {
         fileInput.value = '';
       }
+      console.log('Other files added to save:', this.uploadedOtherFilesToSave);
+      this.visibleOthersBox = false;
     } else {
       console.log('No file selected for Others.');
     }
   }
 
+  uploadOtherFiles(): void {
+    const scopeId = 4;
+    const entityId = this.projectId;
+
+    for (const file of this.uploadedOtherFilesToSave) {
+      this.projectService.UploadProjectArtifact(file.file, scopeId, entityId).subscribe(
+        (res: any) => {
+          if (res?.message === 'Excel Upload Successfully') {
+            console.log('Other file uploaded successfully:', res);
+            this.uploadedOtherFiles.push({ name: file.name, file: file.file });
+            console.log('uploadedOtherFiles:', this.uploadedOtherFiles);
+            this.showSuccessMessage('File uploaded successfully for Others!');
+          } else {
+            console.log('Unexpected response for Others upload:', res);
+            this.uploadedOtherFiles.push({ name: file.name, file: file.file });
+            console.log('uploadedOtherFiles:', this.uploadedOtherFiles);
+          }
+        },
+        (error) => {
+          console.error('Error uploading file for Others:', error);
+        }
+      );
+    }
+    // Clear the array after uploading
+    this.uploadedOtherFilesToSave = [];
+  }
+
+  //--------------------------------------------------//
+  onRemoveUploadedResponseFile(index: number): void {
+    this.uploadedResponseFiles.splice(index, 1);
+  }
+
   onRemoveUploadedOtherFile(index: number): void {
     this.uploadedOtherFiles.splice(index, 1);
   }
-  
+
 }
