@@ -90,6 +90,7 @@ export class FteComponent {
   clear(table: Table) {
     table.reset();
     this.onSort(Event);
+    this.clearSearchInput();
   }
 
   getSeverity(status: boolean): string {
@@ -186,14 +187,25 @@ onGlobalSearch(keyword: string): void {
   // Clear any existing timeout
   if (this.searchTimeout) {
    clearTimeout(this.searchTimeout);
+   
 }
 
 // Set a new timeout to trigger the search after 500 milliseconds (adjust as needed)
 this.searchTimeout = setTimeout(() => {
    this.fetchAllFteDetails(keyword);
 }, 500);
-}
 
+}
+clearSearchInput(): void {
+  // Assuming you have a reference to the input element, you can clear its value
+  const searchInput = document.getElementById('yourInputId') as HTMLInputElement;
+
+  // Or if you are using a framework like Angular, you can use a ViewChild or ngModel to get the reference
+
+  if (searchInput) {
+    searchInput.value = '';
+  }
+}
 
 /**@edit function here*/
 
