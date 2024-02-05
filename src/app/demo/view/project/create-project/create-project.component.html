@@ -95,7 +95,7 @@
             <div class="p-fluid grid">
                 <div class="field col-12 md:col-5">
                     <div class="p-d-flex p-align-center" style="padding-bottom: 8px;">
-                        <p-checkbox [binary]="true" inputId="ny" [ngModel]="enableOriginLocation"
+                        <p-checkbox [binary]="true" inputId="ny" [ngModel]="enableOriginLocation" [ngModelOptions]="{standalone: true}"
                             (onChange)="toggleOriginCheckbox()"></p-checkbox>
                         <label for="ny" style="padding-left: 6px;">Origin Location</label>
                     </div>
@@ -110,7 +110,7 @@
                 <div class="field col-12 md:col-5">
                     <div class="p-d-flex p-align-center" style="padding-bottom: 8px;">
                         <p-checkbox value="Destination Location" inputId="nyz" [binary]="true"
-                            [ngModel]="enableDestinationLocation" (onChange)="toggleDestinationCheckbox()"></p-checkbox>
+                            [ngModel]="enableDestinationLocation" (onChange)="toggleDestinationCheckbox()"  [ngModelOptions]="{standalone: true}"></p-checkbox>
                         <label for="nyz" style="padding-left: 6px;">Destination Location</label>
                     </div>
                     <p-multiSelect placeholder="Select Destination Location" optionLabel="name" optionValue="id"
@@ -265,7 +265,7 @@
             <div class="p-fluid grid">
                 <div class="field col-12 md:col-4">
                   <div class="p-d-block">
-                    <p><b>1.</b> Value Document&nbsp; <a (click)="showDialogOperationCard()"
+                    <p><b>A.</b> Value Document&nbsp; <a (click)="showDialogValue()"
                         style="text-decoration: underline;">Upload</a></p>
                     <ul *ngIf="uploadedFiles.length > 0">
                       <li *ngFor="let file of uploadedFiles; let i = index" class="file-item">
@@ -278,7 +278,7 @@
                 </div>
                 <div class="field col-12 md:col-4">
                   <div class="p-d-block">
-                    <p><b>2.</b> Response Document&nbsp; <a (click)="showDialogResponse()"
+                    <p><b>B.</b> Response Document&nbsp; <a (click)="showDialogResponse()"
                         style="text-decoration: underline;">Upload</a></p>
                     <ul *ngIf="uploadedResponseFiles.length > 0">
                       <li *ngFor="let file of uploadedResponseFiles; let i = index" class="file-item">
@@ -291,7 +291,7 @@
                 </div>
                 <div class="field col-12 md:col-4">
                   <div class="p-d-block">
-                    <p><b>3.</b> Others&nbsp; <a  (click)="showDialogOthers()"
+                    <p><b>C.</b> Others&nbsp; <a  (click)="showDialogOthers()"
                         style="text-decoration: underline;">Upload</a></p>
                     <ul *ngIf="uploadedOtherFiles.length > 0">
                       <li *ngFor="let file of uploadedOtherFiles; let i = index" class="file-item">
@@ -391,8 +391,8 @@
     </p-tabPanel>
 </p-tabView>
 
-<!-- import from excel dialog(Operation Card) -->
-<p-dialog header="Import Excel" [(visible)]="visibleOperationBox" [style]="{width: '50vw'}">
+<!--------------------------------------------------Upload Artifact-------------------------------------- -->
+<p-dialog header="Import Excel" [(visible)]="visibleValueBox" [style]="{width: '50vw'}">
     <ng-template pTemplate="header">
         <div style="width: 100%;">
             <h5 style="display: contents;">Upload Document</h5>&nbsp;&nbsp;&nbsp;
@@ -441,7 +441,7 @@
                     <div class="card_footer">
                         <div>
                             <button type="submit" pButton pRipple class="btn" 
-                                (click)="onRemoveOperationClick()" >
+                                (click)="onRemoveClick()" >
                                 Remove File
                             </button>
                         </div>
@@ -450,7 +450,7 @@
                                 (click)="onUploadClick()">
                                 Submit
                             </button>
-                            <button type="submit" (click)="onOperarationCancelClick()" pButton pRipple
+                            <button type="submit" (click)="onValueCancelClick()" pButton pRipple
                                 class="btn">Cancel</button>
                         </div>
                     </div>
@@ -458,9 +458,6 @@
             </div>
         </div>
     </div>
-    <!-- Add this inside your p-dialog or any suitable place -->
-
-
 </p-dialog>
 <p-dialog header="Import Excel" [(visible)]="visibleResponseBox" [style]="{width: '50vw'}">
     <ng-template pTemplate="header">
@@ -511,7 +508,7 @@
                     <div class="card_footer">
                         <div>
                             <button type="submit" pButton pRipple class="btn" 
-                                (click)="onRemoveOperationClick()"  >
+                                (click)="onRemoveClick()"  >
                                 Remove File
                             </button>
                         </div>
@@ -520,7 +517,7 @@
                                 (click)="onUploadResponseClick()">
                                 Submit
                             </button>
-                            <button type="submit" (click)="onOperarationCancelClick()" pButton pRipple
+                            <button type="submit" (click)="onResponseCancelClick()" pButton pRipple
                                 class="btn">Cancel</button>
                         </div>
                     </div>
@@ -528,9 +525,6 @@
             </div>
         </div>
     </div>
-    <!-- Add this inside your p-dialog or any suitable place -->
-
-
 </p-dialog>
 <p-dialog header="Import Excel" [(visible)]="visibleOthersBox" [style]="{width: '50vw'}">
     <ng-template pTemplate="header">
@@ -581,7 +575,7 @@
                     <div class="card_footer">
                         <div>
                             <button type="submit" pButton pRipple class="btn" 
-                                (click)="onRemoveOperationClick()" >
+                                (click)="onRemoveClick()" >
                                 Remove File
                             </button>
                         </div>
@@ -590,7 +584,7 @@
                                 (click)="onUploadOtherClick()">
                                 Submit
                             </button>
-                            <button type="submit" (click)="onOperarationCancelClick()" pButton pRipple
+                            <button type="submit" (click)="onOthersCancelClick()" pButton pRipple
                                 class="btn">Cancel</button>
                         </div>
                     </div>
@@ -598,7 +592,5 @@
             </div>
         </div>
     </div>
-    <!-- Add this inside your p-dialog or any suitable place -->
-
-
 </p-dialog>
+  <!--------------------end--------------------------------------------------- -->

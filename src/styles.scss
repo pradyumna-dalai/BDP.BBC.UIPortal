@@ -44,3 +44,7 @@ $gutter: 1rem; //for primeflex grid system
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+a:hover {
+  cursor: pointer;
+}
