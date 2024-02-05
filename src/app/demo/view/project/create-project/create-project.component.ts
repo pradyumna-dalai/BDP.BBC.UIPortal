@@ -552,10 +552,7 @@ export class CreateProjectComponent implements OnInit {
   //-----------------------------destination end----------------------------------//
 
   //-----------------------------Artifact Upload------------------------------------//
-  downloadSampleOpExcel(event: Event) {
-    event.preventDefault();
-  }
-  showDialogOperationCard() {
+  showDialogValue() {
     this.visibleValueBox = true;
   }
 
@@ -612,6 +609,7 @@ export class CreateProjectComponent implements OnInit {
         fileInput.value = '';
       }
       this.visibleValueBox = false;
+      this.fileNameOC = "";
       console.log('Files added to save:', this.uploadedFilesToSave);
     } else {
       console.log('No file selected.');
@@ -648,8 +646,6 @@ export class CreateProjectComponent implements OnInit {
     this.uploadedFiles.splice(index, 1);
   }
 
-  //-------------------------------------------------end-----------------------------------------//
-
   onUploadResponseClick(): void {
     if (this.selectedFiles.length > 0) {
       this.uploadedResponseFilesToSave = [...this.uploadedResponseFilesToSave, ...this.selectedFiles.map(file => ({ name: file.name, file }))];
@@ -659,6 +655,7 @@ export class CreateProjectComponent implements OnInit {
         fileInput.value = '';
       }
       this.visibleResponseBox = false;
+      this.fileNameOC = "";
       console.log('Response files added to save:', this.uploadedResponseFilesToSave);
     } else {
       console.log('No file selected for Response.');
@@ -702,6 +699,7 @@ export class CreateProjectComponent implements OnInit {
       }
       console.log('Other files added to save:', this.uploadedOtherFilesToSave);
       this.visibleOthersBox = false;
+      this.fileNameOC = "";
     } else {
       console.log('No file selected for Others.');
     }
@@ -734,7 +732,6 @@ export class CreateProjectComponent implements OnInit {
     this.uploadedOtherFilesToSave = [];
   }
 
-  //--------------------------------------------------//
   onRemoveUploadedResponseFile(index: number): void {
     this.uploadedResponseFiles.splice(index, 1);
   }
@@ -756,5 +753,5 @@ export class CreateProjectComponent implements OnInit {
     this.selectedFile = null;
     this.visibleOthersBox = false;
   }
-
+  //-------------------------------------------------end-----------------------------------------//
 }
