@@ -5,7 +5,7 @@ import { MasterDataService } from 'src/app/services/master-dataserivce/master-da
 import { MasterTableService } from 'src/app/services/master-table.service';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Table } from 'primeng/table';
 @Component({
   selector: 'app-fte',
@@ -44,19 +44,20 @@ export class FteComponent {
      * @FormGroup for FteFrom Group 
      */
 
-    this.FteForm = this.fb.group({
-      id: [''],
-      region : ['',Validators.required],
-      country : ['',Validators.required],
-      location: ['',Validators.required],
-      fte_month: ['',Validators.required],
-      ftf_year :[''],
-      Work_Time_Year: ['',Validators.required],
-      status : ['']
-    })
+    // this.FteForm = this.fb.group({
+    //   id: [''],
+    //   region : ['',Validators.required],
+    //   country : ['',Validators.required],
+    //   location: ['',Validators.required],
+    //   fte_month: ['',Validators.required],
+    //   ftf_year :[''],
+    //   Work_Time_Year: ['',Validators.required],
+    //   status : ['']
+    // })
 
 
   }
+  isDigitValid:boolean = false
 
   ngOnInit(){
     this.fetchAllFteDetails();
@@ -68,7 +69,7 @@ export class FteComponent {
       region : ['',Validators.required],
       country : ['',Validators.required],
       location: ['',Validators.required],
-      fte_month: ['',Validators.required],
+      fte_month: [ '',Validators.required, Validators.maxLength(9)],
       ftf_year : [''],
       Work_Time_Year: ['',Validators.required],
       status : ['']
@@ -78,6 +79,12 @@ export class FteComponent {
         ftf_year: value*13
       })
     });
+ 
+  }
+  limitTo6Digits(event: any) {
+    if (event.target.value.length > 9) {
+      event.target.value = event.target.value.slice(0, 9);
+    }
   }
   
   clear(table: Table) {
