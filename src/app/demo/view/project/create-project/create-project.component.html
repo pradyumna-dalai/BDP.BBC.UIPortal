@@ -283,7 +283,7 @@
                     <ul *ngIf="uploadedResponseFiles.length > 0">
                       <li *ngFor="let file of uploadedResponseFiles; let i = index" class="file-item">
                         {{ i + 1 }}. {{ file.name }}
-                        <button pButton pRipple type="button" icon="pi pi-trash" (click)="onRemoveUploadedResponseFile(i)"
+                        <button pButton pRipple type="button" icon="pi pi-trash" (click)="deleteResponseArtifact(i)"
                           style="margin-left: 8px;" class="p-button-rounded p-button-text p-button-danger"></button>
                       </li>
                     </ul>
@@ -296,7 +296,7 @@
                     <ul *ngIf="uploadedOtherFiles.length > 0">
                       <li *ngFor="let file of uploadedOtherFiles; let i = index" class="file-item">
                         {{ i + 1 }}. {{ file.name }}
-                        <button pButton pRipple type="button" icon="pi pi-trash" (click)="onRemoveUploadedOtherFile(i)"
+                        <button pButton pRipple type="button" icon="pi pi-trash" (click)="deleteOtherArtifact(i)"
                           style="margin-left: 8px;" class="p-button-rounded p-button-text p-button-danger"></button>
                       </li>
                     </ul>
