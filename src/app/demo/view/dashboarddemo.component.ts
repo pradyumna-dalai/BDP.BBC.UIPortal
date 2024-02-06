@@ -28,6 +28,7 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
     itemId: number;
     operationDocId: number | null;
     fileName: any;
+    showDownload: boolean = false;
     constructor(private breadcrumbService: AppBreadcrumbService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
         this.breadcrumbService.setItems([
             { label: 'Building Blocks' }
@@ -196,6 +197,7 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
                     this.buildingBlockDetails = response;
                     this.operationDocId = response.data.operationsCard?.id;
                     this.fileName = response.data.operationsCard?.name; 
+                    this.showDownload = this.operationDocId !== null; 
                  //   console.log('Building Block Details for explore view:', this.fileName);
                     this.loading = false;
                 },

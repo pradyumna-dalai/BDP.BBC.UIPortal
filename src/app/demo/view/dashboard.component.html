@@ -202,13 +202,13 @@
                 </p-accordion>
             </div>
             <!-- Operation card details -->
-            <div class="card" *ngIf="this.showOperationCrad==true" style="min-height: 669px;">
+            <div class="card" *ngIf="this.showOperationCrad==true" style="min-height: 455px;">
                 <div class="grid">
                     <div class="col-6">
                         <h5>Operation Card</h5>
                     </div>
                     <div class="col-6" style="display: flex;justify-content: flex-end;">
-                        <a style="text-decoration: underline;" [pTooltip]="'Download Uploaded Operation Card File'" [tooltipPosition]="'top'" (click)="downloadOperationCardExcel($event)">Download Excel</a>
+                        <a style="text-decoration: underline;" [pTooltip]="'Download Uploaded Operation Card File'"  *ngIf="showDownload" [tooltipPosition]="'top'" (click)="downloadOperationCardExcel($event)">Download Excel</a>
                     </div>
                 </div>
                 <hr class="align">
