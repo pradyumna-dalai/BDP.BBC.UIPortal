@@ -621,7 +621,7 @@ export class CreateProjectComponent implements OnInit {
           if (res?.status === 200 && res?.message === 'success' && res?.data?.id) {
             file.id = res.data.id;
             this.uploadedFiles.push({ id: file.id, name: file.name, file: file.file });
-            this.showSuccessMessage('File uploaded successfully!');
+           // this.showSuccessMessage('File uploaded successfully!');
                 } else {
             console.error('Error uploading file. Unexpected response:', res);
           }
@@ -631,7 +631,6 @@ export class CreateProjectComponent implements OnInit {
         }
       );
     }
-    // Clear the array after uploading
     this.uploadedFilesToSave = [];
   }
   
@@ -644,13 +643,12 @@ export class CreateProjectComponent implements OnInit {
     if (index >= 0 && index < this.uploadedFiles.length) {
       const documentIdToDelete = this.uploadedFiles[index].id;
       this.projectService.deleteProjectDocument(documentIdToDelete).subscribe(
-        (response:any) => {
-          const successMessage = 'Document deleted successfully';
-          if (response === successMessage) {
+        (res:any) => {
+          if (res.status === 200 ) {
             this.uploadedFiles.splice(index, 1);
-            console.log('Document deleted successfully:', response);
+            this.showSuccessMessage('Document deleted successfully!');
           } else {
-            console.error('Unexpected response:', response);
+            console.error('Unexpected response:', res);
           }
         },
         (error) => {
