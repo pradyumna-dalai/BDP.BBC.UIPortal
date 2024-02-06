@@ -239,3 +239,17 @@ label {
 ::-webkit-scrollbar-thumb {
   background: #d6d6d6
 }
+::ng-deep .p-datepicker table td > span {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  transition: box-shadow 0.2s;
+  border: 1px solid transparent;
+}
+::ng-deep .p-datepicker table {
+  font-size: 10px;
+  margin: 0;
+}
+::ng-deep .p-datepicker table td {
+  padding: 0;
+}

@@ -35,9 +35,7 @@
 <div class="sm:col-6" style="display: flex;padding: 0rem !important;">
   <div class="field sm:col-3">
     <div class="p-d-block"><label>Date Range :</label></div>
-    <input type="text" ngxDaterangepickerMd
-    [lockStartDate]="false"
-[(ngModel)]="selected" placeholder="Start-End"  (focus)="focusFunction()" class="date_pick" [ngClass]="{'clicked': isClicked}"  [style]="{ width: '100%'}"/>
+    <p-calendar [(ngModel)]="rangeDates" selectionMode="range" [readonlyInput]="true" placeholder="start-date/end-date" [showButtonBar]="true"></p-calendar>
   </div>
   <div class="field sm:col-3">
     <div class="p-d-block"><label>Opportunity Name :</label></div>
