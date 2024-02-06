@@ -1,16 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-add-volume',
-  templateUrl: './add-volume.component.html',
-  styleUrls: ['./add-volume.component.scss']
+  selector: 'app-project-cost',
+  templateUrl: './project-cost.component.html',
+  styleUrls: ['./project-cost.component.scss']
 })
-export class AddVolumeComponent implements OnInit {
+export class ProjectCostComponent {
 
-Add_Volume:any;
-
-///add voulume & CLI///
+  ///add voulume & CLI///
 showOriginVolume: boolean = true;
 showDestinationVolume: boolean = false;
 originButtonColor: string = 'white';
@@ -22,34 +19,8 @@ destinationButtonBorderRadius: string = '5px';
 showOriginCLI: boolean = true;
 showDestinationCLI:boolean = false;
 //end//
-private _isExpanded = false;
-visible: boolean = false;
-  constructor(private projectService:ProjectsService){
 
-  }
-
-  ngOnInit(){
-
-  }
-  public get isExpanded() {
-    return this._isExpanded;
-}
-
-public set isExpanded(value: boolean) {
-    this._isExpanded = value;
-}
-showUploadDialog() {
-  this.visible = true;
-}
-  shareFunctionAddVolume(){
-    this.projectService.buildingData$.subscribe((res)=>{
-      console.log("call Add",res);
-      this.Add_Volume = res
-    })
-  }
-
-  //---------------------------------ADD VOLUME--------------------------------------------//
-showOriginSection() {
+shoSOWSection() {
   this.showOriginVolume = true;
   this.showDestinationVolume = false;
   this.originButtonColor = 'white';
@@ -60,7 +31,7 @@ showOriginSection() {
   this.destinationButtonBorderRadius = '5px';
 }
 
-showDestinationSection() {
+showplStatement() {
   this.showOriginVolume = false;
   this.showDestinationVolume = true;
   this.originButtonColor = 'rgb(0, 110, 255)';

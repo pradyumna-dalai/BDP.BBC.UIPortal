@@ -58,6 +58,7 @@
             <h5>Scoping Card</h5>
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
+        
             <a (click)="showDialogScopingCard()" style="text-decoration: underline;">Import From Excel</a>
         </div>
     </div>
@@ -236,7 +237,8 @@
     <div class="col-6">
         <h5>Operation Card</h5>
     </div>
-    <div class="col-6" style="display: flex;justify-content: flex-end;">
+    <div class="col-6" style="display: flex;justify-content: flex-end;"> 
+        <a style="text-decoration: underline;" [pTooltip]="'Download Uploaded Operation Card File'" [tooltipPosition]="'top'">{{fileNameOC}}</a> &nbsp;&nbsp;
         <a (click)="showDialogOperationCard()" style="text-decoration: underline;">Import From Excel</a>
     </div>
       </div>
@@ -653,7 +655,7 @@
         </div>    
 
     </div>
-</p-dialog>
+</p-dialog> 
 <!-- import from excel dialog(Commercial Card) -->
 <p-dialog header="Import Excel" [(visible)]="visibleCC" [style]="{width: '50vw'}">
     <!-- <div class="page-under-construction">
@@ -765,8 +767,8 @@
                 <div class="custom-container">
                     <h6><b>Instructions</b></h6>
                     <ul class="list">
-                        <li>Maximum File Size: 2MB</li>
-                        <li>File Format: CSV,xlsx</li>
+                        <li>Maximum File Size: 5MB</li>
+                        <li>File Format: xlsx</li>
                     </ul>
                     <ol class="list" type="1">
                         <li>Make sure to provide valid data</li>
@@ -788,7 +790,7 @@
                                     <div class="upload_name">Upload</div>
                                 </label>
                                 <p style="text-align: center;">{{fileNameOC}}</p>
-                                <input type="file" id="fileInput" (change)="onFileSelected($event)" style="display: none;" accept=".xlsx, .csv">
+                                <input type="file" id="fileInput" (change)="onFileSelected($event)" style="display: none;" accept=".xlsx">
                             </div>
                         </div>
                     </div>
@@ -799,7 +801,7 @@
                             </button>
                         </div>
                         <div class="uplodBtn_right">
-                            <button type="submit" pButton pRipple class="btn"    [disabled]="!selectedFile" (click)="onUploadClick()">
+                            <button type="submit" pButton pRipple class="btn"    [disabled]="!selectedFile" (click)="onUploadClick($event)">
                                 Submit
                             </button>
                             <button type="submit" (click)="onOperarationCancelClick()" pButton pRipple class="btn">Cancel</button>

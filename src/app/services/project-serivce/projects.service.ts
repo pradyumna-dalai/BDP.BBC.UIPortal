@@ -83,7 +83,7 @@ advanceSearchFilter(body: any): Observable<any> {
 
  //------process configurable-----------------------//
 
- processConfigImportExcel(formData: FormData) {
+processConfigImportExcel(formData: FormData) {
   return this.http.post(url+settings.AppRoutes.Auth.uploadConfigurable, formData).pipe(
     catchError((error: any) => {
       return throwError(error); // Pass the error to the subscriber
@@ -96,6 +96,29 @@ processConfigGetImportExcelData() {
       return throwError(error); // Pass the error to the subscriber
     })
   );
+}
+
+
+
+//--------------------------Common Upload----------------------------//
+UploadProjectArtifact(file: File, scopeId: number, entityId: number): Observable<any> {
+  const formData: FormData = new FormData();
+  formData.append('file', file, file.name);
+
+  const params = new HttpParams()
+    .set('scopeId', scopeId.toString())
+    .set('entityId', entityId.toString());
+
+  return this.http.post(url+settings.AppRoutes.Auth.CommonUpload, formData,  { params }).pipe(
+    catchError((error: any) => {
+      return throwError(error);
+    })
+  );
+}
+
+deleteProjectDocument(id:number ) {
+  const downloadUrl = `${url}${settings.AppRoutes.Auth.deleteProjectFile}/${id}`;
+  return this.http.delete(downloadUrl);
 }
 
 }

@@ -5,12 +5,11 @@
         </div>
         <div class="md:col-6" style="display: flex; padding: 0px !important;
         justify-content: flex-end;">
-            <div style="padding: 5px;"><a href="" style="border-right: 1px solid rgb(209, 207, 207); padding-right: 10px;">Collapse All</a></div>
-            <div style="padding: 5px;"><a href="">Download</a></div>
-            <div>
-                <button pButton pRipple type="button" label="Import Excel"
-                 class="p-button-outlined mr-2 mb-2" 
-                 style="background: rgba(33, 150, 243, 0.04);color: #8b8989;border: 1px solid #d1c5c5;padding: 4px;padding-left: 10px;padding-right: 10px;"></button>
+          <div style="padding: 5px;"><button pButton pRipple type="button" (click)="isExpanded = !isExpanded">
+            {{ isExpanded ? 'Collapse All' : 'Expand All' }}</button></div>
+            <div style="padding: 5px;"><button pButton pRipple type="button">Download</button></div>
+            <div style="padding: 5px;">
+                <button pButton pRipple type="button" (click)="showUploadDialog()">Import Excel</button>
             </div>
         </div>
     </div>
@@ -18,344 +17,777 @@
     margin-bottom: 22px;
     color: gray;
     background-color: #d9d2d2;
-    height: 1px;
+    height: 1px; 
     border: none;">
-    <p style="font-weight: 500;">VOT-Air</p>
-    <div style="display: flex;background-color: rgb(0, 110, 255);padding: 10px;width: 20rem;border-radius: 8px;">
-        <button type="button" [style.border-radius]="originButtonBorderRadius" [style.background-color]="originButtonColor" [style.border]="originButtonBorder" (click)="showOriginSection()"> Origin Location</button>
-        <button type="button" [style.border-radius]="destinationButtonBorderRadius" [style.background-color]="destinationButtonColor" [style.border]="destinationButtonBorder" (click)="showDestinationSection()"> Destination Location</button>
-    </div>
+    <p-accordion [activeIndex]="0">
+        <p-accordionTab header="VOT-Air" [selected]="isExpanded">
+            <div>
+                <div class="activeToggel">
+                    <button class="toggleButton" type="button" [style.border-radius]="originButtonBorderRadius" [style.background-color]="originButtonColor" [style.border]="originButtonBorder" (click)="showOriginSection()"> Origin Location</button>
+                    <button class="toggleButton" type="button" [style.border-radius]="destinationButtonBorderRadius" [style.background-color]="destinationButtonColor" [style.border]="destinationButtonBorder" (click)="showDestinationSection()"> Destination Location</button>
+                </div>
+        
+                <div style="margin-top:10px;" *ngIf="showOriginVolume">
+                    <p-accordion>
+                        <p-accordionTab header="1. Customer send booking request" [selected]="isExpanded">
+                            <p-table [value]="" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width:20%">Action</th>
+                                        <th style="width:20%">UOM</th>
+                                        <th style="width:20%">Configurable</th>
+                                        <th style="width:20%">Aarhus</th>
+                                        <th style="width:20%">Budapest</th>
+                                        <th style="width:20%">Cairo</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
+                                    <tr [pEditableRow]="">
+                                        <td>
+                                            <div class="flex align-items-center justify-content-center gap-2">
+                                                <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(product)" class="p-button-rounded p-button-text"></button>
+                                                <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(product)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                                                <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(product, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text" >
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{product.code}}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text"  required>
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <!-- {{product.name}} -->
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <p-dropdown [options]="statuses" appendTo="body"  [style]="{'width':'100%'}"></p-dropdown>
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <!-- {{product.inventoryStatus}} -->
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text" >
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <!-- {{product.price | currency: 'USD'}} -->
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text" >
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <!-- {{product.price | currency: 'USD'}} -->
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        
+                                    </tr>
+                                </ng-template>
+                            <ng-template pTemplate="emptymessage">
+                                <tr>
+                                    <td style="text-align: center;" colspan="18">No Data found.</td>
+                                </tr>
+                            </ng-template>
+                            </p-table>
+                        </p-accordionTab>
+                        <p-accordionTab header="2 Customer agrees rate quotation"  [selected]="isExpanded">
+                            <p-table [value]="" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width:20%">Action</th>
+                                        <th style="width:20%">UOM</th>
+                                        <th style="width:20%">Configurable</th>
+                                        <th style="width:20%">Aarhus</th>
+                                        <th style="width:20%">Budapest</th>
+                                        <th style="width:20%">Cairo</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
+                                    <tr [pEditableRow]="">
+                                        <td>
+                                            <div class="flex align-items-center justify-content-center gap-2">
+                                                <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(product)" class="p-button-rounded p-button-text"></button>
+                                                <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(product)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                                                <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(product, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text" >
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{product.code}}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text"  required>
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <!-- {{product.name}} -->
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <p-dropdown [options]="statuses" appendTo="body"  [style]="{'width':'100%'}"></p-dropdown>
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <!-- {{product.inventoryStatus}} -->
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text" >
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <!-- {{product.price | currency: 'USD'}} -->
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text" >
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <!-- {{product.price | currency: 'USD'}} -->
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        
+                                    </tr>
+                                </ng-template>
+                            <ng-template pTemplate="emptymessage">
+                                <tr>
+                                    <td style="text-align: center;" colspan="18">No Data found.</td>
+                                </tr>
+                            </ng-template>
+                            </p-table>
+                        </p-accordionTab>
+                    </p-accordion>
+                </div>
+                <div style="margin-top:10px;" *ngIf="showDestinationVolume">
+                    <p-accordion>
+                        <p-accordionTab header="1. Customer send booking request" [selected]="isExpanded">
+                            <p-table [value]="" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width:20%">Action</th>
+                                        <th style="width:20%">UOM</th>
+                                        <th style="width:20%">Configurable</th>
+                                        <th style="width:20%">Aarhus</th>
+                                        <th style="width:20%">Budapest</th>
+                                        <th style="width:20%">Cairo</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
+                                    <tr [pEditableRow]="">
+                                        <td>
+                                            <div class="flex align-items-center justify-content-center gap-2">
+                                                <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(product)" class="p-button-rounded p-button-text"></button>
+                                                <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(product)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                                                <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(product, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text" >
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{product.code}}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text"  required>
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <!-- {{product.name}} -->
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <p-dropdown [options]="statuses" appendTo="body"  [style]="{'width':'100%'}"></p-dropdown>
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <!-- {{product.inventoryStatus}} -->
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text" >
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <!-- {{product.price | currency: 'USD'}} -->
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text" >
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <!-- {{product.price | currency: 'USD'}} -->
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        
+                                    </tr>
+                                </ng-template>
+                            <ng-template pTemplate="emptymessage">
+                                <tr>
+                                    <td style="text-align: center;" colspan="18">No Data found.</td>
+                                </tr>
+                            </ng-template>
+                            </p-table>
+                        </p-accordionTab>
+                        <p-accordionTab header="2 Customer agrees rate quotation" [selected]="isExpanded">
+                            <p-table [value]="" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width:20%">Action</th>
+                                        <th style="width:20%">UOM</th>
+                                        <th style="width:20%">Configurable</th>
+                                        <th style="width:20%">Aarhus</th>
+                                        <th style="width:20%">Budapest</th>
+                                        <th style="width:20%">Cairo</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
+                                    <tr [pEditableRow]="">
+                                        <td>
+                                            <div class="flex align-items-center justify-content-center gap-2">
+                                                <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(product)" class="p-button-rounded p-button-text"></button>
+                                                <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(product)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                                                <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(product, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text" >
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{product.code}}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text"  required>
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <!-- {{product.name}} -->
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <p-dropdown [options]="statuses" appendTo="body"  [style]="{'width':'100%'}"></p-dropdown>
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <!-- {{product.inventoryStatus}} -->
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text" >
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <!-- {{product.price | currency: 'USD'}} -->
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text" >
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <!-- {{product.price | currency: 'USD'}} -->
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        
+                                    </tr>
+                                </ng-template>
+                            <ng-template pTemplate="emptymessage">
+                                <tr>
+                                    <td style="text-align: center;" colspan="18">No Data found.</td>
+                                </tr>
+                            </ng-template>
+                            </p-table>
+                        </p-accordionTab>
+                    </p-accordion>
+                </div>
+            </div>
+        </p-accordionTab>
+        <p-accordionTab header="VOT-Ocean" [selected]="isExpanded">
+            <div>
+                <div style="display: flex;background-color: rgb(0, 110, 255);padding: 10px;width: 19rem;border-radius: 8px;">
+                    <button type="button" [style.border-radius]="originButtonBorderRadius" [style.background-color]="originButtonColor" [style.border]="originButtonBorder" (click)="showOriginSection()"> Origin Location</button>
+                    <button type="button" [style.border-radius]="destinationButtonBorderRadius" [style.background-color]="destinationButtonColor" [style.border]="destinationButtonBorder" (click)="showDestinationSection()"> Destination Location</button>
+                </div>
+        
+                <div style="margin-top:10px;" *ngIf="showOriginVolume">
+                    <p-accordion [activeIndex]="activeIndex">
+                        <p-accordionTab header="1. Customer send booking request">
+                            <p-table [value]="" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width:20%">Action</th>
+                                        <th style="width:20%">UOM</th>
+                                        <th style="width:20%">Configurable</th>
+                                        <th style="width:20%">Aarhus</th>
+                                        <th style="width:20%">Budapest</th>
+                                        <th style="width:20%">Cairo</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
+                                    <tr [pEditableRow]="">
+                                        <td>
+                                            <div class="flex align-items-center justify-content-center gap-2">
+                                                <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(product)" class="p-button-rounded p-button-text"></button>
+                                                <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(product)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                                                <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(product, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text" >
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{product.code}}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text"  required>
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <!-- {{product.name}} -->
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <p-dropdown [options]="statuses" appendTo="body"  [style]="{'width':'100%'}"></p-dropdown>
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <!-- {{product.inventoryStatus}} -->
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text" >
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <!-- {{product.price | currency: 'USD'}} -->
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text" >
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <!-- {{product.price | currency: 'USD'}} -->
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        
+                                    </tr>
+                                </ng-template>
+                            <ng-template pTemplate="emptymessage">
+                                <tr>
+                                    <td style="text-align: center;" colspan="18">No Data found.</td>
+                                </tr>
+                            </ng-template>
+                            </p-table>
+                        </p-accordionTab>
+                        <p-accordionTab header="2 Customer agrees rate quotation" >
+                            <p-table [value]="" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width:20%">Action</th>
+                                        <th style="width:20%">UOM</th>
+                                        <th style="width:20%">Configurable</th>
+                                        <th style="width:20%">Aarhus</th>
+                                        <th style="width:20%">Budapest</th>
+                                        <th style="width:20%">Cairo</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
+                                    <tr [pEditableRow]="">
+                                        <td>
+                                            <div class="flex align-items-center justify-content-center gap-2">
+                                                <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(product)" class="p-button-rounded p-button-text"></button>
+                                                <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(product)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                                                <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(product, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text" >
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{product.code}}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text"  required>
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <!-- {{product.name}} -->
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <p-dropdown [options]="statuses" appendTo="body"  [style]="{'width':'100%'}"></p-dropdown>
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <!-- {{product.inventoryStatus}} -->
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text" >
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <!-- {{product.price | currency: 'USD'}} -->
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text" >
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <!-- {{product.price | currency: 'USD'}} -->
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        
+                                    </tr>
+                                </ng-template>
+                            <ng-template pTemplate="emptymessage">
+                                <tr>
+                                    <td style="text-align: center;" colspan="18">No Data found.</td>
+                                </tr>
+                            </ng-template>
+                            </p-table>
+                        </p-accordionTab>
+                    </p-accordion>
+                </div>
+                <div style="margin-top:10px;" *ngIf="showDestinationVolume">
+                    <p-accordion [activeIndex]="1">
+                        <p-accordionTab header="1. Customer send booking request">
+                            <p-table [value]="" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width:20%">Action</th>
+                                        <th style="width:20%">UOM</th>
+                                        <th style="width:20%">Configurable</th>
+                                        <th style="width:20%">Aarhus</th>
+                                        <th style="width:20%">Budapest</th>
+                                        <th style="width:20%">Cairo</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
+                                    <tr [pEditableRow]="">
+                                        <td>
+                                            <div class="flex align-items-center justify-content-center gap-2">
+                                                <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(product)" class="p-button-rounded p-button-text"></button>
+                                                <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(product)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                                                <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(product, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text" >
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{product.code}}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text"  required>
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <!-- {{product.name}} -->
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <p-dropdown [options]="statuses" appendTo="body"  [style]="{'width':'100%'}"></p-dropdown>
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <!-- {{product.inventoryStatus}} -->
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text" >
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <!-- {{product.price | currency: 'USD'}} -->
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text" >
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <!-- {{product.price | currency: 'USD'}} -->
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        
+                                    </tr>
+                                </ng-template>
+                            <ng-template pTemplate="emptymessage">
+                                <tr>
+                                    <td style="text-align: center;" colspan="18">No Data found.</td>
+                                </tr>
+                            </ng-template>
+                            </p-table>
+                        </p-accordionTab>
+                        <p-accordionTab header="2 Customer agrees rate quotation" >
+                            <p-table [value]="" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width:20%">Action</th>
+                                        <th style="width:20%">UOM</th>
+                                        <th style="width:20%">Configurable</th>
+                                        <th style="width:20%">Aarhus</th>
+                                        <th style="width:20%">Budapest</th>
+                                        <th style="width:20%">Cairo</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
+                                    <tr [pEditableRow]="">
+                                        <td>
+                                            <div class="flex align-items-center justify-content-center gap-2">
+                                                <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(product)" class="p-button-rounded p-button-text"></button>
+                                                <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(product)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                                                <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(product, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text" >
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{product.code}}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text"  required>
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <!-- {{product.name}} -->
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <p-dropdown [options]="statuses" appendTo="body"  [style]="{'width':'100%'}"></p-dropdown>
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <!-- {{product.inventoryStatus}} -->
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text" >
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <!-- {{product.price | currency: 'USD'}} -->
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td>
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text" >
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <!-- {{product.price | currency: 'USD'}} -->
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        
+                                    </tr>
+                                </ng-template>
+                            <ng-template pTemplate="emptymessage">
+                                <tr>
+                                    <td style="text-align: center;" colspan="18">No Data found.</td>
+                                </tr>
+                            </ng-template>
+                            </p-table>
+                        </p-accordionTab>
+                    </p-accordion>
+                </div>
+            </div>
+        </p-accordionTab>
+    </p-accordion>
+    <p style="font-weight: 500;"></p>
+    
+</div>
 
-<div style="margin-top:10px;" *ngIf="showOriginVolume">
-    <p-accordion [activeIndex]="1">
-        <p-accordionTab header="1. Customer send booking request">
-            <p-table [value]="" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th style="width:20%">Action</th>
-                        <th style="width:20%">UOM</th>
-                        <th style="width:20%">Configurable</th>
-                        <th style="width:20%">Aarhus</th>
-                        <th style="width:20%">Budapest</th>
-                        <th style="width:20%">Cairo</th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
-                    <tr [pEditableRow]="">
-                        <td>
-                            <div class="flex align-items-center justify-content-center gap-2">
-                                <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(product)" class="p-button-rounded p-button-text"></button>
-                                <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(product)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                                <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(product, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
-                            </div>
-                        </td>
-                        <td>
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <input pInputText type="text" >
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    {{product.code}}
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        <td>
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <input pInputText type="text"  required>
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    <!-- {{product.name}} -->
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        <td>
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <p-dropdown [options]="statuses" appendTo="body"  [style]="{'width':'100%'}"></p-dropdown>
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    <!-- {{product.inventoryStatus}} -->
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        <td>
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <input pInputText type="text" >
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    <!-- {{product.price | currency: 'USD'}} -->
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        <td>
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <input pInputText type="text" >
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    <!-- {{product.price | currency: 'USD'}} -->
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        
-                    </tr>
-                </ng-template>
-            <ng-template pTemplate="emptymessage">
-                <tr>
-                    <td style="text-align: center;" colspan="18">No Data found.</td>
-                </tr>
-            </ng-template>
-            </p-table>
-        </p-accordionTab>
-        <p-accordionTab header="2 Customer agrees rate quotation" >
-            <p-table [value]="" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th style="width:20%">Action</th>
-                        <th style="width:20%">UOM</th>
-                        <th style="width:20%">Configurable</th>
-                        <th style="width:20%">Aarhus</th>
-                        <th style="width:20%">Budapest</th>
-                        <th style="width:20%">Cairo</th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
-                    <tr [pEditableRow]="">
-                        <td>
-                            <div class="flex align-items-center justify-content-center gap-2">
-                                <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(product)" class="p-button-rounded p-button-text"></button>
-                                <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(product)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                                <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(product, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
-                            </div>
-                        </td>
-                        <td>
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <input pInputText type="text" >
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    {{product.code}}
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        <td>
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <input pInputText type="text"  required>
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    <!-- {{product.name}} -->
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        <td>
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <p-dropdown [options]="statuses" appendTo="body"  [style]="{'width':'100%'}"></p-dropdown>
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    <!-- {{product.inventoryStatus}} -->
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        <td>
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <input pInputText type="text" >
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    <!-- {{product.price | currency: 'USD'}} -->
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        <td>
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <input pInputText type="text" >
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    <!-- {{product.price | currency: 'USD'}} -->
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        
-                    </tr>
-                </ng-template>
-            <ng-template pTemplate="emptymessage">
-                <tr>
-                    <td style="text-align: center;" colspan="18">No Data found.</td>
-                </tr>
-            </ng-template>
-            </p-table>
-        </p-accordionTab>
-    </p-accordion>
-</div>
-<div *ngIf="showDestinationVolume">
-    <p-accordion [activeIndex]="1">
-        <p-accordionTab header="1. Customer send booking request">
-            <p-table [value]="" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th style="width:20%">Action</th>
-                        <th style="width:20%">UOM</th>
-                        <th style="width:20%">Configurable</th>
-                        <th style="width:20%">Aarhus</th>
-                        <th style="width:20%">Budapest</th>
-                        <th style="width:20%">Cairo</th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
-                    <tr [pEditableRow]="">
-                        <td>
-                            <div class="flex align-items-center justify-content-center gap-2">
-                                <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(product)" class="p-button-rounded p-button-text"></button>
-                                <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(product)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                                <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(product, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
-                            </div>
-                        </td>
-                        <td>
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <input pInputText type="text" >
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    {{product.code}}
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        <td>
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <input pInputText type="text"  required>
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    <!-- {{product.name}} -->
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        <td>
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <p-dropdown [options]="statuses" appendTo="body"  [style]="{'width':'100%'}"></p-dropdown>
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    <!-- {{product.inventoryStatus}} -->
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        <td>
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <input pInputText type="text" >
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    <!-- {{product.price | currency: 'USD'}} -->
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        <td>
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <input pInputText type="text" >
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    <!-- {{product.price | currency: 'USD'}} -->
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        
-                    </tr>
-                </ng-template>
-            <ng-template pTemplate="emptymessage">
-                <tr>
-                    <td style="text-align: center;" colspan="18">No Data found.</td>
-                </tr>
-            </ng-template>
-            </p-table>
-        </p-accordionTab>
-        <p-accordionTab header="2 Customer agrees rate quotation" >
-            <p-table [value]="" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th style="width:20%">Action</th>
-                        <th style="width:20%">UOM</th>
-                        <th style="width:20%">Configurable</th>
-                        <th style="width:20%">Aarhus</th>
-                        <th style="width:20%">Budapest</th>
-                        <th style="width:20%">Cairo</th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
-                    <tr [pEditableRow]="">
-                        <td>
-                            <div class="flex align-items-center justify-content-center gap-2">
-                                <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(product)" class="p-button-rounded p-button-text"></button>
-                                <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(product)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                                <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(product, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
-                            </div>
-                        </td>
-                        <td>
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <input pInputText type="text" >
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    {{product.code}}
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        <td>
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <input pInputText type="text"  required>
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    <!-- {{product.name}} -->
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        <td>
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <p-dropdown [options]="statuses" appendTo="body"  [style]="{'width':'100%'}"></p-dropdown>
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    <!-- {{product.inventoryStatus}} -->
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        <td>
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <input pInputText type="text" >
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    <!-- {{product.price | currency: 'USD'}} -->
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        <td>
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <input pInputText type="text" >
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    <!-- {{product.price | currency: 'USD'}} -->
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        
-                    </tr>
-                </ng-template>
-            <ng-template pTemplate="emptymessage">
-                <tr>
-                    <td style="text-align: center;" colspan="18">No Data found.</td>
-                </tr>
-            </ng-template>
-            </p-table>
-        </p-accordionTab>
-    </p-accordion>
-</div>
-</div>
+<p-dialog header="Import Excel" [(visible)]="visible" [modal]="true"   [style]="{width: '50vw'}" >
+    <!-- <div class="page-under-construction">
+        <img src="assets/layout/images/page-under-construction.jpg" alt="No Building Blocks Found">
+    </div> -->
+    <ng-template pTemplate="header">
+        <div style="width: 100%;">
+            <h5 style="display: contents;">Import From Excel</h5>&nbsp;&nbsp;&nbsp;
+            <h5 style="display: contents;">
+                <a  style="text-decoration: underline;cursor: pointer;">Download Sample File</a>
+              </h5>
+        </div>
+    </ng-template>
+    <hr>
+    <div>
+        <div class="p-fluid grid">
+            <!-- Left Column -->
+            <div class="col-12 md:col-12">
+            <div class="custom-container">
+                <h6><b>Instructions</b></h6>
+                <ul class="list">
+                <li>Maximum File Size: 2MB</li>
+                <li>File Format: CSV,xlsx</li>
+                </ul>
+                <ol class="list" type="1">
+                <li>Make sure to provide valid data</li>
+                <li>Keep file name recognizable</li>
+                </ol>
+            </div>
+            </div>
+            <!-- Right Column -->
+            <div class="col-12 md:col-12">
+                <div class="custom-container">
+                    <h6><b>Upload</b></h6>
+                    <div  style="color: red;">
+                        <!-- <b>Upload error: Review the file before uploading.</b>
+                        <div *ngIf="!uploadError">
+                            <div *ngIf="deliverablesError">{{ deliverablesError }}</div>
+                        <div *ngIf="valueToPSABDPError">{{ valueToPSABDPError }}</div>
+                        <div *ngIf="parametersError">{{ parametersError }}</div>
+                        <div *ngIf="serviceDescriptionError">{{ serviceDescriptionError }}</div>
+                        <div *ngIf="stakeholdersAudienceError">{{ stakeholdersAudienceError }}</div>
+                        <div *ngIf="customerRequirementsError">{{ customerRequirementsError }}</div>
+                        <div *ngIf="configurableError">{{ configurableError }}</div> 
+                        </div>
+                       
+                        Add similar divs for other fields -->
+                      </div>
+                     
+                    <div class="box">
+                        <div class="card-body">
+                        <div class="container">
+                            
+                            <label for="fileUpload" class="custom-file-input">
+                                <i class="pi pi-upload" style="font-size: 30px;display: block;"></i>
+                                <div class="upload_name">Upload</div>
+                            </label>
+                            <p style="text-align: center;"></p>
+                            <input type="file" id="fileUpload"  style="display: none;" accept=".xlsx, .csv">
+                        </div>
+                        </div>
+                    </div>
+                    <!-- <p-progressBar *ngIf="uploadInProgress" mode="indeterminate" [style]="{'height': '6px', 'marginBottom':'1rem'}">
+                    </p-progressBar> -->
+                    <div class="card_footer">
+                        <div>
+                            <button type="submit" pButton pRipple class=" btn">
+                            Remove File
+                        </button> 
+                        </div>
+                        <div class="uplodBtn_right">
+                        <button type="submit" pButton pRipple class=" btn">
+                            Submit
+                        </button>
+                        <button type="submit"  pButton pRipple class=" btn">Cancel</button>
+                        </div>
+                    </div>
+                    </div>
+            </div>
+        </div>
+        <div class="">
+        </div>    
+
+    </div>
+</p-dialog>
