@@ -132,3 +132,10 @@ label{
   min-width: 0% !important;
 }
 
+::ng-deep .p-datepicker table {
+  font-size: 10px !important;
+  margin: 0px !important;
+}
+::ng-deep .p-datepicker table td {
+  padding: 0 !important;
+}
