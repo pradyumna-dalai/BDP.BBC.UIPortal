@@ -121,12 +121,6 @@ button:hover {
   background-color: #3c78d8;
 }
 
-::ng-deep .p-datepicker {
-  //transform-origin: center top !important;
-  top: 1px !important;
-  left: -360px !important;
-  width: 200% !important;
-}
 
 .custom-date-range-dropdown p-calendar {
   margin-left: 50px;
@@ -139,3 +133,7 @@ button:hover {
   top: 51px;
   margin-bottom: 5px;
 }
+// ::ng-deep .p-calendar .p-datepicker {
+//   min-width: 50% !important;
+//   max-width: 50% !important;
+// }
