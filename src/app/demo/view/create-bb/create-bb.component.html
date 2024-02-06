@@ -230,7 +230,7 @@
             <button pButton pRipple type="button" (click)="saveAsDraft()" label="Save As Draft"
                 class="p-button-outlined mr-2 mb-2" *ngIf="!isSaveAsDraftDisabled()"></button>
             <button type="submit" pButton pRipple label="Continue" class="mr-2 mb-2"
-                (click)="onCardClick('operation')"></button>
+                (click)="onContinueOp()"></button>
             <p-toast key="successToast"></p-toast>
             <p-toast key="errorToast"></p-toast>
         </div>
@@ -246,7 +246,7 @@
             <a style="text-decoration: underline;" [pTooltip]="'Download Uploaded Operation Card File'"
                 [tooltipPosition]="'top'" (click)="downloadOperationCardExcelFile($event)" *ngIf="showDownload" >Download
                 Excel</a> &nbsp;&nbsp;
-            <a (click)="showDialogOperationCard()" style="text-decoration: underline;">Import From Excel</a>
+            <a (click)="showDialogOperationCard()" style="text-decoration: underline;" *ngIf="blockId">Import From Excel</a>
         </div>
     </div>
     <hr class="align">

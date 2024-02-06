@@ -548,6 +548,17 @@ export class CreateBbComponent {
     }
 
   }
+
+  onContinueOp(){
+    this.showScopingCrad = false;
+    this.showOperationCrad = true;
+    this.showCommercialCrad = false;
+    this.downloadOperationCardExcel();
+    if(!this.blockId){
+      this.saveAsDraft();
+    }
+    
+  }
   clear() {
     this.seervice_desc = "";
     this.value_to_psa_bdp = "";
@@ -1062,7 +1073,7 @@ export class CreateBbComponent {
         }
       );
     } else {
-      console.error('Operation Card ID or Name is null or undefined.');
+   //   console.error('Operation Card ID or Name is null or undefined.');
     }
   }
 
