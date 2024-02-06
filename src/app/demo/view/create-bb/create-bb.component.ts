@@ -96,8 +96,10 @@ export class CreateBbComponent {
   service_desc_error: any;
   customer_requirement_error: any;
   cvalue_to_psa_bdp_error: any;
-  blockId:number;
-
+  blockId: number;
+  operationDocId: any;
+  operationDocName: any;
+  showDownload: boolean = false;
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
     public MasterTableservice: MasterTableService, private confirmationService: ConfirmationService,
     public CreateBuildingBlockservice: CreateBuildingBlockService, private router: Router, private httpClient: HttpClient,
@@ -129,7 +131,27 @@ export class CreateBbComponent {
     this.getProdname();
     this.getChargeCode();
     this.getModeOfTransport();
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id !== null && id !== undefined) {
+      this.breadcrumbService.setItems([
+        {
+          label: 'Building Blocks',
+          routerLink: 'building-block'
+        },
+        { label: 'Edit Building Blocks' },
+      ]);
+      this.fetchBuildingBlockDetails(id);
+    } else {
+      this.breadcrumbService.setItems([
+        {
+          label: 'Building Blocks',
+          routerLink: 'building-block'
+        },
+        { label: 'Create Building Blocks' },
+      ]);
+    }
 
+    this.downloadOperationCardExcel();
   }
 
   onCancelClickSC() {
@@ -137,11 +159,9 @@ export class CreateBbComponent {
     this.uploadError = "";
     this.fileNameSC = "";
     this.uploadFilesc = null;
-
-    // Add the following line to reset the file input
     const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
     if (fileInput) {
-      fileInput.value = ''; // Clear the file input value
+      fileInput.value = '';
     }
   }
   onCancelClickCC() {
@@ -517,6 +537,7 @@ export class CreateBbComponent {
       this.showScopingCrad = false;
       this.showOperationCrad = true;
       this.showCommercialCrad = false;
+      this.downloadOperationCardExcel();
 
     }
     if (val == 'commercial') {
@@ -676,7 +697,7 @@ export class CreateBbComponent {
       (res) => {
         console.log('Draft saved successfully:', res);
         this.blockId = res.data?.id;
-        console.log('bbId',this.blockId);
+        console.log('bbId', this.blockId);
         this.messageService.add({
           key: 'successToast',
           severity: 'success',
@@ -684,7 +705,7 @@ export class CreateBbComponent {
           detail: 'Building block draft is saved successfully.'
         });
         setTimeout(() => {
-      //    this.router.navigateByUrl('/building-block');
+          //    this.router.navigateByUrl('/building-block');
         }, 1000);
       },
       (error) => {
@@ -729,7 +750,7 @@ export class CreateBbComponent {
   private fetchBuildingBlockDetails(id: any): void {
     this.createBuildingBlockservice.getBuildingBlockDetails(id).subscribe(
       (details) => {
-        // Assign details to component properties
+
         this.status = details.data.status.id;
         this.building_block_name = details.data.name;
         this.product_name = details.data.product.id;
@@ -739,7 +760,6 @@ export class CreateBbComponent {
         this.onScopeSelect(details.data.scope.id);
         this.charge_code = details.data.chargeCode?.id;
         this.seervice_desc = details.data.scopingCard.serviceDescription;
-        //    console.log("service",this.seervice_desc);
         this.customer_requirement = details.data.scopingCard.customerRequirement;
         this.deliverables = details.data.scopingCard.deliverable;
         this.stakeholders_audience = details.data.scopingCard.stakeHolder;
@@ -755,6 +775,10 @@ export class CreateBbComponent {
         this.don_s = details.data.commercialCard.donts;
         this.configurables = details.data.commercialCard.configurable;
         this.selectedMod = details.data.modeOfTransport.map((item) => item.id);
+        this.operationDocId = details.data.operationsCard?.id;
+        this.operationDocName = details.data.operationsCard?.name;
+        this.showDownload = details.data.operationsCard !== null; 
+
 
       },
       // (error) => {
@@ -942,11 +966,11 @@ export class CreateBbComponent {
   readExcelFile(file: File) {
     const reader: FileReader = new FileReader();
     reader.onload = (e: any) => {
-        const data = new Uint8Array(e.target.result);
-        const workbook = XLSX.read(data, { type: 'array' });
-        const sheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[sheetName];
-        this.excelDataOpration = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, { type: 'array' });
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+      this.excelDataOpration = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
     };
     reader.readAsArrayBuffer(file);
   }
@@ -961,7 +985,7 @@ export class CreateBbComponent {
       };
       reader.readAsDataURL(this.selectedFile);
     } else {
-      this.fileNameOC = ""; 
+      this.fileNameOC = this.operationDocName;
     }
   }
 
@@ -978,10 +1002,9 @@ export class CreateBbComponent {
     if (this.selectedFile) {
       const scopeId = 1;
       const entityId = this.blockId;
-   //   console.log('bbId',this.blockId);
       this.readExcelFile(this.selectedFile);
       this.visibleOperationBox = false;
-  
+
       this.createBuildingBlockservice.operationCardUploadExcel(this.selectedFile, scopeId, entityId).subscribe(
         (res: any) => {
           if (res?.message === 'Excel Upload Successfully') {
@@ -1001,7 +1024,47 @@ export class CreateBbComponent {
       console.log('No file selected.');
     }
   }
-
-  downloadUploadedFile(): void {
+  //----------------------------------------------------------------------------------//
+  downloadOperationCardExcelFile() {
+    if (this.operationDocId != null) {
+      this.createBuildingBlockservice.downloadUploadedOperationCard(this.operationDocId).subscribe(
+        (data: ArrayBuffer) => {
+          const blob = new Blob([data]);
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          //link.download = 'downloaded_file.xlsx';
+          link.download = this.operationDocName;
+          link.click();
+          window.URL.revokeObjectURL(url);
+        },
+        (error) => {
+          console.error('Error downloading file:', error);
+        }
+      );
+    } else {
+      console.error('Operation Card is null or undefined.');
+    }
   }
+
+  //-----------------------------------download for view of files-------------------------//
+  downloadOperationCardExcel() {
+    if (this.operationDocId != null && this.operationDocName != null) {
+      this.createBuildingBlockservice.downloadUploadedOperationCard(this.operationDocId).subscribe(
+        (data: ArrayBuffer) => {
+          const workbook = XLSX.read(data, { type: 'array' });
+          const sheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[sheetName];
+          this.excelDataOpration = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+        },
+        (error) => {
+          console.error('Error downloading file:', error);
+        }
+      );
+    } else {
+      console.error('Operation Card ID or Name is null or undefined.');
+    }
+  }
+
+  //-----------------------------------end--------------------------------------------//
 }  
