@@ -270,7 +270,7 @@
                     <ul *ngIf="uploadedFiles.length > 0">
                       <li *ngFor="let file of uploadedFiles; let i = index" class="file-item">
                         {{ i + 1 }}. {{ file.name }}
-                        <button pButton pRipple type="button" icon="pi pi-trash" (click)="onRemoveUploadedFile(i)"
+                        <button pButton pRipple type="button" icon="pi pi-trash" (click)="deleteProjectArtifact(i)"
                           style="margin-left: 8px;" class="p-button-rounded p-button-text p-button-danger"></button>
                       </li>
                     </ul>

@@ -25,7 +25,9 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
     buildingBlockDetails: any;
     private _isExpanded = false;
     loading: boolean = false;
-    itemId:number;
+    itemId: number;
+    operationDocId: number | null;
+    fileName: any;
     constructor(private breadcrumbService: AppBreadcrumbService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
         this.breadcrumbService.setItems([
             { label: 'Building Blocks' }
@@ -47,24 +49,24 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
     }
     expandNode(node: TreeNode) {
         if (node.children) {
-          node.expanded = true;
-          node.children.forEach(childNode => {
-            this.expandNode(childNode);
-          });
+            node.expanded = true;
+            node.children.forEach(childNode => {
+                this.expandNode(childNode);
+            });
         }
-      }
-      expandNodesBasedOnSearchResults() {
+    }
+    expandNodesBasedOnSearchResults() {
         this.treeDataNew.forEach((node) => {
-          node.expanded = true;
-          this.expandNode(node);
+            node.expanded = true;
+            this.expandNode(node);
         });
-      }
-      expandNodesBasedOnDraftSearchResults() {
+    }
+    expandNodesBasedOnDraftSearchResults() {
         this.treeData.forEach((node) => {
-          node.expanded = true;
-          this.expandNode(node);
+            node.expanded = true;
+            this.expandNode(node);
         });
-      }
+    }
 
     loadTreeData() {
         this.createBuildingBlockservice.getExplorerData(1).subscribe((data: any) => {
@@ -78,7 +80,7 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
     loadTreeDataNew() {
         this.createBuildingBlockservice.getExplorerData(2).subscribe((data: any) => {
             this.treeDataNew = this.transformData(data.data);
-            
+
         },
             (error) => {
                 console.error('Error loading tree data:', error);
@@ -91,7 +93,7 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
             // If search text is empty, reload the original data
             this.loadTreeData();
             this.loadTreeDataNew();
-            
+
         } else {
             this.treeData = this.filterTreeData(this.treeData, this.searchText);
             this.treeDataNew = this.filterTreeData(this.treeDataNew, this.searchText);
@@ -115,46 +117,46 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
         if (!data) {
             return [];
         }
-    
+
         return data
             .map(node => this.filterNode(node, searchText))
             .filter(filteredNode => filteredNode !== null);
     }
-    
+
     private filterNode(node: TreeNode, searchText: string): TreeNode | null {
         if (!node) {
             return null;
         }
-    
+
         if (node.data?.type === 4 && node.label.toLowerCase().includes(searchText.toLowerCase())) {
             return {
                 ...node,
                 children: this.filterChildNodes(node.children, searchText),
             };
         }
-    
+
         const filteredChildren = this.filterChildNodes(node.children, searchText);
-    
+
         if (filteredChildren.length > 0) {
             return {
                 ...node,
                 children: filteredChildren,
             };
         }
-    
+
         return null;
     }
-    
+
     private filterChildNodes(children: TreeNode[] | undefined, searchText: string): TreeNode[] {
         if (!children) {
             return [];
         }
-    
+
         return children
             .map(childNode => this.filterNode(childNode, searchText))
             .filter(filteredNode => filteredNode !== null);
     }
-    
+
 
     onCardClick(val) {
         if (val == 'scoping') {
@@ -179,20 +181,22 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
 
     onNodeSelect(event: any): void {
         if (event.node && !event.node.children?.length) {
-            this.loading = true; 
+            this.loading = true;
             this.selectedNode = event.node;
             this.onDraftItemClick();
-        }else{
-            this.selectedNode = null;  
+        } else {
+            this.selectedNode = null;
         }
     }
     onDraftItemClick(): void {
         if (this.selectedNode) {
             this.itemId = this.selectedNode.data.id;
             this.createBuildingBlockservice.getBuildingBlockDetails(this.itemId).subscribe(
-                (data: any) => {
-                    this.buildingBlockDetails = data;
-                    console.log('Building Block Details for explore view:', this.buildingBlockDetails);
+                (response: any) => {
+                    this.buildingBlockDetails = response;
+                    this.operationDocId = response.data.operationsCard?.id;
+                    this.fileName = response.data.operationsCard?.name; 
+                 //   console.log('Building Block Details for explore view:', this.fileName);
                     this.loading = false;
                 },
                 (error) => {
@@ -210,27 +214,28 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
         this._isExpanded = value;
     }
 
-    downloadOperationCardExcel(){
-        if(this.itemId!=null){
-            this.createBuildingBlockservice.downloadUploadedOperationCard(this.itemId).subscribe(
+    downloadOperationCardExcel() {
+        if (this.operationDocId != null) {
+            this.createBuildingBlockservice.downloadUploadedOperationCard(this.operationDocId).subscribe(
                 (data: ArrayBuffer) => {
-                  const blob = new Blob([data]);
-                  const url = window.URL.createObjectURL(blob);
-                  const link = document.createElement('a');
-                  link.href = url;
-                  link.download = 'downloaded_file.xlsx';
-                  link.click();
-                  window.URL.revokeObjectURL(url);
+                    const blob = new Blob([data]);
+                    const url = window.URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    //link.download = 'downloaded_file.xlsx';
+                    link.download = this.fileName;
+                    link.click();
+                    window.URL.revokeObjectURL(url);
                 },
                 (error) => {
-                  console.error('Error downloading file:', error);
+                    console.error('Error downloading file:', error);
                 }
-              );
-            } else {
-              console.error('Building block ID is null or undefined.');
-            }
+            );
+        } else {
+            console.error('Operation Card is null or undefined.');
         }
-    
+    }
+
 }
 
 
