@@ -4,7 +4,7 @@
             <span class="p-input-icon-right">
                 <i class="pi pi-search"></i>
                 <input pInputText type="text" 
-                    placeholder="Search Keyword" (input)="onGlobalSearch($event.target.value)"/>
+                    placeholder="Search Keyword" id="yourInputId" (input)="onGlobalSearch($event.target.value)"/>
             </span>
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
@@ -132,7 +132,7 @@
             </div>
             <div class="field col-12 md:col-6">
                 <label>FTE/Month (USD)<span class="required">*</span></label>
-                <input id="name" type="number"  placeholder="FTE/Month" formControlName="fte_month" pattern="^[1-9][0-9]*$" oninput="if(!this.value.match('^[1-9][0-9]*$'))this.value='';"
+                <input id="name" type="number"  placeholder="FTE/Month" formControlName="fte_month" pattern="^[1-9][0-9]*$" oninput="if(!this.value.match('^[1-9][0-9]*$'))this.value='';"  (input)="limitTo6Digits($event)"
                     class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
                     <div *ngIf="FteForm.get('fte_month')?.hasError('required') && FteForm.get('fte_month')?.touched"
                     class="error-message">
@@ -142,7 +142,7 @@
             </div>
             <div class="field col-12 md:col-6">
                 <label>FTE/Year (USD)<span class="required">*</span></label>
-                <input id="name" type="number"  placeholder="FTE/Year " [readonly]="true"  formControlName="ftf_year" oninput="if(!this.value.match('^[1-9][0-9]*$'))this.value='';"
+                <input id="name" type="number"  placeholder="FTE/Year " [readonly]="true"  formControlName="ftf_year" oninput="if(!this.value.match('^[1-9][0-9]*$'))this.value='';"  (input)="limitTo6Digits($event)"
                     class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
             </div>
             <div class="field col-12 md:col-6">

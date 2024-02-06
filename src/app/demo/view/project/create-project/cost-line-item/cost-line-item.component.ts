@@ -20,7 +20,8 @@ destinationButtonBorderRadius: string = '5px';
 showOriginCLI: boolean = true;
 showDestinationCLI:boolean = false;
 //end//
-
+visible:boolean = false;
+private _isExpanded = false;
   onRowEditInit(event:any){
 
   }
@@ -30,6 +31,7 @@ showDestinationCLI:boolean = false;
   onRowEditCancel(){
     
   }
+
   //---------------------------------Cost line item--------------------------------------------//
 
 showOriginSectionCLI() {
@@ -54,5 +56,15 @@ showDestinationSectionCLI() {
   this.destinationButtonBorderRadius = '5px';
 }
 //---------------------------------End--------------------------------------------//
+public get isExpanded() {
+  return this._isExpanded;
+}
 
+showUploadDialog() {
+  this.visible = true;
+}
+
+public set isExpanded(value: boolean) {
+  this._isExpanded = value;
+}
 }

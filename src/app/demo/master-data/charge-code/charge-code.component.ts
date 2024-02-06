@@ -119,10 +119,24 @@ this.searchTimeout = setTimeout(() => {
     this.fetchAllChargeCodeDetails(keyword);
 }, 500);
 }
+
+
   clear(table: Table) {
-    table.clear();
-  
+    table.reset();
+    this.onSort(Event);
+    this.clearSearchInput()
 }
+clearSearchInput(): void {
+  // Assuming you have a reference to the input element, you can clear its value
+  const searchInput = document.getElementById('gSearch') as HTMLInputElement;
+
+  // Or if you are using a framework like Angular, you can use a ViewChild or ngModel to get the reference
+
+  if (searchInput) {
+    searchInput.value = '';
+  }
+}
+
   onPageChange(event: any) {
     this.currentPage = event.page + 1;
     this.pageSize = event.rows;
