@@ -83,7 +83,7 @@ advanceSearchFilter(body: any): Observable<any> {
 
  //------process configurable-----------------------//
 
- processConfigImportExcel(formData: FormData) {
+processConfigImportExcel(formData: FormData) {
   return this.http.post(url+settings.AppRoutes.Auth.uploadConfigurable, formData).pipe(
     catchError((error: any) => {
       return throwError(error); // Pass the error to the subscriber
@@ -114,6 +114,11 @@ UploadProjectArtifact(file: File, scopeId: number, entityId: number): Observable
       return throwError(error);
     })
   );
+}
+
+deleteProjectDocument(id:number ) {
+  const downloadUrl = `${url}${settings.AppRoutes.Auth.deleteProjectFile}/${id}`;
+  return this.http.delete(downloadUrl);
 }
 
 }
