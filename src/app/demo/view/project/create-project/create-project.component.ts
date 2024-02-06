@@ -85,13 +85,13 @@ export class CreateProjectComponent implements OnInit {
   activeTabIndex: number = 0; // default to Origin Location
   uploadedFiles: {  id: number;name: string, file: File }[] = [];
   selectedFiles: File[] = [];
-  uploadedResponseFiles: { name: string, file: File }[] = [];
-  uploadedOtherFiles: { name: string, file: File }[] = [];
+  uploadedResponseFiles: { id: number;name: string, file: File }[] = [];
+  uploadedOtherFiles: { id: number;name: string, file: File }[] = [];
   projectId: number | null = null;
   visibleResponseBox: boolean = false;
   visibleOthersBox: boolean = false;
   uploadedFilesToSave: {  id: number;name: string; file: File }[] = [];
-  uploadedResponseFilesToSave: { name: string; file: File }[] = [];
+  uploadedResponseFilesToSave: { id:number ,name: string; file: File }[] = [];
   uploadedOtherFilesToSave: {id: number | null; name: string; file: File }[] = [];
   constructor(private breadcrumbService: AppBreadcrumbService,private zone: NgZone,
     private datePipe: DatePipe, private messageService: MessageService, private fb: FormBuilder, public MasterTableservice: MasterTableService, public projectService: ProjectsService) {
@@ -577,14 +577,7 @@ export class CreateProjectComponent implements OnInit {
   }
 
   onRemoveClick() {
-    // this.selectedFiles.splice(index, 1);
 
-    // if (this.selectedFiles.length > 0) {
-    //   // Display the names of remaining files
-    //   this.fileNameOC = this.selectedFiles.map(file => file.name).join(', ');
-    // } else {
-    //   this.fileNameOC = "";
-    // }
     this.fileNameOC = "";
     this.selectedFiles = [];
     this.selectedFile = null;
@@ -667,100 +660,14 @@ export class CreateProjectComponent implements OnInit {
   showDialogOthers() {
     this.visibleOthersBox = true;
   }
-  onUploadResponseClick(): void {
-    if (this.selectedFiles.length > 0) {
-      this.uploadedResponseFilesToSave = [...this.uploadedResponseFilesToSave, ...this.selectedFiles.map(file => ({ name: file.name, file }))];
-      this.selectedFiles = [];
-      const fileInput = document.getElementById('fileInput') as HTMLInputElement;
-      if (fileInput) {
-        fileInput.value = '';
-      }
-      this.visibleResponseBox = false;
-      this.fileNameOC = "";
-      console.log('Response files added to save:', this.uploadedResponseFilesToSave);
-    } else {
-      console.log('No file selected for Response.');
-    }
-  }
 
-  uploadResponseFiles(): void {
-    const scopeId = 3;
-    const entityId = this.projectId;
+  // onRemoveUploadedResponseFile(index: number): void {
+  //   this.uploadedResponseFiles.splice(index, 1);
+  // }
 
-    for (const file of this.uploadedResponseFilesToSave) {
-      this.projectService.UploadProjectArtifact(file.file, scopeId, entityId).subscribe(
-        (res: any) => {
-          if (res?.message === 'Excel Upload Successfully') {
-            console.log('Response file uploaded successfully:', res);
-            this.uploadedResponseFiles.push({ name: file.name, file: file.file });
-            console.log('uploadedResponseFiles:', this.uploadedResponseFiles);
-            this.showSuccessMessage('File uploaded successfully for Response!');
-          } else {
-            console.log('Unexpected response for Response upload:', res);
-            this.uploadedResponseFiles.push({ name: file.name, file: file.file });
-            console.log('uploadedResponseFiles:', this.uploadedResponseFiles);
-          }
-        },
-        (error) => {
-          console.error('Error uploading file for Response:', error);
-        }
-      );
-    }
-    // Clear the array after uploading
-    this.uploadedResponseFilesToSave = [];
-  }
-
-  onUploadOtherClick(): void {
-    if (this.selectedFiles.length > 0) {
-   //   this.uploadedOtherFilesToSave = [...this.uploadedOtherFilesToSave, ...this.selectedFiles.map(file => ({ name: file.name, file }))];
-      this.selectedFiles = [];
-      const fileInput = document.getElementById('fileInput') as HTMLInputElement;
-      if (fileInput) {
-        fileInput.value = '';
-      }
-      console.log('Other files added to save:', this.uploadedOtherFilesToSave);
-      this.visibleOthersBox = false;
-      this.fileNameOC = "";
-    } else {
-      console.log('No file selected for Others.');
-    }
-  }
-
-  uploadOtherFiles(): void {
-    const scopeId = 4;
-    const entityId = this.projectId;
-
-    for (const file of this.uploadedOtherFilesToSave) {
-      this.projectService.UploadProjectArtifact(file.file, scopeId, entityId).subscribe(
-        (res: any) => {
-          if (res?.message === 'Excel Upload Successfully') {
-            console.log('Other file uploaded successfully:', res);
-            this.uploadedOtherFiles.push({ name: file.name, file: file.file });
-            console.log('uploadedOtherFiles:', this.uploadedOtherFiles);
-            this.showSuccessMessage('File uploaded successfully for Others!');
-          } else {
-            console.log('Unexpected response for Others upload:', res);
-            this.uploadedOtherFiles.push({ name: file.name, file: file.file });
-            console.log('uploadedOtherFiles:', this.uploadedOtherFiles);
-          }
-        },
-        (error) => {
-          console.error('Error uploading file for Others:', error);
-        }
-      );
-    }
-    // Clear the array after uploading
-    this.uploadedOtherFilesToSave = [];
-  }
-
-
-  onRemoveUploadedResponseFile(index: number): void {
-    this.uploadedResponseFiles.splice(index, 1);
-  }
-
-  onRemoveUploadedOtherFile(index: number): void {
-    this.uploadedOtherFiles.splice(index, 1);
-  }
+  // onRemoveUploadedOtherFile(index: number): void {
+  //   this.uploadedOtherFiles.splice(index, 1);
+  // }
 
   onResponseCancelClick() {
     this.fileNameOC = "";
@@ -779,22 +686,146 @@ export class CreateProjectComponent implements OnInit {
 
 
   //-------------------------------------Delete  Document By ID -----------------------------------//
+   
+   deleteResponseArtifact(index: number): void {
+    if (index >= 0 && index < this.uploadedResponseFiles.length) {
+      const documentIdToDelete = this.uploadedResponseFiles[index].id;
+      this.projectService.deleteProjectDocument(documentIdToDelete).subscribe(
+        (res: any) => {
+          if (res.status === 200) {
+            this.uploadedResponseFiles.splice(index, 1);
+            this.showSuccessMessage('Response document deleted successfully!');
+          } else {
+            console.error('Unexpected response:', res);
+          }
+        },
+        (error) => {
+          console.error('Error deleting response document:', error);
+        }
+      );
+    } else {
+      console.error('Invalid index for deleting response document.');
+    }
+  }
+ 
+  uploadOtherFiles(): void {
+    const scopeId = 4;
+    const entityId = this.projectId;
 
-  // deleteProjectArtifact(index: number): void {
-  //   if (index >= 0 && index < this.uploadedFiles.length) {
-  //     const documentIdToDelete = this.uploadedFiles[index].id;
-  //     this.projectService.deleteProjectDocument(documentIdToDelete).subscribe(
-  //       (response) => {
-  //         this.uploadedFiles.splice(index, 1);
-  //         console.log('Document deleted successfully:', response);
-  //       },
-  //       (error) => {
-  //         // Handle error response
-  //         console.error('Error deleting document:', error);
-  //       }
-  //     );
-  //   } else {
-  //     console.error('Invalid index for deleting document.');
-  //   }
-  // }
-}
+    for (const file of this.uploadedOtherFilesToSave) {
+      this.projectService.UploadProjectArtifact(file.file, scopeId, entityId).subscribe(
+        (res: any) => {
+          if (res?.status === 200 && res?.message === 'success' && res?.data?.id) {
+            file.id = res.data.id;
+            this.uploadedOtherFiles.push({ id: file.id, name: file.name, file: file.file });
+           // this.showSuccessMessage('Other file uploaded successfully!');
+          } else {
+            console.error('Error uploading other file. Unexpected response:', res);
+          }
+        },
+        (error) => {
+          console.error('Error uploading other file:', error);
+        }
+      );
+    }
+    // Clear the array after uploading
+    this.uploadedOtherFilesToSave = [];
+  }
+
+  
+  onUploadOtherClick(): void {
+    if (this.selectedFiles.length > 0) {
+      this.uploadedOtherFilesToSave = [
+        ...this.uploadedOtherFilesToSave,
+        ...this.selectedFiles.map(file => ({ id: null, name: file.name, file })),
+      ];
+      this.selectedFiles = [];
+      const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+      if (fileInput) {
+        fileInput.value = '';
+      }
+      this.visibleOthersBox = false;
+      this.fileNameOC = "";
+
+      console.log('Other files added to save:', this.uploadedOtherFilesToSave);
+    } else {
+      console.log('No file selected for Others.');
+    }
+  }
+
+  
+  deleteOtherArtifact(index: number): void {
+    if (index >= 0 && index < this.uploadedOtherFiles.length) {
+      const documentIdToDelete = this.uploadedOtherFiles[index].id;
+      this.projectService.deleteProjectDocument(documentIdToDelete).subscribe(
+        (res: any) => {
+          if (res.status === 200) {
+            this.uploadedOtherFiles.splice(index, 1);
+            this.showSuccessMessage('Other document deleted successfully!');
+          } else {
+            console.error('Unexpected response:', res);
+          }
+        },
+        (error) => {
+          console.error('Error deleting other document:', error);
+        }
+      );
+    } else {
+      console.error('Invalid index for deleting other document.');
+    }
+  }
+
+  uploadResponseFiles(): void {
+    const scopeId = 3;
+    const entityId = this.projectId;
+
+    for (const file of this.uploadedResponseFilesToSave) {
+      this.projectService.UploadProjectArtifact(file.file, scopeId, entityId).subscribe(
+        (res: any) => {
+          if (res?.status === 200 && res?.message === 'success' && res?.data?.id) {
+            file.id = res.data.id;
+            this.uploadedResponseFiles.push({ id: file.id, name: file.name, file: file.file });
+          //  this.showSuccessMessage('Response file uploaded successfully!');
+          } else {
+            console.error('Error uploading response file. Unexpected response:', res);
+          }
+        },
+        (error) => {
+          console.error('Error uploading response file:', error);
+        }
+      );
+    }
+   
+    this.uploadedResponseFilesToSave = [];
+  }
+
+  onUploadResponseClick(): void {
+    if (this.selectedFiles.length > 0) {
+      this.uploadedResponseFilesToSave = [
+        ...this.uploadedResponseFilesToSave,
+        ...this.selectedFiles.map(file => ({ id: null, name: file.name, file })),
+      ];
+
+      this.selectedFiles = [];
+      const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+      if (fileInput) {
+        fileInput.value = '';
+      }
+      this.visibleResponseBox = false;
+      this.fileNameOC = "";
+
+      console.log('Response files added to save:', this.uploadedResponseFilesToSave);
+    } else {
+      console.log('No file selected for Response.');
+    }
+  }
+
+
+
+
+
+
+
+  }
+  
+  
