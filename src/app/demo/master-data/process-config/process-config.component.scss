@@ -48,3 +48,6 @@ input[type="file"] {
   
   height: 60px;
  }
+ :host ::ng-deep .p-paginator {
+  justify-content: flex-end;
+}

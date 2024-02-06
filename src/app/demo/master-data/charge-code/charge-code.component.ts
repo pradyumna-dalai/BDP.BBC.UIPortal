@@ -68,7 +68,7 @@ export class ChargeCodeComponent {
   });
     this.editMode= false;
     this.modeTitle = 'Add';
-  }
+  } 
   onCancel(){
     this.visibleDialog = false;
     this.myForm.reset({

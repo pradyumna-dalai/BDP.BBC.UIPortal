@@ -179,4 +179,33 @@ export class MasterDataService {
   addFteDetails(body:any){
     return this.http.post<any>(url + settings.AppRoutes.Auth.fte,body);
   }
+
+  //**get process congig api */
+
+  // processConfigGetImportExcelData() {
+  //   return this.http.get(url+settings.AppRoutes.Auth.processConfigurable).pipe(
+  //     catchError((error: any) => {
+  //       return throwError(error); // Pass the error to the subscriber
+  //     })
+  //   );
+  // }
+
+  processConfigGetImportExcelData(params: any): Observable<any> {
+    let httpParams = new HttpParams();
+    Object.keys(params).forEach((key) => {
+      if (params[key] !== null && params[key] !== undefined) {
+        httpParams = httpParams.append(key, params[key]);
+      }
+    });
+    // return this.http.get<any>(url+settings.AppRoutes.Auth.processConfigurable,{ params: httpParams});
+return this.http.get<any>('https://private-anon-636087ef32-psabdpbbcapiblueprint.apiary-mock.com/version/process',{ params: httpParams});
+  }
+
+  saveProcess(body: any){
+    // const params = new HttpParams().set('status', status.toString());
+    // return this.http.post<any>(url + settings.AppRoutes.Auth.saveProjectDraft, body);
+    return this.http.post<any>('https://private-anon-636087ef32-psabdpbbcapiblueprint.apiary-mock.com/version/process', body);
+  }
+  
+ 
 }

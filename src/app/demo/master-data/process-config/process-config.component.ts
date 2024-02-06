@@ -4,6 +4,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { AppBreadcrumbService } from 'src/app/app.breadcrumb.service';
 import { MasterTableService } from './../../../services/master-table.service';
 import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
+import { MasterDataService } from 'src/app/services/master-dataserivce/master-data.service';
 
 @Component({
   selector: 'app-process-config',
@@ -15,404 +16,22 @@ export class ProcessConfigComponent implements OnInit {
 // Add an array to track the edit mode for each row
 editModes: boolean[] = [];
 visible: boolean = false;
+ // Pagination properties
+ currentPage: number = 1;
+ pageSize: number = 10;
+ sortField: string = ''; // Initial sort field
+ sortOrder: number = 1; // 1 for ascending, -1 for descending
+
+  totalRecords: any = 10;
+  first: any = 0;
+  rows: any = 10;
+  newSortField: any;
+  newSortOrder: any;
+  searchTimeout: any;
 
-//   jsonData= {
-//     "status": 200,
-//     "message": "success",
-//     "data": [
-//       {
-//         "id":1,
-//         "product": "LLP",
-
-//         "scope": "Export Facilitation",
-
-//         "category": "Supply Chain Insights",
-
-//         "block": "Customer Onboarding & Training",
-
-//         "origin": "Origin",
-
-//         "process": "1",
-
-//         "operationStep": "Customer send booking request for pre-leg. ",
-
-//         "uom": "Order",
-
-//         "configuration": null,
-
-//         "location": [{
-
-//                 "name": "EPIM",
-
-//                 "takTime": "NA"
-
-//             }, {
-
-//                 "name": "EPIY",
-
-//                 "takTime": "NA"
-
-//             }, {
-
-//                 "name": "EPIP",
-
-//                 "takTime": "NA"
-
-//             }, {
-
-//                 "name": "Singapore",
-
-//                 "takTime": "NA"
-
-//             }, {
-
-//                 "name": "Shanghai",
-
-//                 "takTime": "NA"
-
-//             }, {
-
-//                 "name": "Mumbai",
-
-//                 "takTime": "NA"
-
-//             }, {
-
-//                 "name": "Houston",
-
-//                 "takTime": "NA"
-
-//             }, {
-
-//                 "name": "Ashton",
-
-//                 "takTime": "NA"
-
-//             }, {
-
-//                 "name": "Antwerp",
-
-//                 "takTime": "NA"
-
-//             }, {
-
-//                 "name": "Rotterdam",
-
-//                 "takTime": "NA"
-
-//             }, {
-
-//                 "name": "Istanbul",
-
-//                 "takTime": "NA"
-
-//             }, {
-
-//                 "name": "Saudi Arabia",
-
-//                 "takTime": "NA"
-
-//             }
-
-//         ]
-
-//       },
-//       {
-//         "id":2,
-//         "product": "LLP",
-
-//         "scope": "Export Facilitation",
-
-//         "category": "Supply Chain Insights",
-
-//         "block": "Customer Onboarding & Training",
-
-//         "origin": "Origin",
-
-//         "process": "2",
-
-//         "operationStep": "Customer send booking request for pre-leg. ",
-
-//         "uom": "Order",
-
-//         "configuration": null,
-
-//         "location": [{
-
-//                 "name": "EPIM",
-
-//                 "takTime": "NA"
-
-//             }, {
-
-//                 "name": "EPIY",
-
-//                 "takTime": "NA"
-
-//             }, {
-
-//                 "name": "EPIP",
-
-//                 "takTime": "NA"
-
-//             }, {
-
-//                 "name": "Singapore",
-
-//                 "takTime": "NA"
-
-//             }, {
-
-//                 "name": "Shanghai",
-
-//                 "takTime": "NA"
-
-//             }, {
-
-//                 "name": "Mumbai",
-
-//                 "takTime": "NA"
-
-//             }, {
-
-//                 "name": "Houston",
-
-//                 "takTime": "NA"
-
-//             }, {
-
-//                 "name": "Ashton",
-
-//                 "takTime": "NA"
-
-//             }, {
-
-//                 "name": "Antwerp",
-
-//                 "takTime": "NA"
-
-//             }, {
-
-//                 "name": "Rotterdam",
-
-//                 "takTime": "NA"
-
-//             }, {
-
-//                 "name": "Istanbul",
-
-//                 "takTime": "NA"
-
-//             }, {
-
-//                 "name": "Saudi Arabia",
-
-//                 "takTime": "NA"
-
-//             }
-
-//         ]
-
-//       },
-//       {
-//           "id":3,
-//           "product": "Trade Management & Customs",
-
-//           "scope": "Warehousing",
-
-//           "category": "Warehousing",
-
-//           "block": "Vendor Onboarding",
-
-//           "origin": "Origin",
-
-//           "process": "1",
-
-//           "operationStep": "Customer send booking request for pre-leg. ",
-
-//           "uom": "Order",
-
-//           "configuration": null,
-
-//           "location": [{
-
-//                   "name": "EPIM",
-
-//                   "takTime": "3.5"
-
-//               }, {
-
-//                   "name": "EPIY",
-
-//                   "takTime": "NA"
-
-//               }, {
-
-//                   "name": "EPIP",
-
-//                   "takTime": "NA"
-
-//               }, {
-
-//                   "name": "Singapore",
-
-//                   "takTime": "NA"
-
-//               }, {
-
-//                   "name": "Shanghai",
-
-//                   "takTime": "1.2"
-
-//               }, {
-
-//                   "name": "Mumbai",
-
-//                   "takTime": "NA"
-
-//               }, {
-
-//                   "name": "Houston",
-
-//                   "takTime": "NA"
-
-//               }, {
-
-//                   "name": "Ashton",
-
-//                   "takTime": "NA"
-
-//               }, {
-
-//                   "name": "Antwerp",
-
-//                   "takTime": "NA"
-
-//               }, {
-
-//                   "name": "Rotterdam",
-
-//                   "takTime": "NA"
-
-//               }, {
-
-//                   "name": "Istanbul",
-
-//                   "takTime": "NA"
-
-//               }, {
-
-//                   "name": "Saudi Arabia",
-
-//                   "takTime": "NA"
-
-//               }
-
-//           ]
-
-//       },{
-//       "id":4,
-//         "product": "Trade Management & Customs",
-
-//         "scope": "Warehousing",
-
-//         "category": "Warehousing",
-
-//         "block": "Vendor Onboarding",
-
-//         "origin": "Origin",
-
-//         "process": "2",
-
-//         "operationStep": "Customer send booking request for pre-leg. ",
-
-//         "uom": "Order",
-
-//         "configuration": null,
-
-//         "location": [{
-
-//                 "name": "EPIM",
-
-//                 "takTime": "3.5"
-
-//             }, {
-
-//                 "name": "EPIY",
-
-//                 "takTime": "NA"
-
-//             }, {
-
-//                 "name": "EPIP",
-
-//                 "takTime": "NA"
-
-//             }, {
-
-//                 "name": "Singapore",
-
-//                 "takTime": "NA"
-
-//             }, {
-
-//                 "name": "Shanghai",
-
-//                 "takTime": "1.2"
-
-//             }, {
-
-//                 "name": "Mumbai",
-
-//                 "takTime": "NA"
-
-//             }, {
-
-//                 "name": "Houston",
-
-//                 "takTime": "NA"
-
-//             }, {
-
-//                 "name": "Ashton",
-
-//                 "takTime": "NA"
-
-//             }, {
-
-//                 "name": "Antwerp",
-
-//                 "takTime": "NA"
-
-//             }, {
-
-//                 "name": "Rotterdam",
-
-//                 "takTime": "NA"
-
-//             }, {
-
-//                 "name": "Istanbul",
-
-//                 "takTime": "NA"
-
-//             }, {
-
-//                 "name": "Saudi Arabia",
-
-//                 "takTime": "NA"
-
-//             }
-
-//         ]
-
-//     }
-//     ]
-// };
 
  
 jsonData:any;
-loading: boolean = true;
 data: any[] = []; // Add your data array here
 
   columns: any[] = []; // Dynamic columns
@@ -430,7 +49,7 @@ data: any[] = []; // Add your data array here
   showUploaderror: boolean = false;
   uploadErrors: { key: string; value: string }[] = [];
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,private projectService: ProjectsService ,
-    private confirmationService: ConfirmationService, private router: Router,public MasterTableservice: MasterTableService,
+    private confirmationService: ConfirmationService, private router: Router,public MasterTableservice: MasterTableService,public MasterDataservice: MasterDataService,
     ) {
     this.breadcrumbService.setItems([
       { label: 'Master Data Management' },
@@ -524,7 +143,7 @@ addNewRow(index: number) {
  
        // Add dynamic columns based on location_takTime
        ...this.locations.map((location) => {
-         return { field: location.locationName, header: location.name, style: { 'text-align': 'center',width: '300px' } };
+         return { field: location.name, header: location.name, style: { 'text-align': 'center',width: '300px' } };
        }),
      ];
    }
@@ -543,62 +162,48 @@ addNewRow(index: number) {
     }
   }
 // ---------------upload Excel------------------------//
-   excelUploadcall(){
-  this.fileName = this.uploadFile.name;
-  const formData = new FormData();
-  formData.append("file", this.uploadFile);
-  this.uploadInProgress = true;
-    this.projectService.processConfigImportExcel(formData).subscribe(
-      (res: any) => {
-        this.jsonData = res;
-        // Access the JSON data using this.jsonData
-        const processConfigurable = this.jsonData.data;
-        // Extract locations and initialize dynamic columns
-        this.locations = processConfigurable[0].location;
-        this.initializeColumns();
-    
-        // Process the data and map it to dynamic columns
-        this.data = processConfigurable.map((item) => {
-          const rowData: any = {};
-    
-          // Map static columns
-          //  rowData['Actions'] = `<span style="cursor: pointer;"><i class="pi pi-pencil"></i></span>`;
-          rowData['Product Name'] = item.product;
-          rowData['Product Scope'] = item.scope;
-          rowData['Product Category'] = item.category;
-          rowData['Building Block Name'] = item.block;
-          rowData['Origin / Destination'] = item.origin;
-          rowData['Process No.'] = item.processNumber;
-          rowData['Operations Steps'] = item.operationStep;
-          rowData['Location'] = '';
-          rowData['UOM'] = item.uom;
-          rowData['Configuration'] = item.configuration;
-    
-          // Map dynamic columns based on location_takTime
-          this.locations.forEach((location) => {
-            rowData[location.locationName] = item.location.find(
-              (loc) => loc.name === location.name
-            )?.takTime;
-          });
-    
-          return rowData;
-        });
-        // Initialize edit mode for each row to false
-        this.editModes = Array(this.data.length).fill(false);
-        this.uploadInProgress = false;
-      },
-      (error) => {
-        // Handle HTTP errors here
-        console.log(error);
-        this.showUploaderror = true;
-        this.uploadInProgress = false;
-        // Extract error messages and keys from the response and store them in uploadErrors
-        if (error.status === 400 && error.error && error.error.data) {
-          this.uploadErrors = Object.entries(error.error.data).map(([key, value]) => ({ key, value: String(value) }));
+saveProcess(){
+ 
+  const body = {
+
+      product: "LLP",
+      scope: "Export Facilitation",
+      category: "Supply Chain Insights",
+      block: "Customer Onboarding & Training",
+      origin: "Origin",
+      processNumber: 2,
+      operationStep: "step-3",
+      uom: "command",
+      configurable: "Other",
+      locations: [
+        {
+          name: "EPIM",
+          takTime: "NA"
+        },
+        {
+          name: "INNSA",
+          takTime: "2.0"
+        },
+        {
+          name: "EPIP",
+          takTime: "NA"
         }
-      }
-    );
-   }
+      ]
+    
+  }
+
+ 
+      // Editing an existing charge code
+      this.MasterDataservice.saveProcess(body).subscribe(
+          (res) => {
+            console.log(res);
+          },
+         
+      );
+  } 
+  editProcess(){
+
+  }
   onPopupCancelclick()
   {
     this.visible = false;
@@ -623,15 +228,22 @@ addNewRow(index: number) {
    }
   // ---------------get process config excel data------------------------//
   processConfigGetImportExcelData() {
-    this.loading = true; // Set loading to true before making the API call
-    this.projectService.processConfigGetImportExcelData().subscribe((res: any) => {
+    const params = {
+      buildingBlockName: "",
+      pageNo: isNaN(this.currentPage) ? 0 : this.currentPage - 1,
+      pageSize: isNaN(this.pageSize) ? 10 : this.pageSize,
+      sortBy: this.sortField,
+      sortDir: this.sortOrder,
+
+  };
+    this.MasterDataservice.processConfigGetImportExcelData(params).subscribe((res: any) => {
       if (res?.message == "success") {
          this.jsonData = res;
 
-        // Access the JSON data using this.jsonData
+    // Access the JSON data using this.jsonData
     const processConfigurable = this.jsonData.data;
      // Extract locations and initialize dynamic columns
-     this.locations = processConfigurable[0].location;
+     this.locations = processConfigurable[0].locations;
      this.initializeColumns();
  
      // Process the data and map it to dynamic columns
@@ -649,27 +261,43 @@ addNewRow(index: number) {
        rowData['Operations Steps'] = item.operationStep;
        rowData['Location'] = '';
        rowData['UOM'] = item.uom;
-       rowData['Configuration'] = item.configuration;
+       rowData['Configuration'] = item.configurable;
  
-       // Map dynamic columns based on location_takTime
-       this.locations.forEach((location) => {
-         rowData[location.locationName] = item.location.find(
-           (loc) => loc.name === location.name
-         )?.takTime;
-       });
- 
+      // Map dynamic columns based on locations
+      this.locations.forEach((location) => {
+      const locationData = item.locations.find(loc => loc.name === location.name);
+      rowData[location.name] = locationData ? locationData.takTime : 'NA';
+      });
        return rowData;
      });
      // Initialize edit mode for each row to false
     this.editModes = Array(this.data.length).fill(false);
+    this.totalRecords = res?.totalElements;
       } else {
         console.log("error");
+        this.totalRecords = 0;
       }
-      this.loading = false; 
     })
   }
 
-
+  onPageChange(event: any) {
+    this.currentPage = event.page + 1;
+    this.pageSize = event.rows;
+    this.processConfigGetImportExcelData();
+  }
+  onSort(event: any) {
+  
+    this.newSortField = event.field;
+    this.newSortOrder = (event.order === 1) ? 'asc' : 'desc';
+  
+    if (this.newSortField !== this.sortField || this.newSortOrder !== this.sortOrder) {
+      this.sortField = this.newSortField;
+      this.sortOrder = this.newSortOrder;
+      this.currentPage = 1;
+      this.processConfigGetImportExcelData();
+    }
+   
+  }
    // ---------------get UOM data------------------------//
    getUom() {
     this.uomOptions = [];
