@@ -197,8 +197,8 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
                     this.buildingBlockDetails = response;
                     this.operationDocId = response.data.operationsCard?.id;
                     this.fileName = response.data.operationsCard?.name; 
-                    this.showDownload = this.operationDocId !== null; 
-                 //   console.log('Building Block Details for explore view:', this.fileName);
+                    this.showDownload = response.data.operationsCard !== null; 
+                   // console.log('Show Download:', this.showDownload); 
                     this.loading = false;
                 },
                 (error) => {

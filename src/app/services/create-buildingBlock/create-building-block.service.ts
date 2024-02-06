@@ -29,9 +29,9 @@ export class CreateBuildingBlockService {
     return this.http.get<any>(`${url}${settings.AppRoutes.Auth.getbuildingBlockDetailsView}/${blockId}`);
 
   }
-  
+
   scopingCradImportExcel(formData: FormData) {
-    return this.http.post(url+settings.AppRoutes.Auth.scopingCradImportExcel, formData).pipe(
+    return this.http.post(url + settings.AppRoutes.Auth.scopingCradImportExcel, formData).pipe(
       catchError((error: any) => {
         return throwError(error); // Pass the error to the subscriber
       })
@@ -39,24 +39,21 @@ export class CreateBuildingBlockService {
   }
 
   commercialCradImportExcel(formData: FormData) {
-    return this.http.post(url+settings.AppRoutes.Auth.commercialCradImportExcel, formData).pipe(
+    return this.http.post(url + settings.AppRoutes.Auth.commercialCradImportExcel, formData).pipe(
       catchError((error: any) => {
         return throwError(error); // Pass the error to the subscriber
       })
     );
   }
-  downloadSamplescExcel()
-  {
-   
+  downloadSamplescExcel() {
+
     return this.http.get(`${url}${settings.AppRoutes.Auth.downloadSampleSCExcel}`, { responseType: 'arraybuffer' as 'json' });
   }
-  downloadSampleCCExcel()
-  {
-   
+  downloadSampleCCExcel() {
+
     return this.http.get(`${url}${settings.AppRoutes.Auth.downloadSampleCCExcel}`, { responseType: 'arraybuffer' as 'json' });
   }
-  downloadSampleOPExcel()
-  {
+  downloadSampleOPExcel() {
     return this.http.get(`${url}${settings.AppRoutes.Auth.downloadSampleOPExcel}`, { responseType: 'arraybuffer' as 'json' });
   }
 
@@ -68,15 +65,33 @@ export class CreateBuildingBlockService {
       .set('scopeId', scopeId.toString())
       .set('entityId', entityId.toString());
 
-    return this.http.post(url+settings.AppRoutes.Auth.CommonUpload, formData,  { params }).pipe(
+    return this.http.post(url + settings.AppRoutes.Auth.CommonUpload, formData, { params }).pipe(
       catchError((error: any) => {
         return throwError(error);
       })
     );
   }
 
-  downloadUploadedOperationCard(id:number ) {
+  downloadUploadedOperationCard(id: number) {
     const downloadUrl = `${url}${settings.AppRoutes.Auth.downloadOperationExcel}/${id}`;
     return this.http.get(downloadUrl, { responseType: 'arraybuffer' as 'json' });
   }
+
+  // allUploadedExcel(scopeId: number, entityId: number, limitSize: number, removeDuplicate: boolean): Observable<any> {
+  //   // const formData: FormData = new FormData();
+  //   //formData.append('file', file, file.name);
+
+  //   const params = new HttpParams()
+  //     .set('scopeId', scopeId.toString())
+  //     .set('entityId', entityId.toString())
+  //     .set('limitSize', limitSize.toString())
+  //     .set('removeDuplicate', removeDuplicate.toString())
+
+
+  //   return this.http.get(url + settings.AppRoutes.Auth.getAllFiles, { params }).pipe(
+  //     catchError((error: any) => {
+  //       return throwError(error);
+  //     })
+  //   );
+  // }
 }
