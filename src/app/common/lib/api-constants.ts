@@ -56,6 +56,8 @@ export namespace AppRoutes {
 
         public static readonly deleteProjectFile = "file";
 
+        public static readonly getAllFiles = "file";
+
 
         //--------------------Project filter--------//
         public static readonly getprojectStatus = "project-status";
