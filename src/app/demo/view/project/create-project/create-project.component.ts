@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { AppBreadcrumbService } from '../../../../app.breadcrumb.service';
 import { FormControl, FormGroup, Validators, FormBuilder, FormArray, AbstractControl } from '@angular/forms';
 import { MasterTableService } from '../../../../services/master-table.service';
@@ -83,17 +83,17 @@ export class CreateProjectComponent implements OnInit {
 
   selectedLocationIsOrigin: boolean = true;
   activeTabIndex: number = 0; // default to Origin Location
-  uploadedFiles: { name: string, file: File }[] = [];
+  uploadedFiles: {  id: number;name: string, file: File }[] = [];
   selectedFiles: File[] = [];
   uploadedResponseFiles: { name: string, file: File }[] = [];
   uploadedOtherFiles: { name: string, file: File }[] = [];
   projectId: number | null = null;
   visibleResponseBox: boolean = false;
   visibleOthersBox: boolean = false;
-  uploadedFilesToSave: { name: string; file: File }[] = [];
+  uploadedFilesToSave: {  id: number;name: string; file: File }[] = [];
   uploadedResponseFilesToSave: { name: string; file: File }[] = [];
-  uploadedOtherFilesToSave: { name: string; file: File }[] = [];
-  constructor(private breadcrumbService: AppBreadcrumbService,
+  uploadedOtherFilesToSave: {id: number | null; name: string; file: File }[] = [];
+  constructor(private breadcrumbService: AppBreadcrumbService,private zone: NgZone,
     private datePipe: DatePipe, private messageService: MessageService, private fb: FormBuilder, public MasterTableservice: MasterTableService, public projectService: ProjectsService) {
     this.breadcrumbService.setItems([
       {
@@ -556,13 +556,6 @@ export class CreateProjectComponent implements OnInit {
     this.visibleValueBox = true;
   }
 
-  showDialogResponse() {
-    this.visibleResponseBox = true;
-  }
-  showDialogOthers() {
-    this.visibleOthersBox = true;
-  }
-
   onValueCancelClick() {
     this.fileNameOC = "";
     this.selectedFiles = [];
@@ -602,7 +595,10 @@ export class CreateProjectComponent implements OnInit {
 
   onUploadClick(): void {
     if (this.selectedFiles.length > 0) {
-      this.uploadedFilesToSave = [...this.uploadedFilesToSave, ...this.selectedFiles.map(file => ({ name: file.name, file }))];
+      this.uploadedFilesToSave = [
+        ...this.uploadedFilesToSave,
+        ...this.selectedFiles.map(file => ({ id: null, name: file.name, file })),
+      ];
       this.selectedFiles = [];
       const fileInput = document.getElementById('fileInput') as HTMLInputElement;
       if (fileInput) {
@@ -615,22 +611,19 @@ export class CreateProjectComponent implements OnInit {
       console.log('No file selected.');
     }
   }
-
+  
   uploadFiles(): void {
     const scopeId = 2;
     const entityId = this.projectId;
     for (const file of this.uploadedFilesToSave) {
       this.projectService.UploadProjectArtifact(file.file, scopeId, entityId).subscribe(
         (res: any) => {
-          if (res?.message === 'Excel Upload Successfully') {
-            console.log('File uploaded successfully:', res);
-            this.uploadedFiles.push({ name: file.name, file: file.file });
-            console.log('uploadedFiles:', this.uploadedFiles);
-            this.showSuccessMessage('File uploaded successfully!');
-          } else {
-            console.log('Unexpected response:', res);
-            this.uploadedFiles.push({ name: file.name, file: file.file });
-            console.log('uploadedFiles:', this.uploadedFiles);
+          if (res?.status === 200 && res?.message === 'success' && res?.data?.id) {
+            file.id = res.data.id;
+            this.uploadedFiles.push({ id: file.id, name: file.name, file: file.file });
+           // this.showSuccessMessage('File uploaded successfully!');
+                } else {
+            console.error('Error uploading file. Unexpected response:', res);
           }
         },
         (error) => {
@@ -638,14 +631,42 @@ export class CreateProjectComponent implements OnInit {
         }
       );
     }
-    // Clear the array after uploading
     this.uploadedFilesToSave = [];
   }
+  
 
-  onRemoveUploadedFile(index: number): void {
-    this.uploadedFiles.splice(index, 1);
+  // onRemoveUploadedFile(index: number): void {
+  //   this.uploadedFiles.splice(index, 1);
+  // }
+
+  deleteProjectArtifact(index: number): void {
+    if (index >= 0 && index < this.uploadedFiles.length) {
+      const documentIdToDelete = this.uploadedFiles[index].id;
+      this.projectService.deleteProjectDocument(documentIdToDelete).subscribe(
+        (res:any) => {
+          if (res.status === 200 ) {
+            this.uploadedFiles.splice(index, 1);
+            this.showSuccessMessage('Document deleted successfully!');
+          } else {
+            console.error('Unexpected response:', res);
+          }
+        },
+        (error) => {
+          // Handle error response
+          console.error('Error deleting document:', error);
+        }
+      );
+    } else {
+      console.error('Invalid index for deleting document.');
+    }
   }
 
+  showDialogResponse() {
+    this.visibleResponseBox = true;
+  }
+  showDialogOthers() {
+    this.visibleOthersBox = true;
+  }
   onUploadResponseClick(): void {
     if (this.selectedFiles.length > 0) {
       this.uploadedResponseFilesToSave = [...this.uploadedResponseFilesToSave, ...this.selectedFiles.map(file => ({ name: file.name, file }))];
@@ -691,7 +712,7 @@ export class CreateProjectComponent implements OnInit {
 
   onUploadOtherClick(): void {
     if (this.selectedFiles.length > 0) {
-      this.uploadedOtherFilesToSave = [...this.uploadedOtherFilesToSave, ...this.selectedFiles.map(file => ({ name: file.name, file }))];
+   //   this.uploadedOtherFilesToSave = [...this.uploadedOtherFilesToSave, ...this.selectedFiles.map(file => ({ name: file.name, file }))];
       this.selectedFiles = [];
       const fileInput = document.getElementById('fileInput') as HTMLInputElement;
       if (fileInput) {
@@ -732,6 +753,7 @@ export class CreateProjectComponent implements OnInit {
     this.uploadedOtherFilesToSave = [];
   }
 
+
   onRemoveUploadedResponseFile(index: number): void {
     this.uploadedResponseFiles.splice(index, 1);
   }
@@ -754,4 +776,25 @@ export class CreateProjectComponent implements OnInit {
     this.visibleOthersBox = false;
   }
   //-------------------------------------------------end-----------------------------------------//
+
+
+  //-------------------------------------Delete  Document By ID -----------------------------------//
+
+  // deleteProjectArtifact(index: number): void {
+  //   if (index >= 0 && index < this.uploadedFiles.length) {
+  //     const documentIdToDelete = this.uploadedFiles[index].id;
+  //     this.projectService.deleteProjectDocument(documentIdToDelete).subscribe(
+  //       (response) => {
+  //         this.uploadedFiles.splice(index, 1);
+  //         console.log('Document deleted successfully:', response);
+  //       },
+  //       (error) => {
+  //         // Handle error response
+  //         console.error('Error deleting document:', error);
+  //       }
+  //     );
+  //   } else {
+  //     console.error('Invalid index for deleting document.');
+  //   }
+  // }
 }
