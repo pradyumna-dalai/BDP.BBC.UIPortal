@@ -7,7 +7,9 @@ import { CreateBuildingBlockService } from 'src/app/services/create-buildingBloc
 import { Accordion } from 'primeng/accordion';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
-
+import * as XLSX from 'xlsx';
+import { HttpClient } from '@angular/common/http';
+import { saveAs } from 'file-saver';
 @Component({
     templateUrl: './dashboard.component.html',
     styleUrls: ['../../../assets/demo/badges.scss', './dashboard.component.scss']
@@ -29,6 +31,7 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
     operationDocId: number | null;
     fileName: any;
     showDownload: boolean = false;
+    excelDataOpration: any;
     constructor(private breadcrumbService: AppBreadcrumbService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
         this.breadcrumbService.setItems([
             { label: 'Building Blocks' }
@@ -45,7 +48,7 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
         this.loadTreeData();
         this.loadTreeDataNew();
         this.onDraftItemClick();
-
+        this.downloadOperationCardExcelView();
 
     }
     expandNode(node: TreeNode) {
@@ -169,6 +172,7 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
             this.showScopingCrad = false;
             this.showOperationCrad = true;
             this.showCommercialCrad = false;
+            this.downloadOperationCardExcelView();
 
         }
         if (val == 'commercial') {
@@ -237,6 +241,27 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
             console.error('Operation Card is null or undefined.');
         }
     }
+
+     //-----------------------------------download for view of files-------------------------//
+  downloadOperationCardExcelView() {
+    if (this.operationDocId != null) {
+      this.createBuildingBlockservice.downloadUploadedOperationCard(this.operationDocId).subscribe(
+        (data: ArrayBuffer) => {
+          const workbook = XLSX.read(data, { type: 'array' });
+          const sheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[sheetName];
+          this.excelDataOpration = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+        },
+        (error) => {
+          console.error('Error downloading file:', error);
+        }
+      );
+    } else {
+   //   console.error('Operation Card ID or Name is null or undefined.');
+    }
+  }
+
+  //-----------------------------------end--------------------------------------------//
 
 }
 
