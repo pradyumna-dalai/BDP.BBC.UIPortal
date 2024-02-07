@@ -5,7 +5,7 @@
 
 export namespace AppRoutes {
     export abstract class Auth {
-
+        public static readonly getCountry = 'http://ec2-34-205-39-55.compute-1.amazonaws.com/buildingblocks/api/v1/';
         // --------------------get all master dropdown data-----------------------//
 
         public static readonly getProductName = "active-product";
@@ -112,7 +112,7 @@ export namespace AppRoutes {
         public static readonly  uom = "uom";
 
         public static readonly downloadUOM = "download-uom";
-
+        
     
         public static readonly active_location = "active-location"
 

@@ -32,6 +32,7 @@ export class FteComponent {
   modeTitle: string = 'Add';
   searchTimeout: number;
   isSearchClear:boolean =false;
+  regionId:any;
   constructor(private breadcrumbService: AppBreadcrumbService,
     private messageService: MessageService, 
     private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService, private masterTableService: MasterTableService,private fb: FormBuilder,) {
@@ -62,7 +63,7 @@ export class FteComponent {
   ngOnInit(){
     this.fetchAllFteDetails();
     this.fetchLocationRegion();
-    this.fetchLocationCountry();
+    // this.fetchLocationCountry();
     this.fetchLocation();
     this.FteForm = this.fb.group({
       id: [''],
@@ -78,6 +79,12 @@ export class FteComponent {
       this.FteForm.patchValue({
         ftf_year: value*13
       })
+    });
+    this.FteForm.get('region').valueChanges.subscribe((value: any) => {
+      this.regionId = value;
+      if(value){
+        this.fetchLocationCountry()
+      }
     });
  
   }
@@ -128,7 +135,8 @@ fetchLocationRegion() {
 
 fetchLocationCountry() {
   this.countryOptions = [];
-  this.masterDataService.getAllCountryDetails().subscribe((res: any) => {
+
+  this.masterDataService.getAllCountry(this.regionId).subscribe((res: any) => {
     if (res?.message == "success") {
       this.countryOptions = res?.data;
       this.countryOptions = res?.data.map((country: any) => ({

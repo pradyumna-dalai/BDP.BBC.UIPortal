@@ -149,7 +149,10 @@ export class MasterDataService {
     return this.http.get(`${url}${settings.AppRoutes.Auth.downloadCategory}`, { responseType: 'arraybuffer' as 'json' });
   }
   //-------------------------------------country----------------------//
-
+  getAllCountry(id:any) {
+    let Url ='http://ec2-34-205-39-55.compute-1.amazonaws.com/buildingblocks/api/v1/'
+    return this.http.get<any>(`${Url}${id}/country`);
+  }
   getAllCountryDetails() {
     return this.http.get<any>(url + settings.AppRoutes.Auth.country);
   }
