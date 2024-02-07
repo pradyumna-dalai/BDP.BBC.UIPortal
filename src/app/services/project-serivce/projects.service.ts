@@ -81,23 +81,6 @@ advanceSearchFilter(body: any): Observable<any> {
   return this.http.post<any>(url + settings.AppRoutes.Auth.searchProject, body, options);
 }
 
- //------process configurable-----------------------//
-
-processConfigImportExcel(formData: FormData) {
-  return this.http.post(url+settings.AppRoutes.Auth.uploadConfigurable, formData).pipe(
-    catchError((error: any) => {
-      return throwError(error); // Pass the error to the subscriber
-    })
-  );
-}
-processConfigGetImportExcelData() {
-  return this.http.get(url+settings.AppRoutes.Auth.processConfigurable).pipe(
-    catchError((error: any) => {
-      return throwError(error); // Pass the error to the subscriber
-    })
-  );
-}
-
 
 
 //--------------------------Common Upload----------------------------//
