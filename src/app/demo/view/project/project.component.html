@@ -12,7 +12,7 @@
           <p-calendar [(ngModel)]="selectedEndDate" selectionMode="single" [readonlyInput]="true" dateFormat="dd.mm.yy"
             placeholder="End Date" style="width: 100%;"></p-calendar>
         </div>
-        <br>
+        <br> 
         <button pButton type="button" label="Cancel" (click)="cancelDateRange()" class="mr-2 mb-2"></button>
 
         <button pButton type="button" label="Apply" (click)="applyDateRange()" class="mr-2 mb-2"></button>
@@ -106,7 +106,7 @@
           <span>{{item.id}}</span>
         </td>
         <td style="text-align: center; word-wrap: break-word;">
-          <span><a [routerLink]="['/create-project']">{{item.projectName}}</a></span>
+          <span><a [routerLink]="['/create-project']" [queryParams]="{ projId: item.id }">{{item.projectName}}</a></span>
         </td>
         <td style="text-align: center; word-wrap: break-word;">
           <span>{{item.opportunityName}}</span>
