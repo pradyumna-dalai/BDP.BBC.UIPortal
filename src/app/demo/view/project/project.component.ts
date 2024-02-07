@@ -201,9 +201,11 @@ export class ProjectComponent {
             endDate: formattedEndDate,
           };
         });
+        this.totalRecords = res?.data.totalElements;
         //console.log('fbggf', this.proejctdetails);
       } else {
         this.proejctdetails = [];
+        this.totalRecords = 0;
       }
     });
   }
