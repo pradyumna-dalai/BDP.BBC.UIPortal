@@ -59,40 +59,7 @@ data: any[] = []; // Add your data array here
 
   }
   ngOnInit() {
-    // // Access the JSON data using this.jsonData
-    // const processConfigurable = this.jsonData.data;
-    //  // Extract locations and initialize dynamic columns
-    //  this.locations = processConfigurable[0].location;
-    //  this.initializeColumns();
- 
-    //  // Process the data and map it to dynamic columns
-    //  this.data = processConfigurable.map((item) => {
-    //    const rowData: any = {};
- 
-    //    // Map static columns
-    //   //  rowData['Actions'] = `<span style="cursor: pointer;"><i class="pi pi-pencil"></i></span>`;
-    //    rowData['Product Name'] = item.product;
-    //    rowData['Product Scope'] = item.scope;
-    //    rowData['Product Category'] = item.category;
-    //    rowData['Building Block Name'] = item.block;
-    //    rowData['Origin / Destination'] = item.origin;
-    //    rowData['Process No.'] = item.process;
-    //    rowData['Operations Steps'] = item.operationStep;
-    //    rowData['Location'] = '';
-    //    rowData['UOM'] = item.uom;
-    //    rowData['Configuration'] = item.configuration;
- 
-    //    // Map dynamic columns based on location_takTime
-    //    this.locations.forEach((location) => {
-    //      rowData[location.locationName] = item.location.find(
-    //        (loc) => loc.name === location.name
-    //      )?.takTime;
-    //    });
- 
-    //    return rowData;
-    //  });
-    //  // Initialize edit mode for each row to false
-    // this.editModes = Array(this.data.length).fill(false);
+   
     this.processConfigGetImportExcelData();
     this.getUom();
     this.getConfigurable();
@@ -162,37 +129,43 @@ addNewRow(index: number) {
     }
   }
 // ---------------upload Excel------------------------//
-saveProcess(){
+saveProcess(rowData: any){
+  const locations = [];
+  
  
+  // Get dynamic columns after 'Configuration'
+  const dynamicColumns = Object.keys(rowData).filter(key => {
+    const columnIndex = this.columns.findIndex(col => col.field === key);
+    return columnIndex > -1 && columnIndex > this.columns.findIndex(col => col.field === 'Configuration');
+  });
+
+  // Iterate over dynamic columns to extract location and taktTime data
+  dynamicColumns.forEach(key => {
+    const locationName = key;
+    const taktTime = rowData[key] || 'NA'; // Default to 'NA' if taktTime is not provided
+    const location = {
+      name: locationName,
+      takTime: taktTime
+    };
+    locations.push(location);
+  });
   const body = {
 
-      product: "LLP",
-      scope: "Export Facilitation",
-      category: "Supply Chain Insights",
-      block: "Customer Onboarding & Training",
-      origin: "Origin",
-      processNumber: 2,
-      operationStep: "step-3",
-      uom: "command",
-      configurable: "Other",
-      locations: [
-        {
-          name: "EPIM",
-          takTime: "NA"
-        },
-        {
-          name: "INNSA",
-          takTime: "2.0"
-        },
-        {
-          name: "EPIP",
-          takTime: "NA"
-        }
-      ]
+      product: rowData['Product Name'],
+      scope: rowData['Product Scope'],
+      category: rowData['Product Category'],
+      block: rowData['Building Block Name'],
+      origin: rowData['Origin / Destination'],
+      processNumber: rowData['Process No.'],
+      operationStep: rowData['Operations Steps'],
+      uom: rowData['UOM'],
+      configurable: rowData['Configuration'],
+      locations: locations
     
   }
-
  
+
+
       // Editing an existing charge code
       this.MasterDataservice.saveProcess(body).subscribe(
           (res) => {
@@ -201,33 +174,8 @@ saveProcess(){
          
       );
   } 
-  editProcess(){
-
-  }
-  onPopupCancelclick()
-  {
-    this.visible = false;
-      this.fileName = "";
-      this.uploadFile = null;
-      // Add the following line to reset the file input
-      const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
-      if (fileInput) {
-        fileInput.value = ''; // Clear the file input value
-      }
-   }
-   onCancelClick(){
-    this.showUploaderror = false;
-    this.fileName = "";
-    this.uploadFile = null;
-  
-    // Add the following line to reset the file input
-    const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
-    if (fileInput) {
-      fileInput.value = ''; // Clear the file input value
-    }
-   }
-  // ---------------get process config excel data------------------------//
-  processConfigGetImportExcelData() {
+   // ---------------get process config excel data------------------------//
+   processConfigGetImportExcelData() {
     const params = {
       buildingBlockName: "",
       pageNo: isNaN(this.currentPage) ? 0 : this.currentPage - 1,
@@ -241,7 +189,7 @@ saveProcess(){
          this.jsonData = res;
 
     // Access the JSON data using this.jsonData
-    const processConfigurable = this.jsonData.data;
+    const processConfigurable = this.jsonData.data.processConfig;
      // Extract locations and initialize dynamic columns
      this.locations = processConfigurable[0].locations;
      this.initializeColumns();
@@ -272,13 +220,39 @@ saveProcess(){
      });
      // Initialize edit mode for each row to false
     this.editModes = Array(this.data.length).fill(false);
-    this.totalRecords = res?.totalElements;
+    this.totalRecords = res?.data.totalElements;
       } else {
         console.log("error");
         this.totalRecords = 0;
       }
     })
   }
+  editProcess(){
+
+  }
+  onPopupCancelclick()
+  {
+    this.visible = false;
+      this.fileName = "";
+      this.uploadFile = null;
+      // Add the following line to reset the file input
+      const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
+      if (fileInput) {
+        fileInput.value = ''; // Clear the file input value
+      }
+   }
+   onCancelClick(){
+    this.showUploaderror = false;
+    this.fileName = "";
+    this.uploadFile = null;
+  
+    // Add the following line to reset the file input
+    const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = ''; // Clear the file input value
+    }
+   }
+ 
 
   onPageChange(event: any) {
     this.currentPage = event.page + 1;

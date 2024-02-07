@@ -117,9 +117,9 @@ export namespace AppRoutes {
 
          //------process configurable-----------------------//
          
-        public static readonly uploadConfigurable  = "upload-configurable"
+        public static readonly getProcessConfigurable  = "process"
 
-        public static readonly processConfigurable  = "process-configurable"
+        public static readonly saveProcessConfigurable  = "process"
 
     }
 
