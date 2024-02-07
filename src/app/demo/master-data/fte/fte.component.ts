@@ -33,6 +33,7 @@ export class FteComponent {
   searchTimeout: number;
   isSearchClear:boolean =false;
   regionId:any;
+  countryID:any;
   constructor(private breadcrumbService: AppBreadcrumbService,
     private messageService: MessageService, 
     private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService, private masterTableService: MasterTableService,private fb: FormBuilder,) {
@@ -70,15 +71,17 @@ export class FteComponent {
       region : ['',Validators.required],
       country : ['',Validators.required],
       location: ['',Validators.required],
-      fte_month: [ '',Validators.required, Validators.maxLength(9)],
+      fte_month: [ '',Validators.required,],
       ftf_year : [''],
       Work_Time_Year: ['',Validators.required],
       status : ['']
     });
+
+
     this.FteForm.get('fte_month').valueChanges.subscribe((value: any) => {
       this.FteForm.patchValue({
         ftf_year: value*13
-      })
+      });
     });
     this.FteForm.get('region').valueChanges.subscribe((value: any) => {
       this.regionId = value;
@@ -86,11 +89,31 @@ export class FteComponent {
         this.fetchLocationCountry()
       }
     });
- 
+    this.findCountryID();
+    this.findingLocationAsperCountryID()
   }
+
+  findCountryID(){
+    this.FteForm.get('country').valueChanges.subscribe((value)=>{
+      if(value){
+        this.countryID = value;
+        console.log("findCountry_Id",this.countryID)
+        this.locationList=  this.locationOptions.filter((res)=> res.country.id === this.countryID);
+        console.log(this.locationList)
+      }
+
+    })
+  }
+
+  findingLocationAsperCountryID(){
+     this.locationOptions.filter((res)=>{
+      console.log("find location",res)
+    })
+  }
+
   limitTo6Digits(event: any) {
-    if (event.target.value.length > 9) {
-      event.target.value = event.target.value.slice(0, 9);
+    if (event.target.value.length > 6) {
+      event.target.value = event.target.value.slice(0, 6);
     }
   }
   
@@ -147,7 +170,7 @@ fetchLocationCountry() {
     }
   })
 }
-
+locationList:any;
 
 fetchLocation() {
   this.locationOptions = [];
@@ -157,6 +180,7 @@ fetchLocation() {
       this.locationOptions = res?.data.map((country: any) => ({
         ...country,
       }));
+
     } else {
       this.locationOptions = [];
     }
