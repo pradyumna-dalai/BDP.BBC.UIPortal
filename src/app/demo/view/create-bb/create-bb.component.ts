@@ -198,13 +198,13 @@ export class CreateBbComponent {
           // Process successful response
           this.excelData = res?.data;
           // Update UI variables with the response data
-          this.seervice_desc = this.excelData['Service Description'];
-          this.value_to_psa_bdp = this.excelData["Value to PSA BDP"];
-          this.customer_requirement = this.excelData["Customer Requirements"];
-          this.parameters = this.excelData["Parameters"];
-          this.deliverables = this.excelData["Deliverables"];
-          this.configurables = this.excelData["Configurable"];
-          this.stakeholders_audience = this.excelData["Stakeholders / Audience"];
+          this.seervice_desc = this.excelData['Scoping Card']['Service Description'];
+          this.value_to_psa_bdp = this.excelData['Scoping Card']["Value to PSA BDP"];
+          this.customer_requirement = this.excelData['Scoping Card']["Customer Requirements"];
+          this.parameters = this.excelData['Scoping Card']["Parameters"];
+          this.deliverables = this.excelData['Scoping Card']["Deliverables"];
+          this.configurables = this.excelData['Scoping Card']["Configurable"];
+          this.stakeholders_audience = this.excelData['Scoping Card']["Stakeholders / Audience"];
           // ... (similar updates for other variables)
 
           this.visibleSC = false;
@@ -659,7 +659,7 @@ export class CreateBbComponent {
       mod = this.selectedMod.map(id => ({ id }))
     }
     this.isloading = true
-    const body =
+    const body = 
 
     {
       id: this.buildingBlockId,
