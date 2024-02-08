@@ -78,14 +78,19 @@ export class LocationsComponent {
       description: [''],
       status: ['inactive', Validators.required],
     });
-    this.locationForm.get('region').valueChanges.subscribe((value: any) => {
-      this.regionId = value;
-      if(value){
-        this.fetchLocationCountry()
-      }
-    });
+    // this.locationForm.get('region').valueChanges.subscribe((value: any) => {
+    //   this.regionId = value;
+    //   if(value){
+    //     this.fetchLocationCountry()
+    //   }
+    // });
   }
-
+findRegionId(event){
+  const region = event.value;
+  console.log("regionid",region);
+  this.regionId= region;
+  this.fetchLocationCountry()
+}
   getSeverity(status: boolean): string {
     return status ? 'success' : 'danger';
   }
@@ -278,6 +283,7 @@ export class LocationsComponent {
   updateLocationDetails(location: any) {
     this.editMode = true;
     this.modeTitle = 'Edit';
+    console.log("pathValue_location")
     if (this.selectedLocation) {
 
       this.locationForm.patchValue({
