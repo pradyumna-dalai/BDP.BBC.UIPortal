@@ -104,13 +104,19 @@ deleteProjectDocument(id:number ) {
   return this.http.delete(downloadUrl);
 }
 
-
 /** get Project */
-
 getProjectDetails(projId: number): Observable<any> {
 
   return this.http.get<any>(`${url}${settings.AppRoutes.Auth.saveProjectDraft}/${projId}`);
 
 }
+
+//--------------------Project BB----------------------------------//
+getProcessStepByBlockId(blockId: number ){
+  const blockIdStr = blockId.toString(); 
+  return this.http.get<any>(`${url}${settings.AppRoutes.Auth.getProcessStepbyBlockId}?blockId=${blockIdStr}`);
+}
+
+//--------------------------end---------------------------------//
 }
 

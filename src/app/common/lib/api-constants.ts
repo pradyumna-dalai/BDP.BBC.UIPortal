@@ -126,6 +126,11 @@ export namespace AppRoutes {
 
        public static readonly saveProcessConfigurable  = "process"
 
+
+       //-------------------------Project Building BLock -------------//
+
+       public static readonly getProcessStepbyBlockId = "process";
+
         
 
     }

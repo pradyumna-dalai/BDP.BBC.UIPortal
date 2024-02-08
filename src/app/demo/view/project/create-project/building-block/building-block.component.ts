@@ -35,8 +35,9 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   showOriginCLI: boolean = true;
   showDestinationCLI: boolean = false;
   selectedNodes: TreeNode[] = [];
+  draggedNodeId: any;
+  selectedStep: any = null;
   constructor(private projectService: ProjectsService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
-
   }
 
   ngOnInit() {
@@ -45,9 +46,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
 
     this.loadTreeDataNew();
   }
-
   ngOnDestroy() {
-    // console.log('BuildingBlockComponent: ngOnDestroy');
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
@@ -69,6 +68,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   loadTreeDataNew() {
     this.createBuildingBlockservice.getExplorerData(2).subscribe((data: any) => {
       this.treeDataNew = this.transformData(data.data);
+      console.log("treee", this.treeDataNew)
     },
       (error) => {
         console.error('Error loading tree data:', error);
@@ -169,6 +169,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
     if (node.data?.type === 4) {
       if (!this.selectedNodes.includes(node)) {
         this.selectedNodes.push(node);
+        this.draggedNodeId = node.data?.id;
       }
     } else {
       event.preventDefault();
@@ -192,7 +193,64 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   }
 
   //-------------------------------end here--------------------------------//
+  getAllProcessStepbyBlockId(blockId: any) {
+    const node = this.selectedNodes.find(node => node.data.id === blockId);
+    if (node) {
+        this.projectService.getProcessStepByBlockId(blockId).subscribe({
+            next: (response: any) => {
+                if (Array.isArray(response.data)) { 
+                    // Create an object to store the information
+                    const stepsInformation: any = {};
+                    
+                    // Iterate through each item in the response data
+                    response.data.forEach((item: any) => {
+                        // Extract operation step, origin destination, and configurable
+                        const { operationStep, originDestination, configurable } = item;
 
+                        // If the operation step doesn't exist in the object, initialize it
+                        if (!stepsInformation[operationStep]) {
+                            stepsInformation[operationStep] = {
+                                Origin: [],
+                                Destination: []
+                            };
+                        }
 
+                        // Push the configurable value into the appropriate array based on originDestination
+                        stepsInformation[operationStep][originDestination].push(configurable);
+                    });
+
+                    // Update the node's data with stepsInformation
+                    this.updateNodeStepsInformation(node, stepsInformation);
+                } else {
+                    console.error('Data is not an array:', response.data);
+                }
+            },
+            error: (error) => {
+                console.error('Error in loading steps:', error);
+            }
+        });
+    }
+}
+
+updateNodeStepsInformation(node: any, stepsInformation: any) {
+    node.data.stepsInformation = stepsInformation;
+    console.log(stepsInformation);
+
+}
+
+selectStep(step: string) {
+  this.selectedStep = step; 
+}
+// Inside your component class
+
+getTreeData(selectedStep: string, originDestination: string) {
+  if (selectedStep) {
+      const node = this.treeDataNew.find(node => node.label === selectedStep);
+      if (node) {
+          return node.data?.stepsInformation?.[originDestination] || [];
+      }
+  }
+  return [];
+}
 
 }
