@@ -5,7 +5,6 @@
 
 export namespace AppRoutes {
     export abstract class Auth {
-
         // --------------------get all master dropdown data-----------------------//
 
         public static readonly getProductName = "active-product";
@@ -112,7 +111,7 @@ export namespace AppRoutes {
         public static readonly  uom = "uom";
 
         public static readonly downloadUOM = "download-uom";
-
+        
     
         public static readonly active_location = "active-location"
 
@@ -126,6 +125,8 @@ export namespace AppRoutes {
        public static readonly getProcessConfigurable  = "process"
 
        public static readonly saveProcessConfigurable  = "process"
+
+        
 
     }
 
