@@ -5,7 +5,6 @@
 
 export namespace AppRoutes {
     export abstract class Auth {
-        public static readonly getCountry = 'http://ec2-34-205-39-55.compute-1.amazonaws.com/buildingblocks/api/v1/';
         // --------------------get all master dropdown data-----------------------//
 
         public static readonly getProductName = "active-product";
@@ -126,6 +125,8 @@ export namespace AppRoutes {
         public static readonly uploadConfigurable  = "upload-configurable"
 
         public static readonly processConfigurable  = "process-configurable"
+
+        
 
     }
 
