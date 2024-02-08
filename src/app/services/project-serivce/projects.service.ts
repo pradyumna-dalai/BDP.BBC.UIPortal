@@ -121,5 +121,10 @@ deleteProjectDocument(id:number ) {
   return this.http.delete(downloadUrl);
 }
 
+
+//-------------------------------Project Building block---------------------------//
+getAllProcessStep(){
+  
+}
 }
 

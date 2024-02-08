@@ -1,16 +1,18 @@
 import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
-import { TreeNode } from 'primeng/api';
+import { TreeDragDropService, TreeNode } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { CreateBuildingBlockService } from 'src/app/services/create-buildingBlock/create-building-block.service';
 import { Accordion } from 'primeng/accordion';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { AppMainComponent } from 'src/app/app.main.component';
+import { NodeService } from 'src/app/demo/service/nodeservice';
 @Component({
   selector: 'app-building-block',
   templateUrl: './building-block.component.html',
-  styleUrls: ['./building-block.component.scss']
+  styleUrls: ['./building-block.component.scss'],
+  providers: [TreeDragDropService]
 })
 export class BuildingBlockComponent implements OnInit, OnDestroy {
   //@Input() createProject;
@@ -18,7 +20,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   treeDataNew: TreeNode[];
   subscription: Subscription;
   searchText: string = '';
-  selectedNode: TreeNode;
+  //selectedNode: TreeNode;
   buildingBlockDetails: any;
   private _isExpanded = false;
   loading: boolean = false;
@@ -32,20 +34,20 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   destinationButtonBorderRadius: string = '5px';
   showOriginCLI: boolean = true;
   showDestinationCLI: boolean = false;
+  selectedNodes: TreeNode[] = [];
   constructor(private projectService: ProjectsService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
 
   }
 
-
   ngOnInit() {
     console.log('BuildingBlockComponent: ngOnInit');
-  
+
 
     this.loadTreeDataNew();
   }
 
   ngOnDestroy() {
-    console.log('BuildingBlockComponent: ngOnDestroy');
+    // console.log('BuildingBlockComponent: ngOnDestroy');
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
@@ -72,18 +74,15 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
         console.error('Error loading tree data:', error);
       });
   }
-
-  // Function to filter tree data based on search text
   onSearchChange() {
     if (this.searchText.trim() === '') {
       this.loadTreeDataNew();
     } else {
-     // this.loadTreeDataNew(); 
+      // this.loadTreeDataNew(); 
       this.treeDataNew = this.filterTreeData(this.treeDataNew, this.searchText);
-      this.expandNodesBasedOnSearchResults(); 
+      this.expandNodesBasedOnSearchResults();
     }
   }
-
   private transformData(data: any[]): TreeNode[] {
     return data.map((item) => {
       return {
@@ -93,8 +92,6 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       };
     });
   }
-
-
   private filterTreeData(data: TreeNode[], searchText: string): TreeNode[] {
     if (!data) {
       return [];
@@ -104,7 +101,6 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       .map(node => this.filterNode(node, searchText))
       .filter(filteredNode => filteredNode !== null);
   }
-
   private filterNode(node: TreeNode, searchText: string): TreeNode | null {
     if (!node) {
       return null;
@@ -128,7 +124,6 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
 
     return null;
   }
-
   private filterChildNodes(children: TreeNode[] | undefined, searchText: string): TreeNode[] {
     if (!children) {
       return [];
@@ -138,17 +133,6 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       .map(childNode => this.filterNode(childNode, searchText))
       .filter(filteredNode => filteredNode !== null);
   }
-
-  onNodeSelect(event: any): void {
-    if (event.node && !event.node.children?.length) {
-      this.loading = true;
-      this.selectedNode = event.node;
-      //   this.onDraftItemClick();
-    } else {
-      this.selectedNode = null;
-    }
-  }
-
 
   showOriginSection() {
     this.showOriginVolume = true;
@@ -171,4 +155,44 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
     this.originButtonBorderRadius = '5px';
     this.destinationButtonBorderRadius = '5px';
   }
+
+  //------------------------------drag and drop feature---------------------//
+  onNodeSelect(event: any): void {
+    const index = this.selectedNodes.findIndex(node => node.key === event.node.key);
+    if (index === -1) {
+      this.selectedNodes.push(event.node);
+    } else {
+      this.selectedNodes.splice(index, 1);
+    }
+  }
+  onNodeDragStart(event: DragEvent, node: TreeNode): void {
+    if (node.data?.type === 4) {
+      if (!this.selectedNodes.includes(node)) {
+        this.selectedNodes.push(node);
+      }
+    } else {
+      event.preventDefault();
+    }
+  }
+
+  onNodeDrop(event: DragEvent): void {
+    event.preventDefault();
+  }
+
+  onNodeDragOver(event: DragEvent): void {
+    event.preventDefault();
+  }
+
+  public get isExpanded() {
+    return this._isExpanded;
+  }
+
+  public set isExpanded(value: boolean) {
+    this._isExpanded = value;
+  }
+
+  //-------------------------------end here--------------------------------//
+
+
+
 }
