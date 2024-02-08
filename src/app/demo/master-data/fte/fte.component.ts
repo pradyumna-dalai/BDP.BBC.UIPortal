@@ -116,7 +116,11 @@ export class FteComponent {
       event.target.value = event.target.value.slice(0, 6);
     }
   }
-  
+  limitTo7Digits(event: any){
+    if (event.target.value.length > 7) {
+      event.target.value = event.target.value.slice(0, 7);
+    }
+  }
   clear(table: Table) {
     table.reset();
     this.onSort(Event);
