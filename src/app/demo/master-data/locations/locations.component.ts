@@ -38,7 +38,7 @@ export class LocationsComponent {
   modeTitle: string = 'Add';
   searchTimeout: number;
   processing: boolean = false;
-
+  regionId:any;
 
   constructor(private breadcrumbService: AppBreadcrumbService,
     private messageService: MessageService, private fb: FormBuilder,
@@ -66,7 +66,7 @@ export class LocationsComponent {
   ngOnInit() {
     this.fetchAllLocationDetails();
     this.fetchLocationRegion();
-    this.fetchLocationCountry();
+    // this.fetchLocationCountry();
     // this.createForm();
     this.locationForm = this.fb.group({
       id: [''],
@@ -78,7 +78,12 @@ export class LocationsComponent {
       description: [''],
       status: ['inactive', Validators.required],
     });
-
+    this.locationForm.get('region').valueChanges.subscribe((value: any) => {
+      this.regionId = value;
+      if(value){
+        this.fetchLocationCountry()
+      }
+    });
   }
 
   getSeverity(status: boolean): string {
@@ -186,7 +191,7 @@ export class LocationsComponent {
 
   fetchLocationCountry() {
     this.countryOptions = [];
-    this.masterDataService.getAllCountryDetails().subscribe((res: any) => {
+    this.masterDataService.getAllCountry(this.regionId).subscribe((res: any) => {
       if (res?.message == "success") {
         this.countryOptions = res?.data;
         this.countryOptions = res?.data.map((country: any) => ({
