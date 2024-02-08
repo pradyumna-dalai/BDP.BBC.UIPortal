@@ -78,38 +78,38 @@ export class FteComponent {
     });
 
 
-    this.FteForm.get('fte_month').valueChanges.subscribe((value: any) => {
-      this.FteForm.patchValue({
-        ftf_year: value*13
-      });
-    });
-    this.FteForm.get('region').valueChanges.subscribe((value: any) => {
-      this.regionId = value;
-      if(value){
-        this.fetchLocationCountry()
-      }
-    });
-    this.findCountryID();
-    this.findingLocationAsperCountryID()
+    // this.FteForm.get('fte_month').valueChanges.subscribe((value: any) => {
+    //   this.FteForm.patchValue({
+    //     ftf_year: value*13
+    //   });
+    // });
+    // this.FteForm.get('region').valueChanges.subscribe((value: any) => {
+    //   this.regionId = value;
+    //   if(value){
+    //     this.fetchLocationCountry()
+    //   }
+    // });
+    // this.findCountryID();
+  }
+  findRegionId(event:any){
+    const region = event.value;
+    console.log("regionid",region);
+    this.regionId= region;
+    this.fetchLocationCountry();
   }
 
-  findCountryID(){
-    this.FteForm.get('country').valueChanges.subscribe((value)=>{
-      if(value){
-        this.countryID = value;
+  findCountryId(event){
+    const country = event.value;
+    this.countryID = country;
+    this.findLocationID()
+  }
+  findLocationID(){
         console.log("findCountry_Id",this.countryID)
         this.locationList=  this.locationOptions.filter((res)=> res.country.id === this.countryID);
-        console.log(this.locationList)
-      }
-
-    })
+        console.log(this.locationList)  
   }
 
-  findingLocationAsperCountryID(){
-     this.locationOptions.filter((res)=>{
-      console.log("find location",res)
-    })
-  }
+
 
   limitTo6Digits(event: any) {
     if (event.target.value.length > 6) {
@@ -249,7 +249,7 @@ fteRowData:any;
 editDisable:boolean = false;
 editFteRow(ftes: any){
 this.fteRowData = ftes;
-
+console.log("patch",this.fteRowData)
   this.updateLocationDetails()
 }
 updateLocationDetails() {
