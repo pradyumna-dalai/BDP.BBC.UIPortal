@@ -9,6 +9,7 @@ import * as XLSX from 'xlsx';
 import { HttpClient } from '@angular/common/http';
 import { saveAs } from 'file-saver';
 
+
 @Component({
   selector: 'app-create-bb',
   templateUrl: './create-bb.component.html',
@@ -639,6 +640,9 @@ export class CreateBbComponent {
   // ---------------add building blocks------------------------//
 
   saveAsDraft() {
+    if (this.blockId) {
+      return this.updateBuildingBlock();
+  }
     this.buildingBlockId = this.route.snapshot.paramMap.get('id');
     let errorMessages: string[] = [];
     if (this.product_name == '' || this.product_name == null || this.product_name == undefined) {
@@ -756,7 +760,89 @@ export class CreateBbComponent {
 
 
   }
+  updateBuildingBlock() {
+    if (this.product_name == '' || this.product_name == null || this.product_name == undefined) {
+      return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Product name is a required field.`, detail: '' });
+    }
+    if (this.product_scope == '' || this.product_scope == null || this.product_scope == undefined) {
+      return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Product scope is a required field.`, detail: '' });
+    }
+    if (this.product_category == '' || this.product_category == null || this.product_category == undefined) {
+      return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Product category is a required field.`, detail: '' });
+    }
+    if (this.building_block_name == '' || this.building_block_name == null || this.building_block_name == undefined) {
+      return this.messageService.add({ key: 'emptyToster', life: 2000, severity: 'error', summary: `Building block is a required field.`, detail: '' });
+    }
+    if (this.selectedMod == "" || this.selectedMod == undefined || this.selectedMod == null) {
+      var mod = []
+    } else {
+      mod = this.selectedMod.map(id => ({ id }))
+    }
+    const body = 
 
+    {
+      id: this.blockId,
+      name: this.building_block_name || '',
+      product: {
+        id: this.product_name || ''
+      },
+      scope: {
+        id: this.product_scope || ''
+      },
+      category: {
+        id: this.product_category || ''
+      },
+      chargeCode: {
+        id: this.charge_code || ''
+      },
+      modeOfTransport: mod || []
+      ,
+      scopingCard: {
+        serviceDescription: this.seervice_desc || '',
+        customerRequirement: this.customer_requirement || '',
+        deliverable: this.deliverables || '',
+        stakeHolder: this.stakeholders_audience || '',
+        valueToPsaBdp: this.value_to_psa_bdp || '',
+        parameter: this.parameters || '',
+        configurable: this.configurables || '',
+      },
+      // operationsCard: {
+      //   card: ""
+      // },
+      commercialCard: {
+        serviceDescription: this.seervice_desc || '',
+        customerRequirement: this.customer_requirement || '',
+        psaBdpValueStatement: this.cvalue_to_psa_bdp || '',
+        standardService: this.standard_service || '',
+        sow: this.sow || '',
+        prerequisiteInfo: this.pre_requisite_info || '',
+        combinedValue: this.combined_value || '',
+        dos: this.do_s || '',
+        donts: this.don_s || '',
+        configurable: this.configurables || ''
+      },
+
+    }
+
+    this.CreateBuildingBlockservice.saveEditBuildingBlocks(1, body).subscribe(
+        (res) => {
+            console.log('Draft updated successfully:', res);
+            this.messageService.add({
+                key: 'successToast',
+                severity: 'success',
+                summary: 'Success!',
+                detail: 'Building block draft is updated successfully.'
+            });
+        },
+        (error) => {
+            if (error && error.status === 400) {
+                const errorMessage = error.error?.message;
+                const data = error.error?.data;
+                // Handle errors...
+            }
+        }
+    );
+}
 
   private fetchBuildingBlockDetails(id: any): void {
     this.createBuildingBlockservice.getBuildingBlockDetails(id).subscribe(
