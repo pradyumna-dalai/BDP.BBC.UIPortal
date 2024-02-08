@@ -66,6 +66,7 @@ export class ProjectComponent {
     ]);
   }
 
+  
   ngOnInit() {
     this.fetchAllProjectDetails();
     this.selectedPredefinedDateRange = this.predefinedDateRanges[0];
