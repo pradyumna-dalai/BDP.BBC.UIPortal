@@ -138,7 +138,7 @@ export class CreateProjectComponent implements OnInit {
           label: 'PROJECT',
           routerLink: 'project'
         },
-        { label: 'Update Project' }, // Change label to 'Update Project'
+        { label: 'Update Project' }, 
       ]);
     } else {
       this.breadcrumbService.setItems([
@@ -146,7 +146,7 @@ export class CreateProjectComponent implements OnInit {
           label: 'PROJECT',
           routerLink: 'project'
         },
-        { label: 'Create Project' }, // Default label remains 'Create Project'
+        { label: 'Create Project' }, 
       ]);
     }
   }
@@ -885,7 +885,6 @@ export class CreateProjectComponent implements OnInit {
       projectName: this.response.projectName,
       projectStage: this.response.projectStage?.id, 
       projectStatus: this.response.projectStatus?.id,
-      // opportunityManager: this.response.opportunityManager.map(manager => manager.id),
       designNotes: this.response.designNote,
       impleNotes: this.response.implementationNote,
       
@@ -920,16 +919,11 @@ if (selectedProjectStageIndex !== -1) {
     this.myForm.get('region').setValue(this.regionOptions[selectedRegionIndex].id); 
   }
  
-
-
   // const startDate = new Date(this.response.projectInformation.startDate);
   // const endDate = new Date(this.response.projectInformation.endDate);
   // this.myForm.get('selectedDateRange').setValue([startDate, endDate]);
  
   }
-
-
-
 
 
   }
