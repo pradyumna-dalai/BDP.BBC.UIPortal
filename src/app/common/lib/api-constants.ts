@@ -121,11 +121,11 @@ export namespace AppRoutes {
         public static readonly downloadfte = "download-fte"
         public static readonly projectName = "project-name"
 
-         //------process configurable-----------------------//
+       //------process configurable-----------------------//
          
-        public static readonly uploadConfigurable  = "upload-configurable"
+       public static readonly getProcessConfigurable  = "process"
 
-        public static readonly processConfigurable  = "process-configurable"
+       public static readonly saveProcessConfigurable  = "process"
 
     }
 
