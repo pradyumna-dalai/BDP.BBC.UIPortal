@@ -51,3 +51,10 @@ height: 60px;
 :host ::ng-deep .p-paginator {
 justify-content: flex-end;
 }
+.sticky-header {
+  position: sticky;
+  top: 0;
+  background-color: #f8f9fa;
+  z-index: 100;
+}
+
