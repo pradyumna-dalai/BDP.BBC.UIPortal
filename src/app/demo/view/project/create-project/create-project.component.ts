@@ -883,6 +883,7 @@ export class CreateProjectComponent implements OnInit {
       projectName: this.response.projectName,
       projectStage: this.response.projectStage?.id, 
       projectStatus: this.response.projectStatus?.id,
+      // opportunityManager: this.response.opportunityManager.map(manager => manager.id),
       designNotes: this.response.designNote,
       impleNotes: this.response.implementationNote,
       
@@ -895,7 +896,7 @@ export class CreateProjectComponent implements OnInit {
 // Automatically fetch and set industry vertical based on the selected opportunity name
 if (this.response.opportunityName) {
   this.onOpportunitySelect({ value: this.response.opportunityName.id });
-
+}
 
  // Set selected opportunity managers
  if (this.response.opportunityManager && this.response.opportunityManager.length > 0) {
@@ -917,12 +918,12 @@ if (selectedProjectStageIndex !== -1) {
     this.myForm.get('region').setValue(this.regionOptions[selectedRegionIndex].id); 
   }
  
+
+
   // const startDate = new Date(this.response.projectInformation.startDate);
   // const endDate = new Date(this.response.projectInformation.endDate);
   // this.myForm.get('selectedDateRange').setValue([startDate, endDate]);
  
-  }
-
   }
 downloadArtifactByIDOther(index: number) {
   let fileName: string | null = null;
