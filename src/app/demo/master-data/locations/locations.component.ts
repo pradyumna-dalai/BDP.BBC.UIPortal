@@ -78,12 +78,12 @@ export class LocationsComponent {
       description: [''],
       status: ['inactive', Validators.required],
     });
-    // this.locationForm.get('region').valueChanges.subscribe((value: any) => {
-    //   this.regionId = value;
-    //   if(value){
-    //     this.fetchLocationCountry()
-    //   }
-    // });
+    this.locationForm.get('region').valueChanges.subscribe((value: any) => {
+      this.regionId = value;
+      if(value){
+        this.fetchLocationCountry()
+      }
+    });
   }
 findRegionId(event){
   const region = event.value;
@@ -198,6 +198,9 @@ findRegionId(event){
     this.countryOptions = [];
     this.masterDataService.getAllCountry(this.regionId).subscribe((res: any) => {
       if (res?.message == "success") {
+        if(this.editMode){
+          this.locationForm.get('country').patchValue(this.selectedLocation.country.id)
+        }
         this.countryOptions = res?.data;
         this.countryOptions = res?.data.map((country: any) => ({
           ...country,
