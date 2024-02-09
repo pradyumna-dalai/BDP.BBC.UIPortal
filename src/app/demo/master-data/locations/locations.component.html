@@ -126,7 +126,7 @@
                 </div>
                 <div class="field col-12 md:col-5">
                     <label>Region<span class="required">*</span></label>
-                    <p-dropdown [options]="regionOptions" appendTo="body" formControlName="region" (onChange)="findRegionId($event)"
+                    <p-dropdown [options]="regionOptions" appendTo="body" formControlName="region" 
                         placeholder="Select Region" optionLabel="name" optionValue="id" [filter]="true"
                         filterBy="name" [style]="{ 'width': '100%' }">
                     </p-dropdown>
