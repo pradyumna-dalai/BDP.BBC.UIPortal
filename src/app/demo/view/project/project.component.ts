@@ -7,6 +7,7 @@ import { DatePipe } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { CalendarModule } from 'primeng/calendar';
 
+
 //import moment from "moment";
 import dayjs from 'dayjs';
 import { HttpResponse } from '@angular/common/http';
@@ -18,6 +19,7 @@ import { finalize } from 'rxjs';
   providers: [MessageService, ConfirmationService]
 })
 export class ProjectComponent {
+
   text: string = '';
   data: any = {};
   rowDisabledState: { [key: string]: boolean } = {};
@@ -66,6 +68,7 @@ export class ProjectComponent {
     ]);
   }
 
+  
   ngOnInit() {
     this.fetchAllProjectDetails();
     this.selectedPredefinedDateRange = this.predefinedDateRanges[0];
@@ -75,6 +78,7 @@ export class ProjectComponent {
       }
     })
     this.getDataFromFilter()
+    
   }
   isloader:boolean= false;
   getDataFromFilter(){
@@ -209,6 +213,7 @@ export class ProjectComponent {
       }
     });
   }
+   
   onPageChange(event: any) {
     this.currentPage = event.page + 1;
     this.pageSize = event.rows;
@@ -298,5 +303,7 @@ export class ProjectComponent {
       this.setPredefinedDateRange(this.selectedPredefinedDateRange?.label);
     }
   }
+
+ 
 
 }

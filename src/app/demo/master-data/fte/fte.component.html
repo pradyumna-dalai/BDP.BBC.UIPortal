@@ -100,7 +100,7 @@
             <div class="field col-12 md:col-6">
                 <label>Region<span class="required">*</span></label>
                 <p-dropdown [options]="regionOptions" appendTo="body" [readonly]="editMode"
-                    placeholder="Select Region" optionLabel="name" formControlName="region" optionValue="id" [filter]="true"
+                    placeholder="Select Region" optionLabel="name" formControlName="region" optionValue="id" [filter]="true" (onChange)="findRegionId($event)"
                     filterBy="name" [style]="{ 'width': '100%' }">
                 </p-dropdown>
                 <div *ngIf="FteForm.get('region')?.hasError('required') && FteForm.get('region')?.touched"
@@ -110,7 +110,7 @@
             </div>
             <div class="field col-12 md:col-6">
                 <label>Country <span class="required">*</span></label>
-                <p-dropdown [options]="countryOptions" appendTo="body" [readonly]="editMode"
+                <p-dropdown [options]="countryOptions" appendTo="body" [readonly]="editMode" (onChange)="findCountryId($event)"
                     placeholder="Select Country" optionLabel="name" optionValue="id" [filter]="true"
                     filterBy="name" [style]="{ 'width': '100%' }" formControlName="country">
                 </p-dropdown>
@@ -121,7 +121,7 @@
             </div>
             <div class="field col-12 md:col-6">
                 <label>Location <span class="required">*</span></label>
-                <p-dropdown [options]="locationOptions" appendTo="body" [readonly]="editMode"
+                <p-dropdown [options]="locationList" appendTo="body" [readonly]="editMode"
                     placeholder="Select Location" optionLabel="name" optionValue="id" [filter]="true"
                     filterBy="name" [style]="{ 'width': '100%' }" formControlName="location">
                 </p-dropdown>
@@ -132,7 +132,7 @@
             </div>
             <div class="field col-12 md:col-6">
                 <label>FTE/Month (USD)<span class="required">*</span></label>
-                <input id="name" type="number"  placeholder="FTE/Month" formControlName="fte_month" pattern="^[1-9][0-9]*$" oninput="if(!this.value.match('^[1-9][0-9]*$'))this.value='';"  (input)="limitTo6Digits($event)"
+                <input id="name" type="number"  placeholder="FTE/Month" formControlName="fte_month"  (input)="limitTo7Digits($event)"
                     class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
                     <div *ngIf="FteForm.get('fte_month')?.hasError('required') && FteForm.get('fte_month')?.touched"
                     class="error-message">
@@ -142,12 +142,12 @@
             </div>
             <div class="field col-12 md:col-6">
                 <label>FTE/Year (USD)<span class="required">*</span></label>
-                <input id="name" type="number"  placeholder="FTE/Year " [readonly]="true"  formControlName="ftf_year" oninput="if(!this.value.match('^[1-9][0-9]*$'))this.value='';"  (input)="limitTo6Digits($event)"
+                <input id="name" type="number"  placeholder="FTE/Year " [readonly]="true"  formControlName="ftf_year" 
                     class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
             </div>
             <div class="field col-12 md:col-6">
                 <label>Working Time/Year(min)<span class="required">*</span></label>
-                <input id="name" type="number"  placeholder="Working Time/Year" formControlName="Work_Time_Year" onlyNumber
+                <input id="name" type="number"  placeholder="Working Time/Year" formControlName="Work_Time_Year" onlyNumber  (input)="limitTo6Digits($event)"
                     class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
                     <div *ngIf="FteForm.get('Work_Time_Year')?.hasError('required') && FteForm.get('Work_Time_Year')?.touched"
                     class="error-message">
