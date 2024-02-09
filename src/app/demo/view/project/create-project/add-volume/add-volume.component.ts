@@ -24,12 +24,13 @@ showDestinationCLI:boolean = false;
 //end//
 private _isExpanded = false;
 visible: boolean = false;
+  volumeDetails: any;
   constructor(private projectService:ProjectsService){
 
   }
 
   ngOnInit(){
-
+  this.getVolumeDetails(23);
   }
   public get isExpanded() {
     return this._isExpanded;
@@ -47,7 +48,6 @@ showUploadDialog() {
       this.Add_Volume = res
     })
   }
-
   //---------------------------------ADD VOLUME--------------------------------------------//
 showOriginSection() {
   this.showOriginVolume = true;
@@ -69,5 +69,15 @@ showDestinationSection() {
   this.destinationButtonBorder = '1px solid rgb(0, 110, 255)';
   this.originButtonBorderRadius = '5px';
   this.destinationButtonBorderRadius = '5px';
+}
+
+getVolumeDetails(projectId) {
+  this.projectService.getvolumeDetails(projectId).subscribe((res: any) => {
+   
+      this.volumeDetails = res.BuildingBlocks;
+    
+      console.log(this.volumeDetails);
+    
+  })
 }
 }
