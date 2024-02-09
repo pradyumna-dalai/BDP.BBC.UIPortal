@@ -97,7 +97,7 @@ export class CreateBbComponent {
   service_desc_error: any;
   customer_requirement_error: any;
   cvalue_to_psa_bdp_error: any;
-  blockId: number;
+  blockId: any;
   operationDocId: any;
   operationDocName: any;
   showDownload: boolean = false;
@@ -227,14 +227,12 @@ export class CreateBbComponent {
           }
         }
         else {
-          console.log('Unexpected response:', res);
         }
       },
       (error) => {
         // Handle HTTP errors here
         if (error.status === 400) {
 
-          console.log('Bad Request Error:', error);
           if (error.error?.data?.message === 'All Field Are Empty') {
             // Handle case where all fields are empty in the uploaded Excel file
             this.showUploaderror = true;
@@ -282,7 +280,7 @@ export class CreateBbComponent {
         }
 
         else {
-          console.log('Unexpected Error:', error);
+       
           // Handle other errors accordingly
         }
 
@@ -366,14 +364,13 @@ export class CreateBbComponent {
             fileInput.value = '';
           }
         } else {
-          console.log('Unexpected response:', res);
+      
         }
       },
       (error) => {
 
         // Handle HTTP errors here
         if (error.status === 400) {
-          console.log('Bad Request Error:', error);
           if (error.error.data == 'please upload commercial card excel file') {
             this.uploadError = 'Please upload commercial card excel file';
           }
@@ -432,7 +429,7 @@ export class CreateBbComponent {
 
           }
         } else {
-          console.log('Unexpected Error:', error);
+
         }
 
         // Reset the upload screen
@@ -710,9 +707,7 @@ export class CreateBbComponent {
     }
     this.CreateBuildingBlockservice.saveEditBuildingBlocks(1, body).subscribe(
       (res) => {
-        console.log('Draft saved successfully:', res);
         this.blockId = res.data?.id;
-        console.log('bbId', this.blockId);
         this.messageService.add({
           key: 'successToast',
           severity: 'success',
@@ -753,7 +748,6 @@ export class CreateBbComponent {
 
             });
           }
-          //    console.log('d',data);
         }
       }
     );
@@ -826,7 +820,6 @@ export class CreateBbComponent {
 
     this.CreateBuildingBlockservice.saveEditBuildingBlocks(1, body).subscribe(
         (res) => {
-            console.log('Draft updated successfully:', res);
             this.messageService.add({
                 key: 'successToast',
                 severity: 'success',
@@ -885,7 +878,12 @@ export class CreateBbComponent {
   }
 
   saveAsBuildingBlock() {
+  if(this.blockId == null || this.blockId == undefined){
     this.buildingBlockId = this.route.snapshot.paramMap.get('id');
+  }else{
+    this.buildingBlockId = this.blockId;
+  }
+   
     if (this.selectedMod == "" || this.selectedMod == undefined || this.selectedMod == null) {
       var mod = []
     } else {
@@ -961,11 +959,10 @@ export class CreateBbComponent {
       });
       return;
     }
-
+   
 
     this.CreateBuildingBlockservice.saveEditBuildingBlocks(2, body).subscribe(
       (res) => {
-        console.log('Building Block saved successfully:', res);
 
         this.messageService.add({
           key: 'successToast',
@@ -984,8 +981,6 @@ export class CreateBbComponent {
         if (error && error.status === 400) {
           const errorMessage = error.error?.message;
           const data = error.error?.data;
-          console.log('error', errorMessage)
-          console.log('error', data)
           if (data && data.length > 0) {
             this.formattedErrors = data.join('\n');
           }
@@ -1013,7 +1008,7 @@ export class CreateBbComponent {
 
             });
           }
-          //    console.log('d',data);
+         
         }
       }
     );
@@ -1105,12 +1100,12 @@ export class CreateBbComponent {
       this.createBuildingBlockservice.operationCardUploadExcel(this.selectedFile, scopeId, entityId).subscribe(
         (res: any) => {
           if (res?.message === 'Excel Upload Successfully') {
-            console.log('File uploaded successfully:', res);
+          
             this.fileNameOC = "";
             this.selectedFile = null;
             this.showSuccessMessage('File uploaded successfully!');
           } else {
-            console.log('Unexpected response:', res);
+           
           }
         },
         (error) => {
@@ -1118,7 +1113,7 @@ export class CreateBbComponent {
         }
       );
     } else {
-      console.log('No file selected.');
+
     }
   }
   //----------------------------------------------------------------------------------//
