@@ -86,30 +86,31 @@ export class FteComponent {
     this.FteForm.get('region').valueChanges.subscribe((value: any) => {
       this.regionId = value;
       if(value){
-        this.fetchLocationCountry()
+        this.fetchLocationCountry();
+        this.findLocationID()
       }
     });
-    this.findCountryID();
-    this.findingLocationAsperCountryID()
+
+  }
+  findRegionId(event:any){
+    const region = event.value;
+    console.log("regionid",region);
+    this.regionId= region;
+    this.fetchLocationCountry();
   }
 
-  findCountryID(){
-    this.FteForm.get('country').valueChanges.subscribe((value)=>{
-      if(value){
-        this.countryID = value;
+  // findCountryId(event){
+  //   const country = event.value;
+  //   this.countryID = country;
+  //   this.findLocationID()
+  // }
+  findLocationID(){
         console.log("findCountry_Id",this.countryID)
-        this.locationList=  this.locationOptions.filter((res)=> res.country.id === this.countryID);
-        console.log(this.locationList)
-      }
-
-    })
+      this.locationOptions.filter((res)=> res.country.id === this.countryID);
+        console.log(this.locationList)  
   }
 
-  findingLocationAsperCountryID(){
-     this.locationOptions.filter((res)=>{
-      console.log("find location",res)
-    })
-  }
+
 
   limitTo6Digits(event: any) {
     if (event.target.value.length > 6) {
@@ -165,6 +166,9 @@ fetchLocationCountry() {
 
   this.masterDataService.getAllCountry(this.regionId).subscribe((res: any) => {
     if (res?.message == "success") {
+      if(this.editMode){
+        this.FteForm.get('country').patchValue(this.fteRowData.country.id)
+      }
       this.countryOptions = res?.data;
       this.countryOptions = res?.data.map((country: any) => ({
         ...country,
@@ -249,12 +253,15 @@ fteRowData:any;
 editDisable:boolean = false;
 editFteRow(ftes: any){
 this.fteRowData = ftes;
-
+console.log("patch",this.fteRowData)
   this.updateLocationDetails()
 }
 updateLocationDetails() {
   this.editMode = true;
   this.modeTitle = 'Edit';
+  if(this.countryOptions){
+    
+  }
     this.FteForm.patchValue({
       region: this.fteRowData.region.id,
       country: this.fteRowData.country.id,

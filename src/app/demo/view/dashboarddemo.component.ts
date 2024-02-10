@@ -202,7 +202,11 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
                     this.operationDocId = response.data.operationsCard?.id;
                     this.fileName = response.data.operationsCard?.name; 
                     this.showDownload = response.data.operationsCard !== null; 
-                   // console.log('Show Download:', this.showDownload); 
+                    if (this.showDownload) {
+                        this.downloadOperationCardExcelView();
+                    } else {
+                        this.excelDataOpration = null;
+                    }
                     this.loading = false;
                 },
                 (error) => {
@@ -210,6 +214,13 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
                     this.loading = false;
                 }
             );
+        } else {
+            this.selectedNode = null;
+            this.buildingBlockDetails = null;
+            this.operationDocId = null;
+            this.fileName = null;
+            this.showDownload = false;
+            this.excelDataOpration = null;
         }
     }
     public get isExpanded() {

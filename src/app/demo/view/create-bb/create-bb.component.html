@@ -553,7 +553,6 @@
                         </ng-template>
                     </p-editor>
                 </div>
-
             </div>
             <div class="grid">
                 <div class="col-6">
@@ -596,7 +595,7 @@
                 <div class="custom-container">
                     <h6><b>Instructions</b></h6>
                     <ul class="list">
-                        <li>Maximum File Size: 2MB</li>
+                        <li>Maximum File Size: 5MB</li>
                         <li>File Format: CSV,xlsx</li>
                     </ul>
                     <ol class="list" type="1">
@@ -612,13 +611,13 @@
                     <div *ngIf="showUploaderror" style="color: red;">
                         <b>Upload error: Review the file before uploading.</b>
                         <div *ngIf="!uploadError">
-                            <div *ngIf="deliverablesError">{{ deliverablesError }}</div>
-                            <div *ngIf="valueToPSABDPError">{{ valueToPSABDPError }}</div>
-                            <div *ngIf="parametersError">{{ parametersError }}</div>
-                            <div *ngIf="serviceDescriptionError">{{ serviceDescriptionError }}</div>
-                            <div *ngIf="stakeholdersAudienceError">{{ stakeholdersAudienceError }}</div>
-                            <div *ngIf="customerRequirementsError">{{ customerRequirementsError }}</div>
-                            <div *ngIf="configurableError">{{ configurableError }}</div>
+                            <div *ngIf="deliverablesError">Deliverables&nbsp;:&nbsp;{{ deliverablesError }}</div>
+                            <div *ngIf="valueToPSABDPError">Value to PSA BDP&nbsp;:&nbsp;{{ valueToPSABDPError }}</div>
+                            <div *ngIf="parametersError">Parameters:&nbsp;{{ parametersError }}</div>
+                            <div *ngIf="serviceDescriptionError">Service Description&nbsp;:&nbsp;{{ serviceDescriptionError }}</div>
+                            <div *ngIf="stakeholdersAudienceError">Stakeholders / Audience&nbsp;:&nbsp;{{ stakeholdersAudienceError }}</div>
+                            <div *ngIf="customerRequirementsError">Customer Requirements&nbsp;:&nbsp;{{ customerRequirementsError }}</div>
+                            <div *ngIf="configurableError">Configurable&nbsp;:&nbsp;{{ configurableError }}</div>
                         </div>
 
                         <!-- Add similar divs for other fields -->
@@ -648,7 +647,7 @@
                             <button type="submit" pButton pRipple class=" btn" [disabled]="!uploadFilesc"
                                 (click)="onCancelClickSC()">
                                 Remove File
-                            </button>
+                            </button> 
                         </div>
                         <div class="uplodBtn_right">
                             <button type="submit" pButton pRipple class=" btn" [disabled]="!uploadFilesc"
@@ -689,7 +688,7 @@
                 <div class="custom-container">
                     <h6><b>Instructions</b></h6>
                     <ul class="list">
-                        <li>Maximum File Size: 2MB</li>
+                        <li>Maximum File Size: 5MB</li>
                         <li>File Format: CSV,xlsx</li>
                     </ul>
                     <ol class="list" type="1">
@@ -707,21 +706,16 @@
                         <b>Upload error: Review the file before uploading.</b>
                         <div *ngIf="!uploadError">
                             <!-- Add similar divs for other fields -->
-                            <div *ngIf="standard_service_error">Standard Service:&nbsp;{{ standard_service_error }}
-                            </div>
-                            <div *ngIf="dos_error">Do's:&nbsp;{{ dos_error }}</div>
-                            <div *ngIf="sow_error">SOW:&nbsp;{{ sow_error }}</div>
-                            <div *ngIf="combined_value_error">Combined Value:&nbsp;{{ combined_value_error }}</div>
-                            <div *ngIf="donts_error">Dont's:&nbsp;{{ donts_error }}</div>
-                            <div *ngIf="configurables_error">Configurables:&nbsp;{{ configurables_error }}</div>
-                            <div *ngIf="pre_requisite_info_error">Pre-requisite Information:&nbsp;{{
-                                pre_requisite_info_error }}</div>
-
-                            <div *ngIf="service_desc_error">Service Description:&nbsp;{{ service_desc_error }}</div>
-                            <div *ngIf="customer_requirement_error">Customer Requirement:&nbsp;{{
-                                customer_requirement_error }}</div>
-                            <div *ngIf="cvalue_to_psa_bdp_error">Value To Psa Bdp:&nbsp;{{ cvalue_to_psa_bdp_error }}
-                            </div>
+                            <div *ngIf="standard_service_error">Standard Service Error: {{ standard_service_error }}</div>
+                            <div *ngIf="dos_error">Do's Error: {{ dos_error }}</div>
+                            <div *ngIf="sow_error">SOW Error: {{ sow_error }}</div>
+                            <div *ngIf="combined_value_error">Combined Value Error: {{ combined_value_error }}</div>
+                            <div *ngIf="donts_error">Dont's Error: {{ donts_error }}</div>
+                            <div *ngIf="configurables_error">Configurables Error: {{ configurables_error }}</div>
+                            <div *ngIf="pre_requisite_info_error">Pre-requisite Information Error: {{ pre_requisite_info_error }}</div>
+                            <div *ngIf="service_desc_error">Service Description Error: {{ service_desc_error }}</div>
+                            <div *ngIf="customer_requirement_error">Customer Requirement Error: {{ customer_requirement_error }}</div>
+                            <div *ngIf="cvalue_to_psa_bdp_error">Value To PSA BDP Error: {{ cvalue_to_psa_bdp_error }}</div>
                         </div>
                         <div *ngIf="uploadError" style="color: red;">
                             {{ uploadError }}

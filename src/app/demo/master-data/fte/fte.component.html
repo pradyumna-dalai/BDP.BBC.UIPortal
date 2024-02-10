@@ -56,7 +56,7 @@
         <ng-template pTemplate="body" let-fte>
             <tr>
                
-                <td> 
+                <td style="text-align: center;"> 
                     <span style="cursor: pointer;" (click)="editFteRow(fte)"><i
                     class="pi pi-pencil"></i></span>&nbsp;
                 </td>
@@ -100,7 +100,7 @@
             <div class="field col-12 md:col-6">
                 <label>Region<span class="required">*</span></label>
                 <p-dropdown [options]="regionOptions" appendTo="body" [readonly]="editMode"
-                    placeholder="Select Region" optionLabel="name" formControlName="region" optionValue="id" [filter]="true"
+                    placeholder="Select Region" optionLabel="name" formControlName="region" optionValue="id" [filter]="true" 
                     filterBy="name" [style]="{ 'width': '100%' }">
                 </p-dropdown>
                 <div *ngIf="FteForm.get('region')?.hasError('required') && FteForm.get('region')?.touched"
@@ -110,7 +110,7 @@
             </div>
             <div class="field col-12 md:col-6">
                 <label>Country <span class="required">*</span></label>
-                <p-dropdown [options]="countryOptions" appendTo="body" [readonly]="editMode"
+                <p-dropdown [options]="countryOptions" appendTo="body" [readonly]="editMode" 
                     placeholder="Select Country" optionLabel="name" optionValue="id" [filter]="true"
                     filterBy="name" [style]="{ 'width': '100%' }" formControlName="country">
                 </p-dropdown>
@@ -121,7 +121,7 @@
             </div>
             <div class="field col-12 md:col-6">
                 <label>Location <span class="required">*</span></label>
-                <p-dropdown [options]="locationList" appendTo="body" [readonly]="editMode"
+                <p-dropdown [options]="locationOptions" appendTo="body" [readonly]="editMode"
                     placeholder="Select Location" optionLabel="name" optionValue="id" [filter]="true"
                     filterBy="name" [style]="{ 'width': '100%' }" formControlName="location">
                 </p-dropdown>

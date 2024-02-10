@@ -85,7 +85,12 @@ export class LocationsComponent {
       }
     });
   }
-
+findRegionId(event){
+  const region = event.value;
+  console.log("regionid",region);
+  this.regionId= region;
+  this.fetchLocationCountry()
+}
   getSeverity(status: boolean): string {
     return status ? 'success' : 'danger';
   }
@@ -193,6 +198,9 @@ export class LocationsComponent {
     this.countryOptions = [];
     this.masterDataService.getAllCountry(this.regionId).subscribe((res: any) => {
       if (res?.message == "success") {
+        if(this.editMode){
+          this.locationForm.get('country').patchValue(this.selectedLocation.country.id)
+        }
         this.countryOptions = res?.data;
         this.countryOptions = res?.data.map((country: any) => ({
           ...country,
@@ -278,6 +286,7 @@ export class LocationsComponent {
   updateLocationDetails(location: any) {
     this.editMode = true;
     this.modeTitle = 'Edit';
+    console.log("pathValue_location")
     if (this.selectedLocation) {
 
       this.locationForm.patchValue({

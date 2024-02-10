@@ -38,9 +38,9 @@ data: any[] = []; // Add your data array here
   locations: any[] = []; // Locations array from the JSON data
   uomOptions: any[];
   configOptions: any[];
-  locationss = [
-    { locationName: 'Origin', value: 'origin' },
-    { locationName: 'Destination', value: 'destination' }
+  origin_destination = [
+    { name: 'Origin', id: 'Origin' },
+    { name: 'Destination', id: 'Destination' }
     // Add more options as needed
   ];
   fileName: string;
@@ -66,7 +66,27 @@ data: any[] = []; // Add your data array here
    }
  // Add a method to toggle the edit mode for a specific row
  toggleEditMode(index: number) {
+  // Toggle edit mode
   this.editModes[index] = !this.editModes[index];
+
+  // If edit mode is toggled on, fetch UOM and Configuration options
+  if (this.editModes[index]) {
+    const rowData = this.data[index];
+    this.getUom();
+    this.getConfigurable();
+    
+    // Select UOM option if present in rowData
+    const uomOption = this.uomOptions.find(option => option.name === rowData['UOM']);
+    if (uomOption) {
+      rowData['UOM'] = uomOption;
+    }
+    
+    // Select Configuration option if present in rowData
+    const configOption = this.configOptions.find(option => option.name === rowData['Configuration']);
+    if (configOption) {
+      rowData['Configuration'] = configOption;
+    }
+  }
 }
 isEditableColumn(columnField: string): boolean {
   // List the columns that should not be editable
@@ -128,12 +148,9 @@ addNewRow(index: number) {
         this.uploadFile = file;
     }
   }
-// ---------------upload Excel------------------------//
+// ---------------save process------------------------//
 saveProcess(rowData: any){
   const locations = [];
-  
- 
-  // Get dynamic columns after 'Configuration'
   const dynamicColumns = Object.keys(rowData).filter(key => {
     const columnIndex = this.columns.findIndex(col => col.field === key);
     return columnIndex > -1 && columnIndex > this.columns.findIndex(col => col.field === 'Configuration');
@@ -149,27 +166,22 @@ saveProcess(rowData: any){
     };
     locations.push(location);
   });
-  const body = {
-
-      product: rowData['Product Name'],
-      scope: rowData['Product Scope'],
-      category: rowData['Product Category'],
-      block: rowData['Building Block Name'],
-      origin: rowData['Origin / Destination'],
-      processNumber: rowData['Process No.'],
-      operationStep: rowData['Operations Steps'],
-      uom: rowData['UOM'],
-      configurable: rowData['Configuration'],
-      locations: locations
-    
-  }
+  const body = [{
+    product: rowData['Product Name'],
+    scope: rowData['Product Scope'],
+    category: rowData['Product Category'],
+    block: rowData['Building Block Name'],
+    originDestination: rowData['Origin / Destination'],
+    processNumber: rowData['Process No.'],
+    operationStep: rowData['Operations Steps'],
+    uom: rowData['UOM'],
+    configurable: rowData['Configuration'],
+    locations: locations
+  }];
  
-
-
-      // Editing an existing charge code
       this.MasterDataservice.saveProcess(body).subscribe(
           (res) => {
-            console.log(res);
+            this.processConfigGetImportExcelData();
           },
          
       );
@@ -204,7 +216,7 @@ saveProcess(rowData: any){
        rowData['Product Scope'] = item.scope;
        rowData['Product Category'] = item.category;
        rowData['Building Block Name'] = item.block;
-       rowData['Origin / Destination'] = item.origin;
+       rowData['Origin / Destination'] = item.originDestination;
        rowData['Process No.'] = item.processNumber;
        rowData['Operations Steps'] = item.operationStep;
        rowData['Location'] = '';
@@ -260,18 +272,22 @@ saveProcess(rowData: any){
     this.processConfigGetImportExcelData();
   }
   onSort(event: any) {
-  
-    this.newSortField = event.field;
-    this.newSortOrder = (event.order === 1) ? 'asc' : 'desc';
-  
-    if (this.newSortField !== this.sortField || this.newSortOrder !== this.sortOrder) {
-      this.sortField = this.newSortField;
-      this.sortOrder = this.newSortOrder;
-      this.currentPage = 1;
-      this.processConfigGetImportExcelData();
+    // Get the field name corresponding to the response data
+    const fieldName = this.columns.find(column => column.header === event.field)?.field;
+    
+    // Update sort field and order
+    if (fieldName !== undefined) {
+        this.newSortField = fieldName;
+        this.newSortOrder = (event.order === 1) ? 'asc' : 'desc';
+        
+        if (this.newSortField !== this.sortField || this.newSortOrder !== this.sortOrder) {
+            this.sortField = this.newSortField;
+            this.sortOrder = this.newSortOrder;
+            this.currentPage = 1;
+            this.processConfigGetImportExcelData();
+        }
     }
-   
-  }
+}
    // ---------------get UOM data------------------------//
    getUom() {
     this.uomOptions = [];

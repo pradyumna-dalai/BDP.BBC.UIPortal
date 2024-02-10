@@ -339,8 +339,8 @@ export class CreateProjectComponent implements OnInit {
           "id": this.myForm.get('projectStatus').value,
         },
         opportunityManager: opportunityMangers,
-        projectLocation: [...originProjectLocationData, ...destinationProjectLocationData],
-      }
+      },
+      projectLocation: [...originProjectLocationData, ...destinationProjectLocationData]
     }
 
     this.projectService.saveAsDraftProject(body).subscribe(
