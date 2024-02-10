@@ -73,8 +73,8 @@
                     <!-- <span style="cursor: pointer;"><i class="pi pi-trash"></i></span> -->
                 </td>
                 <td style="text-align: center; word-wrap: break-word;">
-                    <p-tag [value]="getSeverityLabel(category.status)"
-                        [severity]="getSeverity(category.status)"></p-tag>
+                    <span [style.color]="category.status ? 'green' : 'red'">{{category.status ? 'Active' : 'Inactive'}}</span>
+
                 </td>
                 <td style="text-align: center; word-wrap: break-word;">{{ category.scope.product.name }}</td>
                 <td style="text-align: center; word-wrap: break-word;">{{ category.scope.name }}</td>

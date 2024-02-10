@@ -61,7 +61,7 @@
                     class="pi pi-pencil"></i></span>&nbsp;
                 </td>
                 <td style="text-align: center; word-wrap: break-word;">
-                    <p-tag [value]="getSeverityLabel(fte.status)" [severity]="getSeverity(fte.status)"></p-tag>
+                    <span [style.color]="fte.status ? 'green' : 'red'">{{fte.status ? 'Active' : 'Inactive'}}</span>
                 </td>
                 <td style="text-align: center; word-wrap: break-word;">{{fte.region.name}}</td>
                 <td style="text-align: center; word-wrap: break-word;">{{fte.country.name}} <span [ngClass]="'flag-icon flag-icon-'+fte.country.code.toLowerCase()"></span></td>

@@ -61,7 +61,7 @@ selectionMode="single" dataKey="id" styleClass="p-datatable-gridlines" responsiv
                     </span> -->
                 </td>
                 <td style="text-align: center; word-wrap: break-word;">
-                    <p-tag [value]="getSeverityLabel(item.status)" [severity]="getSeverity(item.status)"></p-tag>
+                    <span [style.color]="item.status ? 'green' : 'red'">{{item.status ? 'Active' : 'Inactive'}}</span>
                 </td>
                 <td style="text-align: center; word-wrap: break-word;">
                     <span>{{item.name}}</span>

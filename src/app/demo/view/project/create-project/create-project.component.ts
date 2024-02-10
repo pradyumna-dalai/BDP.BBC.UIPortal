@@ -310,6 +310,7 @@ export class CreateProjectComponent implements OnInit {
         id: row.Uom
       }
     }));
+    console.log("project_Id",this.projectId)
     const body = {
       id: this.projectId,
       description: "",
