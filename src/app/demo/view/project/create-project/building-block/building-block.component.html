@@ -52,13 +52,13 @@
                             </ng-template>
                             <div>
                                 <ul>
-                                    <li *ngFor="let step of node.data?.stepsInformation | keyvalue" (click)="selectStep(step.key)">
+                                    <li *ngFor="let step of node.data?.stepsInformation | keyvalue" (click)="selectStep(step.key,1)">
                                         <div><h6>{{ step.key }}</h6></div>
-                                        <!-- <ul>
+                                        <ul>
                                             <li *ngFor="let originDestination of step.value | keyvalue">
                                                 {{ originDestination.key }}: {{ originDestination.value }}
                                             </li>
-                                        </ul> -->
+                                        </ul>
                                     </li>
                                 </ul>
                             </div>
@@ -84,7 +84,8 @@
                     (click)="showDestinationSection()"> Destination Location</button>
             </div>
             <div class="card flex flex-column align-items-center justify-content-center">
-                <p-tree [value]="getTreeData(selectedStep, 'Origin')" selectionMode="checkbox" class="w-full md:w-30rem" ></p-tree>
+                <p-tree *ngIf="isOriginActive" [value]="getTreeData(selectedStep, 1)" selectionMode="checkbox" class="w-full md:w-30rem"></p-tree>
+                <p-tree  *ngIf="isDestinationActive" [value]="getTreeData(selectedStep, 2)" selectionMode="checkbox" class="w-full md:w-30rem"></p-tree>
             </div>
         </div>
     </div>

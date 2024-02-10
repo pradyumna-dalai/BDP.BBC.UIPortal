@@ -37,12 +37,14 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   selectedNodes: TreeNode[] = [];
   draggedNodeId: any;
   selectedStep: any = null;
+  isOriginActive: boolean = true;
+  isDestinationActive: boolean = false;
   constructor(private projectService: ProjectsService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
   }
 
   ngOnInit() {
     console.log('BuildingBlockComponent: ngOnInit');
-
+    console.log('Selected Nodes:', this.selectedNodes);
 
     this.loadTreeDataNew();
   }
@@ -154,6 +156,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
     this.destinationButtonBorder = '1px solid rgb(0, 110, 255)';
     this.originButtonBorderRadius = '5px';
     this.destinationButtonBorderRadius = '5px';
+
   }
 
   //------------------------------drag and drop feature---------------------//
@@ -196,61 +199,93 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   getAllProcessStepbyBlockId(blockId: any) {
     const node = this.selectedNodes.find(node => node.data.id === blockId);
     if (node) {
-        this.projectService.getProcessStepByBlockId(blockId).subscribe({
-            next: (response: any) => {
-                if (Array.isArray(response.data)) { 
-                    // Create an object to store the information
-                    const stepsInformation: any = {};
-                    
-                    // Iterate through each item in the response data
-                    response.data.forEach((item: any) => {
-                        // Extract operation step, origin destination, and configurable
-                        const { operationStep, originDestination, configurable } = item;
+      this.projectService.getProcessStepByBlockId(blockId).subscribe({
+        next: (response: any) => {
+          if (Array.isArray(response.data)) {
+            const stepsInformation: any = {};
+            response.data.forEach((item: any) => {
+              const { operationStep, originDestination, configurable, originDestinationCode } = item;
+              if (!stepsInformation[operationStep]) {
+                stepsInformation[operationStep] = {
+                  Origin: [],
+                  Destination: []
+                };
+              }
 
-                        // If the operation step doesn't exist in the object, initialize it
-                        if (!stepsInformation[operationStep]) {
-                            stepsInformation[operationStep] = {
-                                Origin: [],
-                                Destination: []
-                            };
-                        }
+              let destination: string[] = [];
 
-                        // Push the configurable value into the appropriate array based on originDestination
-                        stepsInformation[operationStep][originDestination].push(configurable);
-                    });
-
-                    // Update the node's data with stepsInformation
-                    this.updateNodeStepsInformation(node, stepsInformation);
-                } else {
-                    console.error('Data is not an array:', response.data);
-                }
-            },
-            error: (error) => {
-                console.error('Error in loading steps:', error);
-            }
-        });
+              // Determine the origin destination based on originDestinationCode
+              if (originDestinationCode === 1) {
+                destination = ['Origin'];
+              } else if (originDestinationCode === 2) {
+                destination = ['Destination'];
+              } else if (originDestinationCode === 3) {
+                destination = ['Origin', 'Destination'];
+              }
+              destination.forEach(dest => {
+                stepsInformation[operationStep][dest].push(configurable);
+              });
+            });
+            this.updateNodeStepsInformation(node, stepsInformation);
+          } else {
+            console.error('Data is not an array:', response.data);
+          }
+        },
+        error: (error) => {
+          console.error('Error in loading steps:', error);
+        }
+      });
     }
-}
-
-updateNodeStepsInformation(node: any, stepsInformation: any) {
-    node.data.stepsInformation = stepsInformation;
-    console.log(stepsInformation);
-
-}
-
-selectStep(step: string) {
-  this.selectedStep = step; 
-}
-// Inside your component class
-
-getTreeData(selectedStep: string, originDestination: string) {
-  if (selectedStep) {
-      const node = this.treeDataNew.find(node => node.label === selectedStep);
-      if (node) {
-          return node.data?.stepsInformation?.[originDestination] || [];
-      }
   }
-  return [];
-}
+
+  updateNodeStepsInformation(node: any, stepsInformation: any) {
+    const updatedStepsInformation = {};
+    for (const operationStep in stepsInformation) {
+      const stepInfo = stepsInformation[operationStep];
+      for (const originDestination in stepInfo) {
+        const configArray = stepInfo[originDestination];
+        if (!updatedStepsInformation[operationStep]) {
+          updatedStepsInformation[operationStep] = {
+            Origin: [],
+            Destination: []
+          };
+        }
+        updatedStepsInformation[operationStep][originDestination] = configArray;
+      }
+    }
+    node.data.stepsInformation = updatedStepsInformation;
+  }
+
+  getTreeData(selectedStep: string, originDestinationCode: number): TreeNode[] {
+    const updatedStepsInformation = this.selectedNodes[0]?.data?.stepsInformation;
+    if (updatedStepsInformation && updatedStepsInformation[selectedStep]) {
+      // Determine the origin destination based on originDestinationCode
+      let originDestination: string;
+      if (originDestinationCode === 1) {
+        originDestination = 'Origin';
+      } else if (originDestinationCode === 2) {
+        originDestination = 'Destination';
+      } else if (originDestinationCode === 3) {
+        originDestination = 'Origin/Destination';
+      }
+      const configuration = updatedStepsInformation[selectedStep]?.[originDestination];
+      if (configuration) {
+        // Return configuration as TreeNode array
+        return configuration.map(option => ({ label: option, data: option }));
+      } else {
+        //  console.warn('Configuration information not found for selected step:', selectedStep);
+      }
+    } else {
+      console.warn('Updated Steps Information not available or does not contain data for selected step:', selectedStep);
+    }
+    return [];
+  }
+
+  selectStep(step: string, originDestinationCode: number) {
+    this.selectedStep = step;
+    const configuration = this.getTreeData(step, originDestinationCode);
+    //  console.log('Configuration:', configuration);
+  }
+
 
 }
