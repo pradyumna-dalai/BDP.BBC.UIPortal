@@ -24,7 +24,8 @@ showDestinationCLI:boolean = false;
 //end//
 private _isExpanded = false;
 visible: boolean = false;
-  volumeDetails: any;
+  volumeDetails: any[]= [];
+  dynamicColumns: any[] = [];
   constructor(private projectService:ProjectsService){
 
   }
@@ -73,13 +74,27 @@ showDestinationSection() {
 
 getVolumeDetails(projectId) {
   this.projectService.getvolumeDetails(projectId).subscribe((res: any) => {
-   
-      this.volumeDetails = res.BuildingBlocks;
-    
-      console.log(this.volumeDetails);
-    
-  })
+    this.volumeDetails = res.BuildingBlocks;
+    if (this.volumeDetails.length > 0) {
+      // Assuming location names structure is consistent across all building blocks
+      this.dynamicColumns = this.volumeDetails.reduce((acc, curr) => {
+        curr.originService.processes[0].lines[0].locationVolume.forEach(location => {
+          if (!acc.includes(location.locationName)) {
+            acc.push(location.locationName);
+          }
+        });
+        return acc;
+      }, []);
+    }
+  });
 }
+getLocationVolume(buildingBlock: any, locationName: string): string {
+  // Implement logic to get the volume for the specified location
+  // For example:
+  const location = buildingBlock.originService.processes[0].lines[0].locationVolume.find(loc => loc.locationName === locationName);
+  return location ? location.volume : '';
+}
+
 onSaveVolumeClick(){
   const body ={
     projectId: 1,

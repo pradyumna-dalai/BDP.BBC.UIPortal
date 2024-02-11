@@ -40,7 +40,8 @@ data: any[] = []; // Add your data array here
   configOptions: any[];
   origin_destination = [
     { name: 'Origin', id: 'Origin' },
-    { name: 'Destination', id: 'Destination' }
+    { name: 'Destination', id: 'Destination' },
+    { name: 'Origin/Destination', id: 'Origin/Destination' }
     // Add more options as needed
   ];
   fileName: string;

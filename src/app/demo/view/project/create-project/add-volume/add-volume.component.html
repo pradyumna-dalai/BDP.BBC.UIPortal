@@ -32,79 +32,38 @@
                         <p-accordion>
                             <ng-container *ngFor="let process of block.originService.processes">
                                 <p-accordionTab [header]="process.processName" [selected]="isExpanded">
-                                    <p-table dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+                                    <p-table dataKey="id" [value]="volumeDetails" editMode="row" [tableStyle]="{'min-width': '50rem'}">
                                         <ng-template pTemplate="header">
                                             <tr>
                                                 <th style="width:20%">Action</th>
+                                                
                                                 <th style="width:20%">UOM</th>
                                                 <th style="width:20%">Configurable</th>
-                                                <th style="width:20%">Aarhus</th>
-                                                <th style="width:20%">Budapest</th>
-                                                <th style="width:20%">Cairo</th>
+                                                <th *ngFor="let col of dynamicColumns">{{ col }}</th>
                                             </tr>
                                         </ng-template>
-                                        <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
-                                            <tr [pEditableRow]="">
-                                                <td>
-                                                    <div class="flex align-items-center justify-content-center gap-2">
-                                                        <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(product)" class="p-button-rounded p-button-text"></button>
-                                                        <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(product)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                                                        <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(product, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <p-cellEditor>
-                                                        <ng-template pTemplate="input">
-                                                            <input pInputText type="text" >
-                                                        </ng-template>
-                                                        <ng-template pTemplate="output">
-                                                            {{product.code}}
-                                                        </ng-template>
-                                                    </p-cellEditor>
-                                                </td>
-                                                <td>
-                                                    <p-cellEditor>
-                                                        <ng-template pTemplate="input">
-                                                            <input pInputText type="text"  required>
-                                                        </ng-template>
-                                                        <ng-template pTemplate="output">
-                                                            <!-- {{product.name}} -->
-                                                        </ng-template>
-                                                    </p-cellEditor>
-                                                </td>
-                                                <td>
-                                                    <p-cellEditor>
-                                                        <ng-template pTemplate="input">
-                                                            <p-dropdown [options]="statuses" appendTo="body"  [style]="{'width':'100%'}"></p-dropdown>
-                                                        </ng-template>
-                                                        <ng-template pTemplate="output">
-                                                            <!-- {{product.inventoryStatus}} -->
-                                                        </ng-template>
-                                                    </p-cellEditor>
-                                                </td>
-                                                <td>
-                                                    <p-cellEditor>
-                                                        <ng-template pTemplate="input">
-                                                            <input pInputText type="text" >
-                                                        </ng-template>
-                                                        <ng-template pTemplate="output">
-                                                            <!-- {{product.price | currency: 'USD'}} -->
-                                                        </ng-template>
-                                                    </p-cellEditor>
-                                                </td>
-                                                <td>
-                                                    <p-cellEditor>
-                                                        <ng-template pTemplate="input">
-                                                            <input pInputText type="text" >
-                                                        </ng-template>
-                                                        <ng-template pTemplate="output">
-                                                            <!-- {{product.price | currency: 'USD'}} -->
-                                                        </ng-template>
-                                                    </p-cellEditor>
-                                                </td>
+                                        <ng-template pTemplate="body" let-buildingBlock let-editing="editing" let-ri="rowIndex">
+                                            <tr *ngIf="buildingBlock">
+                                              <td>
+                                                <div class="align-items-center gap-2">
+                                                  <button  pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(buildingBlock)" class="p-button-rounded p-button-text"></button>
+                                                  <button  pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(buildingBlock)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                                                  <button  pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(buildingBlock, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                                                </div>
+                                              </td>
+                                              <td>
+                                                {{ buildingBlock.originService?.processes[0].lines[0]?.uom }}
+                                              </td>
+                                              <td>
+                                                {{ buildingBlock.originService?.processes[0].lines[0]?.configurable }}
+                                              </td>
+                                              <!-- Display volume for each dynamic column -->
+                                              <td *ngFor="let col of dynamicColumns">
+                                                {{ getLocationVolume(buildingBlock, col) }}
+                                              </td>
+                                            </tr>
+                                          </ng-template>
                                                 
-                                            </tr>
-                                        </ng-template>
                                     <ng-template pTemplate="emptymessage">
                                         <tr>
                                             <td style="text-align: center;" colspan="18">No Data found.</td>
@@ -119,79 +78,38 @@
                         <p-accordion>
                             <ng-container *ngFor="let process of block.destinationService.processes">
                                 <p-accordionTab [header]="process.processName" [selected]="isExpanded">
-                                    <p-table [value]="" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+                                    <p-table dataKey="id" [value]="volumeDetails" editMode="row" [tableStyle]="{'min-width': '50rem'}">
                                         <ng-template pTemplate="header">
                                             <tr>
                                                 <th style="width:20%">Action</th>
+                                                
                                                 <th style="width:20%">UOM</th>
                                                 <th style="width:20%">Configurable</th>
-                                                <th style="width:20%">Aarhus</th>
-                                                <th style="width:20%">Budapest</th>
-                                                <th style="width:20%">Cairo</th>
+                                                <th *ngFor="let col of dynamicColumns">{{ col }}</th>
                                             </tr>
                                         </ng-template>
-                                        <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
-                                            <tr [pEditableRow]="">
-                                                <td>
-                                                    <div class="flex align-items-center justify-content-center gap-2">
-                                                        <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(product)" class="p-button-rounded p-button-text"></button>
-                                                        <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(product)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                                                        <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(product, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <p-cellEditor>
-                                                        <ng-template pTemplate="input">
-                                                            <input pInputText type="text" >
-                                                        </ng-template>
-                                                        <ng-template pTemplate="output">
-                                                            {{product.code}}
-                                                        </ng-template>
-                                                    </p-cellEditor>
-                                                </td>
-                                                <td>
-                                                    <p-cellEditor>
-                                                        <ng-template pTemplate="input">
-                                                            <input pInputText type="text"  required>
-                                                        </ng-template>
-                                                        <ng-template pTemplate="output">
-                                                            <!-- {{product.name}} -->
-                                                        </ng-template>
-                                                    </p-cellEditor>
-                                                </td>
-                                                <td>
-                                                    <p-cellEditor>
-                                                        <ng-template pTemplate="input">
-                                                            <p-dropdown [options]="statuses" appendTo="body"  [style]="{'width':'100%'}"></p-dropdown>
-                                                        </ng-template>
-                                                        <ng-template pTemplate="output">
-                                                            <!-- {{product.inventoryStatus}} -->
-                                                        </ng-template>
-                                                    </p-cellEditor>
-                                                </td>
-                                                <td>
-                                                    <p-cellEditor>
-                                                        <ng-template pTemplate="input">
-                                                            <input pInputText type="text" >
-                                                        </ng-template>
-                                                        <ng-template pTemplate="output">
-                                                            <!-- {{product.price | currency: 'USD'}} -->
-                                                        </ng-template>
-                                                    </p-cellEditor>
-                                                </td>
-                                                <td>
-                                                    <p-cellEditor>
-                                                        <ng-template pTemplate="input">
-                                                            <input pInputText type="text" >
-                                                        </ng-template>
-                                                        <ng-template pTemplate="output">
-                                                            <!-- {{product.price | currency: 'USD'}} -->
-                                                        </ng-template>
-                                                    </p-cellEditor>
-                                                </td>
+                                        <ng-template pTemplate="body" let-buildingBlock let-editing="editing" let-ri="rowIndex">
+                                            <tr *ngIf="buildingBlock">
+                                              <td>
+                                                <div class="align-items-center gap-2">
+                                                  <button  pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(buildingBlock)" class="p-button-rounded p-button-text"></button>
+                                                  <button  pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(buildingBlock)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                                                  <button  pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(buildingBlock, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                                                </div>
+                                              </td>
+                                              <td>
+                                                {{ buildingBlock.destinationService?.processes[0].lines[0]?.uom }}
+                                              </td>
+                                              <td>
+                                                {{ buildingBlock.destinationService?.processes[0].lines[0]?.configurable }}
+                                              </td>
+                                              <!-- Display volume for each dynamic column -->
+                                              <td *ngFor="let col of dynamicColumns">
+                                                {{ getLocationVolume(buildingBlock, col) }}
+                                              </td>
+                                            </tr>
+                                          </ng-template>
                                                 
-                                            </tr>
-                                        </ng-template>
                                     <ng-template pTemplate="emptymessage">
                                         <tr>
                                             <td style="text-align: center;" colspan="18">No Data found.</td>
