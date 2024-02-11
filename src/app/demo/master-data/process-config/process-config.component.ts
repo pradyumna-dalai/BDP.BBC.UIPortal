@@ -116,16 +116,16 @@ addNewRow(index: number) {
      // Initialize static columns
      this.columns = [
       //  { field: 'Actions', header: 'Actions', style: { 'text-align': 'center' } },
-       { field: 'Product Name', header: 'Product Name', style: { 'text-align': 'center', width: '500px' } },
-       { field: 'Product Scope', header: 'Product Scope', style: { 'text-align': 'center', width: '500px' } },
-       { field: 'Product Category', header: 'Product Category', style: { 'text-align': 'center', width: '500px' } },
-       { field: 'Building Block Name', header: 'Building Block Name', style: { 'text-align': 'center', width: '500px' } },
-       { field: 'Origin / Destination', header: 'Origin / Destination', style: { 'text-align': 'center', width: '500px' } },
-       { field: 'Process No.', header: 'Process No.', style: { 'text-align': 'center', width: '500px' } },
-       { field: 'Operations Steps', header: 'Operations Steps', style: { 'text-align': 'center', width: '700px' } },
-       { field: 'Location', header: 'Location', style: { 'text-align': 'center', width: '500px' } },
-       { field: 'UOM', header: 'UOM', style: { 'text-align': 'center', width: '500px' } },
-       { field: 'Configuration', header: 'Configuration', style: { 'text-align': 'center', width: '300px' } },
+    { field: 'Product Name', header: 'Product Name', sortingField: 'pn', style: { 'text-align': 'center', width: '500px' } },
+    { field: 'Product Scope', header: 'Product Scope', sortingField: 'sc', style: { 'text-align': 'center', width: '500px' } },
+    { field: 'Product Category', header: 'Product Category', sortingField: 'ca', style: { 'text-align': 'center', width: '500px' } },
+    { field: 'Building Block Name', header: 'Building Block Name', sortingField: 'bb', style: { 'text-align': 'center', width: '500px' } },
+    { field: 'Origin / Destination', header: 'Origin / Destination', sortingField: 'od', style: { 'text-align': 'center', width: '500px' } },
+    { field: 'Process No.', header: 'Process No.', sortingField: 'pnum', style: { 'text-align': 'center', width: '500px' } },
+    { field: 'Operations Steps', header: 'Operations Steps', sortingField: 'os', style: { 'text-align': 'center', width: '700px' } },
+    { field: 'Location', header: 'Location', sortingField: 'location', style: { 'text-align': 'center', width: '500px' } },
+    { field: 'UOM', header: 'UOM', sortingField: 'uom', style: { 'text-align': 'center', width: '500px' } },
+    { field: 'Configuration', header: 'Configuration', sortingField: 'cn', style: { 'text-align': 'center', width: '300px' } },
        // ... add other static columns ...
  
        // Add dynamic columns based on location_takTime
@@ -273,18 +273,20 @@ saveProcess(rowData: any){
   }
   onSort(event: any) {
     // Get the field name corresponding to the response data
-    const fieldName = this.columns.find(column => column.header === event.field)?.field;
+    const fieldName = this.columns.find(column => column.sortingField === event.field)?.field;
     
     // Update sort field and order
     if (fieldName !== undefined) {
-        this.newSortField = fieldName;
+        this.newSortField = event.field;
         this.newSortOrder = (event.order === 1) ? 'asc' : 'desc';
         
         if (this.newSortField !== this.sortField || this.newSortOrder !== this.sortOrder) {
             this.sortField = this.newSortField;
             this.sortOrder = this.newSortOrder;
             this.currentPage = 1;
-            this.processConfigGetImportExcelData();
+            
+            // Call your data service method to fetch data with sorting
+           this.processConfigGetImportExcelData();
         }
     }
 }

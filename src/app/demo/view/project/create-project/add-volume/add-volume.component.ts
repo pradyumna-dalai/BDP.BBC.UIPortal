@@ -80,4 +80,83 @@ getVolumeDetails(projectId) {
     
   })
 }
+onSaveVolumeClick(){
+  const body ={
+    projectId: 1,
+    projectName: "Sample",
+    BuildingBlocks: [
+      {
+        buildingBlockId: 1,
+        buildingBlockName: "VOTAir",
+        originService: {
+          processes: [
+            {
+              processId: 1,
+              processName: "sample",
+              lines: [
+                {
+                  uom: "Container",
+                  configurable: "Manual",
+                  locationVolume: [
+                    {
+                      locationName: "Antwerp",
+                      unloc: "BEANR",
+                      volume: 100
+                    },
+                    {
+                      locationName: "Navashava",
+                      unloc: "INNSA",
+                      volume: 100
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        destinationService: {
+          processes: [
+            {
+              processId: 1,
+              processName: "sample",
+              lines: [
+                {
+                  uom: "Container",
+                  configurable: "Manual",
+                  locationVolume: [
+                    {
+                      locationName: "Antwerp",
+                      unloc: "BEANR",
+                      volume: 100
+                    },
+                    {
+                      locationName: "Navashava",
+                      unloc: "INNSA",
+                      volume: 100
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+  this.projectService.savevolumeDetails(body).subscribe(
+    (res) => {
+      
+      console.log(res,"kk");
+    },
+    (error) => {
+
+     
+    }
+  );
+
+}
+goToNextTab(){
+  
+}
+
 }
