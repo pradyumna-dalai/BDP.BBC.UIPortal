@@ -1,8 +1,19 @@
+<style>
+    .last-item {
+    color: rgb(0, 153, 255) !important; /* or any other color you want */
+    font-weight: bold !important;
+    
+}
+li:hover{
+    cursor: pointer;
+}
+</style>
+
 <div class="layout-breadcrumb">
     <div class="breadcrumb">
         <div class="route-bar-breadcrumb">
             <ng-template ngFor let-item let-last="last" [ngForOf]="items">
-                <li>
+                <li [ngClass]="{'last-item': last}">
                     <a [routerLink]="item.routerLink" class="p-link" *ngIf="item.routerLink">{{item.label}}</a>
                     <ng-container *ngIf="!item.routerLink">{{item.label}}</ng-container>
                 </li>
