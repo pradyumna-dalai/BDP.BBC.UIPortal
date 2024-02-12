@@ -291,9 +291,10 @@ export class CreateProjectComponent implements OnInit {
 
     const originProjectLocationData = this.OtableData.map((row: TableRow) => ({
       volume: row.Volume,
-      originDestination: 'Origin',
+      originDestination: 0,
       location: {
-        id: this.locationOptions.find(loc => loc.name === row.city)?.id
+        id: this.locationOptions.find(loc => loc.name === row.city)?.id,
+        name:row.city
       },
       uom: {
         id: row.Uom
@@ -302,9 +303,10 @@ export class CreateProjectComponent implements OnInit {
 
     const destinationProjectLocationData = this.tableData.map((row: TableRow) => ({
       volume: row.Volume,
-      originDestination: 'Destination',
+      originDestination: 1,
       location: {
-        id: this.locationOptions.find(loc => loc.name === row.city)?.id
+        id: this.locationOptions.find(loc => loc.name === row.city)?.id,
+        name:row.city
       },
       uom: {
         id: row.Uom
@@ -340,7 +342,14 @@ export class CreateProjectComponent implements OnInit {
         },
         opportunityManager: opportunityMangers,
       },
-      projectLocation: [...originProjectLocationData, ...destinationProjectLocationData]
+      projectLocation: [
+        
+        {
+          ...originProjectLocationData, 
+          ...destinationProjectLocationData
+       }
+       
+      ]
     }
 
     this.projectService.saveAsDraftProject(body).subscribe(
