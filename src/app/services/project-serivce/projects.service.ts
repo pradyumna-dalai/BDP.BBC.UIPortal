@@ -15,6 +15,8 @@ var url = "/buildingblocks/api/v1/"
   providedIn: 'root'
 })
 export class ProjectsService {
+  private draftDataSubject = new BehaviorSubject<any>(null);
+  draftData$ = this.draftDataSubject.asObservable();
 
   constructor(protected http: HttpClient) { }
 
@@ -24,12 +26,19 @@ saveAsDraftProject(body: any){
   return this.http.post<any>(url + settings.AppRoutes.Auth.saveProjectDraft, body);
 }
 
+setDraftData(data: any) {
+  this.draftDataSubject.next(data);
+}
+
+
+////////////////////////////------------------shared-----------------------------//
+
 private buildingDataSubject = new BehaviorSubject<any>('');
   buildingData$ = this.buildingDataSubject.asObservable();
 
-  shareBuildingData(newData: string) {
+shareBuildingData(newData: string) {
     this.dataSubject.next(newData);
-  }
+}
 
 getAllProjectDetails(params: any): Observable<any>{
   let httpParams = new HttpParams();
@@ -55,8 +64,6 @@ downloadProjectData(startDate: string, endDate: string): Observable<HttpResponse
 
   return this.http.get<Blob>(url + settings.AppRoutes.Auth.exportProjectsinExcel, options);
 }
-
-
 
 
 private dataSubject = new BehaviorSubject<any>(''); 
@@ -117,7 +124,11 @@ getProcessStepByBlockId(blockId: number ){
   return this.http.get<any>(`${url}${settings.AppRoutes.Auth.getProcessStepbyBlockId}?blockId=${blockIdStr}`);
 }
 
+
+
+
 //--------------------------end---------------------------------//
+
 
 
 /** volume **/
@@ -127,12 +138,20 @@ getvolumeDetails(projId: number): Observable<any> {
   return this.http.get<any>(`https://private-anon-5e21fd3c5c-psabdpbbcapiblueprint.apiary-mock.com/version/project/projId/volume`);
 
 }
+
 savevolumeDetails(body: any) {
-
+ 
   return this.http.post<any>(`https://private-anon-78832734d7-psabdpbbcapiblueprint.apiary-mock.com/version/project/projectId/volume`,body);
-
+ 
 }
 
 /** end */
+
+saveProjectBuildingBlock(body:any): Observable<any> {
+    return this.http.post<any>(`https://private-anon-8770979f75-psabdpbbcapiblueprint.apiary-mock.com/version/project-block-location/projectId`,body);
+}
+
+
+
 }
 

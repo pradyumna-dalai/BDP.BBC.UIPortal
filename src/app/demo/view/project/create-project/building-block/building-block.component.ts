@@ -39,13 +39,16 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   selectedStep: any = null;
   isOriginActive: boolean = true;
   isDestinationActive: boolean = false;
+  activeIndex: number;
   constructor(private projectService: ProjectsService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
   }
 
   ngOnInit() {
-    console.log('BuildingBlockComponent: ngOnInit');
-    console.log('Selected Nodes:', this.selectedNodes);
-
+    this.projectService.draftData$.subscribe(data => {
+      // Handle the draft data here
+      console.log('Draft data:', data);
+    });
+  
     this.loadTreeDataNew();
   }
   ngOnDestroy() {
@@ -276,7 +279,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
         //  console.warn('Configuration information not found for selected step:', selectedStep);
       }
     } else {
-      console.warn('Updated Steps Information not available or does not contain data for selected step:', selectedStep);
+    //  console.warn('Updated Steps Information not available or does not contain data for selected step:', selectedStep);
     }
     return [];
   }
@@ -288,4 +291,68 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   }
 
 
+  //----------------------------------------Save Porject Draft------------------------------//
+  onSaveProjectBBClick(){
+    const body = {
+      "projectId": 1,
+      "projectName": "sample name",
+      "buildingBlocks": [
+          {
+              "buildingBlockId": 1,
+              "buildingBlockName": "sample",
+              "processes":[
+                      {
+                          "processId": 1,
+                          "processName": "sample",
+                          "originService": {
+                              "configurations": [
+                                  {
+                                      "configurationId": 1 ,
+                                      "configurationName": "sample",
+                                      "locations": [
+                                          {
+                                              "locationId":1,
+                                              "locationName": "sample",
+                                              "unloc": "INNSA"
+                                          }
+                                      ]
+                                  }
+                              ]
+                          },
+                          "destinationService": {
+                              "configurations": [
+                                  {
+                                      "configurationId": 1 ,
+                                      "configurationName": "sample",
+                                      "locations": [
+                                          {
+                                              "locationId":1,
+                                              "locationName": "sample",
+                                              "unloc": "INNSA"
+                                          }
+                                      ]
+                                  }
+                              ]
+                          }
+                      }
+              ]
+          }
+      ]
+  }
+  this.projectService.saveProjectBuildingBlock(body).subscribe(
+    (res) => {
+      
+      console.log(res,"Project Building Block is okk");
+    },
+    (error) => {
+
+     
+    }
+  );
+  }
+
+
+  goToNextTab(){
+    this.activeIndex = (this.activeIndex + 2) % 8
+  }
 }
