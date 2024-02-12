@@ -238,7 +238,11 @@ export class CreateBbComponent {
             if (error.error?.data.message === 'All Field Are Empty') {
               // Handle case where all fields are empty in the uploaded Excel file
               this.uploadError = 'All fields are empty.';
-            } else {
+            }
+            else if (error.error?.data === 'please upload scoping card excel file') {
+              this.uploadError = 'Please upload scoping card excel file';
+            }
+             else {
               // Iterate over error fields and update corresponding error messages
               Object.keys(error.error.data['Scoping Card']).forEach((key) => {
                 switch (key) {
@@ -271,8 +275,6 @@ export class CreateBbComponent {
                 }
               });
             }
-          } else if (error.error === 'please upload scoping card excel file') {
-            this.uploadError = 'Please upload scoping card excel file';
           }
           // Set flag to show error message
           this.showUploaderror = true;
@@ -318,6 +320,7 @@ export class CreateBbComponent {
 
     this.createBuildingBlockservice.commercialCradImportExcel(formData).subscribe(
       (res: any) => {
+        this.resetErrorVariables();
         if (res?.message === 'Excel Upload Sucessfully') {
           // Process successful response
           this.excelDataSheet1 = res?.data?.['General Information']
@@ -362,8 +365,10 @@ export class CreateBbComponent {
         } else {
       
         }
+        
       },
       (error) => {
+         this.resetErrorVariables();
         // Handle HTTP errors here
         if (error.status === 400) {
           if (error.error && error.error.data) {
@@ -380,10 +385,13 @@ export class CreateBbComponent {
             
             // Set showUploaderror to true to display the error in the UI
             this.showUploaderror = true;
-          } else if (error.error && error.error.data == 'please upload commercial card excel file') {
+          }
+          if (error.error.data == 'please upload commercial card excel file') {
             this.uploadError = 'Please upload commercial card excel file';
           }
-        } else {
+          
+        }
+         else {
           // Handle other errors accordingly
         }
 
@@ -394,6 +402,20 @@ export class CreateBbComponent {
     );
 
   }
+  resetErrorVariables() {
+    this.standard_service_error = '';
+    this.dos_error = '';
+    this.sow_error = '';
+    this.combined_value_error = '';
+    this.donts_error = '';
+    this.configurables_error = '';
+    this.pre_requisite_info_error = '';
+    this.service_desc_error = '';
+    this.customer_requirement_error = '';
+    this.cvalue_to_psa_bdp_error = '';
+    this.uploadError = ''; // Reset upload error as well
+}
+  
   displayErrors(errors: any, sheet: string) {
     if (errors) {
       Object.keys(errors).forEach(key => {
