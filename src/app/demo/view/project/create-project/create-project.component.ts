@@ -129,8 +129,9 @@ export class CreateProjectComponent implements OnInit {
 
     //get projid
     this.route.queryParams.subscribe(params => {
-      this.projId = params['projId'];
+      this.projId = params.projId;
       this.getProjectDetails(this.projId);
+      console.log(params.projId)
     });
 
     if (this.projId) {
@@ -313,7 +314,7 @@ export class CreateProjectComponent implements OnInit {
       }
     }));
     const body = {
-      id: this.projectId,
+      id:this.projId,
       description: "",
       projectInformation: {
         customerCode: this.myForm.get('customerCode').value,
