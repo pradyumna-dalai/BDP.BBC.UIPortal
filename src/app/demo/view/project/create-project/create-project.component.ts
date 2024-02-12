@@ -350,7 +350,6 @@ export class CreateProjectComponent implements OnInit {
           ...originProjectLocationData,
           ...destinationProjectLocationData
       
-
       ]
     }
 
