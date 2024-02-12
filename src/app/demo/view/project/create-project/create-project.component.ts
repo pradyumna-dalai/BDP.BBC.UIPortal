@@ -354,6 +354,9 @@ export class CreateProjectComponent implements OnInit {
 
     this.projectService.saveAsDraftProject(body).subscribe(
       (res) => {
+        //-------------for shareing data----//
+        this.projectService.setDraftData(res);
+        //--------------------end-------------//
         const savedProjectId = res.data.id;
         console.log('Draft saved successfully:', savedProjectId);
 
