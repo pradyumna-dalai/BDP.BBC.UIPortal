@@ -24,8 +24,9 @@ export class CreateBbComponent {
   @ViewChild('fileInput') fileInput: any;
   mot: any;
   selectedMod: any;
-  product_category: any;
-  product_scope: any;
+  
+  product_scope: any = '';
+  product_category: any = '';
   building_block_name: any
   charge_code: any;
 
@@ -843,8 +844,8 @@ export class CreateBbComponent {
         this.product_name = details.data.product.id;
         this.product_scope = details.data.scope.id;
         this.product_category = details.data.category.id;
-        this.onProductSelect(details.data.product.id);
-        this.onScopeSelect(details.data.scope.id);
+        this.onProductSelectbyid(details.data.product.id);
+        this.onScopeSelectbyid(details.data.scope.id);
         this.charge_code = details.data.chargeCode?.id;
         this.seervice_desc = details.data.scopingCard.serviceDescription;
         this.customer_requirement = details.data.scopingCard.customerRequirement;
@@ -873,6 +874,38 @@ export class CreateBbComponent {
       // }
     );
   }
+  onProductSelectbyid(body) {
+    //  this.procuctCategoryOptions = [];
+    this.MasterTableservice.getProductScope(body, this.product_name).subscribe((res: any) => {
+        if (res?.message === "success") {
+            this.procuctScopesOptions = res.data;
+
+            if (this.product_scope) {
+                this.product_scope = this.procuctScopesOptions.find(scope => scope.id === this.product_scope)?.id;
+                this.onScopeSelectbyid(this.product_scope);
+            }
+        } else {
+            this.procuctScopesOptions = [];
+        }
+    });
+}
+
+onScopeSelectbyid(body) {
+  // this.procuctCategoryOptions = [];
+  this.MasterTableservice.getProductCategory(body, this.product_scope).subscribe((res: any) => {
+      if (res?.message === "success") {
+          this.procuctCategoryOptions = res.data;
+          // Auto-select the category if available
+          if (this.product_category) {
+              const selectedCategory = this.procuctCategoryOptions.find(category => category.id === this.product_category);
+              this.product_category = selectedCategory ? selectedCategory.id : null;
+             
+          }
+      } else {
+          this.procuctCategoryOptions = [];
+      }
+  });
+}
 
   saveAsBuildingBlock() {
   if(this.blockId == null || this.blockId == undefined){

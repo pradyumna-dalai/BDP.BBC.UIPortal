@@ -15,8 +15,8 @@
     <ng-template pTemplate="header" let-columns>
         <tr>
             <th style="text-align: center;width: 50px" [frozen]="true" class="sticky-header">Actions</th>
-            <th *ngFor="let col of columns"  [style]="col.style" style="min-width: 14rem !important;" [frozen]="true" class="sticky-header" pSortableColumn="{{col.field}}">{{ col.header }}
-                <p-sortIcon [field]="col.field"></p-sortIcon>
+            <th *ngFor="let col of columns"  [style]="col.style" style="min-width: 14rem !important;" [frozen]="true" class="sticky-header" pSortableColumn="{{col.sortingField}}">{{ col.header }}
+                <p-sortIcon [field]="col.sortingField"></p-sortIcon>
             </th>
         </tr> 
     </ng-template>
