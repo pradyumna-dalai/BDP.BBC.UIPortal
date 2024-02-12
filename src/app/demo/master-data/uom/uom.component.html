@@ -113,11 +113,11 @@ selectionMode="single" dataKey="id" styleClass="p-datatable-gridlines" responsiv
                 </div>
                 <div class="field col-12 md:col-12">
                     <div class="p-d-block"><label>UOM<span class="requiredField">*</span></label></div>
-                    <input placeholder="Enter UOM" formControlName="uom_name" type="text" pInputText>
+                    <input placeholder="Enter UOM" formControlName="uom_name" type="text" (input)="limitTo50Digits($event)" pInputText>
                 </div>
                 <div class="field col-12 md:col-12 customCSS" >
                     <div class="p-d-block"><label>Description</label></div>
-                    <textarea rows="4" cols="30" pInputTextarea formControlName="description"
+                    <textarea rows="4" cols="30" pInputTextarea formControlName="description"  (input)="limitTo1000Digits($event)"
                     placeholder="Description" id="inputtext" style="resize: none;"></textarea>
                 </div>
                 <div class="field col-12 md:col-12 customCSS">
