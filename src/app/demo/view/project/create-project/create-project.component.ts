@@ -129,8 +129,9 @@ export class CreateProjectComponent implements OnInit {
 
     //get projid
     this.route.queryParams.subscribe(params => {
-      this.projId = params['projId'];
+      this.projId = params.projId;
       this.getProjectDetails(this.projId);
+      console.log(params.projId)
     });
 
     if (this.projId) {
@@ -291,9 +292,10 @@ export class CreateProjectComponent implements OnInit {
 
     const originProjectLocationData = this.OtableData.map((row: TableRow) => ({
       volume: row.Volume,
-      originDestination: 'Origin',
+      originDestination: 0,
       location: {
-        id: this.locationOptions.find(loc => loc.name === row.city)?.id
+        id: this.locationOptions.find(loc => loc.name === row.city)?.id,
+        name:row.city
       },
       uom: {
         id: row.Uom
@@ -302,16 +304,17 @@ export class CreateProjectComponent implements OnInit {
 
     const destinationProjectLocationData = this.tableData.map((row: TableRow) => ({
       volume: row.Volume,
-      originDestination: 'Destination',
+      originDestination: 1,
       location: {
-        id: this.locationOptions.find(loc => loc.name === row.city)?.id
+        id: this.locationOptions.find(loc => loc.name === row.city)?.id,
+        name:row.city
       },
       uom: {
         id: row.Uom
       }
     }));
     const body = {
-      id: this.projectId,
+      id:this.projId,
       description: "",
       projectInformation: {
         customerCode: this.myForm.get('customerCode').value,
@@ -340,7 +343,14 @@ export class CreateProjectComponent implements OnInit {
         },
         opportunityManager: opportunityMangers,
       },
-      projectLocation: [...originProjectLocationData, ...destinationProjectLocationData]
+      projectLocation: [
+        
+        {
+          ...originProjectLocationData, 
+          ...destinationProjectLocationData
+       }
+       
+      ]
     }
 
     this.projectService.saveAsDraftProject(body).subscribe(

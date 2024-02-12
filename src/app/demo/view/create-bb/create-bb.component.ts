@@ -24,8 +24,9 @@ export class CreateBbComponent {
   @ViewChild('fileInput') fileInput: any;
   mot: any;
   selectedMod: any;
-  product_category: any;
-  product_scope: any;
+  
+  product_scope: any = '';
+  product_category: any = '';
   building_block_name: any
   charge_code: any;
 
@@ -232,55 +233,52 @@ export class CreateBbComponent {
       (error) => {
         // Handle HTTP errors here
         if (error.status === 400) {
-
-          if (error.error?.data?.message === 'All Field Are Empty') {
-            // Handle case where all fields are empty in the uploaded Excel file
-            this.showUploaderror = true;
-            this.uploadInProgress = false;
-            this.uploadError = 'All fields are empty.';
-          } else if (error.error?.data) {
-            Object.keys(error.error.data).forEach((key) => {
-              const maxLength = error.error.data[key];
-              switch (key) {
-                case 'Deliverables':
-                  this.deliverablesError = `Deliverables: ${maxLength}`;
-                  break;
-                case 'Value to PSA BDP':
-                  this.valueToPSABDPError = `Value to PSA BDP: ${maxLength}`;
-                  break;
-                case 'Parameters':
-                  this.parametersError = `Parameters: ${maxLength}`;
-                  break;
-                case 'Service Description':
-                  this.serviceDescriptionError = `Service Description: ${maxLength}`;
-                  break;
-                case 'Stakeholders / Audience':
-                  this.stakeholdersAudienceError = `Stakeholders / Audience: ${maxLength}`;
-                  break;
-                case 'Customer Requirements':
-                  this.customerRequirementsError = `Customer Requirements: ${maxLength}`;
-                  break;
-                case 'Configurable':
-                  this.configurableError = `Configurable: ${maxLength}`;
-                  break;
-                // Add additional cases for other fields as needed
-                default:
-                  console.log(`Unhandled field: ${key}`);
-                  break;
-              }
-            });
-            if (error.error?.data == 'please upload scoping card excel file') {
+          if (error.error?.data) {
+            // Clear previous errors
+            if (error.error?.data.message === 'All Field Are Empty') {
+              // Handle case where all fields are empty in the uploaded Excel file
+              this.uploadError = 'All fields are empty.';
+            }
+            else if (error.error?.data === 'please upload scoping card excel file') {
               this.uploadError = 'Please upload scoping card excel file';
             }
+             else {
+              // Iterate over error fields and update corresponding error messages
+              Object.keys(error.error.data['Scoping Card']).forEach((key) => {
+                switch (key) {
+                  case 'Deliverables':
+                    this.deliverablesError = error.error.data['Scoping Card'][key];
+                    
+                    break;
+                  case 'Value to PSA BDP':
+                    this.valueToPSABDPError = error.error.data['Scoping Card'][key];
+                    break;
+                  case 'Parameters':
+                    this.parametersError = error.error.data['Scoping Card'][key];
+                    break;
+                  case 'Service Description':
+                    this.serviceDescriptionError = error.error.data['Scoping Card'][key];
+                    break;
+                  case 'Stakeholders / Audience':
+                    this.stakeholdersAudienceError = error.error.data['Scoping Card'][key];
+                    break;
+                  case 'Customer Requirements':
+                    this.customerRequirementsError = error.error.data['Scoping Card'][key];
+                    break;
+                  case 'Configurable':
+                    this.configurableError = error.error.data['Scoping Card'][key];
+                    break;
+                  // Add additional cases for other fields as needed
+                  default:
+                    console.log(`Unhandled field: ${key}`);
+                    break;
+                }
+              });
+            }
           }
-
           // Set flag to show error message
           this.showUploaderror = true;
-
-        }
-
-        else {
-       
+        } else {
           // Handle other errors accordingly
         }
 
@@ -322,6 +320,7 @@ export class CreateBbComponent {
 
     this.createBuildingBlockservice.commercialCradImportExcel(formData).subscribe(
       (res: any) => {
+        this.resetErrorVariables();
         if (res?.message === 'Excel Upload Sucessfully') {
           // Process successful response
           this.excelDataSheet1 = res?.data?.['General Information']
@@ -366,70 +365,34 @@ export class CreateBbComponent {
         } else {
       
         }
+        
       },
       (error) => {
-
+         this.resetErrorVariables();
         // Handle HTTP errors here
         if (error.status === 400) {
+          if (error.error && error.error.data) {
+            const commercialReferenceErrors = error.error.data['Commercial Reference'];
+            const generalInformationErrors = error.error.data['General Information'];
+            
+            
+
+            // Display errors for Commercial Reference
+            this.displayErrors(commercialReferenceErrors, 'Commercial Reference');
+            
+            // Display errors for General Information
+            this.displayErrors(generalInformationErrors, 'General Information');
+            
+            // Set showUploaderror to true to display the error in the UI
+            this.showUploaderror = true;
+          }
           if (error.error.data == 'please upload commercial card excel file') {
             this.uploadError = 'Please upload commercial card excel file';
           }
-          // Map the error response to UI variables
-          if (error.error?.data) {
-            const commercialReferenceErrors = error.error.data['Commercial Reference'];
-            const generalInformationErrors = error.error.data['General Information'];
-            if (
-              commercialReferenceErrors?.message === 'All Field Are Empty' &&
-              generalInformationErrors?.message === 'All Field Are Empty'
-            ) {
-              this.uploadError = 'All fields are empty.';
-            }
-            // Map errors to UI variables for Commercial Reference
-            if (commercialReferenceErrors?.['Standard Service'] == 'maximum length 1000') {
-              this.standard_service_error = commercialReferenceErrors?.['Standard Service'];
-            }
-
-            if (commercialReferenceErrors?.['Dos'] == 'maximum length 1000') {
-              this.dos_error = commercialReferenceErrors?.['Dos'];
-            }
-            if (commercialReferenceErrors?.['SOW'] == 'maximum length 1000') {
-              this.sow_error = commercialReferenceErrors?.['SOW'];
-            }
-
-            if (commercialReferenceErrors?.["Combined Value"] == 'maximum length 1000') {
-              this.combined_value_error = commercialReferenceErrors?.['Combined Value'];
-            }
-
-            if (commercialReferenceErrors?.["Don'ts"] == 'maximum length 1000') {
-              this.donts_error = commercialReferenceErrors?.["Don'ts"];
-            }
-
-            if (commercialReferenceErrors?.['Configurable'] == 'maximum length 1000') {
-              this.configurables_error = commercialReferenceErrors?.['Configurable'];
-            }
-
-            if (commercialReferenceErrors?.['Pre-requsites information'] == 'maximum length 1000') {
-              this.pre_requisite_info_error = commercialReferenceErrors?.['Pre-requsites information'];
-            }
-
-
-            // Map errors to UI variables for General Information
-            if (generalInformationErrors?.['Service Description'] == 'maximum length 1000') {
-              this.service_desc_error = generalInformationErrors?.['Service Description'];
-            }
-            if (generalInformationErrors?.['Customer Requirements'] == 'maximum length 1000') {
-              this.customer_requirement_error = generalInformationErrors?.['Customer Requirements'];
-            }
-            if (generalInformationErrors?.['PSA BDP Value Statement'] == 'maximum length 1000') {
-              this.cvalue_to_psa_bdp_error = generalInformationErrors?.['PSA BDP Value Statement'];
-            }
-
-            // Set showUploaderror to true to display the error in the UI
-            this.showUploaderror = true;
-
-          }
-        } else {
-
+          
+        }
+         else {
+          // Handle other errors accordingly
         }
 
         // Reset the upload screen
@@ -439,6 +402,63 @@ export class CreateBbComponent {
     );
 
   }
+  resetErrorVariables() {
+    this.standard_service_error = '';
+    this.dos_error = '';
+    this.sow_error = '';
+    this.combined_value_error = '';
+    this.donts_error = '';
+    this.configurables_error = '';
+    this.pre_requisite_info_error = '';
+    this.service_desc_error = '';
+    this.customer_requirement_error = '';
+    this.cvalue_to_psa_bdp_error = '';
+    this.uploadError = ''; // Reset upload error as well
+}
+  
+  displayErrors(errors: any, sheet: string) {
+    if (errors) {
+      Object.keys(errors).forEach(key => {
+        const errorKey = `${key}_error`;
+        const errorMessage = ` ${errors[key]}`;
+        // Set error message for each field
+        switch(key) {
+          case 'Standard Service':
+            this.standard_service_error = errorMessage;
+            break;
+          case 'Dos':
+            this.dos_error = errorMessage;
+            break;
+          case 'SOW':
+            this.sow_error = errorMessage;
+            break;
+          case 'Combined Value':
+            this.combined_value_error = errorMessage;
+            break;
+          case "Don'ts":
+            this.donts_error = errorMessage;
+            break;
+          case 'Configurable':
+            this.configurables_error = errorMessage;
+            break;
+          case 'Pre-requsites information':
+            this.pre_requisite_info_error = errorMessage;
+            break;
+          case 'Service Description':
+            this.service_desc_error = errorMessage;
+            break;
+          case 'Customer Requirements':
+            this.customer_requirement_error = errorMessage;
+            break;
+          case 'PSA BDP Value Statement':
+            this.cvalue_to_psa_bdp_error = errorMessage;
+            break;
+          default:
+            break;
+        }
+      });
+    }
+}
   onPopupCancelCClick() {
     this.visibleCC = false;
     this.showUploaderror = false;
@@ -846,8 +866,8 @@ export class CreateBbComponent {
         this.product_name = details.data.product.id;
         this.product_scope = details.data.scope.id;
         this.product_category = details.data.category.id;
-        this.onProductSelect(details.data.product.id);
-        this.onScopeSelect(details.data.scope.id);
+        this.onProductSelectbyid(details.data.product.id);
+        this.onScopeSelectbyid(details.data.scope.id);
         this.charge_code = details.data.chargeCode?.id;
         this.seervice_desc = details.data.scopingCard.serviceDescription;
         this.customer_requirement = details.data.scopingCard.customerRequirement;
@@ -876,6 +896,38 @@ export class CreateBbComponent {
       // }
     );
   }
+  onProductSelectbyid(body) {
+    //  this.procuctCategoryOptions = [];
+    this.MasterTableservice.getProductScope(body, this.product_name).subscribe((res: any) => {
+        if (res?.message === "success") {
+            this.procuctScopesOptions = res.data;
+
+            if (this.product_scope) {
+                this.product_scope = this.procuctScopesOptions.find(scope => scope.id === this.product_scope)?.id;
+                this.onScopeSelectbyid(this.product_scope);
+            }
+        } else {
+            this.procuctScopesOptions = [];
+        }
+    });
+}
+
+onScopeSelectbyid(body) {
+  // this.procuctCategoryOptions = [];
+  this.MasterTableservice.getProductCategory(body, this.product_scope).subscribe((res: any) => {
+      if (res?.message === "success") {
+          this.procuctCategoryOptions = res.data;
+          // Auto-select the category if available
+          if (this.product_category) {
+              const selectedCategory = this.procuctCategoryOptions.find(category => category.id === this.product_category);
+              this.product_category = selectedCategory ? selectedCategory.id : null;
+             
+          }
+      } else {
+          this.procuctCategoryOptions = [];
+      }
+  });
+}
 
   saveAsBuildingBlock() {
   if(this.blockId == null || this.blockId == undefined){
