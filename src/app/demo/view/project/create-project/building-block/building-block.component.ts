@@ -40,12 +40,15 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   isOriginActive: boolean = true;
   isDestinationActive: boolean = false;
   activeIndex: number;
+  projectLocations: any;
+  treeDataCalculated: any;
   constructor(private projectService: ProjectsService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
   }
 
   ngOnInit() {
     this.projectService.draftData$.subscribe(data => {
-      // Handle the draft data here
+      this.projectLocations = data.data.projectLocation.filter(loc => loc.originDestinationCode === 0);
+          console.log('Filtered projectLocation:', this.projectLocations);
       console.log('Draft data:', data);
     });
   
@@ -260,35 +263,94 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   }
 
   getTreeData(selectedStep: string, originDestinationCode: number): TreeNode[] {
-    const updatedStepsInformation = this.selectedNodes[0]?.data?.stepsInformation;
-    if (updatedStepsInformation && updatedStepsInformation[selectedStep]) {
-      // Determine the origin destination based on originDestinationCode
-      let originDestination: string;
-      if (originDestinationCode === 1) {
-        originDestination = 'Origin';
-      } else if (originDestinationCode === 2) {
-        originDestination = 'Destination';
-      } else if (originDestinationCode === 3) {
-        originDestination = 'Origin/Destination';
-      }
-      const configuration = updatedStepsInformation[selectedStep]?.[originDestination];
-      if (configuration) {
-        // Return configuration as TreeNode array
-        return configuration.map(option => ({ label: option, data: option }));
-      } else {
-        //  console.warn('Configuration information not found for selected step:', selectedStep);
-      }
-    } else {
-    //  console.warn('Updated Steps Information not available or does not contain data for selected step:', selectedStep);
+    // Check if the guard variable is true
+    if (this.treeDataCalculated) {
+      return this.treeData;
     }
-    return [];
-  }
+  
+    const updatedStepsInformation = this.selectedNodes[0]?.data?.stepsInformation;
+    const projectLocation = this.projectLocations; // Use the projectLocation data
+  
+    console.log('Updated Steps Information:', updatedStepsInformation);
+    console.log('Project Locations:', projectLocation);
+  
+    if (!updatedStepsInformation || !projectLocation) {
+      console.error('Data is not available to generate tree data');
+      return [];
+    }
+  
+    const treeData: TreeNode[] = [];
+   // const locations = projectLocation.filter(loc => loc.originDestinationCode === originDestinationCode);
+   // console.log('Filtered Locations:', locations);
+  
+    for (const operationStep in updatedStepsInformation) {
+      if (Object.prototype.hasOwnProperty.call(updatedStepsInformation, operationStep)) {
+        const stepInfo = updatedStepsInformation[operationStep];
+        let originDestination: string;
+  
+        if (originDestinationCode === 1) {
+          originDestination = 'Origin';
+        } else if (originDestinationCode === 2) {
+          originDestination = 'Destination';
+        } else if (originDestinationCode === 3) {
+          originDestination = 'Origin/Destination';
+        }
+  
+        const configurations = stepInfo[originDestination];
+        
+        configurations.forEach((config: string) => {
+          const locationChildren: TreeNode[] = [];
+  
+          projectLocation.forEach((location: any) => {
+            const label = originDestinationCode === 0 ? location.location.name : location.name;
+            locationChildren.push({
+                key: `${treeData.length}-${locationChildren.length}`,
+                label: location.location.name,
+                data: {
+                    id: location.location.id, // Store the location id
+                    name: location.location.name // Store the location name
+                }
+            });
+        });
+  
+          treeData.push({
+            key: `${treeData.length}`,
+            label: config,
+            data: config,
+          //  icon: 'pi pi-fw pi-inbox',
+            children: locationChildren
+          });
+        });
+      }
+    }
+  
+    console.log('Final tree data:', treeData);
+  
+    // Set the guard variable to true to prevent further calculations
+    this.treeDataCalculated = true;
+    this.treeData = treeData; // Store the calculated tree data
+    return treeData;
+}
+
+  
+  
+  
+  
+  
+
+  
 
   selectStep(step: string, originDestinationCode: number) {
+    // Add a guard condition to check if the selectedStep is already set
+    if (this.selectedStep !== null && this.selectedStep === step) {
+      return; // Exit the function if the step is already selected
+    }
+    
     this.selectedStep = step;
     const configuration = this.getTreeData(step, originDestinationCode);
-    //  console.log('Configuration:', configuration);
   }
+  
+  
 
 
   //----------------------------------------Save Porject Draft------------------------------//
