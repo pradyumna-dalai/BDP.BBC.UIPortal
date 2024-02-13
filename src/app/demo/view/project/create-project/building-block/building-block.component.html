@@ -86,18 +86,16 @@
             </div>
             <br>
             <div>
-                <p-tree [value]="treeData" selectionMode="checkbox" class="w-full md:w-30rem"  [(selection)]="selectedLocationNodes">
+                <p-tree *ngIf="isOriginActive"  [value]="treeData" selectionMode="checkbox" class="w-full md:w-30rem"  [(selection)]="selectedLocationNodes">
                     <ng-template let-node pTemplate="default">
                         <span>{{ node.label }}</span>
                     </ng-template>
                 </p-tree>
                 
-                <p-tree *ngIf="isDestinationActive" [value]="getTreeData(selectedStep, 1)" selectionMode="checkbox" class="w-full md:w-30rem">
-                    <ng-template let-node pTemplate="default">
-                        <p-checkbox [value]="node.data.id" binary="true" [(ngModel)]="node.data.selected">
-                            {{ node.label }}
-                        </p-checkbox>
-                    </ng-template>
+                <p-tree *ngIf="isDestinationActive" [value]="treeData" selectionMode="checkbox" class="w-full md:w-30rem" [(selection)]="selectedLocationNodes">
+                        <ng-template let-node pTemplate="default">
+                            <span>{{ node.label }}</span>
+                        </ng-template>
                 </p-tree>
             </div>
         </div>

@@ -391,16 +391,13 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
         }
       ]
     }
-    this.projectService.saveProjectBuildingBlock(body).subscribe(
-      (res) => {
-
-        console.log(res, "Project Building Block is okk");
+    this.projectService.saveProjectBuildingBlock(body).subscribe({
+      next: (response: any) => {
+        console.log(response, "Project Building Block is okk");
       },
-      (error) => {
+      
 
-
-      }
-    );
+    })
   }
 
   goToNextTab() {
