@@ -1142,32 +1142,43 @@ onScopeSelectbyid(body) {
     this.messageService.add({ key: 'successToast', severity: 'success', summary: 'Success', detail: message });
   }
 
+  showErrorMessage(message: string) {
+    this.messageService.add({ key: 'errorToast', severity: 'error', summary: 'Error', detail: message });
+}
+
   onUploadClick(event: any): void {
     if (this.selectedFile) {
-      const scopeId = 1;
-      const entityId = this.blockId;
-      this.readExcelFile(this.selectedFile);
-      this.visibleOperationBox = false;
+        const fileName: string = this.selectedFile.name;
+        const fileExtension: string = fileName.split('.').pop()?.toLowerCase() || '';
 
-      this.createBuildingBlockservice.operationCardUploadExcel(this.selectedFile, scopeId, entityId).subscribe(
-        (res: any) => {
-          if (res?.message === 'Excel Upload Successfully') {
-          
-            this.fileNameOC = "";
-            this.selectedFile = null;
-            this.showSuccessMessage('File uploaded successfully!');
-          } else {
-           
-          }
-        },
-        (error) => {
-          console.error('Error uploading file:', error);
+        // Check if the file extension is Excel
+        if (fileExtension === 'xls' || fileExtension === 'xlsx') {
+            const scopeId = 1;
+            const entityId = this.blockId;
+            this.readExcelFile(this.selectedFile);
+            this.visibleOperationBox = false;
+
+            this.createBuildingBlockservice.operationCardUploadExcel(this.selectedFile, scopeId, entityId).subscribe(
+                (res: any) => {
+                    if (res?.message === 'Excel Upload Successfully') {
+                        this.fileNameOC = "";
+                        this.selectedFile = null;
+                        this.showSuccessMessage('File uploaded successfully!');
+                    } else {
+                        // Handle other responses if needed
+                    }
+                },
+                (error) => {
+                    console.error('Error uploading file:', error);
+                }
+            );
+        } else {
+            this.showErrorMessage('Only Excel files (.xlsx) are allowed!');
         }
-      );
     } else {
-
     }
-  }
+}
+
   //----------------------------------------------------------------------------------//
   downloadOperationCardExcelFile() {
     if (this.operationDocId != null) {

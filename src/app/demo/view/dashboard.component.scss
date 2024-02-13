@@ -14,16 +14,19 @@
     }
 }
 
-.new-button{
-    border-radius: 6px;display: flex;justify-content: center;
+.new-button {
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
 }
 
-.heading{
+.heading {
     padding: 7px;
     background-color: #E5F2FD;
     border-radius: 6px;
 }
-.bbCard{
+
+.bbCard {
     background-color: #FDFEFF;
     border: none;
     font-weight: 700;
@@ -31,37 +34,69 @@
     justify-content: center;
     border-radius: 6px;
 }
-.master-dropdown{
+
+.master-dropdown {
     width: 19%;
 }
-.common-header{
+
+.common-header {
     width: 100%;
-    padding-left: 17px;   
+    padding-left: 17px;
     padding-top: 23px;
 }
+
 .displayContent {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-.list{
+
+.list {
     padding-left: 19px;
 }
-.align{
+
+.align {
     margin-top: -9px;
 }
 
 
 .container {
-        display: flex;
-        flex-wrap: nowrap;
-        justify-content: space-between;
-    }
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
 
-    .field {
-        margin-right: 20px; /* Adjust as needed for spacing */
-    }
+.field {
+    margin-right: 20px;
+    /* Adjust as needed for spacing */
+}
 
-    .icon-with-margin {
-        margin-right: 4px;
+.icon-with-margin {
+    margin-right: 4px;
+}
+.card.operation-card {
+    height:  669px; /* Set a specific height for the card */
+    overflow: auto; /* Enable scrolling if content exceeds the height */
+}
+.excel-table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 12px; /* Adjust font size */
+}
+
+.excel-table th,
+.excel-table td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 4px; /* Adjust padding */
+}
+
+.excel-table th {
+    background-color: #f2f2f2;
+}
+@media only screen and (max-width: 600px) {
+    /* Add styles for small screens */
+    .excel-container {
+       overflow-x: auto; /* Enable horizontal scrolling if needed */
     }
+  }
