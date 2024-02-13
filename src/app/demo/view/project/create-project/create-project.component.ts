@@ -153,7 +153,9 @@ export class CreateProjectComponent implements OnInit {
     }
   }
 
-
+  patchDateRangeValue(newValue: any) {
+    this.myForm.get('selectedDateRange').patchValue(newValue);
+  }
   getForm(): FormGroup {
     return this.myForm;
   }
@@ -274,7 +276,9 @@ export class CreateProjectComponent implements OnInit {
   formatDate(date: Date): string {
     return dayjs(date).format('YYYY-MM-DD');
   }
-
+  patchformatDate(date: Date): string {
+    return dayjs(date).format('MM/DD/YYYY');
+  }
   onSaveAsDraftClick() {
     this.SaveAsDraftProjects();
   }
@@ -287,6 +291,7 @@ export class CreateProjectComponent implements OnInit {
       opportunityMangers = om.map(id => ({ id }))
     }
     this.dateRange = this.myForm.get('selectedDateRange').value;
+    console.log("DateRange",this.dateRange)
     let dateRangevalStartDate = this.dateRange.startDate;
     let dateRangevalEndDate = this.dateRange.endDate;
 
@@ -352,7 +357,7 @@ export class CreateProjectComponent implements OnInit {
       
       ]
     }
-
+console.log("formDate",this.myForm.get('selectedDateRange').value)
     this.projectService.saveAsDraftProject(body).subscribe(
       (res) => {
         const savedProjectId = res.data.id;
@@ -879,10 +884,20 @@ export class CreateProjectComponent implements OnInit {
       }
     });
   }
+  selected = [
+    "2024-02-13T00:00:00.000+00:00",
+    "2024-02-13T00:00:00.000+00:00"
+  ];
 
   populateForm(): void {
 
-
+console.log("ResponseEdit",this.response);
+this.myForm.patchValue({
+  // selectedDateRange: '01/01/2022 - 01/10/2022',
+  
+  selectedDateRange: `${this.patchformatDate(this.response.startDate)} - ${this.patchformatDate(this.response.endDate)}`,
+});
+console.log("data",this.myForm.get('selectedDateRange').value)
     // Populate other form controls with the received data
     this.myForm.patchValue({
       companyName: this.response.company?.id,
@@ -898,7 +913,7 @@ export class CreateProjectComponent implements OnInit {
       impleNotes: this.response.implementationNote,
 
     });
-
+console.log("selectedPatchDate",this.myForm.get('selectedDateRange').value)
     // Automatically fetch and set opportunity names based on the selected company
     if (this.response.company) {
       this.onCompanySelect({ value: this.response.company.id });
