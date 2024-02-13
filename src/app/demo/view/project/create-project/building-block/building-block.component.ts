@@ -143,25 +143,29 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   }
 
   showOriginSection() {
-    this.showOriginVolume = true;
-    this.showDestinationVolume = false;
+    this.isOriginActive = true; // Setting isOriginActive to true
+    this.isDestinationActive = false;
     this.originButtonColor = 'white';
     this.destinationButtonColor = 'rgb(0, 110, 255)';
     this.originButtonBorder = '1px solid rgb(0, 110, 255)';
     this.destinationButtonBorder = '1px solid rgb(0, 110, 255)';
     this.originButtonBorderRadius = '5px';
     this.destinationButtonBorderRadius = '5px';
+    this.getTreeData(this.selectedStep, 0)
   }
 
   showDestinationSection() {
-    this.showOriginVolume = false;
-    this.showDestinationVolume = true;
+    this.isOriginActive = false; // Setting isOriginActive to false
+    this.isDestinationActive = true; 
     this.originButtonColor = 'rgb(0, 110, 255)';
     this.destinationButtonColor = 'white';
     this.originButtonBorder = '1px solid rgb(0, 110, 255)';
     this.destinationButtonBorder = '1px solid rgb(0, 110, 255)';
     this.originButtonBorderRadius = '5px';
     this.destinationButtonBorderRadius = '5px';
+    this.getTreeData(this.selectedStep, 1)
+    console.log('isOriginActive:', this.isOriginActive); // Log status of origin flag
+    console.log('isDestinationActive:', this.isDestinationActive)
 
   }
 
@@ -266,7 +270,10 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   getTreeData(selectedStep: string, originDestinationCode: number): TreeNode[] {
     const updatedStepsInformation = this.selectedNodes[0]?.data?.stepsInformation;
     const projectLocation = this.projectLocations;
-  
+    console.log('Selected Step:', selectedStep);
+    console.log('Origin Destination Code:', originDestinationCode);
+    console.log('Updated Steps Information:', updatedStepsInformation);
+    console.log('Project Locations:', projectLocation);
     if (!updatedStepsInformation || !projectLocation) {
       console.error('Data is not available to generate tree data');
       return [];
