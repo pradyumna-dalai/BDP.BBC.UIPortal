@@ -264,32 +264,21 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   }
 
   getTreeData(selectedStep: string, originDestinationCode: number): TreeNode[] {
-    // Check if the guard variable is true
-    if (this.treeDataCalculated) {
-      return this.treeData;
-    }
-
     const updatedStepsInformation = this.selectedNodes[0]?.data?.stepsInformation;
-    const projectLocation = this.projectLocations; // Use the projectLocation data
-
-    console.log('Updated Steps Information:', updatedStepsInformation);
-    console.log('Project Locations:', projectLocation);
-
+    const projectLocation = this.projectLocations;
+  
     if (!updatedStepsInformation || !projectLocation) {
       console.error('Data is not available to generate tree data');
       return [];
     }
-
+  
     const treeData: TreeNode[] = [];
-    // const locations = projectLocation.filter(loc => loc.originDestinationCode === originDestinationCode);
-    // console.log('Filtered Locations:', locations);
-
+  
     for (const operationStep in updatedStepsInformation) {
-      if (Object.prototype.hasOwnProperty.call(updatedStepsInformation, operationStep)) {
+      if (operationStep === selectedStep) { // Filter based on the selected step
         const stepInfo = updatedStepsInformation[operationStep];
-        console.log('step Info',stepInfo);
         let originDestination: string;
-
+  
         if (originDestinationCode === 0) {
           originDestination = 'Origin';
         } else if (originDestinationCode === 1) {
@@ -297,7 +286,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
         } else if (originDestinationCode === 2) {
           originDestination = 'Origin/Destination';
         }
-
+  
         const configurations = stepInfo[originDestination];
         configurations.forEach((config: string) => {
           const locationChildren: TreeNode[] = [];
@@ -307,8 +296,8 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
               key: `${treeData.length}-${locationChildren.length}`,
               label: location.location.name,
               data: {
-                id: location.location.id, // Store the location id
-                name: location.location.name // Store the location name
+                id: location.location.id,
+                name: location.location.name
               }
             });
           });
@@ -321,19 +310,26 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
         });
       }
     }
-    console.log('Final tree data:', treeData);
-    this.treeDataCalculated = true;
-    this.treeData = treeData;
+  
+    this.treeData = treeData; // Update the treeData property
     return treeData;
   }
+  
 
   selectStep(step: string, originDestinationCode: number) {
     if (this.selectedStep !== null && this.selectedStep === step) {
       return;
     }
     this.selectedStep = step;
-    const configuration = this.getTreeData(step, originDestinationCode);
+    // Call the getTreeData method with the correct originDestinationCode
+    if (originDestinationCode === 0 || originDestinationCode === 1) {
+      // Only proceed if originDestinationCode is 0 or 1
+      this.getTreeData(step, originDestinationCode);
+    } else {
+      console.error('Invalid originDestinationCode:', originDestinationCode);
+    }
   }
+  
 
   onLocationNodeSelect(event: any): void {
     const index = this.selectedLocationNodes.findIndex(node => node.key === event.node.key);

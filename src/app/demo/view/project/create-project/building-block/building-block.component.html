@@ -53,7 +53,7 @@
                             </ng-template>
                             <div>
                                 <ul>
-                                    <li *ngFor="let step of node.data?.stepsInformation | keyvalue" (click)="selectStep(step.key,1)">
+                                    <li *ngFor="let step of node.data?.stepsInformation | keyvalue" (click)="selectStep(step.key,0)">
                                         <div><h6>{{ step.key }}</h6></div>
                                         <ul>
                                             <li *ngFor="let originDestination of step.value | keyvalue">
