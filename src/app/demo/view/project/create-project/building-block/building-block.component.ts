@@ -221,11 +221,11 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
               let destination: string[] = [];
 
               // Determine the origin destination based on originDestinationCode
-              if (originDestinationCode === 1) {
+              if (originDestinationCode === 0) {
                 destination = ['Origin'];
-              } else if (originDestinationCode === 2) {
+              } else if (originDestinationCode === 1) {
                 destination = ['Destination'];
-              } else if (originDestinationCode === 3) {
+              } else if (originDestinationCode === 2) {
                 destination = ['Origin', 'Destination'];
               }
               destination.forEach(dest => {
@@ -260,6 +260,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       }
     }
     node.data.stepsInformation = updatedStepsInformation;
+    console.log('step Info1', node.data.stepsInformation);
   }
 
   getTreeData(selectedStep: string, originDestinationCode: number): TreeNode[] {
@@ -286,13 +287,14 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
     for (const operationStep in updatedStepsInformation) {
       if (Object.prototype.hasOwnProperty.call(updatedStepsInformation, operationStep)) {
         const stepInfo = updatedStepsInformation[operationStep];
+        console.log('step Info',stepInfo);
         let originDestination: string;
 
-        if (originDestinationCode === 1) {
+        if (originDestinationCode === 0) {
           originDestination = 'Origin';
-        } else if (originDestinationCode === 2) {
+        } else if (originDestinationCode === 1) {
           originDestination = 'Destination';
-        } else if (originDestinationCode === 3) {
+        } else if (originDestinationCode === 2) {
           originDestination = 'Origin/Destination';
         }
 
