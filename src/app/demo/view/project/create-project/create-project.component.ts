@@ -292,7 +292,8 @@ export class CreateProjectComponent implements OnInit {
     }
     this.dateRange = this.myForm.get('selectedDateRange').value;
     console.log("DateRange",this.dateRange)
-    let dateRangevalStartDate = this.dateRange.startDate;
+    let dateRange = this.dateRange.split("-");
+    console.log("splite",dateRange)
     let dateRangevalEndDate = this.dateRange.endDate;
 
     const originProjectLocationData = this.OtableData.map((row: TableRow) => ({
@@ -327,8 +328,8 @@ export class CreateProjectComponent implements OnInit {
       projectInformation: {
         customerCode: this.myForm.get('customerCode').value,
         projectName: this.myForm.get('projectName').value,
-        startDate: this.formatDate(dateRangevalStartDate),
-        endDate: this.formatDate(dateRangevalEndDate),
+        startDate: this.formatDate(dateRange[0]),
+        endDate: this.formatDate(dateRange[1]),
         designNote: this.myForm.get('designNotes').value,
         implementationNote: this.myForm.get('impleNotes').value,
         company: {
