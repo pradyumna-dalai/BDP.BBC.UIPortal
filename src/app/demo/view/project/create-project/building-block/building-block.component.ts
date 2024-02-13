@@ -40,6 +40,8 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   activeIndex: number;
   projectLocations: any;
   treeDataCalculated: any;
+  selectedLocationNodes: TreeNode[] = [];
+
   constructor(private projectService: ProjectsService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
   }
 
@@ -331,6 +333,14 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
     const configuration = this.getTreeData(step, originDestinationCode);
   }
 
+  onLocationNodeSelect(event: any): void {
+    const index = this.selectedLocationNodes.findIndex(node => node.key === event.node.key);
+    if (index === -1) {
+      this.selectedLocationNodes.push(event.node);
+    } else {
+      this.selectedLocationNodes.splice(index, 1);
+    }
+}
   //----------------------------------------Save Porject Draft------------------------------//
   onSaveProjectBBClick() {
     const body = {
