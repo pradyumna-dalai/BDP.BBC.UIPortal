@@ -3,17 +3,15 @@ import { ProjectsService } from 'src/app/services/project-serivce/projects.servi
 import { TreeDragDropService, TreeNode } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { CreateBuildingBlockService } from 'src/app/services/create-buildingBlock/create-building-block.service';
-import { Accordion } from 'primeng/accordion';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { of } from 'rxjs';
 import { AppMainComponent } from 'src/app/app.main.component';
-import { NodeService } from 'src/app/demo/service/nodeservice';
+
 @Component({
   selector: 'app-building-block',
   templateUrl: './building-block.component.html',
   styleUrls: ['./building-block.component.scss'],
   providers: [TreeDragDropService]
 })
+
 export class BuildingBlockComponent implements OnInit, OnDestroy {
   //@Input() createProject;
   treeData: TreeNode[];
@@ -48,10 +46,10 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.projectService.draftData$.subscribe(data => {
       this.projectLocations = data.data.projectLocation.filter(loc => loc.originDestinationCode === 0);
-          console.log('Filtered projectLocation:', this.projectLocations);
+      console.log('Filtered projectLocation:', this.projectLocations);
       console.log('Draft data:', data);
     });
-  
+
     this.loadTreeDataNew();
   }
   ngOnDestroy() {
@@ -267,27 +265,27 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
     if (this.treeDataCalculated) {
       return this.treeData;
     }
-  
+
     const updatedStepsInformation = this.selectedNodes[0]?.data?.stepsInformation;
     const projectLocation = this.projectLocations; // Use the projectLocation data
-  
+
     console.log('Updated Steps Information:', updatedStepsInformation);
     console.log('Project Locations:', projectLocation);
-  
+
     if (!updatedStepsInformation || !projectLocation) {
       console.error('Data is not available to generate tree data');
       return [];
     }
-  
+
     const treeData: TreeNode[] = [];
-   // const locations = projectLocation.filter(loc => loc.originDestinationCode === originDestinationCode);
-   // console.log('Filtered Locations:', locations);
-  
+    // const locations = projectLocation.filter(loc => loc.originDestinationCode === originDestinationCode);
+    // console.log('Filtered Locations:', locations);
+
     for (const operationStep in updatedStepsInformation) {
       if (Object.prototype.hasOwnProperty.call(updatedStepsInformation, operationStep)) {
         const stepInfo = updatedStepsInformation[operationStep];
         let originDestination: string;
-  
+
         if (originDestinationCode === 1) {
           originDestination = 'Origin';
         } else if (originDestinationCode === 2) {
@@ -295,126 +293,107 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
         } else if (originDestinationCode === 3) {
           originDestination = 'Origin/Destination';
         }
-  
+
         const configurations = stepInfo[originDestination];
-        
         configurations.forEach((config: string) => {
           const locationChildren: TreeNode[] = [];
-  
           projectLocation.forEach((location: any) => {
             const label = originDestinationCode === 0 ? location.location.name : location.name;
             locationChildren.push({
-                key: `${treeData.length}-${locationChildren.length}`,
-                label: location.location.name,
-                data: {
-                    id: location.location.id, // Store the location id
-                    name: location.location.name // Store the location name
-                }
+              key: `${treeData.length}-${locationChildren.length}`,
+              label: location.location.name,
+              data: {
+                id: location.location.id, // Store the location id
+                name: location.location.name // Store the location name
+              }
             });
-        });
-  
+          });
           treeData.push({
             key: `${treeData.length}`,
             label: config,
             data: config,
-          //  icon: 'pi pi-fw pi-inbox',
             children: locationChildren
           });
         });
       }
     }
-  
     console.log('Final tree data:', treeData);
-  
-    // Set the guard variable to true to prevent further calculations
     this.treeDataCalculated = true;
-    this.treeData = treeData; // Store the calculated tree data
+    this.treeData = treeData;
     return treeData;
-}
-
-  
-  
-  
-  
-  
-
-  
+  }
 
   selectStep(step: string, originDestinationCode: number) {
-    // Add a guard condition to check if the selectedStep is already set
     if (this.selectedStep !== null && this.selectedStep === step) {
-      return; // Exit the function if the step is already selected
+      return;
     }
-    
     this.selectedStep = step;
     const configuration = this.getTreeData(step, originDestinationCode);
   }
-  
-  
-
 
   //----------------------------------------Save Porject Draft------------------------------//
-  onSaveProjectBBClick(){
+  onSaveProjectBBClick() {
     const body = {
       "projectId": 1,
       "projectName": "sample name",
       "buildingBlocks": [
-          {
-              "buildingBlockId": 1,
-              "buildingBlockName": "sample",
-              "processes":[
+        {
+          "buildingBlockId": 1,
+          "buildingBlockName": "sample",
+          "processes": [
+            {
+              "processId": 1,
+              "processName": "sample",
+              "originService": {
+                "configurations": [
+                  {
+                    "configurationId": 1,
+                    "configurationName": "sample",
+                    "locations": [
                       {
-                          "processId": 1,
-                          "processName": "sample",
-                          "originService": {
-                              "configurations": [
-                                  {
-                                      "configurationId": 1 ,
-                                      "configurationName": "sample",
-                                      "locations": [
-                                          {
-                                              "locationId":1,
-                                              "locationName": "sample",
-                                              "unloc": "INNSA"
-                                          }
-                                      ]
-                                  }
-                              ]
-                          },
-                          "destinationService": {
-                              "configurations": [
-                                  {
-                                      "configurationId": 1 ,
-                                      "configurationName": "sample",
-                                      "locations": [
-                                          {
-                                              "locationId":1,
-                                              "locationName": "sample",
-                                              "unloc": "INNSA"
-                                          }
-                                      ]
-                                  }
-                              ]
-                          }
+                        "locationId": 1,
+                        "locationName": "sample",
+                        "unloc": "INNSA"
                       }
-              ]
-          }
+                    ]
+                  }
+                ]
+              },
+              "destinationService": {
+                "configurations": [
+                  {
+                    "configurationId": 1,
+                    "configurationName": "sample",
+                    "locations": [
+                      {
+                        "locationId": 1,
+                        "locationName": "sample",
+                        "unloc": "INNSA"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
       ]
-  }
-  this.projectService.saveProjectBuildingBlock(body).subscribe(
-    (res) => {
-      
-      console.log(res,"Project Building Block is okk");
-    },
-    (error) => {
-
-     
     }
-  );
+    this.projectService.saveProjectBuildingBlock(body).subscribe(
+      (res) => {
+
+        console.log(res, "Project Building Block is okk");
+      },
+      (error) => {
+
+
+      }
+    );
   }
 
-
-  goToNextTab(){
+  goToNextTab() {
     this.activeIndex = (this.activeIndex + 2) % 8
   }
+
+  //----------------------------------------------------end-----------------------------------//
 }
