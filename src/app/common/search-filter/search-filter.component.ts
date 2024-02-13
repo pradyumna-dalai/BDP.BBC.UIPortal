@@ -167,7 +167,7 @@ export class SearchFilterComponent {
   selected: { startDate: Date, endDate: Date };
   getProjectFilter() {
     let payload = {
-      "status": {
+      "projectStatus": {
         "id": this.selectedStatus
       },
       "projectName": this.project_name,
@@ -186,8 +186,8 @@ export class SearchFilterComponent {
       "startDate": this.formatDate(this.rangeDates[0]),
       "endDate": this.formatDate(this.rangeDates[1]),
     }
-    if (payload.status.id === 'Invalid Date') {
-      payload.status = null;
+    if (payload.projectStatus.id === 'Invalid Date') {
+      payload.projectStatus = null;
     }
     if (payload.opportunityName.id === undefined) {
       payload.opportunityName = null;

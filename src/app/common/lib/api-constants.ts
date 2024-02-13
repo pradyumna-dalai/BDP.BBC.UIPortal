@@ -5,7 +5,6 @@
 
 export namespace AppRoutes {
     export abstract class Auth {
-
         // --------------------get all master dropdown data-----------------------//
 
         public static readonly getProductName = "active-product";
@@ -38,7 +37,7 @@ export namespace AppRoutes {
 
         public static readonly getbuildingBlockDetailsView = "buildingblock";
 
-        public static readonly scopingCradImportExcel = "upload-excel";
+        public static readonly scopingCradImportExcel = "upload-scoping-card";
 
         public static readonly commercialCradImportExcel = "upload-commercial-card";
 
@@ -48,9 +47,15 @@ export namespace AppRoutes {
 
         public static readonly downloadSampleOPExcel = "download-file?file=op";
 
+
+        ///--------------------- Common File Operation -----------------------//
         public static readonly CommonUpload = "file/upload";
 
         public static readonly downloadOperationExcel = "file/download";
+
+        public static readonly deleteProjectFile = "file";
+
+        public static readonly getAllFiles = "file";
 
 
         //--------------------Project filter--------//
@@ -106,7 +111,7 @@ export namespace AppRoutes {
         public static readonly  uom = "uom";
 
         public static readonly downloadUOM = "download-uom";
-
+        
     
         public static readonly active_location = "active-location"
 
@@ -115,11 +120,13 @@ export namespace AppRoutes {
         public static readonly downloadfte = "download-fte"
         public static readonly projectName = "project-name"
 
-         //------process configurable-----------------------//
+       //------process configurable-----------------------//
          
-        public static readonly uploadConfigurable  = "upload-configurable"
+       public static readonly getProcessConfigurable  = "process"
 
-        public static readonly processConfigurable  = "process-configurable"
+       public static readonly saveProcessConfigurable  = "process"
+
+        
 
     }
 

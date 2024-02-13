@@ -53,6 +53,17 @@ export class UOMComponent implements AfterViewInit{
     });
     this.fetchAllUOMDetails();
   }
+  limitTo50Digits(event: any) {
+    if (event.target.value.length > 50) {
+      event.target.value = event.target.value.slice(0, 50);
+    }
+  }
+
+  limitTo1000Digits(event: any) {
+    if (event.target.value.length > 50) {
+      event.target.value = event.target.value.slice(0, 1000);
+    }
+  }
   getSeverity(status: boolean): string {
     return status ? 'success' : 'danger'; 
   }
@@ -187,7 +198,7 @@ export class UOMComponent implements AfterViewInit{
                     key: 'errorToast',
                     severity: 'error',
                     summary: 'Error!',
-                    detail: 'Name should not be more than 50 words.'
+                    detail: error.error.data[0].value
                   });
                 }
                 else if(error.error.data[0] == 'Description exceed length'){
@@ -219,7 +230,7 @@ export class UOMComponent implements AfterViewInit{
                       key: 'errorToast',
                       severity: 'error',
                       summary: 'Error!',
-                      detail: 'Name should not be more than 50 words.'
+                      detail: error.error.data[0].value
                     });
                   }
                   else if(error.error.data[0] == 'Description exceed length'){

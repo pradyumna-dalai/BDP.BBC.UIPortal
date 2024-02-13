@@ -270,8 +270,9 @@
                         style="text-decoration: underline;">Upload</a></p>
                     <ul *ngIf="uploadedFiles.length > 0">
                       <li *ngFor="let file of uploadedFiles; let i = index" class="file-item">
-                        {{ i + 1 }}. {{ file.name }}
-                        <button pButton pRipple type="button" icon="pi pi-trash" (click)="onRemoveUploadedFile(i)"
+                       <a (click)="downloadArtifactByIDValue(i)" [pTooltip]="'Click on the file to Download'" [tooltipPosition]="'top'"
+                        style="text-decoration: underline;">{{ file.name }}</a>  
+                        <button pButton pRipple type="button" icon="pi pi-trash" (click)="deleteProjectArtifact(i)"
                           style="margin-left: 8px;" class="p-button-rounded p-button-text p-button-danger"></button>
                       </li>
                     </ul>
@@ -283,8 +284,9 @@
                         style="text-decoration: underline;">Upload</a></p>
                     <ul *ngIf="uploadedResponseFiles.length > 0">
                       <li *ngFor="let file of uploadedResponseFiles; let i = index" class="file-item">
-                        {{ i + 1 }}. {{ file.name }}
-                        <button pButton pRipple type="button" icon="pi pi-trash" (click)="onRemoveUploadedResponseFile(i)"
+                      <a (click)="downloadArtifactByIDResponse(i)" [pTooltip]="'Click on the file to Download'" [tooltipPosition]="'top'"
+                        style="text-decoration: underline;">{{ file.name }}</a>  
+                        <button pButton pRipple type="button" icon="pi pi-trash" (click)="deleteResponseArtifact(i)"
                           style="margin-left: 8px;" class="p-button-rounded p-button-text p-button-danger"></button>
                       </li>
                     </ul>
@@ -296,8 +298,9 @@
                         style="text-decoration: underline;">Upload</a></p>
                     <ul *ngIf="uploadedOtherFiles.length > 0">
                       <li *ngFor="let file of uploadedOtherFiles; let i = index" class="file-item">
-                        {{ i + 1 }}. {{ file.name }}
-                        <button pButton pRipple type="button" icon="pi pi-trash" (click)="onRemoveUploadedOtherFile(i)"
+                       <a (click)="downloadArtifactByIDOther(i)" [pTooltip]="'Click on the file to Download'" [tooltipPosition]="'top'"
+                        style="text-decoration: underline;">{{ file.name }}</a>  
+                        <button pButton pRipple type="button" icon="pi pi-trash" (click)="deleteOtherArtifact(i)"
                           style="margin-left: 8px;" class="p-button-rounded p-button-text p-button-danger"></button>
                       </li>
                     </ul>
@@ -351,11 +354,6 @@
             <app-add-volume></app-add-volume>
 
 
-        </div>
-        <div class="col-12" style="display: flex;justify-content: flex-end;">
-            <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
-                (click)="SaveAsDraftProjects()" class="p-button-outlined mr-2 mb-2"></button>
-            <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()" class="mr-2 mb-2"></button>
         </div>
     </p-tabPanel>
     <p-tabPanel header="Cost Line Item">

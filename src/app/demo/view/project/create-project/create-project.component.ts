@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { AppBreadcrumbService } from '../../../../app.breadcrumb.service';
 import { FormControl, FormGroup, Validators, FormBuilder, FormArray, AbstractControl } from '@angular/forms';
 import { MasterTableService } from '../../../../services/master-table.service';
@@ -8,6 +8,8 @@ import dayjs from 'dayjs';
 import { DatePipe } from '@angular/common';
 import { EditableRow, Table } from 'primeng/table';
 import { AddVolumeComponent } from './add-volume/add-volume.component';
+import { ActivatedRoute } from '@angular/router';
+import { CreateBuildingBlockService } from 'src/app/services/create-buildingBlock/create-building-block.service';
 
 interface UomData {
   id: number;
@@ -31,6 +33,7 @@ interface TableRow {
 
 export class CreateProjectComponent implements OnInit {
   @ViewChild(AddVolumeComponent) addVolume!: AddVolumeComponent;
+  projId: number;
   date: Date | undefined;
   activeIndex: number = 0;
   myForm: FormGroup;
@@ -83,27 +86,23 @@ export class CreateProjectComponent implements OnInit {
 
   selectedLocationIsOrigin: boolean = true;
   activeTabIndex: number = 0; // default to Origin Location
-  uploadedFiles: { name: string, file: File }[] = [];
+  uploadedFiles: { id: number; name: string, file: File }[] = [];
   selectedFiles: File[] = [];
-  uploadedResponseFiles: { name: string, file: File }[] = [];
-  uploadedOtherFiles: { name: string, file: File }[] = [];
+  uploadedResponseFiles: { id: number; name: string, file: File }[] = [];
+  uploadedOtherFiles: { id: number; name: string, file: File }[] = [];
   projectId: number | null = null;
   visibleResponseBox: boolean = false;
   visibleOthersBox: boolean = false;
-  uploadedFilesToSave: { name: string; file: File }[] = [];
-  uploadedResponseFilesToSave: { name: string; file: File }[] = [];
-  uploadedOtherFilesToSave: { name: string; file: File }[] = [];
-  constructor(private breadcrumbService: AppBreadcrumbService,
-    private datePipe: DatePipe, private messageService: MessageService, private fb: FormBuilder, public MasterTableservice: MasterTableService, public projectService: ProjectsService) {
-    this.breadcrumbService.setItems([
-      {
-        label: 'PROJECT',
-        routerLink: 'project'
-      },
-      { label: 'Create Project' },
-    ]);
+  response: any;
+  uploadedFilesToSave: { id: number; name: string; file: File }[] = [];
+  uploadedResponseFilesToSave: { id: number, name: string; file: File }[] = [];
+  uploadedOtherFilesToSave: { id: number | null; name: string; file: File }[] = [];
+  constructor(private route: ActivatedRoute, private breadcrumbService: AppBreadcrumbService, private zone: NgZone,
+    private datePipe: DatePipe, private messageService: MessageService, private fb: FormBuilder, public MasterTableservice: MasterTableService,
+    private createBuildingBlockservice: CreateBuildingBlockService, public projectService: ProjectsService) {
   }
   ngOnInit() {
+
     this.myForm = this.fb.group({
       // Define your form controls here
       companyName: [''],
@@ -127,6 +126,31 @@ export class CreateProjectComponent implements OnInit {
     this.getProjectStage();
     this.getOpportunityManger();
     this.fetchActiveLocation();
+
+    //get projid
+    this.route.queryParams.subscribe(params => {
+      this.projId = params.projId;
+      this.getProjectDetails(this.projId);
+      console.log(params.projId)
+    });
+
+    if (this.projId) {
+      this.breadcrumbService.setItems([
+        {
+          label: 'PROJECT',
+          routerLink: 'project'
+        },
+        { label: 'Update Project' },
+      ]);
+    } else {
+      this.breadcrumbService.setItems([
+        {
+          label: 'PROJECT',
+          routerLink: 'project'
+        },
+        { label: 'Create Project' },
+      ]);
+    }
   }
 
 
@@ -175,19 +199,38 @@ export class CreateProjectComponent implements OnInit {
     this.MasterTableservice.getOpportunityName(selectedCompanyId).subscribe((res: any) => {
       if (res?.message === "success") {
         this.opportunityNameOptions = res?.data;
+
+        // Automatically select the opportunity name if it matches the response
+        const selectedOpportunityId = this.response.opportunityName?.id;
+        if (selectedOpportunityId) {
+          const matchingOpportunity = this.opportunityNameOptions.find(opportunity => opportunity.id === selectedOpportunityId);
+          if (matchingOpportunity) {
+            this.myForm.get('opportunityName').setValue(matchingOpportunity.id);
+          }
+        }
       } else {
         this.opportunityNameOptions = [];
       }
     });
   }
+
   // ---------------get Industry Vertical------------------------//
   onOpportunitySelect(event) {
     const selectedOpportunityId = event.value;
 
-    // Assuming your service method to get industry vertical takes the selected opportunity ID
+    // Fetch industry vertical options based on the selected opportunity ID
     this.MasterTableservice.getIndustryVertical(selectedOpportunityId).subscribe((res: any) => {
       if (res?.message === "success") {
         this.IVOptions = res?.data;
+
+        // Automatically select the industry vertical if it matches the response
+        const selectedIVId = this.response.industryVertical?.id;
+        if (selectedIVId) {
+          const matchingIV = this.IVOptions.find(iv => iv.id === selectedIVId);
+          if (matchingIV) {
+            this.myForm.get('industryVertical').setValue(matchingIV.id);
+          }
+        }
       } else {
         this.IVOptions = [];
       }
@@ -232,8 +275,7 @@ export class CreateProjectComponent implements OnInit {
     return dayjs(date).format('YYYY-MM-DD');
   }
 
-  onSaveAsDraftClick()
-  {
+  onSaveAsDraftClick() {
     this.SaveAsDraftProjects();
   }
   //----------------------Save Project as Draft-----------------------//
@@ -250,9 +292,12 @@ export class CreateProjectComponent implements OnInit {
 
     const originProjectLocationData = this.OtableData.map((row: TableRow) => ({
       volume: row.Volume,
-      originDestination: 'Origin',
+      originDestination: 0,
+      originDestinationCode: 0,
+
       location: {
-        id: this.locationOptions.find(loc => loc.name === row.city)?.id
+        id: this.locationOptions.find(loc => loc.name === row.city)?.id,
+        name: row.city
       },
       uom: {
         id: row.Uom
@@ -261,16 +306,18 @@ export class CreateProjectComponent implements OnInit {
 
     const destinationProjectLocationData = this.tableData.map((row: TableRow) => ({
       volume: row.Volume,
-      originDestination: 'Destination',
+      originDestination: 1,
+      originDestinationCode: 1,
       location: {
-        id: this.locationOptions.find(loc => loc.name === row.city)?.id
+        id: this.locationOptions.find(loc => loc.name === row.city)?.id,
+        name: row.city
       },
       uom: {
         id: row.Uom
       }
     }));
     const body = {
-      id: this.projectId,
+      id: this.projId,
       description: "",
       projectInformation: {
         customerCode: this.myForm.get('customerCode').value,
@@ -298,35 +345,39 @@ export class CreateProjectComponent implements OnInit {
           "id": this.myForm.get('projectStatus').value,
         },
         opportunityManager: opportunityMangers,
-        projectLocation: [...originProjectLocationData, ...destinationProjectLocationData],
-      }
+      },
+      projectLocation: [
+          ...originProjectLocationData,
+          ...destinationProjectLocationData
+      
+      ]
     }
 
     this.projectService.saveAsDraftProject(body).subscribe(
       (res) => {
         const savedProjectId = res.data.id;
         console.log('Draft saved successfully:', savedProjectId);
-  
+
         if (savedProjectId) {
           this.projectId = savedProjectId;
-  
-        if (this.uploadedFilesToSave.length > 0 && this.projectId !== null) {
-          this.uploadFiles();
+
+          if (this.uploadedFilesToSave.length > 0 && this.projectId !== null) {
+            this.uploadFiles();
+          }
+          if (this.uploadedResponseFilesToSave.length > 0 && this.projectId !== null) {
+            this.uploadResponseFiles();
+          }
+          if (this.uploadedOtherFilesToSave.length > 0 && this.projectId !== null) {
+            this.uploadOtherFiles();
+          }
+          this.messageService.add({
+            key: 'successToast',
+            severity: 'success',
+            summary: 'Success!',
+            detail: 'Project draft is saved Successfully.'
+          });
         }
-        if (this.uploadedResponseFilesToSave.length > 0 && this.projectId !== null) {
-          this.uploadResponseFiles();
-        }
-        if (this.uploadedOtherFilesToSave.length > 0 && this.projectId !== null) {
-          this.uploadOtherFiles();
-        }
-        this.messageService.add({
-          key: 'successToast',
-          severity: 'success',
-          summary: 'Success!',
-          detail: 'Project draft is saved Successfully.'
-        });
-      }
-    },
+      },
       (error) => {
 
         if (error.status === 400) {
@@ -556,13 +607,6 @@ export class CreateProjectComponent implements OnInit {
     this.visibleValueBox = true;
   }
 
-  showDialogResponse() {
-    this.visibleResponseBox = true;
-  }
-  showDialogOthers() {
-    this.visibleOthersBox = true;
-  }
-
   onValueCancelClick() {
     this.fileNameOC = "";
     this.selectedFiles = [];
@@ -584,14 +628,7 @@ export class CreateProjectComponent implements OnInit {
   }
 
   onRemoveClick() {
-    // this.selectedFiles.splice(index, 1);
 
-    // if (this.selectedFiles.length > 0) {
-    //   // Display the names of remaining files
-    //   this.fileNameOC = this.selectedFiles.map(file => file.name).join(', ');
-    // } else {
-    //   this.fileNameOC = "";
-    // }
     this.fileNameOC = "";
     this.selectedFiles = [];
     this.selectedFile = null;
@@ -602,7 +639,10 @@ export class CreateProjectComponent implements OnInit {
 
   onUploadClick(): void {
     if (this.selectedFiles.length > 0) {
-      this.uploadedFilesToSave = [...this.uploadedFilesToSave, ...this.selectedFiles.map(file => ({ name: file.name, file }))];
+      this.uploadedFilesToSave = [
+        ...this.uploadedFilesToSave,
+        ...this.selectedFiles.map(file => ({ id: null, name: file.name, file })),
+      ];
       this.selectedFiles = [];
       const fileInput = document.getElementById('fileInput') as HTMLInputElement;
       if (fileInput) {
@@ -622,15 +662,12 @@ export class CreateProjectComponent implements OnInit {
     for (const file of this.uploadedFilesToSave) {
       this.projectService.UploadProjectArtifact(file.file, scopeId, entityId).subscribe(
         (res: any) => {
-          if (res?.message === 'Excel Upload Successfully') {
-            console.log('File uploaded successfully:', res);
-            this.uploadedFiles.push({ name: file.name, file: file.file });
-            console.log('uploadedFiles:', this.uploadedFiles);
-            this.showSuccessMessage('File uploaded successfully!');
+          if (res?.status === 200 && res?.message === 'success' && res?.data?.id) {
+            file.id = res.data.id;
+            this.uploadedFiles.push({ id: file.id, name: file.name, file: file.file });
+            // this.showSuccessMessage('File uploaded successfully!');
           } else {
-            console.log('Unexpected response:', res);
-            this.uploadedFiles.push({ name: file.name, file: file.file });
-            console.log('uploadedFiles:', this.uploadedFiles);
+            console.error('Error uploading file. Unexpected response:', res);
           }
         },
         (error) => {
@@ -638,107 +675,50 @@ export class CreateProjectComponent implements OnInit {
         }
       );
     }
-    // Clear the array after uploading
     this.uploadedFilesToSave = [];
   }
 
-  onRemoveUploadedFile(index: number): void {
-    this.uploadedFiles.splice(index, 1);
-  }
 
-  onUploadResponseClick(): void {
-    if (this.selectedFiles.length > 0) {
-      this.uploadedResponseFilesToSave = [...this.uploadedResponseFilesToSave, ...this.selectedFiles.map(file => ({ name: file.name, file }))];
-      this.selectedFiles = [];
-      const fileInput = document.getElementById('fileInput') as HTMLInputElement;
-      if (fileInput) {
-        fileInput.value = '';
-      }
-      this.visibleResponseBox = false;
-      this.fileNameOC = "";
-      console.log('Response files added to save:', this.uploadedResponseFilesToSave);
-    } else {
-      console.log('No file selected for Response.');
-    }
-  }
+  // onRemoveUploadedFile(index: number): void {
+  //   this.uploadedFiles.splice(index, 1);
+  // }
 
-  uploadResponseFiles(): void {
-    const scopeId = 3;
-    const entityId = this.projectId;
-
-    for (const file of this.uploadedResponseFilesToSave) {
-      this.projectService.UploadProjectArtifact(file.file, scopeId, entityId).subscribe(
+  deleteProjectArtifact(index: number): void {
+    if (index >= 0 && index < this.uploadedFiles.length) {
+      const documentIdToDelete = this.uploadedFiles[index].id;
+      this.projectService.deleteProjectDocument(documentIdToDelete).subscribe(
         (res: any) => {
-          if (res?.message === 'Excel Upload Successfully') {
-            console.log('Response file uploaded successfully:', res);
-            this.uploadedResponseFiles.push({ name: file.name, file: file.file });
-            console.log('uploadedResponseFiles:', this.uploadedResponseFiles);
-            this.showSuccessMessage('File uploaded successfully for Response!');
+          if (res.status === 200) {
+            this.uploadedFiles.splice(index, 1);
+            this.showSuccessMessage('Document deleted successfully!');
           } else {
-            console.log('Unexpected response for Response upload:', res);
-            this.uploadedResponseFiles.push({ name: file.name, file: file.file });
-            console.log('uploadedResponseFiles:', this.uploadedResponseFiles);
+            console.error('Unexpected response:', res);
           }
         },
         (error) => {
-          console.error('Error uploading file for Response:', error);
+          // Handle error response
+          console.error('Error deleting document:', error);
         }
       );
-    }
-    // Clear the array after uploading
-    this.uploadedResponseFilesToSave = [];
-  }
-
-  onUploadOtherClick(): void {
-    if (this.selectedFiles.length > 0) {
-      this.uploadedOtherFilesToSave = [...this.uploadedOtherFilesToSave, ...this.selectedFiles.map(file => ({ name: file.name, file }))];
-      this.selectedFiles = [];
-      const fileInput = document.getElementById('fileInput') as HTMLInputElement;
-      if (fileInput) {
-        fileInput.value = '';
-      }
-      console.log('Other files added to save:', this.uploadedOtherFilesToSave);
-      this.visibleOthersBox = false;
-      this.fileNameOC = "";
     } else {
-      console.log('No file selected for Others.');
+      console.error('Invalid index for deleting document.');
     }
   }
 
-  uploadOtherFiles(): void {
-    const scopeId = 4;
-    const entityId = this.projectId;
-
-    for (const file of this.uploadedOtherFilesToSave) {
-      this.projectService.UploadProjectArtifact(file.file, scopeId, entityId).subscribe(
-        (res: any) => {
-          if (res?.message === 'Excel Upload Successfully') {
-            console.log('Other file uploaded successfully:', res);
-            this.uploadedOtherFiles.push({ name: file.name, file: file.file });
-            console.log('uploadedOtherFiles:', this.uploadedOtherFiles);
-            this.showSuccessMessage('File uploaded successfully for Others!');
-          } else {
-            console.log('Unexpected response for Others upload:', res);
-            this.uploadedOtherFiles.push({ name: file.name, file: file.file });
-            console.log('uploadedOtherFiles:', this.uploadedOtherFiles);
-          }
-        },
-        (error) => {
-          console.error('Error uploading file for Others:', error);
-        }
-      );
-    }
-    // Clear the array after uploading
-    this.uploadedOtherFilesToSave = [];
+  showDialogResponse() {
+    this.visibleResponseBox = true;
+  }
+  showDialogOthers() {
+    this.visibleOthersBox = true;
   }
 
-  onRemoveUploadedResponseFile(index: number): void {
-    this.uploadedResponseFiles.splice(index, 1);
-  }
+  // onRemoveUploadedResponseFile(index: number): void {
+  //   this.uploadedResponseFiles.splice(index, 1);
+  // }
 
-  onRemoveUploadedOtherFile(index: number): void {
-    this.uploadedOtherFiles.splice(index, 1);
-  }
+  // onRemoveUploadedOtherFile(index: number): void {
+  //   this.uploadedOtherFiles.splice(index, 1);
+  // }
 
   onResponseCancelClick() {
     this.fileNameOC = "";
@@ -754,4 +734,281 @@ export class CreateProjectComponent implements OnInit {
     this.visibleOthersBox = false;
   }
   //-------------------------------------------------end-----------------------------------------//
+
+
+  //-------------------------------------Delete  Document By ID -----------------------------------//
+
+  deleteResponseArtifact(index: number): void {
+    if (index >= 0 && index < this.uploadedResponseFiles.length) {
+      const documentIdToDelete = this.uploadedResponseFiles[index].id;
+      this.projectService.deleteProjectDocument(documentIdToDelete).subscribe(
+        (res: any) => {
+          if (res.status === 200) {
+            this.uploadedResponseFiles.splice(index, 1);
+            this.showSuccessMessage('Response document deleted successfully!');
+          } else {
+            console.error('Unexpected response:', res);
+          }
+        },
+        (error) => {
+          console.error('Error deleting response document:', error);
+        }
+      );
+    } else {
+      console.error('Invalid index for deleting response document.');
+    }
+  }
+
+  uploadOtherFiles(): void {
+    const scopeId = 4;
+    const entityId = this.projectId;
+
+    for (const file of this.uploadedOtherFilesToSave) {
+      this.projectService.UploadProjectArtifact(file.file, scopeId, entityId).subscribe(
+        (res: any) => {
+          if (res?.status === 200 && res?.message === 'success' && res?.data?.id) {
+            file.id = res.data.id;
+            this.uploadedOtherFiles.push({ id: file.id, name: file.name, file: file.file });
+            // this.showSuccessMessage('Other file uploaded successfully!');
+          } else {
+            console.error('Error uploading other file. Unexpected response:', res);
+          }
+        },
+        (error) => {
+          console.error('Error uploading other file:', error);
+        }
+      );
+    }
+    // Clear the array after uploading
+    this.uploadedOtherFilesToSave = [];
+  }
+
+  onUploadOtherClick(): void {
+    if (this.selectedFiles.length > 0) {
+      this.uploadedOtherFilesToSave = [
+        ...this.uploadedOtherFilesToSave,
+        ...this.selectedFiles.map(file => ({ id: null, name: file.name, file })),
+      ];
+      this.selectedFiles = [];
+      const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+      if (fileInput) {
+        fileInput.value = '';
+      }
+      this.visibleOthersBox = false;
+      this.fileNameOC = "";
+
+      console.log('Other files added to save:', this.uploadedOtherFilesToSave);
+    } else {
+      console.log('No file selected for Others.');
+    }
+  }
+
+  deleteOtherArtifact(index: number): void {
+    if (index >= 0 && index < this.uploadedOtherFiles.length) {
+      const documentIdToDelete = this.uploadedOtherFiles[index].id;
+      this.projectService.deleteProjectDocument(documentIdToDelete).subscribe(
+        (res: any) => {
+          if (res.status === 200) {
+            this.uploadedOtherFiles.splice(index, 1);
+            this.showSuccessMessage('Other document deleted successfully!');
+          } else {
+            console.error('Unexpected response:', res);
+          }
+        },
+        (error) => {
+          console.error('Error deleting other document:', error);
+        }
+      );
+    } else {
+      console.error('Invalid index for deleting other document.');
+    }
+  }
+
+  uploadResponseFiles(): void {
+    const scopeId = 3;
+    const entityId = this.projectId;
+
+    for (const file of this.uploadedResponseFilesToSave) {
+      this.projectService.UploadProjectArtifact(file.file, scopeId, entityId).subscribe(
+        (res: any) => {
+          if (res?.status === 200 && res?.message === 'success' && res?.data?.id) {
+            file.id = res.data.id;
+            this.uploadedResponseFiles.push({ id: file.id, name: file.name, file: file.file });
+            //  this.showSuccessMessage('Response file uploaded successfully!');
+          } else {
+            console.error('Error uploading response file. Unexpected response:', res);
+          }
+        },
+        (error) => {
+          console.error('Error uploading response file:', error);
+        }
+      );
+    }
+
+    this.uploadedResponseFilesToSave = [];
+  }
+
+  onUploadResponseClick(): void {
+    if (this.selectedFiles.length > 0) {
+      this.uploadedResponseFilesToSave = [
+        ...this.uploadedResponseFilesToSave,
+        ...this.selectedFiles.map(file => ({ id: null, name: file.name, file })),
+      ];
+
+      this.selectedFiles = [];
+      const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+      if (fileInput) {
+        fileInput.value = '';
+      }
+      this.visibleResponseBox = false;
+      this.fileNameOC = "";
+
+      console.log('Response files added to save:', this.uploadedResponseFilesToSave);
+    } else {
+      console.log('No file selected for Response.');
+    }
+  }
+
+  getProjectDetails(projectId): void {
+    this.projectService.getProjectDetails(projectId).subscribe((res: any) => {
+      if (res?.message === 'success') {
+        this.response = res.data.projectInformation; // Store the response data
+        this.populateForm(); // Call function to populate form with response data
+      } else {
+        // Handle error
+      }
+    });
+  }
+
+  populateForm(): void {
+
+
+    // Populate other form controls with the received data
+    this.myForm.patchValue({
+      companyName: this.response.company?.id,
+      customerCode: this.response.customerCode,
+      opportunityName: this.response.opportunityName?.id,
+      industryVertical: this.response.industryVertical?.id,
+      region: this.response.region?.id,
+      projectName: this.response.projectName,
+      projectStage: this.response.projectStage?.id,
+      projectStatus: this.response.projectStatus?.id,
+      // opportunityManager: this.response.opportunityManager.map(manager => manager.id),
+      designNotes: this.response.designNote,
+      impleNotes: this.response.implementationNote,
+
+    });
+
+    // Automatically fetch and set opportunity names based on the selected company
+    if (this.response.company) {
+      this.onCompanySelect({ value: this.response.company.id });
+    }
+    // Automatically fetch and set industry vertical based on the selected opportunity name
+    if (this.response.opportunityName) {
+      this.onOpportunitySelect({ value: this.response.opportunityName.id });
+    }
+
+    // Set selected opportunity managers
+    if (this.response.opportunityManager && this.response.opportunityManager.length > 0) {
+      const selectedOpportunityManagers = this.response.opportunityManager.map(manager => manager.id);
+      this.myForm.get('opportunityManger').setValue(selectedOpportunityManagers);
+    }
+    const selectedRegionIndex = this.regionOptions.findIndex(region => region.id === this.response.region?.id);
+    const selectedProjectStageIndex = this.projectStageOptions.findIndex(stage => stage.id === this.response.projectStage?.id);
+
+    if (selectedProjectStageIndex !== -1) {
+      this.myForm.get('projectStage').setValue(this.projectStageOptions[selectedProjectStageIndex].id);
+      // Automatically fetch and set project status based on the selected project stage
+      this.OnStageSelectProjectstatus({ value: this.response.projectStage.id });
+    }
+
+
+
+    if (selectedRegionIndex !== -1) {
+      this.myForm.get('region').setValue(this.regionOptions[selectedRegionIndex].id);
+    }
+
+
+
+    // const startDate = new Date(this.response.projectInformation.startDate);
+    // const endDate = new Date(this.response.projectInformation.endDate);
+    // this.myForm.get('selectedDateRange').setValue([startDate, endDate]);
+
+  }
+  downloadArtifactByIDOther(index: number) {
+    let fileName: string | null = null;
+    if (index >= 0 && index < this.uploadedOtherFiles.length) {
+      const documentIdToDownload = this.uploadedOtherFiles[index].id;
+      fileName = this.uploadedOtherFiles[index].name;
+      this.createBuildingBlockservice.downloadUploadedOperationCard(documentIdToDownload).subscribe(
+        (data: ArrayBuffer) => {
+          const blob = new Blob([data]);
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          //link.download = 'downloaded_file.xlsx';
+          link.download = fileName;
+          link.click();
+          window.URL.revokeObjectURL(url);
+        },
+        (error) => {
+          console.error('Error downloading file:', error);
+        }
+      );
+    } else {
+      console.error('Operation Card is null or undefined.');
+
+    }
+  }
+
+  downloadArtifactByIDResponse(index: number) {
+    let fileName: string | null = null;
+    if (index >= 0 && index < this.uploadedResponseFiles.length) {
+      const documentIdToDownload = this.uploadedResponseFiles[index].id;
+      fileName = this.uploadedResponseFiles[index].name;
+      this.createBuildingBlockservice.downloadUploadedOperationCard(documentIdToDownload).subscribe(
+        (data: ArrayBuffer) => {
+          const blob = new Blob([data]);
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          //link.download = 'downloaded_file.xlsx';
+          link.download = fileName;
+          link.click();
+          window.URL.revokeObjectURL(url);
+        },
+        (error) => {
+          console.error('Error downloading file:', error);
+        }
+      );
+    } else {
+      console.error('Operation Card is null or undefined.');
+    }
+  }
+  downloadArtifactByIDValue(index: number) {
+    let fileName: string | null = null;
+    if (index >= 0 && index < this.uploadedFiles.length) {
+      const documentIdToDownload = this.uploadedFiles[index].id;
+      fileName = this.uploadedFiles[index].name;
+      this.createBuildingBlockservice.downloadUploadedOperationCard(documentIdToDownload).subscribe(
+        (data: ArrayBuffer) => {
+          const blob = new Blob([data]);
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          //link.download = 'downloaded_file.xlsx';
+          link.download = fileName;
+          link.click();
+          window.URL.revokeObjectURL(url);
+        },
+        (error) => {
+          console.error('Error downloading file:', error);
+        }
+      );
+    } else {
+      console.error('Operation Card is null or undefined.');
+    }
+
+  }
 }
+

@@ -117,12 +117,12 @@ label{
 .file-item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   margin-bottom: 8px; 
-  padding: 8px; 
+  padding: 0px; 
 }
 
 .remove-button {
+  padding-left: 3px;
   background: none;
   border: none;
   color: red; 

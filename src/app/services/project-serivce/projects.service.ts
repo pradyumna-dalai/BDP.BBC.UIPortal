@@ -81,23 +81,6 @@ advanceSearchFilter(body: any): Observable<any> {
   return this.http.post<any>(url + settings.AppRoutes.Auth.searchProject, body, options);
 }
 
- //------process configurable-----------------------//
-
- processConfigImportExcel(formData: FormData) {
-  return this.http.post(url+settings.AppRoutes.Auth.uploadConfigurable, formData).pipe(
-    catchError((error: any) => {
-      return throwError(error); // Pass the error to the subscriber
-    })
-  );
-}
-processConfigGetImportExcelData() {
-  return this.http.get(url+settings.AppRoutes.Auth.processConfigurable).pipe(
-    catchError((error: any) => {
-      return throwError(error); // Pass the error to the subscriber
-    })
-  );
-}
-
 
 
 //--------------------------Common Upload----------------------------//
@@ -116,5 +99,35 @@ UploadProjectArtifact(file: File, scopeId: number, entityId: number): Observable
   );
 }
 
+deleteProjectDocument(id:number ) {
+  const downloadUrl = `${url}${settings.AppRoutes.Auth.deleteProjectFile}/${id}`;
+  return this.http.delete(downloadUrl);
+}
+
+
+/** get Project */
+
+getProjectDetails(projId: number): Observable<any> {
+
+  return this.http.get<any>(`${url}${settings.AppRoutes.Auth.saveProjectDraft}/${projId}`);
+
+}
+
+
+
+/** volume **/
+
+getvolumeDetails(projId: number): Observable<any> {
+
+  return this.http.get<any>(`https://private-anon-5e21fd3c5c-psabdpbbcapiblueprint.apiary-mock.com/version/project/projId/volume`);
+
+}
+savevolumeDetails(body: any) {
+
+  return this.http.post<any>(`https://private-anon-78832734d7-psabdpbbcapiblueprint.apiary-mock.com/version/project/projectId/volume`,body);
+
+}
+
+/** end */
 }
 

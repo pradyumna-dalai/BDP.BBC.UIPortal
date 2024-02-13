@@ -32,6 +32,8 @@ export class FteComponent {
   modeTitle: string = 'Add';
   searchTimeout: number;
   isSearchClear:boolean =false;
+  regionId:any;
+  countryID:any;
   constructor(private breadcrumbService: AppBreadcrumbService,
     private messageService: MessageService, 
     private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService, private masterTableService: MasterTableService,private fb: FormBuilder,) {
@@ -62,31 +64,64 @@ export class FteComponent {
   ngOnInit(){
     this.fetchAllFteDetails();
     this.fetchLocationRegion();
-    this.fetchLocationCountry();
+    // this.fetchLocationCountry();
     this.fetchLocation();
     this.FteForm = this.fb.group({
       id: [''],
       region : ['',Validators.required],
       country : ['',Validators.required],
       location: ['',Validators.required],
-      fte_month: [ '',Validators.required, Validators.maxLength(9)],
+      fte_month: [ '',Validators.required,],
       ftf_year : [''],
       Work_Time_Year: ['',Validators.required],
       status : ['']
     });
+
+
     this.FteForm.get('fte_month').valueChanges.subscribe((value: any) => {
       this.FteForm.patchValue({
         ftf_year: value*13
-      })
+      });
     });
- 
+    this.FteForm.get('region').valueChanges.subscribe((value: any) => {
+      this.regionId = value;
+      if(value){
+        this.fetchLocationCountry();
+        this.findLocationID()
+      }
+    });
+
   }
+  findRegionId(event:any){
+    const region = event.value;
+    console.log("regionid",region);
+    this.regionId= region;
+    this.fetchLocationCountry();
+  }
+
+  // findCountryId(event){
+  //   const country = event.value;
+  //   this.countryID = country;
+  //   this.findLocationID()
+  // }
+  findLocationID(){
+        console.log("findCountry_Id",this.countryID)
+      this.locationOptions.filter((res)=> res.country.id === this.countryID);
+        console.log(this.locationList)  
+  }
+
+
+
   limitTo6Digits(event: any) {
-    if (event.target.value.length > 9) {
-      event.target.value = event.target.value.slice(0, 9);
+    if (event.target.value.length > 6) {
+      event.target.value = event.target.value.slice(0, 6);
     }
   }
-  
+  limitTo7Digits(event: any){
+    if (event.target.value.length > 7) {
+      event.target.value = event.target.value.slice(0, 7);
+    }
+  }
   clear(table: Table) {
     table.reset();
     this.onSort(Event);
@@ -128,8 +163,12 @@ fetchLocationRegion() {
 
 fetchLocationCountry() {
   this.countryOptions = [];
-  this.masterDataService.getAllCountryDetails().subscribe((res: any) => {
+
+  this.masterDataService.getAllCountry(this.regionId).subscribe((res: any) => {
     if (res?.message == "success") {
+      if(this.editMode){
+        this.FteForm.get('country').patchValue(this.fteRowData.country.id)
+      }
       this.countryOptions = res?.data;
       this.countryOptions = res?.data.map((country: any) => ({
         ...country,
@@ -139,7 +178,7 @@ fetchLocationCountry() {
     }
   })
 }
-
+locationList:any;
 
 fetchLocation() {
   this.locationOptions = [];
@@ -149,6 +188,7 @@ fetchLocation() {
       this.locationOptions = res?.data.map((country: any) => ({
         ...country,
       }));
+
     } else {
       this.locationOptions = [];
     }
@@ -213,12 +253,15 @@ fteRowData:any;
 editDisable:boolean = false;
 editFteRow(ftes: any){
 this.fteRowData = ftes;
-
+console.log("patch",this.fteRowData)
   this.updateLocationDetails()
 }
 updateLocationDetails() {
   this.editMode = true;
   this.modeTitle = 'Edit';
+  if(this.countryOptions){
+    
+  }
     this.FteForm.patchValue({
       region: this.fteRowData.region.id,
       country: this.fteRowData.country.id,
