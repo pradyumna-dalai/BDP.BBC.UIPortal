@@ -69,7 +69,7 @@ export class CreateProjectComponent implements OnInit {
   enableDestinationLocation: boolean = false;
   isRowEditMode: boolean[] = [];
   originTableControls: FormArray;
-  isAddingRow: boolean;
+  isAddingRow: boolean; 
   isActionButtonsVisible = false;
   selectedFile: any;
   visibleValueBox: boolean = false;
@@ -188,7 +188,6 @@ export class CreateProjectComponent implements OnInit {
         this.companyOptions = [];
       }
     })
-
   }
   // ---------------get Opportunity name on company select------------------------//
 
@@ -927,7 +926,6 @@ export class CreateProjectComponent implements OnInit {
     if (selectedRegionIndex !== -1) {
       this.myForm.get('region').setValue(this.regionOptions[selectedRegionIndex].id);
     }
-
 
 
     // const startDate = new Date(this.response.projectInformation.startDate);

@@ -31,7 +31,7 @@ visible: boolean = false;
   }
 
   ngOnInit(){
-  this.getVolumeDetails(23);
+  this.getVolumeDetails(1);
   }
   public get isExpanded() {
     return this._isExpanded;
@@ -71,14 +71,29 @@ showDestinationSection() {
   this.originButtonBorderRadius = '5px';
   this.destinationButtonBorderRadius = '5px';
 }
-
+getLocationNames(): string[] {
+  const locationNames: string[] = [];
+  if (this.volumeDetails && this.volumeDetails.length > 0) {
+    const configurations = this.volumeDetails[0]?.processes[0]?.originService?.configurations;
+    if (configurations) {
+      configurations.forEach(configuration => {
+        configuration.locations.forEach(location => {
+          if (!locationNames.includes(location.locationName)) {
+            locationNames.push(location.locationName);
+          }
+        });
+      });
+    }
+  }
+  return locationNames;
+}
 getVolumeDetails(projectId) {
   this.projectService.getvolumeDetails(projectId).subscribe((res: any) => {
-    this.volumeDetails = res.BuildingBlocks;
+    this.volumeDetails = res.data.buildingBlocks;
     if (this.volumeDetails.length > 0) {
       // Assuming location names structure is consistent across all building blocks
       this.dynamicColumns = this.volumeDetails.reduce((acc, curr) => {
-        curr.originService.processes[0].lines[0].locationVolume.forEach(location => {
+        curr.processes[0].originService.configurations[0].locations.forEach(location => {
           if (!acc.includes(location.locationName)) {
             acc.push(location.locationName);
           }
@@ -86,15 +101,26 @@ getVolumeDetails(projectId) {
         return acc;
       }, []);
     }
+   
   });
 }
 getLocationVolume(buildingBlock: any, locationName: string): string {
   // Implement logic to get the volume for the specified location
   // For example:
-  const location = buildingBlock.originService.processes[0].lines[0].locationVolume.find(loc => loc.locationName === locationName);
+  const location = buildingBlock.processes[0].originService.configurations[0].locations.find(loc => loc.locationName === locationName);
   return location ? location.volume : '';
 }
 
+// getVolumeForLocation(configuration: any, locationName: string): number {
+//   const location = configuration.locations.find(loc => loc.locationName === locationName);
+//   return location ? location.volume : 0;
+// }
+// setVolumeForLocation(configuration: any, locationName: string, volume: number) {
+//   const location = configuration.locations.find(loc => loc.locationName === locationName);
+//   if (location) {
+//     location.volume = volume;
+//   }
+// }
 onSaveVolumeClick(){
   const body ={
     projectId: 1,
