@@ -41,15 +41,21 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   projectLocations: any;
   treeDataCalculated: any;
   selectedLocationNodes: TreeNode[] = [];
+  projectId: any;
+  projectName: any;
+  buildingBlocks: any;
 
   constructor(private projectService: ProjectsService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
   }
 
   ngOnInit() {
     this.projectService.draftData$.subscribe(data => {
-      this.projectLocations = data.data.projectLocation.filter(loc => loc.originDestinationCode === 0);
+      this.projectLocations = data.data.projectLocation.filter(loc => loc.originDestinationCode === 0 || loc.originDestinationCode === 1);
+      this.projectId = data.data.id;
+      this.projectName = data.data.projectInformation.projectName;
       console.log('Filtered projectLocation:', this.projectLocations);
-      console.log('Draft data:', data);
+      console.log('Draft data:', this.projectId);
+
     });
 
     this.loadTreeDataNew();
@@ -156,7 +162,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
 
   showDestinationSection() {
     this.isOriginActive = false; // Setting isOriginActive to false
-    this.isDestinationActive = true; 
+    this.isDestinationActive = true;
     this.originButtonColor = 'rgb(0, 110, 255)';
     this.destinationButtonColor = 'white';
     this.originButtonBorder = '1px solid rgb(0, 110, 255)';
@@ -212,30 +218,21 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       this.projectService.getProcessStepByBlockId(blockId).subscribe({
         next: (response: any) => {
           if (Array.isArray(response.data)) {
-            const stepsInformation: any = {};
-            response.data.forEach((item: any) => {
-              const { operationStep, originDestination, configurable, originDestinationCode } = item;
-              if (!stepsInformation[operationStep]) {
-                stepsInformation[operationStep] = {
-                  Origin: [],
-                  Destination: []
-                };
-              }
-
-              let destination: string[] = [];
-
-              // Determine the origin destination based on originDestinationCode
-              if (originDestinationCode === 0) {
-                destination = ['Origin'];
-              } else if (originDestinationCode === 1) {
-                destination = ['Destination'];
-              } else if (originDestinationCode === 2) {
-                destination = ['Origin', 'Destination'];
-              }
-              destination.forEach(dest => {
-                stepsInformation[operationStep][dest].push(configurable);
-              });
+            const stepsInformation: any[] = response.data.map((item: any) => {
+              const originDestinationCode = item.originDestinationCode === 0 ? 'Origin' : 'Destination';
+              return {
+                blockName: item.block,
+                stepId: item.id,
+                stepName: item.operationStep,
+                originDestinationCode: originDestinationCode,
+                origin: [], // Initialize origin array
+                destination: [], // Initialize destination array
+                configurableId: item.configurableId, // Add configurableId to stepInfo
+                configurable: item.configurable // Add configurable to stepInfo
+              };
             });
+
+            // Update node's steps information with additional data
             this.updateNodeStepsInformation(node, stepsInformation);
           } else {
             console.error('Data is not an array:', response.data);
@@ -248,24 +245,38 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateNodeStepsInformation(node: any, stepsInformation: any) {
+  updateNodeStepsInformation(node: any, stepsInformation: any[]) {
     const updatedStepsInformation = {};
-    for (const operationStep in stepsInformation) {
-      const stepInfo = stepsInformation[operationStep];
-      for (const originDestination in stepInfo) {
-        const configArray = stepInfo[originDestination];
-        if (!updatedStepsInformation[operationStep]) {
-          updatedStepsInformation[operationStep] = {
-            Origin: [],
-            Destination: []
-          };
-        }
-        updatedStepsInformation[operationStep][originDestination] = configArray;
+    stepsInformation.forEach(stepInfo => {
+      const operationStep = stepInfo.stepName;
+      if (!updatedStepsInformation[operationStep]) {
+        updatedStepsInformation[operationStep] = {
+          Origin: [],
+          Destination: [],
+          operationStepId: stepInfo.stepId,
+          buildingBlockName: stepInfo.blockName
+        };
       }
-    }
+
+      // Add configurable and configurableId to origin or destination array based on originDestinationCode
+      if (stepInfo.originDestinationCode === 'Origin') {
+        updatedStepsInformation[operationStep].Origin.push({
+          configurableId: stepInfo.configurableId,
+          configurable: stepInfo.configurable
+        });
+      } else if (stepInfo.originDestinationCode === 'Destination') {
+        updatedStepsInformation[operationStep].Destination.push({
+          configurableId: stepInfo.configurableId,
+          configurable: stepInfo.configurable
+        });
+      }
+    });
+
     node.data.stepsInformation = updatedStepsInformation;
-    console.log('step Info1', node.data.stepsInformation);
+    console.log('Step Information:', node.data.stepsInformation);
   }
+
+
 
   getTreeData(selectedStep: string, originDestinationCode: number): TreeNode[] {
     const updatedStepsInformation = this.selectedNodes[0]?.data?.stepsInformation;
@@ -278,14 +289,12 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       console.error('Data is not available to generate tree data');
       return [];
     }
-  
     const treeData: TreeNode[] = [];
-  
     for (const operationStep in updatedStepsInformation) {
-      if (operationStep === selectedStep) { // Filter based on the selected step
+      if (operationStep === selectedStep) { 
         const stepInfo = updatedStepsInformation[operationStep];
         let originDestination: string;
-  
+
         if (originDestinationCode === 0) {
           originDestination = 'Origin';
         } else if (originDestinationCode === 1) {
@@ -293,11 +302,13 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
         } else if (originDestinationCode === 2) {
           originDestination = 'Origin/Destination';
         }
-  
+
         const configurations = stepInfo[originDestination];
-        configurations.forEach((config: string) => {
+        configurations.forEach((config: any) => {
           const locationChildren: TreeNode[] = [];
-          projectLocation.forEach((location: any) => {
+
+          const filteredLocations = projectLocation.filter(loc => loc.originDestinationCode === originDestinationCode);
+          filteredLocations.forEach((location: any) => {
             const label = originDestinationCode === 0 ? location.location.name : location.name;
             locationChildren.push({
               key: `${treeData.length}-${locationChildren.length}`,
@@ -308,27 +319,31 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
               }
             });
           });
+
           treeData.push({
             key: `${treeData.length}`,
-            label: config,
-            data: config,
+            label: config.configurable,
+            data: {
+              id: config.configurableId,
+              name: config.configurable
+            },
             children: locationChildren
           });
         });
       }
     }
-  
-    this.treeData = treeData; // Update the treeData property
+
+    this.treeData = treeData;
+    console.log('tt', treeData);
     return treeData;
   }
-  
+
 
   selectStep(step: string, originDestinationCode: number) {
     if (this.selectedStep !== null && this.selectedStep === step) {
       return;
     }
     this.selectedStep = step;
-    // Call the getTreeData method with the correct originDestinationCode
     if (originDestinationCode === 0 || originDestinationCode === 1) {
       // Only proceed if originDestinationCode is 0 or 1
       this.getTreeData(step, originDestinationCode);
@@ -336,7 +351,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       console.error('Invalid originDestinationCode:', originDestinationCode);
     }
   }
-  
+
 
   onLocationNodeSelect(event: any): void {
     const index = this.selectedLocationNodes.findIndex(node => node.key === event.node.key);
@@ -345,63 +360,68 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
     } else {
       this.selectedLocationNodes.splice(index, 1);
     }
-}
+  }
   //----------------------------------------Save Porject Draft------------------------------//
   onSaveProjectBBClick() {
     const body = {
-      "projectId": 1,
-      "projectName": "sample name",
-      "buildingBlocks": [
-        {
-          "buildingBlockId": 1,
-          "buildingBlockName": "sample",
-          "processes": [
-            {
-              "processId": 1,
-              "processName": "sample",
-              "originService": {
-                "configurations": [
-                  {
-                    "configurationId": 1,
-                    "configurationName": "sample",
-                    "locations": [
-                      {
-                        "locationId": 1,
-                        "locationName": "sample",
-                        "unloc": "INNSA"
-                      }
-                    ]
-                  }
-                ]
+      projectId: this.projectId,
+      projectName: this.projectName,
+      buildingBlocks: this.selectedNodes.map(node => {
+        return {
+          buildingBlockId: node.data.id,
+          buildingBlockName: node.label,
+          processes: node.data.stepsInformation.map((stepInfo: any) => {
+            return {
+              processId: stepInfo.id,
+              processName: stepInfo.operationStep,
+              originService: {
+                configurations: stepInfo.Origin.map(config => {
+                  return {
+                    configurationId: config.id,
+                    configurationName: config.configurable,
+                    locations: config.locations.map(location => {
+                      return {
+                        locationId: location.id,
+                        locationName: location.name,
+                        unloc: location.unloc
+                      };
+                    })
+                  };
+                })
               },
-              "destinationService": {
-                "configurations": [
-                  {
-                    "configurationId": 1,
-                    "configurationName": "sample",
-                    "locations": [
-                      {
-                        "locationId": 1,
-                        "locationName": "sample",
-                        "unloc": "INNSA"
-                      }
-                    ]
-                  }
-                ]
+              destinationService: {
+                configurations: stepInfo.Destination.map(config => {
+                  return {
+                    configurationId: config.id,
+                    configurationName: config.configurable,
+                    locations: config.locations.map(location => {
+                      return {
+                        locationId: location.id,
+                        locationName: location.name,
+                        unloc: location.unloc
+                      };
+                    })
+                  };
+                })
               }
-            }
-          ]
-        }
-      ]
-    }
+            };
+          })
+        };
+      })
+    };
+
     this.projectService.saveProjectBuildingBlock(body).subscribe({
       next: (response: any) => {
-        console.log(response, "Project Building Block is okk");
+        console.log('Project Building Block saved successfully:', response);
+        // Optionally, you can perform any additional actions after successful save
       },
-      
-
-    })
+      error: (error) => {
+        console.error('Error saving Project Building Block:', error);
+        // Handle error scenario appropriately, e.g., show error message to the user
+      }
+    });
   }
+
 
   goToNextTab() {
     this.activeIndex = (this.activeIndex + 2) % 8
