@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
-import { TreeDragDropService, TreeNode } from 'primeng/api';
+import { MessageService, TreeDragDropService, TreeNode } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { CreateBuildingBlockService } from 'src/app/services/create-buildingBlock/create-building-block.service';
 import { AppMainComponent } from 'src/app/app.main.component';
@@ -45,7 +45,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   projectName: any;
   buildingBlocks: any;
 
-  constructor(private projectService: ProjectsService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
+  constructor(private projectService: ProjectsService, private messageService: MessageService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
   }
 
   ngOnInit() {
@@ -225,14 +225,12 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
                 stepId: item.id,
                 stepName: item.operationStep,
                 originDestinationCode: originDestinationCode,
-                origin: [], // Initialize origin array
-                destination: [], // Initialize destination array
-                configurableId: item.configurableId, // Add configurableId to stepInfo
-                configurable: item.configurable // Add configurable to stepInfo
+                origin: [], 
+                destination: [], 
+                configurableId: item.configurableId, 
+                configurable: item.configurable 
               };
             });
-
-            // Update node's steps information with additional data
             this.updateNodeStepsInformation(node, stepsInformation);
           } else {
             console.error('Data is not an array:', response.data);
@@ -257,7 +255,6 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
           buildingBlockName: stepInfo.blockName
         };
       }
-
       // Add configurable and configurableId to origin or destination array based on originDestinationCode
       if (stepInfo.originDestinationCode === 'Origin') {
         updatedStepsInformation[operationStep].Origin.push({
@@ -370,37 +367,26 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
         return {
           buildingBlockId: node.data.id,
           buildingBlockName: node.label,
-          processes: node.data.stepsInformation.map((stepInfo: any) => {
+          processes: Object.keys(node.data.stepsInformation).map((operationStep: string) => {
+            const stepInfo = node.data.stepsInformation[operationStep];
             return {
-              processId: stepInfo.id,
-              processName: stepInfo.operationStep,
+              processId: stepInfo.operationStepId,
+              processName: operationStep,
               originService: {
-                configurations: stepInfo.Origin.map(config => {
+                configurations: stepInfo.Origin.map((config: any) => {
                   return {
-                    configurationId: config.id,
+                    configurationId: config.configurableId,
                     configurationName: config.configurable,
-                    locations: config.locations.map(location => {
-                      return {
-                        locationId: location.id,
-                        locationName: location.name,
-                        unloc: location.unloc
-                      };
-                    })
+                    locations: [] 
                   };
                 })
               },
               destinationService: {
-                configurations: stepInfo.Destination.map(config => {
+                configurations: stepInfo.Destination.map((config: any) => {
                   return {
-                    configurationId: config.id,
+                    configurationId: config.configurableId,
                     configurationName: config.configurable,
-                    locations: config.locations.map(location => {
-                      return {
-                        locationId: location.id,
-                        locationName: location.name,
-                        unloc: location.unloc
-                      };
-                    })
+                    locations: [] 
                   };
                 })
               }
@@ -409,18 +395,24 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
         };
       })
     };
-
+  
+    console.log('Request Body:', body); 
     this.projectService.saveProjectBuildingBlock(body).subscribe({
       next: (response: any) => {
         console.log('Project Building Block saved successfully:', response);
-        // Optionally, you can perform any additional actions after successful save
+        this.messageService.add({
+          key: 'successToast',
+          severity: 'success',
+          summary: 'Success!',
+          detail: 'Project Building Block saved successfully.'
+        });
       },
       error: (error) => {
         console.error('Error saving Project Building Block:', error);
-        // Handle error scenario appropriately, e.g., show error message to the user
       }
     });
   }
+  
 
 
   goToNextTab() {
