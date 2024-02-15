@@ -26,12 +26,13 @@ private _isExpanded = false;
 visible: boolean = false;
   volumeDetails: any[]= [];
   dynamicColumns: any[] = [];
+  allData: { projectId: any; projectName: any; buildingBlocks: any; };
   constructor(private projectService:ProjectsService){
 
   }
 
   ngOnInit(){
-  this.getVolumeDetails(1);
+  this.getVolumeDetails(374);
   }
   public get isExpanded() {
     return this._isExpanded;
@@ -71,29 +72,31 @@ showDestinationSection() {
   this.originButtonBorderRadius = '5px';
   this.destinationButtonBorderRadius = '5px';
 }
-getLocationNames(): string[] {
-  const locationNames: string[] = [];
-  if (this.volumeDetails && this.volumeDetails.length > 0) {
-    const configurations = this.volumeDetails[0]?.processes[0]?.originService?.configurations;
-    if (configurations) {
-      configurations.forEach(configuration => {
-        configuration.locations.forEach(location => {
-          if (!locationNames.includes(location.locationName)) {
-            locationNames.push(location.locationName);
-          }
-        });
-      });
-    }
-  }
-  return locationNames;
-}
+
 getVolumeDetails(projectId) {
   this.projectService.getvolumeDetails(projectId).subscribe((res: any) => {
-    this.volumeDetails = res.data.buildingBlocks;
-    if (this.volumeDetails.length > 0) {
-      // Assuming location names structure is consistent across all building blocks
+    if (res && res.data && res.data.buildingBlocks && res.data.buildingBlocks.length > 0) {
+      // Extracting all building blocks
+      const buildingBlocksData = res.data.buildingBlocks.map(block => {
+        return {
+          buildingBlockId: block.buildingBlockId,
+          buildingBlockName: block.buildingBlockName,
+          originService: block.originService,
+          destinationService: block.destinationService
+        };
+      });
+      
+      // Storing all data
+      this.allData = {
+        projectId: res.data.projectId,
+        projectName: res.data.projectName,
+        buildingBlocks: buildingBlocksData
+      };
+
+      // Storing volume details for dynamic columns
+      this.volumeDetails = res.data.buildingBlocks;
       this.dynamicColumns = this.volumeDetails.reduce((acc, curr) => {
-        curr.processes[0].originService.configurations[0].locations.forEach(location => {
+        curr.originService.processes[0].lines[0].locationVolume.forEach(location => {
           if (!acc.includes(location.locationName)) {
             acc.push(location.locationName);
           }
@@ -101,90 +104,124 @@ getVolumeDetails(projectId) {
         return acc;
       }, []);
     }
-   
   });
+}
+getLocationVolumeValue(buildingBlock: any, col: any): any {
+  // Implement the logic to get the value here, for example:
+  return this.getLocationVolume(buildingBlock, col);
+}
+
+setLocationVolumeValue(newValue: any, buildingBlock: any, col: any): void {
+  // Implement the logic to set the value here, for example:
+  // Assuming buildingBlock is an object with properties, you can update the value like this:
+  buildingBlock[col] = newValue;
 }
 getLocationVolume(buildingBlock: any, locationName: string): string {
   // Implement logic to get the volume for the specified location
   // For example:
-  const location = buildingBlock.processes[0].originService.configurations[0].locations.find(loc => loc.locationName === locationName);
+  const location = buildingBlock.originService.processes[0].lines[0].locationVolume.find(loc => loc.locationName === locationName);
   return location ? location.volume : '';
 }
 
-// getVolumeForLocation(configuration: any, locationName: string): number {
-//   const location = configuration.locations.find(loc => loc.locationName === locationName);
-//   return location ? location.volume : 0;
-// }
-// setVolumeForLocation(configuration: any, locationName: string, volume: number) {
-//   const location = configuration.locations.find(loc => loc.locationName === locationName);
-//   if (location) {
-//     location.volume = volume;
-//   }
-// }
-onSaveVolumeClick(){
-  const body ={
-    projectId: 1,
-    projectName: "Sample",
-    BuildingBlocks: [
-      {
-        buildingBlockId: 1,
-        buildingBlockName: "VOTAir",
-        originService: {
-          processes: [
-            {
-              processId: 1,
-              processName: "sample",
-              lines: [
-                {
-                  uom: "Container",
-                  configurable: "Manual",
-                  locationVolume: [
-                    {
-                      locationName: "Antwerp",
-                      unloc: "BEANR",
-                      volume: 100
-                    },
-                    {
-                      locationName: "Navashava",
-                      unloc: "INNSA",
-                      volume: 100
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        destinationService: {
-          processes: [
-            {
-              processId: 1,
-              processName: "sample",
-              lines: [
-                {
-                  uom: "Container",
-                  configurable: "Manual",
-                  locationVolume: [
-                    {
-                      locationName: "Antwerp",
-                      unloc: "BEANR",
-                      volume: 100
-                    },
-                    {
-                      locationName: "Navashava",
-                      unloc: "INNSA",
-                      volume: 100
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      }
-    ]
+
+onRowEditSave(buildingBlock: any) {
+  // Save logic
+  buildingBlock.editing = false;
+}
+
+onRowEditCancel(buildingBlock: any, ri: number) {
+  // Cancel logic
+  buildingBlock.editing = false;
+}
+
+
+toggleEditMode(buildingBlock: any) {
+  buildingBlock.editing = !buildingBlock.editing;
+  if (buildingBlock.editing && buildingBlock.dynamicColumns && buildingBlock.dynamicColumns.length > 0) {
+      buildingBlock.dynamicColumns.forEach(col => {
+          // Store the original value before switching to edit mode
+          buildingBlock[col + '_original'] = buildingBlock[col];
+          // Initialize input value with the original value
+          buildingBlock[col + '_input'] = buildingBlock[col];
+      });
   }
-  this.projectService.savevolumeDetails(body).subscribe(
+}
+onRowEditInit(buildingBlock: any) {
+  buildingBlock.editing = true;
+  buildingBlock.dynamicColumnsInput = {};
+  this.dynamicColumns.forEach(col => {
+    buildingBlock.dynamicColumnsInput[col] = this.getLocationVolume(buildingBlock, col);
+  });
+}
+onSaveVolumeClick(){
+  // const body ={
+  //   projectId: 376,
+  //   projectName: "SampleProject",
+  //   buildingBlocks: [
+  //       {
+  //           buildingBlockId: 692,
+  //           buildingBlockName: "VOT",
+  //           originService: {
+  //               processes: [
+  //                   {
+  //                       processId: 44,
+  //                       processName: "sample",
+  //                       lines: [
+  //                           {
+  //                               uomId: 1,
+  //                               uomName: "Order",
+  //                               configurableId: 1,
+  //                               configurable: "Manual",
+  //                               locationVolume: [
+  //                                   {
+  //                                       locationId: 1,
+  //                                       locationName: "Antwerp",
+  //                                       volume: 400
+  //                                   },
+  //                                   {
+  //                                       locationId: 2,
+  //                                       locationName: "Navashava",
+  //                                       volume: 300
+  //                                   }
+  //                               ]
+  //                           }
+  //                       ]
+  //                   }
+  //               ]
+  //           },
+  //           destinationService: {
+  //               processes: [
+  //                   {
+  //                       processId: 44,
+  //                       processName: "sample",
+  //                       lines: [
+  //                           {
+  //                               uomId: 32,
+  //                               uomName: "PO",
+  //                               configurableId: 2,
+  //                               configurable: "Manual",
+  //                               locationVolume: [
+  //                                   {
+  //                                       locationId: 3,
+  //                                       locationName: "Antwerp",
+  //                                       volume: 200
+  //                                   },
+  //                                   {
+  //                                       locationId: 4,
+  //                                       locationName: "Navashava",
+  //                                       volume: 100
+  //                                   }
+  //                               ]
+  //                           }
+  //                       ]
+  //                   }
+  //               ]
+  //           }
+  //       }
+  //   ]
+
+  // }
+  this.projectService.savevolumeDetails(this.allData).subscribe(
     (res) => {
       
       console.log(res,"kk");
