@@ -119,7 +119,11 @@ getProjectDetails(projId: number): Observable<any> {
 
 getvolumeDetails(projId: number): Observable<any> {
 
-  return this.http.get<any>(`https://private-anon-5e21fd3c5c-psabdpbbcapiblueprint.apiary-mock.com/version/project/projId/volume`);
+  return this.http.get<any>(url +`project/`+ projId + `/` + settings.AppRoutes.Auth.getAddVoulmeDetails);
+  // return this.http.get<any>(`${url}${settings.AppRoutes.Auth.getAddVoulmeDetails}/${projId}`);
+  // return this.http.get<any>(`https://private-anon-fb1b1daf4c-psabdpbbcapiblueprint.apiary-mock.com/version/project/projectId/volume`);
+
+
 
 }
 savevolumeDetails(body: any) {
