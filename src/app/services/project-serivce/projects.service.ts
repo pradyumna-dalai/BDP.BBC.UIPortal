@@ -150,11 +150,13 @@ savevolumeDetails(body: any) {
 
 //-------------------------------------------Project Building Block ------------------------------------------------------//
 saveProjectBuildingBlock(body:any): Observable<any> {
-  return this.http.post<any>(url + settings.AppRoutes.Auth.addProjectBuildingBlock, body);
-   // return this.http.post<any>(`https://private-anon-8770979f75-psabdpbbcapiblueprint.apiary-mock.com/version/project-block-location/projectId`,body);
+  return this.http.post<any>(url + settings.AppRoutes.Auth.ProjectBuildingBlock, body);
 }
 
+getProjectBuildingBlocks(projectId:number){
+  return this.http.get<any>(`${url}${settings.AppRoutes.Auth.ProjectBuildingBlock}/${projectId}`);
+}
 
-
+//-----------------------------------------------------end------------------------------------------------------------------//
 }
 

@@ -131,7 +131,7 @@ export namespace AppRoutes {
 
        public static readonly getProcessStepbyBlockId = "process";
 
-       public static readonly addProjectBuildingBlock = "project-block-location";
+       public static readonly ProjectBuildingBlock = "project-block-location";
 
         
 

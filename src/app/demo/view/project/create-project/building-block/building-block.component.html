@@ -55,11 +55,11 @@
                                 <ul>
                                     <li *ngFor="let step of node.data?.stepsInformation | keyvalue" (click)="selectStep(step.key, isDestinationActive ? 1 : 0)">
                                         <div><h6>{{ step.key }}</h6></div>
-                                        <ul>
+                                        <!-- <ul>
                                             <li *ngFor="let originDestination of step.value | keyvalue">
                                                 {{ originDestination.key }}: {{ originDestination.value }}
                                             </li>
-                                        </ul>
+                                        </ul> -->
                                     </li>
                                 </ul>
                             </div>
@@ -86,13 +86,13 @@
             </div>
             <br>
             <div>
-                <p-tree *ngIf="isOriginActive"  [value]="treeData" selectionMode="checkbox" class="w-full md:w-30rem"  [(selection)]="selectedLocationNodes">
+                <p-tree *ngIf="isOriginActive"  [value]="treeData" selectionMode="checkbox" class="w-full md:w-30rem"  [propagateSelectionUp]="false" [(selection)]="selectedLocationNodes" (selectionChange)="onLocationNodeSelect($event)">
                     <ng-template let-node pTemplate="default">
                         <span>{{ node.label }}</span>
                     </ng-template>
                 </p-tree>
                 
-                <p-tree *ngIf="isDestinationActive" [value]="treeData" selectionMode="checkbox" class="w-full md:w-30rem" [(selection)]="selectedLocationNodes">
+                <p-tree *ngIf="isDestinationActive" [value]="treeData" selectionMode="checkbox" class="w-full md:w-30rem"  [propagateSelectionUp]="false" [(selection)]="selectedLocationNodes"  (selectionChange)="onLocationNodeSelect($event)">
                         <ng-template let-node pTemplate="default">
                             <span>{{ node.label }}</span>
                         </ng-template>
