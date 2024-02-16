@@ -97,6 +97,9 @@ export class CreateProjectComponent implements OnInit {
   uploadedFilesToSave: { id: number; name: string; file: File }[] = [];
   uploadedResponseFilesToSave: { id: number, name: string; file: File }[] = [];
   uploadedOtherFilesToSave: { id: number | null; name: string; file: File }[] = [];
+
+  savedProjectId: any;
+  draftSaved: boolean = false;
   constructor(private route: ActivatedRoute, private breadcrumbService: AppBreadcrumbService, private zone: NgZone,
     private datePipe: DatePipe, private messageService: MessageService, private fb: FormBuilder, public MasterTableservice: MasterTableService,
     private createBuildingBlockservice: CreateBuildingBlockService, public projectService: ProjectsService) {
@@ -131,7 +134,7 @@ export class CreateProjectComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.projId = params.projId;
       this.getProjectDetails(this.projId);
-      console.log(params.projId)
+      
     });
 
     if (this.projId) {
@@ -358,6 +361,11 @@ export class CreateProjectComponent implements OnInit {
         this.projectService.setDraftData(res);
         //--------------------end-------------//
         const savedProjectId = res.data.id;
+        if (savedProjectId) {
+          this.savedProjectId = savedProjectId; // Set the savedProjectId property
+          this.draftSaved = true; // Set draftSaved to true
+          // Rest of your logic
+      }
         console.log('Draft saved successfully:', savedProjectId);
 
         if (savedProjectId) {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input  } from '@angular/core';
 import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 
@@ -29,11 +29,13 @@ visible: boolean = false;
   volumeDetails: any[]= [];
   dynamicColumns: any[] = [];
   allData: { projectId: any; projectName: any; buildingBlocks: any; };
+  @Input() projectId: any;
   constructor(private projectService:ProjectsService, private messageService: MessageService){
 
   }
 
   ngOnInit(){
+  // this.getVolumeDetails(this.projectId);
   this.getVolumeDetails(374);
   }
   public get isExpanded() {
@@ -139,7 +141,8 @@ onRowEditCancel(buildingBlock: any, ri: number) {
   // Restore original values when cancelling edit mode
   if (buildingBlock.dynamicColumns && buildingBlock.dynamicColumns.length > 0) {
     buildingBlock.dynamicColumns.forEach(col => {
-      buildingBlock[col] = buildingBlock[col + '_original'];
+      // Revert the edited value to the original value
+      buildingBlock[col + '_input'] = buildingBlock[col + '_original'];
     });
   }
   buildingBlock.editing = false;
