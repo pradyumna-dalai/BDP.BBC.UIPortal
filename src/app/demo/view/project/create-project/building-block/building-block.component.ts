@@ -47,6 +47,8 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   getSavedBlocks: any;
   savedBlockedId: any;
   getSavedBlocksDD: any;
+  selectedDestinationLocationNodes: any;
+  selectedOriginLocationNodes: any;
 
   constructor(private projectService: ProjectsService, private messageService: MessageService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
     this.getAllProjectBuildingBlock(this.projectId);
@@ -57,26 +59,13 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       this.projectLocations = data.data.projectLocation.filter(loc => loc.originDestinationCode === 0 || loc.originDestinationCode === 1);
       this.projectId = data.data.id;
       this.projectName = data.data.projectInformation.projectName;
-      console.log('Filtered projectLocation:', this.projectLocations);
-      console.log('Draft data:', this.projectId);
+      //console.log('Filtered projectLocation:', this.projectLocations);
+      //console.log('Draft data:', this.projectId);
       this.getAllProjectBuildingBlock(this.projectId);
-      console.log('bbsave',this.getSavedBlocksDD);
-      const buildingBlock = this.getSavedBlocks.buildingBlocks.find(block => block.buildingBlockId === this.projectId);
-      if (buildingBlock) {
-        // Create a TreeNode object for the building block
-        const buildingBlockNode: TreeNode = {
-          label: buildingBlock.buildingBlockName,
-          data: {
-            id: buildingBlock.buildingBlockId,
-            name: buildingBlock.buildingBlockName
-          },
-          children: []
-        };
-  
-        // Set the selectedNodes property with the building block node
-        this.selectedNodes = [buildingBlockNode];
-      }
-    });
+     // console.log('bbsave',this.getSavedBlocksDD);
+});
+
+
 
     this.loadTreeDataNew();
   }
@@ -102,7 +91,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   loadTreeDataNew() {
     this.createBuildingBlockservice.getExplorerData(2).subscribe((data: any) => {
       this.treeDataNew = this.transformData(data.data);
-      console.log("treee", this.treeDataNew)
+  //    console.log("treee", this.treeDataNew)
     },
       (error) => {
         console.error('Error loading tree data:', error);
@@ -190,8 +179,8 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
     this.originButtonBorderRadius = '5px';
     this.destinationButtonBorderRadius = '5px';
     this.getTreeData(this.selectedStep, 1)
-    console.log('isOriginActive:', this.isOriginActive); // Log status of origin flag
-    console.log('isDestinationActive:', this.isDestinationActive)
+    //console.log('isOriginActive:', this.isOriginActive); // Log status of origin flag
+   // console.log('isDestinationActive:', this.isDestinationActive)
 
   }
 
@@ -209,7 +198,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       if (!this.selectedNodes.includes(node)) {
         this.selectedNodes.push(node);
         this.draggedNodeId = node.data?.id;
-        
+     //   console.log('ssss', this.selectedNodes)
       }
     } else {
       event.preventDefault();
@@ -254,7 +243,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
             });
             this.updateNodeStepsInformation(node, stepsInformation);
           } else {
-            console.error('Data is not an array:', response.data);
+      //      console.error('Data is not an array:', response.data);
           }
         },
         error: (error) => {
@@ -291,17 +280,17 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
     });
 
     node.data.stepsInformation = updatedStepsInformation;
-    console.log('Step Information:', node.data.stepsInformation);
+  //  console.log('Step Information:', node.data.stepsInformation);
   }
 
 
   getTreeData(selectedStep: string, originDestinationCode: number): TreeNode[] {
     const updatedStepsInformation = this.selectedNodes[0]?.data?.stepsInformation;
     const projectLocation = this.projectLocations;
-    console.log('Selected Step:', selectedStep);
-    console.log('Origin Destination Code:', originDestinationCode);
-    console.log('Updated Steps Information:', updatedStepsInformation);
-    console.log('Project Locations:', projectLocation);
+   // console.log('Selected Step:', selectedStep);
+    //console.log('Origin Destination Code:', originDestinationCode);
+   // console.log('Updated Steps Information:', updatedStepsInformation);
+   // console.log('Project Locations:', projectLocation);
     if (!updatedStepsInformation || !projectLocation) {
       console.error('Data is not available to generate tree data');
       return [];
@@ -355,7 +344,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
     }
 
     this.treeData = treeData;
-    console.log('locationtree', treeData);
+   // console.log('locationtree', treeData);
     return treeData;
   }
 
@@ -374,9 +363,31 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   }
 
 
+  // onLocationNodeSelect(event: any): void {
+  //   console.log('Event:', event);
+  //   console.log('Event node:', event.node);
+  //   if (!event.node || !event.node.children) {
+  //     console.error('Invalid node selected:', event.node);
+  //     return;
+  //   }
+  //   if (event.node.children.length > 0) {
+  //     console.log('Cannot select parent nodes.');
+  //     return;
+  //   }
+  //   event.node.children.forEach(child => {
+  //     const index = this.selectedLocationNodes.findIndex(node => node.key === child.key);
+  //     if (index === -1) {
+  //       this.selectedLocationNodes.push(child.key);
+  //       console.log('checkbox', this.selectedLocationNodes);
+  //     } else {
+  //       this.selectedLocationNodes.splice(index, 1);
+  //     }
+  //   });
+  // }
+
   onLocationNodeSelect(event: any): void {
-    console.log('Event:', event);
-    console.log('Event node:', event.node);
+   // console.log('Event:', event);
+   // console.log('Event node:', event.node);
     if (!event.node || !event.node.children) {
       console.error('Invalid node selected:', event.node);
       return;
@@ -385,16 +396,36 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       console.log('Cannot select parent nodes.');
       return;
     }
-    event.node.children.forEach(child => {
-      const index = this.selectedLocationNodes.findIndex(node => node.key === child.key);
-      if (index === -1) {
-        this.selectedLocationNodes.push(child.key);
-        console.log('checkbox', this.selectedLocationNodes);
-      } else {
-        this.selectedLocationNodes.splice(index, 1);
-      }
-    });
-  }
+
+    // Determine which section is active and update the corresponding array
+    if (this.isOriginActive) {
+      // Clear destination selection if origin section is active
+      this.selectedLocationNodes = [];
+
+      event.node.children.forEach(child => {
+        const index = this.selectedOriginLocationNodes.findIndex(node => node.key === child.key);
+        if (index === -1) {
+          this.selectedOriginLocationNodes.push(child.key);
+      //    console.log('checkbox', this.selectedOriginLocationNodes);
+        } else {
+          this.selectedOriginLocationNodes.splice(index, 1);
+        }
+      });
+    } else if (this.isDestinationActive) {
+      // Clear origin selection if destination section is active
+      this.selectedDestinationLocationNodes = [];
+
+      event.node.children.forEach(child => {
+        const index = this.selectedDestinationLocationNodes.findIndex(node => node.key === child.key);
+        if (index === -1) {
+          this.selectedDestinationLocationNodes.push(child.key);
+       //   console.log('checkbox', this.selectedDestinationLocationNodes);
+        } else {
+          this.selectedDestinationLocationNodes.splice(index, 1);
+        }
+      });
+    }
+}
 
   //----------------------------------------Save Porject Draft------------------------------//
   onSaveProjectBBClick() {
@@ -415,7 +446,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
                   return {
                     configurationId: config.configurableId || '',
                     configurationName: config.configurable || '',
-                    locations: this.selectedLocationNodes.map(locationNode => ({
+                    locations: this.selectedOriginLocationNodes.map(locationNode => ({
                       locationId: locationNode.data.id,
                       locationName: locationNode.label
                     }))
@@ -428,7 +459,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
                   return {
                     configurationId: config.configurableId || '',
                     configurationName: config.configurable || '',
-                    locations: this.selectedLocationNodes.map(locationNode => ({
+                    locations: this.selectedDestinationLocationNodes.map(locationNode => ({
                       locationId: locationNode.data.id,
                       locationName: locationNode.label
                     }))
@@ -441,10 +472,10 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       })
     };
 
-    console.log('Request Body:', body);
+   // console.log('Request Body:', body);
     this.projectService.saveProjectBuildingBlock(body).subscribe({
       next: (response: any) => {
-        console.log('Project Building Block saved successfully:', response);
+     //   console.log('Project Building Block saved successfully:', response);
         this.messageService.add({
           key: 'successToast',
           severity: 'success',
@@ -466,21 +497,48 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   //----------------------------------------------------end-----------------------------------//
 
 
+ 
   getAllProjectBuildingBlock(projectId: any) {
-    if(this.projectId !=null){
+    if (this.projectId != null) {
       this.projectService.getProjectBuildingBlocks(this.projectId).subscribe({
         next: (response: any) => {
-        // if (Array.isArray(response.data)) {
-          this.getSavedBlocks= response.data;
+          this.getSavedBlocks = response.data;
           this.getSavedBlocksDD = response.data.buildingBlocks.map((block: any) => ({
-              buildingBlockId: block.buildingBlockId,
-              buildingBlockName: block.buildingBlockName
-            }));
-            console.log('bbsave',this.getSavedBlocksDD);
-        // } 
+            buildingBlockId: block.buildingBlockId,
+            buildingBlockName: block.buildingBlockName
+          }));
+  
+          // Match building block IDs with nodes in the tree and add them to selectedNodes
+          this.matchBuildingBlocksToNodes();
+  
+          console.log('bbsave', this.getSavedBlocksDD);
+        }
+      });
     }
+  }
+  
+  matchBuildingBlocksToNodes(): void {
+    this.getSavedBlocksDD.forEach((block: any) => {
+      const matchedNode = this.findNodeById(block.buildingBlockId, this.treeDataNew);
+      if (matchedNode) {
+        this.selectedNodes.push(matchedNode);
+      }
     });
   }
+  
+  findNodeById(id: any, nodes: TreeNode[]): TreeNode | null {
+    for (const node of nodes) {
+      if (node.data && node.data.id === id) {
+        return node;
+      }
+      if (node.children) {
+        const foundNode = this.findNodeById(id, node.children);
+        if (foundNode) {
+          return foundNode;
+        }
+      }
+    }
+    return null;
   }
-
+  
 }

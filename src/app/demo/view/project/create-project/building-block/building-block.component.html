@@ -86,13 +86,13 @@
             </div>
             <br>
             <div>
-                <p-tree *ngIf="isOriginActive"  [value]="treeData" selectionMode="checkbox" class="w-full md:w-30rem"  [propagateSelectionUp]="false" [(selection)]="selectedLocationNodes" (selectionChange)="onLocationNodeSelect($event)">
+                <p-tree *ngIf="isOriginActive"  [value]="treeData" selectionMode="checkbox" class="w-full md:w-30rem"  [propagateSelectionUp]="false" [(selection)]="selectedOriginLocationNodes" (selectionChange)="onLocationNodeSelect($event)">
                     <ng-template let-node pTemplate="default">
                         <span>{{ node.label }}</span>
                     </ng-template>
                 </p-tree>
                 
-                <p-tree *ngIf="isDestinationActive" [value]="treeData" selectionMode="checkbox" class="w-full md:w-30rem"  [propagateSelectionUp]="false" [(selection)]="selectedLocationNodes"  (selectionChange)="onLocationNodeSelect($event)">
+                <p-tree *ngIf="isDestinationActive" [value]="treeData" selectionMode="checkbox" class="w-full md:w-30rem"  [propagateSelectionUp]="false" [(selection)]="selectedDestinationLocationNodes"  (selectionChange)="onLocationNodeSelect($event)">
                         <ng-template let-node pTemplate="default">
                             <span>{{ node.label }}</span>
                         </ng-template>
@@ -101,7 +101,7 @@
         </div>
     </div>
     
-    
+    <p-toast key="successToast"></p-toast>
 </div>
 <div class="col-12" style="display: flex;justify-content: flex-end;">
     <button pButton pRipple type="button" label="Save As Draft" 
@@ -110,4 +110,3 @@
 </div>
 <p style="font-weight: 500;"></p>
 </div>
-<p-toast></p-toast>
