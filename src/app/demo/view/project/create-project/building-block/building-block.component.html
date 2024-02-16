@@ -86,13 +86,13 @@
             </div>
             <br>
             <div>
-                <p-tree *ngIf="isOriginActive"  [value]="treeData" selectionMode="checkbox" class="w-full md:w-30rem"  [propagateSelectionUp]="false" [(selection)]="selectedLocationNodes" (selectionChange)="onLocationNodeSelect($event)">
+                <p-tree *ngIf="isOriginActive"  [value]="treeData" selectionMode="checkbox" class="w-full md:w-30rem"  [propagateSelectionUp]="false" [(selection)]="selectedOriginLocationNodes" (selectionChange)="onLocationNodeSelect($event)">
                     <ng-template let-node pTemplate="default">
                         <span>{{ node.label }}</span>
                     </ng-template>
                 </p-tree>
                 
-                <p-tree *ngIf="isDestinationActive" [value]="treeData" selectionMode="checkbox" class="w-full md:w-30rem"  [propagateSelectionUp]="false" [(selection)]="selectedLocationNodes"  (selectionChange)="onLocationNodeSelect($event)">
+                <p-tree *ngIf="isDestinationActive" [value]="treeData" selectionMode="checkbox" class="w-full md:w-30rem"  [propagateSelectionUp]="false" [(selection)]="selectedDestinationLocationNodes"  (selectionChange)="onLocationNodeSelect($event)">
                         <ng-template let-node pTemplate="default">
                             <span>{{ node.label }}</span>
                         </ng-template>
