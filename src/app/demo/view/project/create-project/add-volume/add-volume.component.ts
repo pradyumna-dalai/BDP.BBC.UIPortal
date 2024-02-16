@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-add-volume',
   templateUrl: './add-volume.component.html',
-  styleUrls: ['./add-volume.component.scss']
+  styleUrls: ['./add-volume.component.scss'],
+  providers: [MessageService, ConfirmationService]
 })
 export class AddVolumeComponent implements OnInit {
 
@@ -27,7 +29,7 @@ visible: boolean = false;
   volumeDetails: any[]= [];
   dynamicColumns: any[] = [];
   allData: { projectId: any; projectName: any; buildingBlocks: any; };
-  constructor(private projectService:ProjectsService){
+  constructor(private projectService:ProjectsService, private messageService: MessageService){
 
   }
 
@@ -224,11 +226,21 @@ onSaveVolumeClick(){
   this.projectService.savevolumeDetails(this.allData).subscribe(
     (res) => {
       
-      console.log(res,"kk");
+      this.messageService.add({
+        key: 'successToast',
+        severity: 'success',
+        summary: 'Success!',
+        detail: 'Data saved successfully.'
+      });
     },
     (error) => {
 
-     
+      this.messageService.add({
+        key: 'errorToast',
+        severity: 'error',
+        summary: 'Error!',
+        detail: 'Failed to save data.'
+      });
     }
   );
 

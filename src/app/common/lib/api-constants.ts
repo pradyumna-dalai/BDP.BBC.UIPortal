@@ -127,8 +127,10 @@ export namespace AppRoutes {
        public static readonly saveProcessConfigurable  = "process"
 
        //------add volume(Project)-----------------------//
-
+       
        public static readonly getAddVoulmeDetails  = "volume"
+
+       public static readonly saveVoulmeDetails  = "project/volume"
 
        //------End-----------------------//
 
