@@ -114,9 +114,13 @@ getLocationVolumeValue(buildingBlock: any, col: any): any {
 }
 
 setLocationVolumeValue(newValue: any, buildingBlock: any, col: any): void {
-  // Implement the logic to set the value here, for example:
-  // Assuming buildingBlock is an object with properties, you can update the value like this:
-  buildingBlock[col] = newValue;
+  // Assuming buildingBlock contains the volume details for each location
+  // Find the location volume object corresponding to the column
+  const location = buildingBlock.originService.processes[0].lines[0].locationVolume.find(loc => loc.locationName === col);
+  // Update the volume value
+  if (location) {
+    location.volume = newValue;
+  }
 }
 getLocationVolume(buildingBlock: any, locationName: string): string {
   // Implement logic to get the volume for the specified location
@@ -132,7 +136,12 @@ onRowEditSave(buildingBlock: any) {
 }
 
 onRowEditCancel(buildingBlock: any, ri: number) {
-  // Cancel logic
+  // Restore original values when cancelling edit mode
+  if (buildingBlock.dynamicColumns && buildingBlock.dynamicColumns.length > 0) {
+    buildingBlock.dynamicColumns.forEach(col => {
+      buildingBlock[col] = buildingBlock[col + '_original'];
+    });
+  }
   buildingBlock.editing = false;
 }
 
