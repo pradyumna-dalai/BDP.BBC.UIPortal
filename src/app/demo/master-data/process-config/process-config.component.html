@@ -55,8 +55,8 @@
                         <!-- Replace 'UOM' with your actual data source for UOM -->
                         <p-dropdown
                             [options]="uomOptions"
-                            [(ngModel)]="rowData[col.field].name"
-                            optionLabel="name" optionValue="id"
+                            [(ngModel)]="rowData[col.field]"
+                            optionLabel="name" optionValue="name"
                             placeholder="Select UOM"
                             [appendTo]="'body'"
                         ></p-dropdown>
@@ -65,8 +65,8 @@
                         <!-- Replace 'Configuration' with your actual data source for Configuration -->
                         <p-dropdown
                             [options]="configOptions"
-                            [(ngModel)]="rowData[col.field].name"
-                            optionLabel="name" optionValue="id"
+                            [(ngModel)]="rowData[col.field]"
+                            optionLabel="name" optionValue="name"
                             placeholder="Select Configuration"
                             [appendTo]="'body'"
                         ></p-dropdown>

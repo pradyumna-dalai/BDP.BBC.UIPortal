@@ -134,6 +134,11 @@ export namespace AppRoutes {
        public static readonly ProjectBuildingBlock = "project-block-location";
 
         
+       //------add volume(Project)-----------------------//
+
+       public static readonly getAddVoulmeDetails  = "volume"
+
+       //------End-----------------------//
 
     }
 

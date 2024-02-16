@@ -32,7 +32,7 @@
                         <p-accordion>
                             <ng-container *ngFor="let process of block.originService.processes">
                                 <p-accordionTab [header]="process.processName" [selected]="isExpanded">
-                                    <p-table dataKey="id" [value]="volumeDetails" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+                                    <p-table dataKey="id" [value]="volumeDetails"  [tableStyle]="{'min-width': '50rem'}">
                                         <ng-template pTemplate="header">
                                             <tr>
                                                 <th style="width:20%">Action</th>
@@ -46,21 +46,26 @@
                                             <tr *ngIf="buildingBlock">
                                               <td>
                                                 <div class="align-items-center gap-2">
-                                                  <button  pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(buildingBlock)" class="p-button-rounded p-button-text"></button>
-                                                  <button  pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(buildingBlock)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                                                  <button  pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(buildingBlock, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                                                    <button *ngIf="!buildingBlock.editing" pButton pRipple type="button" icon="pi pi-pencil" (click)="toggleEditMode(buildingBlock)" class="p-button-rounded p-button-text"></button>
+                                                    <button *ngIf="buildingBlock.editing" pButton pRipple type="button" icon="pi pi-check" (click)="onRowEditSave(buildingBlock)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                                                    <button *ngIf="buildingBlock.editing" pButton pRipple type="button" icon="pi pi-times" (click)="onRowEditCancel(buildingBlock, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
                                                 </div>
                                               </td>
                                               <td>
-                                                {{ buildingBlock.originService?.processes[0].lines[0]?.uom }}
+                                                {{ buildingBlock.originService?.processes[0].lines[0]?.uomName }}
                                               </td>
                                               <td>
-                                                {{ buildingBlock.originService?.processes[0].lines[0]?.configurable }}
+                                                {{ buildingBlock.originService?.processes[0].lines[0]?.configurableName }}
                                               </td>
                                               <!-- Display volume for each dynamic column -->
                                               <td *ngFor="let col of dynamicColumns">
-                                                {{ getLocationVolume(buildingBlock, col) }}
-                                              </td>
+                                                <ng-container *ngIf="!buildingBlock.editing; else editMode">
+                                                    {{ getLocationVolume(buildingBlock, col) }}
+                                                </ng-container>
+                                                <ng-template #editMode>
+                                                    <input pInputText type="text" [ngModel]="getLocationVolumeValue(buildingBlock, col)" (ngModelChange)="setLocationVolumeValue($event, buildingBlock, col)" />
+                                                </ng-template>
+                                            </td>
                                             </tr>
                                           </ng-template>
                                                 
@@ -92,21 +97,26 @@
                                             <tr *ngIf="buildingBlock">
                                               <td>
                                                 <div class="align-items-center gap-2">
-                                                  <button  pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(buildingBlock)" class="p-button-rounded p-button-text"></button>
-                                                  <button  pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(buildingBlock)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                                                  <button  pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(buildingBlock, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                                                    <button *ngIf="!buildingBlock.editing" pButton pRipple type="button" icon="pi pi-pencil" (click)="toggleEditMode(buildingBlock)" class="p-button-rounded p-button-text"></button>
+                                                    <button *ngIf="buildingBlock.editing" pButton pRipple type="button" icon="pi pi-check" (click)="onRowEditSave(buildingBlock)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                                                    <button *ngIf="buildingBlock.editing" pButton pRipple type="button" icon="pi pi-times" (click)="onRowEditCancel(buildingBlock, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
                                                 </div>
                                               </td>
                                               <td>
-                                                {{ buildingBlock.destinationService?.processes[0].lines[0]?.uom }}
+                                                {{ buildingBlock.destinationService?.processes[0].lines[0]?.uomName }}
                                               </td>
                                               <td>
-                                                {{ buildingBlock.destinationService?.processes[0].lines[0]?.configurable }}
+                                                {{ buildingBlock.destinationService?.processes[0].lines[0]?.configurableName }}
                                               </td>
                                               <!-- Display volume for each dynamic column -->
                                               <td *ngFor="let col of dynamicColumns">
-                                                {{ getLocationVolume(buildingBlock, col) }}
-                                              </td>
+                                                <ng-container *ngIf="!buildingBlock.editing; else editMode">
+                                                    {{ getLocationVolume(buildingBlock, col) }}
+                                                </ng-container>
+                                                <ng-template #editMode>
+                                                    <input pInputText type="text" [ngModel]="getLocationVolumeValue(buildingBlock, col)" (ngModelChange)="setLocationVolumeValue($event, buildingBlock, col)" />
+                                                </ng-template>
+                                            </td>
                                             </tr>
                                           </ng-template>
                                                 
