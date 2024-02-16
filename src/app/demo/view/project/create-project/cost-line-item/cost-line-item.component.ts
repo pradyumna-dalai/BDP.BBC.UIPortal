@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-cost-line-item',
@@ -22,6 +24,18 @@ showDestinationCLI:boolean = false;
 //end//
 visible:boolean = false;
 private _isExpanded = false;
+  costLineItemDetails: any;
+  buildingBlockNames: any;
+  originProcesses: any[] = [];
+  buildingBlocks: any;
+
+constructor(private projectService:ProjectsService, private messageService: MessageService){
+
+}
+
+ngOnInit(){
+  this.getCostLineItemDetails(374);
+  }
   onRowEditInit(event:any){
 
   }
@@ -64,7 +78,18 @@ showUploadDialog() {
   this.visible = true;
 }
 
+
 public set isExpanded(value: boolean) {
   this._isExpanded = value;
+}
+
+getCostLineItemDetails(projectId) {
+  this.projectService.getCostLineItemDetails(projectId).subscribe((res: any) => {
+    this.costLineItemDetails = res.BuildingBlocks;
+    this.buildingBlockNames = this.costLineItemDetails.map(block => block.buildingBlockName);
+    if (res && res.BuildingBlocks && res.BuildingBlocks.length > 0) {
+      this.buildingBlocks = res.BuildingBlocks;
+    }
+  });
 }
 }
