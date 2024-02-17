@@ -4,10 +4,12 @@
             <h5 style="margin: 0;">Other Cost</h5>
         </div>
         <div class="md:col-6" style="display: flex; padding: 0px !important; justify-content: flex-end;">
+            <div class="mr-2 mb-2">
+                <h5 style="margin: 0;padding-top: 8px;padding-right: 30px;">Grand Total Cost: {{ grandTotalCost |
+                    currency }}</h5>
+            </div>
             <div>
-                <button pButton pRipple type="button" label="Add" class="p-button-outlined mr-2 mb-2"
-                    style="background: rgba(33, 150, 243, 0.04); color: #8b8989; border: 1px solid #d1c5c5; padding: 4px; padding-left: 10px; padding-right: 10px;"
-                    (click)="addRow()"></button>
+                <button type="submit" (click)="addRow()" pButton pRipple label="Add" class="mr-2 mb-2"></button>
             </div>
         </div>
     </div>
@@ -49,8 +51,8 @@
                         <span *ngIf="!cost.editing">{{ cost.location?.name }}</span>
                         <p-dropdown *ngIf="cost.editing" [options]="locationDropdownOptions" [(ngModel)]="cost.id"
                             (ngModelChange)="updateOriginDestination(cost)" optionValue="id" optionLabel="name"
-                            placeholder="Select Location" [style]="{ 'width':'100%' }" [appendTo]="'body'" [filter]="true"
-                            [showClear]="true"></p-dropdown>
+                            placeholder="Select Location" [style]="{ 'width':'100%' }" [appendTo]="'body'"
+                            [filter]="true" [showClear]="true"></p-dropdown>
                     </td>
                     <td>
                         <span *ngIf="!cost.editing">{{ cost.totalCost | currency }}</span>
@@ -59,7 +61,8 @@
                     </td>
                     <td>
                         <span *ngIf="!cost.editing">{{ cost.originDestination }}</span>
-                        <input *ngIf="cost.editing" pInputText  type="text" [(ngModel)]="cost.originDestination" placeholder="Enter Origin/Destination">  
+                        <input *ngIf="cost.editing" pInputText type="text" [(ngModel)]="cost.originDestination"
+                            placeholder="Enter Origin/Destination">
                     </td>
 
                 </tr>

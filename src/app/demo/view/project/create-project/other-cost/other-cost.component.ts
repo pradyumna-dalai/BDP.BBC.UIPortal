@@ -26,6 +26,7 @@ export class OtherCostComponent {
   locationDropdownOptions: any[] = [];
   tableData: CostItem[] = [];
   editedRowIndex: number = -1;
+  grandTotalCost: number = 0;
   constructor(private projectService: ProjectsService, private cd: ChangeDetectorRef, private messageService: MessageService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
 
   }
@@ -35,9 +36,9 @@ export class OtherCostComponent {
       this.projectLocations = data.data.projectLocation.filter(loc => loc.originDestinationCode === 0 || loc.originDestinationCode === 1);
       this.projectId = data.data.id;
       this.projectName = data.data.projectInformation.projectName;
-      console.log('othercost', this.projectLocations);
+      // console.log('othercost', this.projectLocations);
       this.generateDropdownOptions();
-      this.getAllProjectOtherCost(); 
+      this.getAllProjectOtherCost();
     });
 
   }
@@ -50,7 +51,11 @@ export class OtherCostComponent {
       originDestinationCode: location.originDestinationCode
     }));
 
-    console.log("locatoptions", this.locationDropdownOptions);
+    //console.log("locatoptions", this.locationDropdownOptions);
+  }
+
+  calculateGrandTotalCost() {
+    this.grandTotalCost = this.tableData.reduce((total, item) => total + item.totalCost, 0);
   }
 
   addRow() {
@@ -63,16 +68,19 @@ export class OtherCostComponent {
       editing: true
     };
     this.tableData.push(newCostItem);
+    this.calculateGrandTotalCost();
   }
 
 
 
   onRowEditInit(row: number) {
     this.tableData[row].editing = true;
+    this.calculateGrandTotalCost();
   }
 
   onRowEditSave(row: number) {
     this.tableData[row].editing = false;
+    this.calculateGrandTotalCost();
   }
 
   onRowEditCancel(row: number) {
@@ -90,10 +98,12 @@ export class OtherCostComponent {
 
   onRowDelete(row: number) {
     this.tableData.splice(row, 1);
+    this.calculateGrandTotalCost();
   }
 
   //-----------------------------------Save Project Other Cost------------------//
   saveProjectsOtherCostItem() {
+    this.calculateGrandTotalCost();
     const body = {
       projectId: this.projectId,
       projectName: this.projectName,
@@ -135,7 +145,7 @@ export class OtherCostComponent {
       this.projectService.getAllOtherCost(this.projectId).subscribe({
         next: (response: any) => {
           console.log('Other costs response:', response);
-          const otherCosts = response?.data?.otherCosts; 
+          const otherCosts = response?.data?.otherCosts;
           if (Array.isArray(otherCosts)) {
             this.tableData = otherCosts.map((item: any, index: number) => ({
               id: index + 1,
@@ -165,7 +175,7 @@ export class OtherCostComponent {
       });
     }
   }
-  
-  
+
+
 
 }
