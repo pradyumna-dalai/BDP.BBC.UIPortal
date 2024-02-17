@@ -135,7 +135,7 @@ export class OtherCostComponent {
       this.projectService.getAllOtherCost(this.projectId).subscribe({
         next: (response: any) => {
           console.log('Other costs response:', response);
-          const otherCosts = response?.data?.otherCosts; // Extract the otherCosts array
+          const otherCosts = response?.data?.otherCosts; 
           if (Array.isArray(otherCosts)) {
             this.tableData = otherCosts.map((item: any, index: number) => ({
               id: index + 1,
@@ -151,17 +151,16 @@ export class OtherCostComponent {
             }));
           } else {
             console.error('Other costs array not found in response:', response);
-            // Handle this case according to your application logic
           }
         },
         error: (error) => {
           console.error('Error fetching other costs:', error);
-          this.messageService.add({
-            key: 'errorToast',
-            severity: 'error',
-            summary: 'Error!',
-            detail: 'Failed to fetch Project Other Cost.'
-          });
+          // this.messageService.add({
+          //   key: 'errorToast',
+          //   severity: 'error',
+          //   summary: 'Error!',
+          //   detail: 'Failed to fetch Project Other Cost.'
+          // });
         }
       });
     }
