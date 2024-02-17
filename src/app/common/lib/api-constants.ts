@@ -136,6 +136,8 @@ export namespace AppRoutes {
        public static readonly otherCost = "project/other-cost";
 
         
+       public static readonly project = "project";
+       public static readonly otherCosts = "other-cost";
        //------add volume(Project)-----------------------//
        
        public static readonly getAddVoulmeDetails  = "volume"

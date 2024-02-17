@@ -167,5 +167,10 @@ saveProjectOtherCost(body:any): Observable<any> {
   return this.http.post<any>(url + settings.AppRoutes.Auth.otherCost, body);
 }
 
+
+getAllOtherCost(projectId:number){
+  return this.http.get<any>(`${url}${settings.AppRoutes.Auth.project}/${projectId}/${settings.AppRoutes.Auth.otherCosts}`);
+}
+
 }
 
