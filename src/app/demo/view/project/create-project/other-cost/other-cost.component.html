@@ -24,68 +24,46 @@
                     <th style="width: 20%">Origin/Destination</th>
                 </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-cost  let-ri="rowIndex">
-                <tr >
+            <ng-template pTemplate="body" let-cost let-ri="rowIndex">
+                <tr>
                     <td>
-                      <div>
-                        <button pButton pRipple type="button" (click)="onRowEditInit(ri)"
-                          *ngIf="!cost.editing" pInitEditableRow icon="pi pi-pencil"
-                          class="p-button-rounded p-button-text"></button>
-                        <button pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
-                          (click)="onRowEditSave(ri)" *ngIf="cost.editing"
-                          class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                        <button pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
-                          (click)="onRowEditCancel()" *ngIf="cost.editing"
-                          class="p-button-rounded p-button-text p-button-danger"></button>
-                        <button pButton pRipple type="button" icon="pi pi-trash" (click)="onRowDelete(ri)"
-                          *ngIf="!cost.editing" class="p-button-rounded p-button-text p-button-danger"></button>
-                      </div>
+                        <div>
+                            <button pButton pRipple type="button" (click)="onRowEditInit(ri)" *ngIf="!cost.editing"
+                                pInitEditableRow icon="pi pi-pencil" class="p-button-rounded p-button-text"></button>
+                            <button pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
+                                (click)="onRowEditSave(ri)" *ngIf="cost.editing"
+                                class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                            <button pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+                                (click)="onRowEditCancel(ri)" *ngIf="cost.editing"
+                                class="p-button-rounded p-button-text p-button-danger"></button>
+                            <button pButton pRipple type="button" icon="pi pi-trash" (click)="onRowDelete(ri)"
+                                *ngIf="!cost.editing" class="p-button-rounded p-button-text p-button-danger"></button>
+                        </div>
                     </td>
                     <td>
-                      <p-cellEditor>
-                        <ng-template pTemplate="input" >
-                          <input pInputText type="text" placeholder="Enter Cost Item" [(ngModel)]="cost.costItem">
-                        </ng-template>
-                        <ng-template pTemplate="output">
-                          {{ cost.costItem }}
-                        </ng-template>
-                      </p-cellEditor>
+                        <span *ngIf="!cost.editing">{{ cost.costItem }}</span>
+                        <input *ngIf="cost.editing" pInputText type="text" [(ngModel)]="cost.costItem"
+                            placeholder="Enter Cost Item" required>
                     </td>
                     <td>
-                      <p-cellEditor>
-                        <ng-template pTemplate="input" >
-                          <p-dropdown [options]="locationDropdownOptions" [(ngModel)]="cost.location" optionValue="id"
-                            optionLabel="name" placeholder="Select Location" [style]="{ 'width':'100%' }"  [appendTo]="'body'"
+                        <span *ngIf="!cost.editing">{{ cost.location?.name }}</span>
+                        <p-dropdown *ngIf="cost.editing" [options]="locationDropdownOptions" [(ngModel)]="cost.id"
+                            (ngModelChange)="updateOriginDestination(cost)" optionValue="id" optionLabel="name"
+                            placeholder="Select Location" [style]="{ 'width':'100%' }" [appendTo]="'body'" [filter]="true"
                             [showClear]="true"></p-dropdown>
-                        </ng-template>
-                        <ng-template pTemplate="output">
-                          {{ cost.location?.name }}
-                        </ng-template>
-                      </p-cellEditor>
                     </td>
                     <td>
-                      <p-cellEditor>
-                        <ng-template pTemplate="input" >
-                          <input pInputText type="number" placeholder="Enter Total Cost" [min]="0"
-                            [(ngModel)]="cost.totalCost">
-                        </ng-template>
-                        <ng-template pTemplate="output">
-                          {{ cost.totalCost | currency }}
-                        </ng-template>
-                      </p-cellEditor>
+                        <span *ngIf="!cost.editing">{{ cost.totalCost | currency }}</span>
+                        <input *ngIf="cost.editing" [(ngModel)]="cost.totalCost" placeholder="Enter Total Cost"
+                            pInputText type="number" [min]="0" required>
                     </td>
                     <td>
-                      <p-cellEditor>
-                        <ng-template pTemplate="input" >
-                          <input pInputText type="text" [(ngModel)]="cost.originDestination">
-                        </ng-template>
-                        <ng-template pTemplate="output">
-                          {{ cost.originDestination }}
-                        </ng-template>
-                      </p-cellEditor>
+                        <span *ngIf="!cost.editing">{{ cost.originDestination }}</span>
+                        <input *ngIf="cost.editing" pInputText  type="text" [(ngModel)]="cost.originDestination" placeholder="Enter Origin/Destination">  
                     </td>
-                  </tr>
-                  
+
+                </tr>
+
             </ng-template>
             <ng-template pTemplate="emptymessage">
                 <tr>

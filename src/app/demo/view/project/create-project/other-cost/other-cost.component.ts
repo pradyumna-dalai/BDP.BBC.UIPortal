@@ -4,18 +4,27 @@ import { AppMainComponent } from 'src/app/app.main.component';
 import { CreateBuildingBlockService } from 'src/app/services/create-buildingBlock/create-building-block.service';
 import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
 import { ChangeDetectorRef } from '@angular/core';
+interface CostItem {
+  id: number;
+  costItem: string;
+  location: any; 
+  totalCost: number;
+  originDestination: string;
+  editing: boolean; 
+}
 @Component({
   selector: 'app-other-cost',
   templateUrl: './other-cost.component.html',
   styleUrls: ['./other-cost.component.scss']
 })
+
 export class OtherCostComponent {
   projectLocations: any;
   projectId: any;
   projectName: any;
   subscription: any;
   locationDropdownOptions: any[] = [];
-  tableData: any[] = [];
+  tableData: CostItem[] = [];
   editedRowIndex: number = -1;
   constructor(private projectService: ProjectsService,  private cd: ChangeDetectorRef,private messageService: MessageService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
     
@@ -43,67 +52,65 @@ export class OtherCostComponent {
   }
 
   addRow() {
-    this.tableData.push({
+    const newCostItem: CostItem = {
+      id: this.tableData.length + 1,
       costItem: '',
       location: null,
-      totalCost: null,
+      totalCost: 0,
       originDestination: '',
-      editing: true, 
-      adding: true 
-    });
-    this.cd.detectChanges();
+      editing: true 
+    };
+    this.tableData.push(newCostItem);
   }
-  
-  
 
-  onRowEditInit(rowIndex: number) {
-    this.tableData.forEach((row, index) => {
-      if (index === rowIndex) {
-        row.editing = true;
-      } else {
-        row.editing = false; // ensure that only the selected row is set to editing mode
-      }
-    });
+
+
+  onRowEditInit(row: number) {
+    this.tableData[row].editing = true;
   }
-  
-  onRowEditSave(rowIndex: number): void {
-    this.tableData[rowIndex].editing = false;
-    delete this.tableData[rowIndex].adding;
+
+  onRowEditSave(row: number) {
+    this.tableData[row].editing = false;
   }
-  
-  onRowEditCancel() {
-    this.editedRowIndex = -1;
+
+  onRowEditCancel(row: number) {
+    this.tableData[row].editing = false;
   }
-  
-  onRowDelete(rowIndex: number): void {
-    if (!this.tableData[rowIndex].adding) {
-      this.tableData.splice(rowIndex, 1);
+
+  updateOriginDestination(cost: CostItem) {
+    const selectedLocation = this.locationDropdownOptions.find(option => option.id === cost.id);
+    if (selectedLocation) {
+      cost.originDestination = selectedLocation.originDestinationCode === 0 ? 'Origin' : 'Destination';
+      cost.location = selectedLocation;
+      
     }
   }
   
+  onRowDelete(row: number) {
+    this.tableData.splice(row, 1);
+  }
+  
   saveProjectsOtherCostItem() {
-    const body ={
-        projectId:  this.projectId ,
-        projectName: this.projectName,
-        grandTotalCost: 927000.00,
-        otherCosts: [
-            {
-                costItemId: null,
-                costItemName:null ,
-                locationId: null,
-                locationName:null ,
-                totalCost:null ,
-                orginDestinationCode: null
-            }
-        ]
-    };
+    const body = {
+      projectId: null,
+      projectName: this.projectName,
+      grandTotalCost: 927000.00,
+      otherCosts: this.tableData.map(costItem => ({
+          costItemId: null,
+          costItemName: costItem.costItem,
+          locationId: costItem.location.id,
+          locationName: costItem.location.name, 
+          totalCost: costItem.totalCost,
+          orginDestinationCode: costItem.location.originDestinationCode 
+      }))
+  };
     this.projectService.saveProjectOtherCost(body).subscribe({
       next: (response: any) => {
         this.messageService.add({
           key: 'successToast',
           severity: 'success',
           summary: 'Success!',
-          detail: 'Project Other Cost saved successfully.'
+          detail: 'Project Other Cost Saved successfully.'
         });
       },
       error: (error) => {
@@ -111,7 +118,7 @@ export class OtherCostComponent {
             key: 'errorToast',
             severity: 'error',
             summary: 'Error!',
-            detail: 'Failed to save Project Other Cost.'
+            detail: 'Failed to Save Project Other Cost.'
           });
       }
     });
