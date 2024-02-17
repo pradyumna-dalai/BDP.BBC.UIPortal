@@ -9,7 +9,7 @@
                     currency }}</h5>
             </div>
             <div>
-                <button type="submit" (click)="addRow()" pButton pRipple label="Add" class="mr-2 mb-2"></button>
+                <button type="submit" (click)="addRow()" pButton pRipple label=" Add " class="mr-2 mb-2"></button>
             </div>
         </div>
     </div>
@@ -61,8 +61,7 @@
                     </td>
                     <td>
                         <span *ngIf="!cost.editing">{{ cost.originDestination }}</span>
-                        <input *ngIf="cost.editing" pInputText type="text" [(ngModel)]="cost.originDestination"
-                            placeholder="Enter Origin/Destination">
+                        <span *ngIf="cost.editing">{{ getOriginDestination(cost) }}</span>
                     </td>
 
                 </tr>
@@ -80,4 +79,6 @@
             class="p-button-outlined mr-2 mb-2"></button>
         <button type="submit" pButton pRipple label="Continue" class="mr-2 mb-2"></button>
     </div>
+    <p-toast key="successToast"></p-toast>
+    <p-toast key="errorToast"></p-toast>
 </div>

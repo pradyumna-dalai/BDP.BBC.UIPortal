@@ -79,12 +79,22 @@ export class OtherCostComponent {
   }
 
   onRowEditSave(row: number) {
+    const editedItem = this.tableData[row];
+    if (!editedItem.costItem || !editedItem.location || editedItem.totalCost === null || editedItem.totalCost === undefined) {
+      this.messageService.add({
+        key: 'errorToast',
+        severity: 'error',
+        summary: 'Error!',
+        detail: 'Please fill all required fields before saving.'
+      });
+      return; // Stop further execution
+    }
     this.tableData[row].editing = false;
     this.calculateGrandTotalCost();
   }
 
   onRowEditCancel(row: number) {
-    this.tableData[row].editing = false;
+    this.tableData.splice(row, 1);
   }
 
   updateOriginDestination(cost: CostItem) {
@@ -92,10 +102,14 @@ export class OtherCostComponent {
     if (selectedLocation) {
       cost.originDestination = selectedLocation.originDestinationCode === 0 ? 'Origin' : 'Destination';
       cost.location = selectedLocation;
+    //  cost.editing = false;
 
     }
   }
 
+  getOriginDestination(cost: CostItem): string {
+    return cost.location?.originDestinationCode === 0 ? 'Origin' : 'Destination';
+  }
   onRowDelete(row: number) {
     this.tableData.splice(row, 1);
     this.calculateGrandTotalCost();
@@ -103,6 +117,17 @@ export class OtherCostComponent {
 
   //-----------------------------------Save Project Other Cost------------------//
   saveProjectsOtherCostItem() {
+    const invalidItem = this.tableData.find(item => !item.costItem || !item.location || item.totalCost === null || item.totalCost === undefined);
+  if (invalidItem) {
+    this.messageService.add({
+      key: 'errorToast',
+      severity: 'error',
+      summary: 'Error!',
+      detail: 'Please fill all required fields before saving.'
+    });
+    return; // Stop further execution
+  }
+
     this.calculateGrandTotalCost();
     const body = {
       projectId: this.projectId,
@@ -144,7 +169,7 @@ export class OtherCostComponent {
     if (this.projectId != null) {
       this.projectService.getAllOtherCost(this.projectId).subscribe({
         next: (response: any) => {
-          console.log('Other costs response:', response);
+         // console.log('Other costs response:', response);
           const otherCosts = response?.data?.otherCosts;
           if (Array.isArray(otherCosts)) {
             this.tableData = otherCosts.map((item: any, index: number) => ({
@@ -159,6 +184,7 @@ export class OtherCostComponent {
               originDestination: item.orginDestinationCode === 0 ? 'Origin' : 'Destination',
               editing: false
             }));
+            this.calculateGrandTotalCost();
           } else {
             console.error('Other costs array not found in response:', response);
           }
