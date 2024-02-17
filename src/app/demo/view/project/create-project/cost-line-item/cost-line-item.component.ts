@@ -28,23 +28,19 @@ private _isExpanded = false;
   buildingBlockNames: any;
   originProcesses: any[] = [];
   buildingBlocks: any;
+  allLines: any;
+  costLineItemDetailsResponse: any;
+  projectId: any;
+  projectName: any;
 
 constructor(private projectService:ProjectsService, private messageService: MessageService){
 
 }
 
 ngOnInit(){
-  this.getCostLineItemDetails(374);
+  this.getCostLineItemDetails(581);
   }
-  onRowEditInit(event:any){
 
-  }
-  onRowEditSave(event:any){
-
-  }
-  onRowEditCancel(){
-    
-  }
 
   //---------------------------------Cost line item--------------------------------------------//
 
@@ -85,11 +81,86 @@ public set isExpanded(value: boolean) {
 
 getCostLineItemDetails(projectId) {
   this.projectService.getCostLineItemDetails(projectId).subscribe((res: any) => {
-    this.costLineItemDetails = res.BuildingBlocks;
+    this.costLineItemDetails = res.data.buildingBlocks;
+    
+    this.projectId = res.data.projectId;
+    this.projectName = res.data.projectName;
     this.buildingBlockNames = this.costLineItemDetails.map(block => block.buildingBlockName);
-    if (res && res.BuildingBlocks && res.BuildingBlocks.length > 0) {
-      this.buildingBlocks = res.BuildingBlocks;
+    if (res && res.data.buildingBlocks && res.data.buildingBlocks.length > 0) {
+      this.buildingBlocks = res.data.buildingBlocks;
     }
   });
 }
+getConfigurableName(configurableId: number): string {
+  switch(configurableId) {
+    case 1:
+      return 'EDI';
+    case 2:
+      return 'Manual';
+    case 3:
+      return 'Others';
+    default:
+      return 'Unknown';
+  }
+}
+saveCostLineItemDetails() {
+  if (this.costLineItemDetails && this.costLineItemDetails.length > 0) {
+    const body = {
+      projectId: this.projectId,
+      projectName: this.projectName,
+      buildingBlocks: this.costLineItemDetails
+    };
+
+    this.projectService.saveCostLineItemDetails(body).subscribe(
+      (res) => {
+        this.messageService.add({
+          key: 'successToast',
+          severity: 'success',
+          summary: 'Success!',
+          detail: 'Data saved successfully.'
+        });
+      },
+      (error) => {
+        this.messageService.add({
+          key: 'errorToast',
+          severity: 'error',
+          summary: 'Error!',
+          detail: 'Failed to save data.'
+        });
+      }
+    );
+  }
+}
+goToNextTab(){
+
+}
+onRowEditInit(line: any) {
+  line.editing = true; // Set editing mode to true for the specific row
+}
+
+onRowEditSave(line: any) {
+  // Save the edited data
+  line.editing = false; // Exit editing mode
+}
+
+onRowEditCancel(line: any, ri: number) {
+  // Cancel editing
+  // Reset any changes made to the row
+  line.editing = false; // Exit editing mode
+}
+onRowEditInitDL(line: any) {
+  line.editing = true; // Set editing mode to true for the specific row
+}
+
+onRowEditSaveDL(line: any) {
+  // Save the edited data
+  line.editing = false; // Exit editing mode
+}
+
+onRowEditCancelDL(line: any, ri: number) {
+  // Cancel editing
+  // Reset any changes made to the row
+  line.editing = false; // Exit editing mode
+}
+
 }

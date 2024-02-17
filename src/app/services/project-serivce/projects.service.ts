@@ -153,8 +153,8 @@ savevolumeDetails(body: any) {
 
 getCostLineItemDetails(projId: number): Observable<any> {
 
-  // return this.http.get<any>(url +`project/`+ projId + `/` + settings.AppRoutes.Auth.getAddVoulmeDetails);
-  return this.http.get<any>(`https://private-anon-b809d898f7-psabdpbbcapiblueprint.apiary-mock.com/project/projId/cost-line-item`);
+   return this.http.get<any>(url +`project/`+ projId + `/` + settings.AppRoutes.Auth.getCostLineItemDetails);
+  // return this.http.get<any>(`https://private-anon-b809d898f7-psabdpbbcapiblueprint.apiary-mock.com/project/projId/cost-line-item`);
 
   
 
@@ -162,8 +162,8 @@ getCostLineItemDetails(projId: number): Observable<any> {
 
 saveCostLineItemDetails(body: any) {
 
-  // return this.http.post<any>(url + settings.AppRoutes.Auth.saveVoulmeDetails, body);
-  return this.http.post<any>(`https://private-anon-b809d898f7-psabdpbbcapiblueprint.apiary-mock.com/project/cost-line-item`, body);
+  return this.http.post<any>(url + settings.AppRoutes.Auth.saveCostLineItemDetails, body);
+  // return this.http.post<any>(`https://private-anon-b809d898f7-psabdpbbcapiblueprint.apiary-mock.com/project/cost-line-item`, body);
 
 }
 

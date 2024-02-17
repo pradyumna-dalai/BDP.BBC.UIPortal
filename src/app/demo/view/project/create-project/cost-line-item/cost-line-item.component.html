@@ -48,22 +48,28 @@
                                     <ng-template pTemplate="body"  let-line let-editing="editing" let-ri="rowIndex">
                                         <tr [pEditableRow]="">
                                             <td>
-                                                <div class="flex align-items-center  gap-2">
-                                                    <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(product)" class="p-button-rounded p-button-text"></button>
-                                                    <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(product)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                                                    <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(product, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                                                <div class="flex align-items-center justify-content-center">
+                                                    <button *ngIf="!line.editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(line)" class="p-button-rounded p-button-text"></button>
+                                                    <button *ngIf="line.editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(line)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                                                    <button *ngIf="line.editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(line, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
                                                 </div>
                                             </td>
-                                            <td style="text-align: center; word-wrap: break-word;">{{ line.configurableName }}</td>
+                                            <td style="text-align: center; word-wrap: break-word;">{{ getConfigurableName(line.configurableId) }}</td>
                                             <td style="text-align: center; word-wrap: break-word;">{{ line.locationName }}</td>
                                             <td style="text-align: center; word-wrap: break-word;">{{ line.volume }}</td>
                                             <td style="text-align: center; word-wrap: break-word;">{{ line.uom }}</td>
                                             <td style="text-align: center; word-wrap: break-word;">{{ line.takt }}</td>
-                                            <td style="text-align: center; word-wrap: break-word;">{{ line.complexity }}</td>
+                                            <td style="text-align: center; word-wrap: break-word;">
+                                                <ng-container *ngIf="!line.editing">{{ line.complexity }}</ng-container>
+                                                <input pInputText *ngIf="line.editing" type="number" [(ngModel)]="line.complexity">
+                                            </td>
                                             <td style="text-align: center; word-wrap: break-word;">{{ line.taktConsidered }}</td>
                                             <td style="text-align: center; word-wrap: break-word;">{{ line.totalCost }}</td>
                                             <td style="text-align: center; word-wrap: break-word;">{{ line.totalHC }}</td>
-                                            <td style="text-align: center; word-wrap: break-word;">{{ line.fteProductivity }}</td>
+                                            <td style="text-align: center; word-wrap: break-word;">
+                                                <ng-container *ngIf="!line.editing">{{ line.fteProductivity }}</ng-container>
+                                                <input pInputText *ngIf="line.editing" type="number" [(ngModel)]="line.fteProductivity">
+                                            </td>
                                             <td style="text-align: center; word-wrap: break-word;">{{ line.fteCost }}</td>
                                             <td style="text-align: center; word-wrap: break-word;">{{ line.comment }}</td>
                                             
@@ -88,42 +94,46 @@
                                     <p-table [value]="process.lines"  dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
                                         <ng-template pTemplate="header">
                                             <tr>
-                                                <th style="width:7%">Action</th>
-                                                <th style="width:7%">Configurable</th>
-                                                <th style="width:7%">Location</th>
-                                                <th style="width:7%">Volume</th>
-                                                <th style="width:7%">UOM</th>
-                                                <th style="width:7%">Takt</th>
-                                                <th style="width:7%">Complexity</th>
-                                                <th style="width:7%">Takt Considered</th>
-                                                <th style="width:7%">Total Cost</th>
-                                                <th style="width:7%">Total HC</th>
-                                                <th style="width:7%">FTE Prodcutivity</th>
-                                                <th style="width:7%">FTE Cost</th>
-                                                <th style="width:7%">Comment</th>
+                                                <th style="text-align: center;width:7%">Action</th>
+                                                <th style="text-align: center;width:7%">Configurable</th>
+                                                <th style="text-align: center;width:7%">Location</th>
+                                                <th style="text-align: center;width:7%">Volume</th>
+                                                <th style="text-align: center;width:7%">UOM</th>
+                                                <th style="text-align: center;width:7%">Takt</th>
+                                                <th style="text-align: center;width:7%">Complexity</th>
+                                                <th style="text-align: center;width:7%">Takt Considered</th>
+                                                <th style="text-align: center;width:7%">Total Cost</th>
+                                                <th style="text-align: center;width:7%">Total HC</th>
+                                                <th style="text-align: center;width:7%">FTE Prodcutivity</th>
+                                                <th style="text-align: center;width:7%">FTE Cost</th>
+                                                <th style="text-align: center;width:7%">Comment</th>
                                             </tr>
                                         </ng-template>
                                         <ng-template pTemplate="body"  let-line let-editing="editing" let-ri="rowIndex">
                                             <tr [pEditableRow]="">
                                                 <td>
-                                                    <div class="flex align-items-center gap-2">
-                                                        <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(product)" class="p-button-rounded p-button-text"></button>
-                                                        <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(product)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                                                        <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(product, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                                                    <div class="flex align-items-center justify-content-center gap-2">
+                                                        <button *ngIf="!line.editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInitDL(line)" class="p-button-rounded p-button-text"></button>
+                                                        <button *ngIf="line.editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSaveDL(line)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                                                        <button *ngIf="line.editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancelDL(line, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
                                                     </div>
                                                 </td>
-                                            <td>{{ line.configurableName }}</td>
-                                            <td>{{ line.locationName }}</td>
-                                            <td>{{ line.volume }}</td>
-                                            <td>{{ line.uom }}</td>
-                                            <td>{{ line.takt }}</td>
-                                            <td>{{ line.complexity }}</td>
-                                            <td>{{ line.taktConsidered }}</td>
-                                            <td>{{ line.totalCost }}</td>
-                                            <td>{{ line.totalHC }}</td>
-                                            <td>{{ line.fteProductivity }}</td>
-                                            <td>{{ line.fteCost }}</td>
-                                            <td>{{ line.comment }}</td>
+                                            <td style="text-align: center; word-wrap: break-word;">{{ getConfigurableName(line.configurableId) }}</td>
+                                            <td style="text-align: center; word-wrap: break-word;">{{ line.locationName }}</td>
+                                            <td style="text-align: center; word-wrap: break-word;">{{ line.volume }}</td>
+                                            <td style="text-align: center; word-wrap: break-word;">{{ line.uom }}</td>
+                                            <td style="text-align: center; word-wrap: break-word;">{{ line.takt }}</td>
+                                            <td style="text-align: center; word-wrap: break-word;">
+                                                <ng-container *ngIf="!line.editing">{{ line.complexity }}</ng-container>
+                                                <input pInputText *ngIf="line.editing" type="number" [(ngModel)]="line.complexity"></td>
+                                            <td style="text-align: center; word-wrap: break-word;">{{ line.taktConsidered }}</td>
+                                            <td style="text-align: center; word-wrap: break-word;">{{ line.totalCost }}</td>
+                                            <td style="text-align: center; word-wrap: break-word;">{{ line.totalHC }}</td>
+                                            <td style="text-align: center; word-wrap: break-word;">
+                                                <ng-container *ngIf="!line.editing">{{ line.fteProductivity }}</ng-container>
+                                                <input pInputText *ngIf="line.editing" type="number" [(ngModel)]="line.fteProductivity"></td>
+                                            <td style="text-align: center; word-wrap: break-word;">{{ line.fteCost }}</td>
+                                            <td style="text-align: center; word-wrap: break-word;">{{ line.comment }}</td>
                                             </tr>
                                         </ng-template>
                                     <ng-template pTemplate="emptymessage">
@@ -141,7 +151,11 @@
         </p-accordionTab>
     </p-accordion>
     
-   
+    <div class="col-12" style="display: flex;justify-content: flex-end;">
+        <button pButton pRipple type="button" label="Save As Draft" 
+            (click)="saveCostLineItemDetails()" class="p-button-outlined mr-2 mb-2"></button>
+        <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()" class="mr-2 mb-2"></button>
+    </div>
 </div>
 
 <p-dialog header="Import Excel" [(visible)]="visible" [modal]="true"   [style]="{width: '50vw'}" >
@@ -228,3 +242,5 @@
 
     </div>
 </p-dialog>
+<p-toast key="successToast" position="top-right"></p-toast>
+<p-toast key="errorToast" position="top-right"></p-toast>
