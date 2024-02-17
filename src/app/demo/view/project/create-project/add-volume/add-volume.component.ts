@@ -29,6 +29,8 @@ visible: boolean = false;
   volumeDetails: any[]= [];
   dynamicColumns: any[] = [];
   allData: { projectId: any; projectName: any; buildingBlocks: any; };
+  buildingBlocks: any;
+  buildingBlockNames: any[];
   constructor(private projectService:ProjectsService, private messageService: MessageService){
 
   }
@@ -77,36 +79,29 @@ showDestinationSection() {
 
 getVolumeDetails(projectId) {
   this.projectService.getvolumeDetails(projectId).subscribe((res: any) => {
-    if (res && res.data && res.data.buildingBlocks && res.data.buildingBlocks.length > 0) {
-      // Extracting all building blocks
-      const buildingBlocksData = res.data.buildingBlocks.map(block => {
-        return {
-          buildingBlockId: block.buildingBlockId,
-          buildingBlockName: block.buildingBlockName,
-          originService: block.originService,
-          destinationService: block.destinationService
-        };
-      });
-      
-      // Storing all data
-      this.allData = {
-        projectId: res.data.projectId,
-        projectName: res.data.projectName,
-        buildingBlocks: buildingBlocksData
-      };
-
-      // Storing volume details for dynamic columns
-      this.volumeDetails = res.data.buildingBlocks;
-      this.dynamicColumns = this.volumeDetails.reduce((acc, curr) => {
-        curr.originService.processes[0].lines[0].locationVolume.forEach(location => {
-          if (!acc.includes(location.locationName)) {
-            acc.push(location.locationName);
-          }
-        });
-        return acc;
-      }, []);
-    }
+        if (res && res.data && res.data.buildingBlocks && res.data.buildingBlocks.length > 0) {
+          // this.volumeDetails = res.data.buildingBlocks;
+          this.buildingBlocks = res.data.buildingBlocks;
+          this.buildingBlockNames = this.buildingBlocks.map(block => block.buildingBlockName);
+        }
   });
+}
+ // Helper method to get unique location names from all lines
+ getLocationNames(lines: any[]): string[] {
+  let locationNames: string[] = [];
+  lines.forEach(line => {
+    line.locationVolume.forEach(location => {
+      if (!locationNames.includes(location.locationName)) {
+        locationNames.push(location.locationName);
+      }
+    });
+  });
+  return locationNames;
+}
+
+getLocationVolumes(locationVolume: any[], locationName: string): string | number {
+  const location = locationVolume.find(loc => loc.locationName === locationName);
+  return location ? location.volume : 'NA';
 }
 getConfigurableName(configurableId: number): string {
   switch (configurableId) {
@@ -141,41 +136,36 @@ getLocationVolume(buildingBlock: any, locationName: string): string {
   return location ? location.volume : '';
 }
 
-
-onRowEditSave(buildingBlock: any) {
-  // Save logic
-  buildingBlock.editing = false;
+toggleEditMode(line: any) {
+  line.editing = true; // Set editing mode to true for the specific row
 }
 
-onRowEditCancel(buildingBlock: any, ri: number) {
-  // Restore original values when cancelling edit mode
-  if (buildingBlock.dynamicColumns && buildingBlock.dynamicColumns.length > 0) {
-    buildingBlock.dynamicColumns.forEach(col => {
-      buildingBlock[col] = buildingBlock[col + '_original'];
-    });
-  }
-  buildingBlock.editing = false;
+onRowEditSave(line: any) {
+  // Save the edited data
+  line.editing = false; // Exit editing mode
+}
+
+onRowEditCancel(line: any, ri: number) {
+  // Cancel editing
+  // Reset any changes made to the row
+  line.editing = false; // Exit editing mode
+}
+toggleEditModeDL(line: any) {
+  line.editing = true; // Set editing mode to true for the specific row
+}
+
+onRowEditSaveDL(line: any) {
+  // Save the edited data
+  line.editing = false; // Exit editing mode
+}
+
+onRowEditCancelDL(line: any, ri: number) {
+  // Cancel editing
+  // Reset any changes made to the row
+  line.editing = false; // Exit editing mode
 }
 
 
-toggleEditMode(buildingBlock: any) {
-  buildingBlock.editing = !buildingBlock.editing;
-  if (buildingBlock.editing && buildingBlock.dynamicColumns && buildingBlock.dynamicColumns.length > 0) {
-      buildingBlock.dynamicColumns.forEach(col => {
-          // Store the original value before switching to edit mode
-          buildingBlock[col + '_original'] = buildingBlock[col];
-          // Initialize input value with the original value
-          buildingBlock[col + '_input'] = buildingBlock[col];
-      });
-  }
-}
-onRowEditInit(buildingBlock: any) {
-  buildingBlock.editing = true;
-  buildingBlock.dynamicColumnsInput = {};
-  this.dynamicColumns.forEach(col => {
-    buildingBlock.dynamicColumnsInput[col] = this.getLocationVolume(buildingBlock, col);
-  });
-}
 onSaveVolumeClick(){
   this.projectService.savevolumeDetails(this.allData).subscribe(
     (res) => {
