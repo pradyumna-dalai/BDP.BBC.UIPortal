@@ -34,7 +34,7 @@ visible: boolean = false;
   }
 
   ngOnInit(){
-  this.getVolumeDetails(374);
+  this.getVolumeDetails(338);
   }
   public get isExpanded() {
     return this._isExpanded;
@@ -108,6 +108,18 @@ getVolumeDetails(projectId) {
     }
   });
 }
+getConfigurableName(configurableId: number): string {
+  switch (configurableId) {
+      case 1:
+          return 'EDI';
+      case 2:
+          return 'Manual';
+      case 3:
+          return 'Others';
+      default:
+          return ''; // You might want to handle other cases appropriately
+  }
+}
 getLocationVolumeValue(buildingBlock: any, col: any): any {
   // Implement the logic to get the value here, for example:
   return this.getLocationVolume(buildingBlock, col);
@@ -165,73 +177,6 @@ onRowEditInit(buildingBlock: any) {
   });
 }
 onSaveVolumeClick(){
-  // const body ={
-  //   projectId: 376,
-  //   projectName: "SampleProject",
-  //   buildingBlocks: [
-  //       {
-  //           buildingBlockId: 692,
-  //           buildingBlockName: "VOT",
-  //           originService: {
-  //               processes: [
-  //                   {
-  //                       processId: 44,
-  //                       processName: "sample",
-  //                       lines: [
-  //                           {
-  //                               uomId: 1,
-  //                               uomName: "Order",
-  //                               configurableId: 1,
-  //                               configurable: "Manual",
-  //                               locationVolume: [
-  //                                   {
-  //                                       locationId: 1,
-  //                                       locationName: "Antwerp",
-  //                                       volume: 400
-  //                                   },
-  //                                   {
-  //                                       locationId: 2,
-  //                                       locationName: "Navashava",
-  //                                       volume: 300
-  //                                   }
-  //                               ]
-  //                           }
-  //                       ]
-  //                   }
-  //               ]
-  //           },
-  //           destinationService: {
-  //               processes: [
-  //                   {
-  //                       processId: 44,
-  //                       processName: "sample",
-  //                       lines: [
-  //                           {
-  //                               uomId: 32,
-  //                               uomName: "PO",
-  //                               configurableId: 2,
-  //                               configurable: "Manual",
-  //                               locationVolume: [
-  //                                   {
-  //                                       locationId: 3,
-  //                                       locationName: "Antwerp",
-  //                                       volume: 200
-  //                                   },
-  //                                   {
-  //                                       locationId: 4,
-  //                                       locationName: "Navashava",
-  //                                       volume: 100
-  //                                   }
-  //                               ]
-  //                           }
-  //                       ]
-  //                   }
-  //               ]
-  //           }
-  //       }
-  //   ]
-
-  // }
   this.projectService.savevolumeDetails(this.allData).subscribe(
     (res) => {
       

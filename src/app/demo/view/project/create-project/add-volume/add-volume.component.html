@@ -35,30 +35,30 @@
                                     <p-table dataKey="id" [value]="volumeDetails"  [tableStyle]="{'min-width': '50rem'}">
                                         <ng-template pTemplate="header">
                                             <tr>
-                                                <th style="width:20%">Action</th>
+                                                <th style="text-align: center;width:20%">Action</th>
                                                 
-                                                <th style="width:20%">UOM</th>
-                                                <th style="width:20%">Configurable</th>
-                                                <th *ngFor="let col of dynamicColumns">{{ col }}</th>
+                                                <th style="text-align: center;width:20%">UOM</th>
+                                                <th style="text-align: center;width:20%">Configurable</th>
+                                                <th style="text-align: center;" *ngFor="let col of dynamicColumns">{{ col }}</th>
                                             </tr>
                                         </ng-template>
                                         <ng-template pTemplate="body" let-buildingBlock let-editing="editing" let-ri="rowIndex">
                                             <tr *ngIf="buildingBlock">
-                                              <td>
+                                              <td style="text-align: center; word-wrap: break-word;">
                                                 <div class="align-items-center gap-2">
                                                     <button *ngIf="!buildingBlock.editing" pButton pRipple type="button" icon="pi pi-pencil" (click)="toggleEditMode(buildingBlock)" class="p-button-rounded p-button-text"></button>
                                                     <button *ngIf="buildingBlock.editing" pButton pRipple type="button" icon="pi pi-check" (click)="onRowEditSave(buildingBlock)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
                                                     <button *ngIf="buildingBlock.editing" pButton pRipple type="button" icon="pi pi-times" (click)="onRowEditCancel(buildingBlock, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
                                                 </div>
                                               </td>
-                                              <td>
+                                              <td style="text-align: center; word-wrap: break-word;">
                                                 {{ buildingBlock.originService?.processes[0].lines[0]?.uomName }}
                                               </td>
-                                              <td>
-                                                {{ buildingBlock.originService?.processes[0].lines[0]?.configurableName }}
-                                              </td>
+                                              <td style="text-align: center; word-wrap: break-word;">
+                                                {{ getConfigurableName(buildingBlock.originService?.processes[0].lines[0]?.configurableId) }}
+                                            </td>
                                               <!-- Display volume for each dynamic column -->
-                                              <td *ngFor="let col of dynamicColumns">
+                                              <td style="text-align: center; word-wrap: break-word;" *ngFor="let col of dynamicColumns">
                                                 <ng-container *ngIf="!buildingBlock.editing; else editMode">
                                                     {{ getLocationVolume(buildingBlock, col) }}
                                                 </ng-container>
@@ -86,30 +86,30 @@
                                     <p-table dataKey="id" [value]="volumeDetails" editMode="row" [tableStyle]="{'min-width': '50rem'}">
                                         <ng-template pTemplate="header">
                                             <tr>
-                                                <th style="width:20%">Action</th>
+                                                <th style="text-align: center;width:20%">Action</th>
                                                 
-                                                <th style="width:20%">UOM</th>
-                                                <th style="width:20%">Configurable</th>
-                                                <th *ngFor="let col of dynamicColumns">{{ col }}</th>
+                                                <th style="text-align: center;width:20%">UOM</th>
+                                                <th style="text-align: center;width:20%">Configurable</th>
+                                                <th style="text-align: center;" *ngFor="let col of dynamicColumns">{{ col }}</th>
                                             </tr>
                                         </ng-template>
                                         <ng-template pTemplate="body" let-buildingBlock let-editing="editing" let-ri="rowIndex">
                                             <tr *ngIf="buildingBlock">
-                                              <td>
+                                              <td style="text-align: center; word-wrap: break-word;">
                                                 <div class="align-items-center gap-2">
                                                     <button *ngIf="!buildingBlock.editing" pButton pRipple type="button" icon="pi pi-pencil" (click)="toggleEditMode(buildingBlock)" class="p-button-rounded p-button-text"></button>
                                                     <button *ngIf="buildingBlock.editing" pButton pRipple type="button" icon="pi pi-check" (click)="onRowEditSave(buildingBlock)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
                                                     <button *ngIf="buildingBlock.editing" pButton pRipple type="button" icon="pi pi-times" (click)="onRowEditCancel(buildingBlock, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
                                                 </div>
                                               </td>
-                                              <td>
+                                              <td style="text-align: center; word-wrap: break-word;">
                                                 {{ buildingBlock.destinationService?.processes[0].lines[0]?.uomName }}
                                               </td>
-                                              <td>
-                                                {{ buildingBlock.destinationService?.processes[0].lines[0]?.configurableName }}
-                                              </td>
+                                              <td style="text-align: center; word-wrap: break-word;">
+                                                {{ getConfigurableName(buildingBlock.originService?.processes[0].lines[0]?.configurableId) }}
+                                            </td>
                                               <!-- Display volume for each dynamic column -->
-                                              <td *ngFor="let col of dynamicColumns">
+                                              <td style="text-align: center;" *ngFor="let col of dynamicColumns">
                                                 <ng-container *ngIf="!buildingBlock.editing; else editMode">
                                                     {{ getLocationVolume(buildingBlock, col) }}
                                                 </ng-container>
