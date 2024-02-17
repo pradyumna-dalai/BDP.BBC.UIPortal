@@ -160,5 +160,12 @@ getProjectBuildingBlocks(projectId:number){
 }
 
 //-----------------------------------------------------end------------------------------------------------------------------//
+
+
+//-----------------------------------------------Project Other Cost-----------------------//
+saveProjectOtherCost(body:any): Observable<any> {
+  return this.http.post<any>(url + settings.AppRoutes.Auth.otherCost, body);
+}
+
 }
 

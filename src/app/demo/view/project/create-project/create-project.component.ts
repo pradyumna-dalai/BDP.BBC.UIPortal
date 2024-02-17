@@ -131,7 +131,7 @@ export class CreateProjectComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.projId = params.projId;
       this.getProjectDetails(this.projId);
-      console.log(params.projId)
+    //  console.log(params.projId)
     });
 
     if (this.projId) {
@@ -159,7 +159,7 @@ export class CreateProjectComponent implements OnInit {
   }
   goToNextTab() {
     // this.activeIndex = (this.activeIndex + 1) % 8; 
-    console.log(this.myForm.value);
+   // console.log(this.myForm.value);
     this.activeIndex = (this.activeIndex + 1) % 8
     // this.addVolume.shareFunctionAddVolume()
 
@@ -681,10 +681,6 @@ export class CreateProjectComponent implements OnInit {
   }
 
 
-  // onRemoveUploadedFile(index: number): void {
-  //   this.uploadedFiles.splice(index, 1);
-  // }
-
   deleteProjectArtifact(index: number): void {
     if (index >= 0 && index < this.uploadedFiles.length) {
       const documentIdToDelete = this.uploadedFiles[index].id;
@@ -713,14 +709,6 @@ export class CreateProjectComponent implements OnInit {
   showDialogOthers() {
     this.visibleOthersBox = true;
   }
-
-  // onRemoveUploadedResponseFile(index: number): void {
-  //   this.uploadedResponseFiles.splice(index, 1);
-  // }
-
-  // onRemoveUploadedOtherFile(index: number): void {
-  //   this.uploadedOtherFiles.splice(index, 1);
-  // }
 
   onResponseCancelClick() {
     this.fileNameOC = "";

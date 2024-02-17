@@ -133,6 +133,8 @@ export namespace AppRoutes {
 
        public static readonly ProjectBuildingBlock = "project-block-location";
 
+       public static readonly otherCost = "project/other-cost";
+
         
        //------add volume(Project)-----------------------//
        
