@@ -200,7 +200,7 @@ export class CreateProjectComponent implements OnInit {
         this.opportunityNameOptions = res?.data;
 
         // Automatically select the opportunity name if it matches the response
-        const selectedOpportunityId = this.response.opportunityName?.id;
+        const selectedOpportunityId = this.response?.opportunityName?.id;
         if (selectedOpportunityId) {
           const matchingOpportunity = this.opportunityNameOptions.find(opportunity => opportunity.id === selectedOpportunityId);
           if (matchingOpportunity) {
@@ -223,7 +223,7 @@ export class CreateProjectComponent implements OnInit {
         this.IVOptions = res?.data;
 
         // Automatically select the industry vertical if it matches the response
-        const selectedIVId = this.response.industryVertical?.id;
+        const selectedIVId = this.response?.industryVertical?.id;
         if (selectedIVId) {
           const matchingIV = this.IVOptions.find(iv => iv.id === selectedIVId);
           if (matchingIV) {
