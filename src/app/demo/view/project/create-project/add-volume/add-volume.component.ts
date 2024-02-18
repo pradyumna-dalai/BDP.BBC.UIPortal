@@ -31,8 +31,11 @@ visible: boolean = false;
   allData: { projectId: any; projectName: any; buildingBlocks: any; };
   buildingBlocks: any;
   buildingBlockNames: any[];
+  projectId: any;
+  projectName: any;
+  process: any;
   constructor(private projectService:ProjectsService, private messageService: MessageService){
-
+    this.process = { lines: [] };
   }
 
   ngOnInit(){
@@ -79,12 +82,45 @@ showDestinationSection() {
 
 getVolumeDetails(projectId) {
   this.projectService.getvolumeDetails(projectId).subscribe((res: any) => {
+    this.projectId = res.data.projectId;
+    this.projectName = res.data.projectName;
+    this.volumeDetails = res.data.buildingBlocks;
         if (res && res.data && res.data.buildingBlocks && res.data.buildingBlocks.length > 0) {
           // this.volumeDetails = res.data.buildingBlocks;
           this.buildingBlocks = res.data.buildingBlocks;
           this.buildingBlockNames = this.buildingBlocks.map(block => block.buildingBlockName);
         }
   });
+}
+onSaveVolumeClick(){
+  if (this.volumeDetails && this.volumeDetails.length > 0) {
+  const body = {
+    projectId: this.projectId,
+    projectName: this.projectName,
+    buildingBlocks: this.volumeDetails
+  };
+  this.projectService.savevolumeDetails(body).subscribe(
+    (res) => {
+      
+      this.messageService.add({
+        key: 'successToast',
+        severity: 'success',
+        summary: 'Success!',
+        detail: 'Data saved successfully.'
+      });
+    },
+    (error) => {
+
+      this.messageService.add({
+        key: 'errorToast',
+        severity: 'error',
+        summary: 'Error!',
+        detail: 'Failed to save data.'
+      });
+    }
+  );
+
+}
 }
  // Helper method to get unique location names from all lines
  getLocationNames(lines: any[]): string[] {
@@ -103,6 +139,20 @@ getLocationVolumes(locationVolume: any[], locationName: string): string | number
   const location = locationVolume.find(loc => loc.locationName === locationName);
   return location ? location.volume : 'NA';
 }
+// Add these methods to your component class
+getLocationVolumeValue(locationVolume: any[], locationName: string): string | number {
+  const location = locationVolume.find(loc => loc.locationName === locationName);
+  return location ? location.volume : 'NA';
+}
+
+
+updateLocationVolume(newValue: number, index: number, locationName: string, lines: any[]) {
+  const location = lines[index].locationVolume.find(loc => loc.locationName === locationName);
+  if (location) {
+    location.volume = newValue;
+  }
+}
+
 getConfigurableName(configurableId: number): string {
   switch (configurableId) {
       case 1:
@@ -115,26 +165,7 @@ getConfigurableName(configurableId: number): string {
           return ''; // You might want to handle other cases appropriately
   }
 }
-getLocationVolumeValue(buildingBlock: any, col: any): any {
-  // Implement the logic to get the value here, for example:
-  return this.getLocationVolume(buildingBlock, col);
-}
 
-setLocationVolumeValue(newValue: any, buildingBlock: any, col: any): void {
-  // Assuming buildingBlock contains the volume details for each location
-  // Find the location volume object corresponding to the column
-  const location = buildingBlock.originService.processes[0].lines[0].locationVolume.find(loc => loc.locationName === col);
-  // Update the volume value
-  if (location) {
-    location.volume = newValue;
-  }
-}
-getLocationVolume(buildingBlock: any, locationName: string): string {
-  // Implement logic to get the volume for the specified location
-  // For example:
-  const location = buildingBlock.originService.processes[0].lines[0].locationVolume.find(loc => loc.locationName === locationName);
-  return location ? location.volume : '';
-}
 
 toggleEditMode(line: any) {
   line.editing = true; // Set editing mode to true for the specific row
@@ -166,29 +197,7 @@ onRowEditCancelDL(line: any, ri: number) {
 }
 
 
-onSaveVolumeClick(){
-  this.projectService.savevolumeDetails(this.allData).subscribe(
-    (res) => {
-      
-      this.messageService.add({
-        key: 'successToast',
-        severity: 'success',
-        summary: 'Success!',
-        detail: 'Data saved successfully.'
-      });
-    },
-    (error) => {
 
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Failed to save data.'
-      });
-    }
-  );
-
-}
 goToNextTab(){
   
 }

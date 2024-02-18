@@ -54,13 +54,16 @@
                                             {{ line.uomName }}
                                         </td>
                                         <td style="text-align: center;word-wrap: break-word;">{{ getConfigurableName(line.configurableId) }}</td>
-                                        <ng-container *ngFor="let location of getLocationNames(process.lines)">
+                                        <ng-container *ngFor="let location of getLocationNames(process.lines); let i = index">
                                             <td style="text-align: center; word-wrap: break-word;">
                                                 <div *ngIf="!line.editing; else editLocation">
                                                     {{ getLocationVolumes(line.locationVolume, location) }}
                                                 </div>
                                                 <ng-template #editLocation>
-                                                    <input pInputText type="number" [(ngModel)]="location.volume" style="text-align: center;">
+                                                    <input pInputText type="number" 
+       [ngModel]="getLocationVolumeValue(line.locationVolume, location)"
+       (ngModelChange)="updateLocationVolume($event, i, location, process.lines)"
+       style="text-align: center;">
                                                 </ng-template>
                                             </td>
                                         </ng-container>
