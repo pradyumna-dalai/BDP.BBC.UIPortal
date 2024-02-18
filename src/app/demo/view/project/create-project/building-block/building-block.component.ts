@@ -51,22 +51,18 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   selectedOriginLocationNodes: any;
 
   constructor(private projectService: ProjectsService, private messageService: MessageService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
-    this.getAllProjectBuildingBlock(this.projectId);
-  }
-
-  ngOnInit() {
+  //  console.log(' :',this.getSavedBlocksDD);
     this.projectService.draftData$.subscribe(data => {
       this.projectLocations = data.data.projectLocation.filter(loc => loc.originDestinationCode === 0 || loc.originDestinationCode === 1);
       this.projectId = data.data.id;
       this.projectName = data.data.projectInformation.projectName;
-      //console.log('Filtered projectLocation:', this.projectLocations);
-      //console.log('Draft data:', this.projectId);
       this.getAllProjectBuildingBlock(this.projectId);
-     // console.log('bbsave',this.getSavedBlocksDD);
+      console.log('bbsave',this.getSavedBlocksDD);
 });
+    this.getAllProjectBuildingBlock(this.projectId);
+  }
 
-
-
+  ngOnInit() {
     this.loadTreeDataNew();
   }
   ngOnDestroy() {
@@ -198,7 +194,8 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       if (!this.selectedNodes.includes(node)) {
         this.selectedNodes.push(node);
         this.draggedNodeId = node.data?.id;
-     //   console.log('ssss', this.selectedNodes)
+        console.log('ssss',  this.draggedNodeId)
+        this.getAllProcessStepbyBlockId(this.draggedNodeId);
       }
     } else {
       event.preventDefault();
@@ -363,31 +360,8 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   }
 
 
-  // onLocationNodeSelect(event: any): void {
-  //   console.log('Event:', event);
-  //   console.log('Event node:', event.node);
-  //   if (!event.node || !event.node.children) {
-  //     console.error('Invalid node selected:', event.node);
-  //     return;
-  //   }
-  //   if (event.node.children.length > 0) {
-  //     console.log('Cannot select parent nodes.');
-  //     return;
-  //   }
-  //   event.node.children.forEach(child => {
-  //     const index = this.selectedLocationNodes.findIndex(node => node.key === child.key);
-  //     if (index === -1) {
-  //       this.selectedLocationNodes.push(child.key);
-  //       console.log('checkbox', this.selectedLocationNodes);
-  //     } else {
-  //       this.selectedLocationNodes.splice(index, 1);
-  //     }
-  //   });
-  // }
-
   onLocationNodeSelect(event: any): void {
    // console.log('Event:', event);
-   // console.log('Event node:', event.node);
     if (!event.node || !event.node.children) {
       console.error('Invalid node selected:', event.node);
       return;
@@ -396,30 +370,22 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       console.log('Cannot select parent nodes.');
       return;
     }
-
-    // Determine which section is active and update the corresponding array
     if (this.isOriginActive) {
-      // Clear destination selection if origin section is active
       this.selectedLocationNodes = [];
-
       event.node.children.forEach(child => {
         const index = this.selectedOriginLocationNodes.findIndex(node => node.key === child.key);
         if (index === -1) {
           this.selectedOriginLocationNodes.push(child.key);
-      //    console.log('checkbox', this.selectedOriginLocationNodes);
         } else {
           this.selectedOriginLocationNodes.splice(index, 1);
         }
       });
     } else if (this.isDestinationActive) {
-      // Clear origin selection if destination section is active
       this.selectedDestinationLocationNodes = [];
-
       event.node.children.forEach(child => {
         const index = this.selectedDestinationLocationNodes.findIndex(node => node.key === child.key);
         if (index === -1) {
           this.selectedDestinationLocationNodes.push(child.key);
-       //   console.log('checkbox', this.selectedDestinationLocationNodes);
         } else {
           this.selectedDestinationLocationNodes.splice(index, 1);
         }
@@ -471,11 +437,8 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
         };
       })
     };
-
-   // console.log('Request Body:', body);
     this.projectService.saveProjectBuildingBlock(body).subscribe({
       next: (response: any) => {
-     //   console.log('Project Building Block saved successfully:', response);
         this.messageService.add({
           key: 'successToast',
           severity: 'success',
@@ -507,11 +470,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
             buildingBlockId: block.buildingBlockId,
             buildingBlockName: block.buildingBlockName
           }));
-  
-          // Match building block IDs with nodes in the tree and add them to selectedNodes
           this.matchBuildingBlocksToNodes();
-  
-          console.log('bbsave', this.getSavedBlocksDD);
         }
       });
     }
@@ -522,6 +481,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       const matchedNode = this.findNodeById(block.buildingBlockId, this.treeDataNew);
       if (matchedNode) {
         this.selectedNodes.push(matchedNode);
+        this.getAllProcessStepbyBlockId(block.buildingBlockId);
       }
     });
   }
