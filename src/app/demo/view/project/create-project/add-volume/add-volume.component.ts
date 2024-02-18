@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 
@@ -34,12 +34,14 @@ visible: boolean = false;
   projectId: any;
   projectName: any;
   process: any;
+  @Input() projId: any;
   constructor(private projectService:ProjectsService, private messageService: MessageService){
     this.process = { lines: [] };
   }
 
   ngOnInit(){
-  this.getVolumeDetails(338);
+    this.getVolumeDetails(this.projId);
+  // this.getVolumeDetails(338);
   }
   public get isExpanded() {
     return this._isExpanded;

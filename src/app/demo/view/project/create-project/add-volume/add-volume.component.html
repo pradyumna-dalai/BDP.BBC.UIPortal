@@ -61,9 +61,9 @@
                                                 </div>
                                                 <ng-template #editLocation>
                                                     <input pInputText type="number" 
-       [ngModel]="getLocationVolumeValue(line.locationVolume, location)"
-       (ngModelChange)="updateLocationVolume($event, i, location, process.lines)"
-       style="text-align: center;">
+                                                    [ngModel]="getLocationVolumeValue(line.locationVolume, location)"
+                                                    (ngModelChange)="updateLocationVolume($event, i, location, process.lines)"
+                                                    style="text-align: center;">
                                                 </ng-template>
                                             </td>
                                         </ng-container>
