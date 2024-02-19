@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,Output, EventEmitter } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { AppMainComponent } from 'src/app/app.main.component';
 import { CreateBuildingBlockService } from 'src/app/services/create-buildingBlock/create-building-block.service';
@@ -27,6 +27,7 @@ export class OtherCostComponent {
   tableData: CostItem[] = [];
   editedRowIndex: number = -1;
   grandTotalCost: number = 0;
+  @Output() continueClickedToProjectCost: EventEmitter<any> = new EventEmitter();
   constructor(private projectService: ProjectsService, private cd: ChangeDetectorRef, private messageService: MessageService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
 
   }
@@ -42,6 +43,10 @@ export class OtherCostComponent {
     });
 
   }
+  onClickContinue() {
+    // Emit event to notify parent component to move to next tab
+    this.continueClickedToProjectCost.emit();
+}
 
 
   generateDropdownOptions() {

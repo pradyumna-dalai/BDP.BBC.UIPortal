@@ -1,4 +1,4 @@
-import { Component, OnInit,Input } from '@angular/core';
+import { Component, OnInit,Input,Output, EventEmitter } from '@angular/core';
 import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { SharedServiceService } from 'src/app/services/project-serivce/shared-service.service';
@@ -37,6 +37,7 @@ visible: boolean = false;
   process: any;
 
   @Input() projectIdbb: number | null;
+  @Output() onClickContinuetoAddVolume: EventEmitter<any> = new EventEmitter();
   projectidVolume: any;
   draftSavedVolume: boolean = false;
   constructor(private sharedService: SharedServiceService,private projectService:ProjectsService, private messageService: MessageService){
@@ -47,6 +48,10 @@ visible: boolean = false;
   this.getVolumeDetails(this.projectIdbb);
 
   }
+  onClickContinue() {
+    // Emit event to notify parent component to move to next tab
+    this.onClickContinuetoAddVolume.emit();
+}
   public get isExpanded() {
     return this._isExpanded;
 }

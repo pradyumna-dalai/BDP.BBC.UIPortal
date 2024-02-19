@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit,Output, EventEmitter } from '@angular/core';
 import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
 import { MessageService, TreeDragDropService, TreeNode } from 'primeng/api';
 import { Subscription } from 'rxjs';
@@ -52,6 +52,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   selectedOriginLocationNodes: any;
   draftSavedBB: boolean = false;
   projectIDbb: any;
+  @Output() continueClicked: EventEmitter<any> = new EventEmitter();
 
   constructor(private sharedService: SharedServiceService,private projectService: ProjectsService, private messageService: MessageService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
   //  console.log(' :',this.getSavedBlocksDD);
@@ -67,6 +68,10 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loadTreeDataNew();
   }
+  onClickContinue() {
+    // Emit event to notify parent component to move to next tab
+    this.continueClicked.emit();
+}
   ngOnDestroy() {
     if (this.subscription) {
       this.subscription.unsubscribe();
