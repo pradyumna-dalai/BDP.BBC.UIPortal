@@ -363,7 +363,7 @@
         </div>
     </p-tabPanel>
     <p-tabPanel header="Other Cost(Optional)" [disabled]="!draftSavedCLI">
-        <div>
+        <div *ngIf="draftSavedCLI">
             <app-other-cost></app-other-cost>
         </div>
     </p-tabPanel>

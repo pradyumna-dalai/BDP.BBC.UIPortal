@@ -156,9 +156,13 @@ export class CreateProjectComponent implements OnInit {
     this.fetchActiveLocation();
 
     //get projid
+    
     this.route.queryParams.subscribe(params => {
       this.projId = params.projId;
-      this.getProjectDetails(this.projId);
+      if(this.projId != undefined){
+        this.getProjectDetails(this.projId);
+      }
+      
     //  console.log(params.projId)
     });
 
