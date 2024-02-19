@@ -51,7 +51,7 @@
                             <ng-template pTemplate="header">
                                 <div class="blue-header">{{ node.label }}</div>
                             </ng-template>
-                            <div>
+                            <div> 
                                 <ul>
                                     <li *ngFor="let step of node.data?.stepsInformation | keyvalue" (click)="selectStep(step.key, isDestinationActive ? 1 : 0)">
                                         <div><h6>{{ step.key }}</h6></div>

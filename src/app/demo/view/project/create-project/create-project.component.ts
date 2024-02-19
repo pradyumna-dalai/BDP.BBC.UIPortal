@@ -10,6 +10,7 @@ import { EditableRow, Table } from 'primeng/table';
 import { AddVolumeComponent } from './add-volume/add-volume.component';
 import { ActivatedRoute } from '@angular/router';
 import { CreateBuildingBlockService } from 'src/app/services/create-buildingBlock/create-building-block.service';
+import { SharedServiceService } from 'src/app/services/project-serivce/shared-service.service';
 
 interface UomData {
   id: number;
@@ -97,12 +98,39 @@ export class CreateProjectComponent implements OnInit {
   uploadedFilesToSave: { id: number; name: string; file: File }[] = [];
   uploadedResponseFilesToSave: { id: number, name: string; file: File }[] = [];
   uploadedOtherFilesToSave: { id: number | null; name: string; file: File }[] = [];
-  constructor(private route: ActivatedRoute, private breadcrumbService: AppBreadcrumbService, private zone: NgZone,
+  savedProjectId: any;
+  draftSaved: boolean = false;
+  draftSavedBB: boolean = false;
+  projectIDbb: number | null;
+  projectidVolume: number | null;
+  draftSavedVolume: boolean;
+  draftSavedCLI: boolean;
+  projectIdCLI: number | null;
+  constructor(private sharedService: SharedServiceService,private route: ActivatedRoute, private breadcrumbService: AppBreadcrumbService, private zone: NgZone,
     private datePipe: DatePipe, private messageService: MessageService, private fb: FormBuilder, public MasterTableservice: MasterTableService,
     private createBuildingBlockservice: CreateBuildingBlockService, public projectService: ProjectsService) {
   }
   ngOnInit() {
 
+    this.sharedService.draftSavedBB$.subscribe((draftSavedBB: boolean) => {
+      this.draftSavedBB = draftSavedBB;
+    });
+
+    this.sharedService.projectIDbb$.subscribe((projectIDbb: number | null) => {
+      this.projectIDbb = projectIDbb;
+    });
+    this.sharedService.draftSavedVolume$.subscribe((draftSavedVolume: boolean) => {
+      this.draftSavedVolume = draftSavedVolume;
+    });
+    this.sharedService.projectidVolume$.subscribe((projectidVolume: number) => {
+      this.projectidVolume = projectidVolume;
+    });
+    this.sharedService.draftSavedCLI$.subscribe((draftSavedCLI: boolean) => {
+      this.draftSavedCLI = draftSavedCLI;
+    });
+    this.sharedService.projectIdCLI$.subscribe((projectIdCLI: number) => {
+      this.projectIdCLI = projectIdCLI;
+    });
     this.myForm = this.fb.group({
       // Define your form controls here
       companyName: [''],
@@ -358,6 +386,11 @@ export class CreateProjectComponent implements OnInit {
         this.projectService.setDraftData(res);
         //--------------------end-------------//
         const savedProjectId = res.data.id;
+        if (savedProjectId) {
+          this.savedProjectId = savedProjectId; // Set the savedProjectId property
+          this.draftSaved = true; // Set draftSaved to true
+          // Rest of your logic
+      }
         console.log('Draft saved successfully:', savedProjectId);
 
         if (savedProjectId) {
@@ -999,5 +1032,7 @@ export class CreateProjectComponent implements OnInit {
     }
 
   }
+
+ 
 }
 
