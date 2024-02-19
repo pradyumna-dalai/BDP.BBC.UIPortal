@@ -44,8 +44,8 @@ visible: boolean = false;
   }
 
   ngOnInit(){
-  // this.getVolumeDetails(this.projectIdbb);
-  this.getVolumeDetails(376);
+  this.getVolumeDetails(this.projectIdbb);
+
   }
   public get isExpanded() {
     return this._isExpanded;
@@ -105,72 +105,7 @@ onSaveVolumeClick(){
     projectName: this.projectName,
     buildingBlocks: this.volumeDetails
   };
-//   const body = {
-//     "projectId": 376,
-//     "projectName": "SampleProject",
-//     "buildingBlocks": [
-//         {
-//             "buildingBlockId": 692,
-//             "buildingBlockName": "VOT",
-//             "originService": {
-//                 "processes": [
-//                     {
-//                         "processId": 44,
-//                         "processName": "sample",
-//                         "lines": [
-//                             {
-//                                 "uomId": 1,
-//                                 "uomName": "Order",
-//                                 "configurableId": 1,
-//                                 "configurable": "Manual",
-//                                 "locationVolume": [
-//                                     {
-//                                         "locationId": 1,
-//                                         "locationName": "Antwerp",
-//                                         "volume": 400
-//                                     },
-//                                     {
-//                                         "locationId": 2,
-//                                         "locationName": "Navashava",
-//                                         "volume": 300
-//                                     }
-//                                 ]
-//                             }
-//                         ]
-//                     }
-//                 ]
-//             },
-//             "destinationService": {
-//                 "processes": [
-//                     {
-//                         "processId": 44,
-//                         "processName": "sample",
-//                         "lines": [
-//                             {
-//                                 "uomId": 32,
-//                                 "uomName": "PO",
-//                                 "configurableId": 2,
-//                                 "configurable": "Manual",
-//                                 "locationVolume": [
-//                                     {
-//                                         "locationId": 3,
-//                                         "locationName": "Antwerp",
-//                                         "volume": 200
-//                                     },
-//                                     {
-//                                         "locationId": 4,
-//                                         "locationName": "Navashava",
-//                                         "volume": 100
-//                                     }
-//                                 ]
-//                             }
-//                         ]
-//                     }
-//                 ]
-//             }
-//         }
-//     ]
-// }
+
   this.projectService.savevolumeDetails(body).subscribe(
     (res) => {
       this.sharedService.setProjectidVolume(res?.data?.projectId);
