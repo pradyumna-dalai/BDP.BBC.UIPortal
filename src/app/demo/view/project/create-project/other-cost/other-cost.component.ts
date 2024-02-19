@@ -26,6 +26,7 @@ export class OtherCostComponent {
   locationDropdownOptions: any[] = [];
   tableData: CostItem[] = [];
   editedRowIndex: number = -1;
+  grandTotalCost: number = 0;
   constructor(private projectService: ProjectsService, private cd: ChangeDetectorRef, private messageService: MessageService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
 
   }
@@ -35,9 +36,9 @@ export class OtherCostComponent {
       this.projectLocations = data.data.projectLocation.filter(loc => loc.originDestinationCode === 0 || loc.originDestinationCode === 1);
       this.projectId = data.data.id;
       this.projectName = data.data.projectInformation.projectName;
-      console.log('othercost', this.projectLocations);
+      // console.log('othercost', this.projectLocations);
       this.generateDropdownOptions();
-      this.getAllProjectOtherCost(); 
+      this.getAllProjectOtherCost();
     });
 
   }
@@ -50,7 +51,11 @@ export class OtherCostComponent {
       originDestinationCode: location.originDestinationCode
     }));
 
-    console.log("locatoptions", this.locationDropdownOptions);
+    //console.log("locatoptions", this.locationDropdownOptions);
+  }
+
+  calculateGrandTotalCost() {
+    this.grandTotalCost = this.tableData.reduce((total, item) => total + item.totalCost, 0);
   }
 
   addRow() {
@@ -63,20 +68,33 @@ export class OtherCostComponent {
       editing: true
     };
     this.tableData.push(newCostItem);
+    this.calculateGrandTotalCost();
   }
 
 
 
   onRowEditInit(row: number) {
     this.tableData[row].editing = true;
+    this.calculateGrandTotalCost();
   }
 
   onRowEditSave(row: number) {
+    const editedItem = this.tableData[row];
+    if (!editedItem.costItem || !editedItem.location || editedItem.totalCost === null || editedItem.totalCost === undefined) {
+      this.messageService.add({
+        key: 'errorToast',
+        severity: 'error',
+        summary: 'Error!',
+        detail: 'Please fill all required fields before saving.'
+      });
+      return; // Stop further execution
+    }
     this.tableData[row].editing = false;
+    this.calculateGrandTotalCost();
   }
 
   onRowEditCancel(row: number) {
-    this.tableData[row].editing = false;
+    this.tableData.splice(row, 1);
   }
 
   updateOriginDestination(cost: CostItem) {
@@ -84,16 +102,33 @@ export class OtherCostComponent {
     if (selectedLocation) {
       cost.originDestination = selectedLocation.originDestinationCode === 0 ? 'Origin' : 'Destination';
       cost.location = selectedLocation;
+    //  cost.editing = false;
 
     }
   }
 
+  getOriginDestination(cost: CostItem): string {
+    return cost.location?.originDestinationCode === 0 ? 'Origin' : 'Destination';
+  }
   onRowDelete(row: number) {
     this.tableData.splice(row, 1);
+    this.calculateGrandTotalCost();
   }
 
   //-----------------------------------Save Project Other Cost------------------//
   saveProjectsOtherCostItem() {
+    const invalidItem = this.tableData.find(item => !item.costItem || !item.location || item.totalCost === null || item.totalCost === undefined);
+  if (invalidItem) {
+    this.messageService.add({
+      key: 'errorToast',
+      severity: 'error',
+      summary: 'Error!',
+      detail: 'Please fill all required fields before saving.'
+    });
+    return; // Stop further execution
+  }
+
+    this.calculateGrandTotalCost();
     const body = {
       projectId: this.projectId,
       projectName: this.projectName,
@@ -134,8 +169,8 @@ export class OtherCostComponent {
     if (this.projectId != null) {
       this.projectService.getAllOtherCost(this.projectId).subscribe({
         next: (response: any) => {
-          console.log('Other costs response:', response);
-          const otherCosts = response?.data?.otherCosts; 
+         // console.log('Other costs response:', response);
+          const otherCosts = response?.data?.otherCosts;
           if (Array.isArray(otherCosts)) {
             this.tableData = otherCosts.map((item: any, index: number) => ({
               id: index + 1,
@@ -149,6 +184,7 @@ export class OtherCostComponent {
               originDestination: item.orginDestinationCode === 0 ? 'Origin' : 'Destination',
               editing: false
             }));
+            this.calculateGrandTotalCost();
           } else {
             console.error('Other costs array not found in response:', response);
           }
@@ -165,7 +201,7 @@ export class OtherCostComponent {
       });
     }
   }
-  
-  
+
+
 
 }
