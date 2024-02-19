@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { SharedServiceService } from 'src/app/services/project-serivce/shared-service.service';
 
 @Component({
   selector: 'app-add-volume',
@@ -34,12 +35,16 @@ visible: boolean = false;
   projectId: any;
   projectName: any;
   process: any;
-  constructor(private projectService:ProjectsService, private messageService: MessageService){
+
+  @Input() projectIdbb: number | null;
+  projectidVolume: any;
+  draftSavedVolume: boolean = false;
+  constructor(private sharedService: SharedServiceService,private projectService:ProjectsService, private messageService: MessageService){
     this.process = { lines: [] };
   }
 
   ngOnInit(){
-  this.getVolumeDetails(338);
+  this.getVolumeDetails(this.projectIdbb);
   }
   public get isExpanded() {
     return this._isExpanded;
@@ -99,9 +104,77 @@ onSaveVolumeClick(){
     projectName: this.projectName,
     buildingBlocks: this.volumeDetails
   };
+//   const body = {
+//     "projectId": 376,
+//     "projectName": "SampleProject",
+//     "buildingBlocks": [
+//         {
+//             "buildingBlockId": 692,
+//             "buildingBlockName": "VOT",
+//             "originService": {
+//                 "processes": [
+//                     {
+//                         "processId": 44,
+//                         "processName": "sample",
+//                         "lines": [
+//                             {
+//                                 "uomId": 1,
+//                                 "uomName": "Order",
+//                                 "configurableId": 1,
+//                                 "configurable": "Manual",
+//                                 "locationVolume": [
+//                                     {
+//                                         "locationId": 1,
+//                                         "locationName": "Antwerp",
+//                                         "volume": 400
+//                                     },
+//                                     {
+//                                         "locationId": 2,
+//                                         "locationName": "Navashava",
+//                                         "volume": 300
+//                                     }
+//                                 ]
+//                             }
+//                         ]
+//                     }
+//                 ]
+//             },
+//             "destinationService": {
+//                 "processes": [
+//                     {
+//                         "processId": 44,
+//                         "processName": "sample",
+//                         "lines": [
+//                             {
+//                                 "uomId": 32,
+//                                 "uomName": "PO",
+//                                 "configurableId": 2,
+//                                 "configurable": "Manual",
+//                                 "locationVolume": [
+//                                     {
+//                                         "locationId": 3,
+//                                         "locationName": "Antwerp",
+//                                         "volume": 200
+//                                     },
+//                                     {
+//                                         "locationId": 4,
+//                                         "locationName": "Navashava",
+//                                         "volume": 100
+//                                     }
+//                                 ]
+//                             }
+//                         ]
+//                     }
+//                 ]
+//             }
+//         }
+//     ]
+// }
   this.projectService.savevolumeDetails(body).subscribe(
     (res) => {
-      
+      console.log(res?.data?.projectId,"volumepage");
+      this.sharedService.setProjectidVolume(res?.data?.projectId);
+      this.sharedService.setDraftSavedVolume(true);
       this.messageService.add({
         key: 'successToast',
         severity: 'success',

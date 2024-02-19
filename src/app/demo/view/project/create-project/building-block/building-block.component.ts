@@ -4,6 +4,7 @@ import { MessageService, TreeDragDropService, TreeNode } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { CreateBuildingBlockService } from 'src/app/services/create-buildingBlock/create-building-block.service';
 import { AppMainComponent } from 'src/app/app.main.component';
+import { SharedServiceService } from 'src/app/services/project-serivce/shared-service.service';
 
 @Component({
   selector: 'app-building-block',
@@ -49,8 +50,10 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   getSavedBlocksDD: any;
   selectedDestinationLocationNodes: any;
   selectedOriginLocationNodes: any;
+  draftSavedBB: boolean = false;
+  projectIDbb: any;
 
-  constructor(private projectService: ProjectsService, private messageService: MessageService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
+  constructor(private sharedService: SharedServiceService,private projectService: ProjectsService, private messageService: MessageService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
   //  console.log(' :',this.getSavedBlocksDD);
     this.projectService.draftData$.subscribe(data => {
       this.projectLocations = data.data.projectLocation.filter(loc => loc.originDestinationCode === 0 || loc.originDestinationCode === 1);
@@ -439,6 +442,11 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
     };
     this.projectService.saveProjectBuildingBlock(body).subscribe({
       next: (response: any) => {
+        this.sharedService.setDraftSavedBB(true);
+        this.sharedService.setProjectIDbb(response?.data?.projectId); // Assuming response has projectId
+        this.draftSavedBB = true; // Optionally, set draftSavedBB locally if needed
+        this.projectIDbb = response.projectId; // Optionally, set projectIDbb locally if needed
+        console.log(response?.data?.projectId,"bb")
         this.messageService.add({
           key: 'successToast',
           severity: 'success',
@@ -451,6 +459,8 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+ 
 
 
   goToNextTab() {
