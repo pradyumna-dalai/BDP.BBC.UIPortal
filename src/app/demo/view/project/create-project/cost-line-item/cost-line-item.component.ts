@@ -42,7 +42,6 @@ constructor(private sharedService: SharedServiceService,private projectService:P
 }
 
 ngOnInit(){
-  console.log(this.projectidVolume,"costlineiem")
   this.getCostLineItemDetails(this.projectidVolume);
   }
 

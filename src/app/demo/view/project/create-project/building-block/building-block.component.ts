@@ -60,7 +60,6 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       this.projectId = data.data.id;
       this.projectName = data.data.projectInformation.projectName;
       this.getAllProjectBuildingBlock(this.projectId);
-      console.log('bbsave',this.getSavedBlocksDD);
 });
     this.getAllProjectBuildingBlock(this.projectId);
   }
@@ -197,7 +196,6 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       if (!this.selectedNodes.includes(node)) {
         this.selectedNodes.push(node);
         this.draggedNodeId = node.data?.id;
-        console.log('ssss',  this.draggedNodeId)
         this.getAllProcessStepbyBlockId(this.draggedNodeId);
       }
     } else {
@@ -446,7 +444,6 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
         this.sharedService.setProjectIDbb(response?.data?.projectId); // Assuming response has projectId
         this.draftSavedBB = true; // Optionally, set draftSavedBB locally if needed
         this.projectIDbb = response.projectId; // Optionally, set projectIDbb locally if needed
-        console.log(response?.data?.projectId,"bb")
         this.messageService.add({
           key: 'successToast',
           severity: 'success',
