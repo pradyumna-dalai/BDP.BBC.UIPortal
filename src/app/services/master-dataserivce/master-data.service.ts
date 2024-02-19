@@ -150,15 +150,19 @@ export class MasterDataService {
   }
   //-------------------------------------country----------------------//
   getAllCountry(id:any) {
-    // let Url ='http://ec2-34-205-39-55.compute-1.amazonaws.com/buildingblocks/api/v1/'
-    // return this.http.get<any>(`${Url}${id}/country`);
     return this.http.get<any>(url + `${id}/country`);
   }
-  getAllCountryDetails() {
+
+  getLocationByCountry(countryId:number) {
+    return this.http.get<any>(url + settings.AppRoutes.Auth.country+ `/${countryId}`);
+  } 
+
+  getAllCountryDetails(){
     return this.http.get<any>(url + settings.AppRoutes.Auth.country);
   }
+
   getAllLocationDropdown(){
-    return this.http.get<any>(url + settings.AppRoutes.Auth.active_location)
+    return this.http.get<any>(url + settings.AppRoutes.Auth.active_location);
   }
 
   /**Get FTE Details Api */
