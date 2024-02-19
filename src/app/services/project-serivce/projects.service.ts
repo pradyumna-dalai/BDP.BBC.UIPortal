@@ -49,6 +49,10 @@ getAllProjectDetails(params: any): Observable<any>{
   });
   return this.http.get<any>(url + settings.AppRoutes.Auth.getallProjects,{ params: httpParams});
 }
+deleteProject(id:number) {
+  const downloadUrl = `${url}${settings.AppRoutes.Auth.saveProjectDraft}/${id}`;
+  return this.http.delete(downloadUrl);
+}
 
 downloadProjectData(startDate: string, endDate: string): Observable<HttpResponse<Blob>> {
   const params = {
