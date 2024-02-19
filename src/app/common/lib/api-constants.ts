@@ -146,6 +146,14 @@ export namespace AppRoutes {
 
        //------End-----------------------//
 
+        //------cost line item(Project)-----------------------//
+       
+        public static readonly getCostLineItemDetails  = "cost-line-item"
+
+        public static readonly saveCostLineItemDetails  = "project/cost-line-item"
+ 
+        //------End-----------------------//
+
     }
 
 }
