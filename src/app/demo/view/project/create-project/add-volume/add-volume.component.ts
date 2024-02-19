@@ -44,7 +44,8 @@ visible: boolean = false;
   }
 
   ngOnInit(){
-  this.getVolumeDetails(this.projectIdbb);
+  // this.getVolumeDetails(this.projectIdbb);
+  this.getVolumeDetails(376);
   }
   public get isExpanded() {
     return this._isExpanded;
@@ -172,7 +173,6 @@ onSaveVolumeClick(){
 // }
   this.projectService.savevolumeDetails(body).subscribe(
     (res) => {
-      console.log(res?.data?.projectId,"volumepage");
       this.sharedService.setProjectidVolume(res?.data?.projectId);
       this.sharedService.setDraftSavedVolume(true);
       this.messageService.add({

@@ -33,11 +33,11 @@
                             <p-table dataKey="id" [value]="process.lines" [tableStyle]="{'min-width': '50rem'}">
                                 <ng-template pTemplate="header">
                                     <tr>
-                                        <th style="text-align: center;width:20%">Action</th>
-                                        <th style="text-align: center;width:20%">UOM</th>
-                                        <th style="text-align: center;width:20%">Configurable</th>
+                                        <th style="text-align: center;">Action</th>
+                                        <th style="text-align: center;">UOM</th>
+                                        <th style="text-align: center;">Configurable</th>
                                         <ng-container *ngFor="let location of getLocationNames(process.lines)">
-                                            <th style="text-align: center;width:20%">{{ location }}</th>
+                                            <th style="text-align: center;">{{ location }}</th>
                                         </ng-container>
                                     </tr>
                                 </ng-template>
