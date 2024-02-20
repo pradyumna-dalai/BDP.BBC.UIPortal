@@ -342,7 +342,7 @@
           <app-cost-line-item (continueClickedToCLI)="goToNextTab()" [projectidVolume]="projectidVolume"></app-cost-line-item>
         </div>
     </p-tabPanel>
-    <p-tabPanel header="Other Cost(Optional)" [disabled]="!draftSavedCLI">
+    <p-tabPanel header="Other Cost" [disabled]="!draftSavedCLI">
         <div *ngIf="draftSavedCLI">
             <app-other-cost (continueClickedToProjectCost)="goToNextTab()"></app-other-cost>
         </div>
