@@ -33,7 +33,6 @@ export class SearchFilterComponent {
   visible: boolean = false;
   isapply: boolean = false;
   newSearchfilter: []
-  rangeDates: Date[] | undefined;
   constructor(private filterService: FilterService, public MasterTableservice: MasterTableService,
     private projectService: ProjectsService ,private messageService: MessageService,) {
 
@@ -73,7 +72,7 @@ export class SearchFilterComponent {
     this.fetchProjectbyCompany();
     this.OnStageSelectProjectstatus(event);
     this.fetchOpprNameOnCompanySelect(event);
-    this.rangeDates = null
+    this.selected = null;
     this.newSearchfilter = null;
     this.project_name = null;
     this.isapply = false;
@@ -183,8 +182,8 @@ export class SearchFilterComponent {
       "opportunityManager": {
         "id": this.opportunity_manager
       },
-      "startDate": this.formatDate(this.rangeDates[0]),
-      "endDate": this.formatDate(this.rangeDates[1]),
+      "startDate": this.formatDate(this.selected.startDate),
+      "endDate": this.formatDate(this.selected.endDate),
     }
     if (payload.projectStatus.id === 'Invalid Date') {
       payload.projectStatus = null;

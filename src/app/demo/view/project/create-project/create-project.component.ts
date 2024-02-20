@@ -185,9 +185,7 @@ export class CreateProjectComponent implements OnInit {
     }
   }
 
-  patchDateRangeValue(newValue: any) {
-    this.myForm.get('selectedDateRange').patchValue(newValue);
-  }
+
   getForm(): FormGroup {
     return this.myForm;
   }
@@ -307,9 +305,7 @@ export class CreateProjectComponent implements OnInit {
   formatDate(date: Date): string {
     return dayjs(date).format('YYYY-MM-DD');
   }
-  patchformatDate(date: Date): string {
-    return dayjs(date).format('MM/DD/YYYY');
-  }
+
   onSaveAsDraftClick() {
     this.SaveAsDraftProjects();
   }
@@ -322,12 +318,7 @@ export class CreateProjectComponent implements OnInit {
       opportunityMangers = om.map(id => ({ id }))
     }
     this.dateRange = this.myForm.get('selectedDateRange').value;
-    
-    let dateRange = this.dateRange
-    if (typeof this.dateRange == 'string' && this.dateRange.indexOf("-") != -1) {
-       dateRange = this.dateRange.split("-");
-    }
-
+    let dateRangevalStartDate = this.dateRange.startDate;
     let dateRangevalEndDate = this.dateRange.endDate;
 
     const originProjectLocationData = this.OtableData.map((row: TableRow) => ({
@@ -362,8 +353,8 @@ export class CreateProjectComponent implements OnInit {
       projectInformation: {
         customerCode: this.myForm.get('customerCode').value,
         projectName: this.myForm.get('projectName').value,
-        startDate: this.formatDate(dateRange[0]),
-        endDate: this.formatDate(dateRange[1]),
+        startDate: this.formatDate(dateRangevalStartDate),
+        endDate: this.formatDate(dateRangevalEndDate),
         designNote: this.myForm.get('designNotes').value,
         implementationNote: this.myForm.get('impleNotes').value,
         company: {
@@ -392,6 +383,7 @@ export class CreateProjectComponent implements OnInit {
       
       ]
     }
+
     this.projectService.saveAsDraftProject(body).subscribe(
       (res) => {
         //-------------for shareing data----//
@@ -914,20 +906,10 @@ export class CreateProjectComponent implements OnInit {
       }
     });
   }
-  selected = [
-    "2024-02-13T00:00:00.000+00:00",
-    "2024-02-13T00:00:00.000+00:00"
-  ];
 
   populateForm(): void {
 
-console.log("ResponseEdit",this.response);
-this.myForm.patchValue({
-  // selectedDateRange: '01/01/2022 - 01/10/2022',
-  
-  selectedDateRange: `${this.patchformatDate(this.response.startDate)} - ${this.patchformatDate(this.response.endDate)}`,
-});
-console.log("data",this.myForm.get('selectedDateRange').value)
+
     // Populate other form controls with the received data
     this.myForm.patchValue({
       companyName: this.response.company?.id,
@@ -943,7 +925,7 @@ console.log("data",this.myForm.get('selectedDateRange').value)
       impleNotes: this.response.implementationNote,
 
     });
-console.log("selectedPatchDate",this.myForm.get('selectedDateRange').value)
+
     // Automatically fetch and set opportunity names based on the selected company
     if (this.response.company) {
       this.onCompanySelect({ value: this.response.company.id });
