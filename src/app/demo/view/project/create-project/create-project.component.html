@@ -347,8 +347,8 @@
             <app-other-cost (continueClickedToProjectCost)="goToNextTab()"></app-other-cost>
         </div>
     </p-tabPanel>
-    <p-tabPanel header="Project Output">
-        <div>
+    <p-tabPanel header="Project Output" [disabled]="!draftSavedOC">
+        <div *ngIf="draftSavedOC">
             <app-project-cost></app-project-cost>
         </div>
     </p-tabPanel>
