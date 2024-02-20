@@ -222,6 +222,12 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   public set isExpanded(value: boolean) {
     this._isExpanded = value;
   }
+  removeSelectedNode(node: TreeNode): void {
+    const index = this.selectedNodes.findIndex(selectedNode => selectedNode.key === node.key);
+    if (index !== -1) {
+        this.selectedNodes.splice(index, 1);
+    }
+}
 
   //-------------------------------end here--------------------------------//
   getAllProcessStepbyBlockId(blockId: any) {
