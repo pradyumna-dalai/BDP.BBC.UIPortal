@@ -4,6 +4,7 @@ import { AppMainComponent } from 'src/app/app.main.component';
 import { CreateBuildingBlockService } from 'src/app/services/create-buildingBlock/create-building-block.service';
 import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
 import { ChangeDetectorRef } from '@angular/core';
+import { SharedServiceService } from 'src/app/services/project-serivce/shared-service.service';
 interface CostItem {
   id: number;
   costItem: string;
@@ -28,7 +29,7 @@ export class OtherCostComponent {
   editedRowIndex: number = -1;
   grandTotalCost: number = 0;
   @Output() continueClickedToProjectCost: EventEmitter<any> = new EventEmitter();
-  constructor(private projectService: ProjectsService, private cd: ChangeDetectorRef, private messageService: MessageService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
+  constructor(private sharedService: SharedServiceService,private projectService: ProjectsService, private cd: ChangeDetectorRef, private messageService: MessageService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
 
   }
 
@@ -125,7 +126,7 @@ export class OtherCostComponent {
     const invalidItem = this.tableData.find(item => !item.costItem || !item.location || item.totalCost === null || item.totalCost === undefined);
   if (invalidItem) {
     this.messageService.add({
-      key: 'errorToast',
+      key: 'errorToast', 
       severity: 'error',
       summary: 'Error!',
       detail: 'Please fill all required fields before saving.'
@@ -149,6 +150,8 @@ export class OtherCostComponent {
     };
     this.projectService.saveProjectOtherCost(body).subscribe({
       next: (response: any) => {
+        this.sharedService.setProjectIdOtherCost(response?.data?.projectId);
+        this.sharedService.setDraftSavedOtherCost(true);
         this.messageService.add({
           key: 'successToast',
           severity: 'success',

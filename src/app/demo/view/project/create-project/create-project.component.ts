@@ -106,6 +106,8 @@ export class CreateProjectComponent implements OnInit {
   draftSavedVolume: boolean;
   draftSavedCLI: boolean;
   projectIdCLI: number | null;
+  draftSavedOC: boolean;
+  projectIdOC: number | null;
   constructor(private sharedService: SharedServiceService,private route: ActivatedRoute, private breadcrumbService: AppBreadcrumbService, private zone: NgZone,
     private datePipe: DatePipe, private messageService: MessageService, private fb: FormBuilder, public MasterTableservice: MasterTableService,
     private createBuildingBlockservice: CreateBuildingBlockService, public projectService: ProjectsService) {
@@ -130,6 +132,12 @@ export class CreateProjectComponent implements OnInit {
     });
     this.sharedService.projectIdCLI$.subscribe((projectIdCLI: number) => {
       this.projectIdCLI = projectIdCLI;
+    });
+    this.sharedService.projectIdOC$.subscribe((projectIdOC: number) => {
+      this.projectIdOC = projectIdOC;
+    });
+    this.sharedService.draftSavedOC$.subscribe((draftSavedOC: boolean) => {
+      this.draftSavedOC = draftSavedOC;
     });
     this.myForm = this.fb.group({
       // Define your form controls here
@@ -904,7 +912,8 @@ export class CreateProjectComponent implements OnInit {
         this.draftSavedVolume = true;
         this.projectidVolume = projectId;
         this.projectIDbb = projectId;
-        this.draftSavedCLI = projectId;
+        this.draftSavedCLI = true;
+        this.draftSavedOC = true;
         this.response = res.data.projectInformation; 
         this.populateForm(); 
       } else {
