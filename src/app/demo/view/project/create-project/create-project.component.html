@@ -351,11 +351,6 @@
         <div>
             <app-project-cost></app-project-cost>
         </div>
-        <div class="col-12" style="display: flex;justify-content: flex-end;">
-            <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
-                (click)="SaveAsDraftProjects()" class="p-button-outlined mr-2 mb-2"></button>
-            <button type="submit" pButton pRipple label="Continue" [disabled]="!myForm.valid" (click)="goToNextTab()" class="mr-2 mb-2"></button>
-        </div>
     </p-tabPanel>
 </p-tabView>
 
