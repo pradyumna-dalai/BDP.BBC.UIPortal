@@ -382,7 +382,7 @@ export class CreateProjectComponent implements OnInit {
           ...destinationProjectLocationData
       
       ]
-    }
+    } 
 
     this.projectService.saveAsDraftProject(body).subscribe(
       (res) => {
@@ -899,8 +899,14 @@ export class CreateProjectComponent implements OnInit {
   getProjectDetails(projectId): void {
     this.projectService.getProjectDetails(projectId).subscribe((res: any) => {
       if (res?.message === 'success') {
-        this.response = res.data.projectInformation; // Store the response data
-        this.populateForm(); // Call function to populate form with response data
+        this.draftSaved = true;
+        this.draftSavedBB = true;
+        this.draftSavedVolume = true;
+        this.projectidVolume = projectId;
+        this.projectIDbb = projectId;
+        this.draftSavedCLI = projectId;
+        this.response = res.data.projectInformation; 
+        this.populateForm(); 
       } else {
         // Handle error
       }
@@ -908,9 +914,7 @@ export class CreateProjectComponent implements OnInit {
   }
 
   populateForm(): void {
-
-
-    // Populate other form controls with the received data
+    
     this.myForm.patchValue({
       companyName: this.response.company?.id,
       customerCode: this.response.customerCode,
@@ -955,10 +959,6 @@ export class CreateProjectComponent implements OnInit {
       this.myForm.get('region').setValue(this.regionOptions[selectedRegionIndex].id);
     }
 
-
-    // const startDate = new Date(this.response.projectInformation.startDate);
-    // const endDate = new Date(this.response.projectInformation.endDate);
-    // this.myForm.get('selectedDateRange').setValue([startDate, endDate]);
 
   }
   downloadArtifactByIDOther(index: number) {
