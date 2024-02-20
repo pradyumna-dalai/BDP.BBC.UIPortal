@@ -144,7 +144,7 @@ export class OtherCostComponent {
         locationId: costItem.location.id,
         locationName: costItem.location.name,
         totalCost: costItem.totalCost,
-        orginDestinationCode: costItem.location.originDestinationCode
+        originDestinationCode: costItem.location.originDestinationCode
       }))
     };
     this.projectService.saveProjectOtherCost(body).subscribe({
@@ -183,10 +183,10 @@ export class OtherCostComponent {
               location: {
                 id: item.locationId,
                 name: item.locationName,
-                originDestinationCode: item.orginDestinationCode
+                originDestinationCode: item.originDestinationCode
               },
               totalCost: item.totalCost,
-              originDestination: item.orginDestinationCode === 0 ? 'Origin' : 'Destination',
+              originDestination: item.originDestinationCode === 0 ? 'Origin' : 'Destination',
               editing: false
             }));
             this.calculateGrandTotalCost();
