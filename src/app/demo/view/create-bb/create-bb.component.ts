@@ -235,45 +235,9 @@ export class CreateBbComponent {
         if (error.status === 400) {
           if (error.error?.data) {
             // Clear previous errors
-            if (error.error?.data.message === 'All Field Are Empty') {
+            if (error.error?.data['Scoping Card'].Message === 'All Fields Are Empty') {
               // Handle case where all fields are empty in the uploaded Excel file
               this.uploadError = 'All fields are empty.';
-            }
-            else if (error.error?.data === 'please upload scoping card excel file') {
-              this.uploadError = 'Please upload scoping card excel file';
-            }
-             else {
-              // Iterate over error fields and update corresponding error messages
-              Object.keys(error.error.data['Scoping Card']).forEach((key) => {
-                switch (key) {
-                  case 'Deliverables':
-                    this.deliverablesError = error.error.data['Scoping Card'][key];
-                    
-                    break;
-                  case 'Value to PSA BDP':
-                    this.valueToPSABDPError = error.error.data['Scoping Card'][key];
-                    break;
-                  case 'Parameters':
-                    this.parametersError = error.error.data['Scoping Card'][key];
-                    break;
-                  case 'Service Description':
-                    this.serviceDescriptionError = error.error.data['Scoping Card'][key];
-                    break;
-                  case 'Stakeholders / Audience':
-                    this.stakeholdersAudienceError = error.error.data['Scoping Card'][key];
-                    break;
-                  case 'Customer Requirements':
-                    this.customerRequirementsError = error.error.data['Scoping Card'][key];
-                    break;
-                  case 'Configurable':
-                    this.configurableError = error.error.data['Scoping Card'][key];
-                    break;
-                  // Add additional cases for other fields as needed
-                  default:
-                    console.log(`Unhandled field: ${key}`);
-                    break;
-                }
-              });
             }
           }
           // Set flag to show error message
@@ -406,7 +370,7 @@ export class CreateBbComponent {
     this.standard_service_error = '';
     this.dos_error = '';
     this.sow_error = '';
-    this.combined_value_error = '';
+    this.combined_value_error = ''; 
     this.donts_error = '';
     this.configurables_error = '';
     this.pre_requisite_info_error = '';
