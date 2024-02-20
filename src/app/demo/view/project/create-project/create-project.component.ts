@@ -292,7 +292,12 @@ export class CreateProjectComponent implements OnInit {
     }
     this.dateRange = this.myForm.get('selectedDateRange').value;
     console.log("DateRange",this.dateRange)
-    let dateRange = this.dateRange.split("-");
+    
+    let dateRange = this.dateRange
+    if (typeof this.dateRange == 'string' && this.dateRange.indexOf("-") != -1) {
+       dateRange = this.dateRange.split("-");
+    }
+    
     console.log("splite",dateRange)
     let dateRangevalEndDate = this.dateRange.endDate;
 
