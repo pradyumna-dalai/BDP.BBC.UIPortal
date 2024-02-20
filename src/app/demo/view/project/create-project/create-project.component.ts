@@ -10,6 +10,7 @@ import { EditableRow, Table } from 'primeng/table';
 import { AddVolumeComponent } from './add-volume/add-volume.component';
 import { ActivatedRoute } from '@angular/router';
 import { CreateBuildingBlockService } from 'src/app/services/create-buildingBlock/create-building-block.service';
+import { SharedServiceService } from 'src/app/services/project-serivce/shared-service.service';
 
 interface UomData {
   id: number;
@@ -69,7 +70,7 @@ export class CreateProjectComponent implements OnInit {
   enableDestinationLocation: boolean = false;
   isRowEditMode: boolean[] = [];
   originTableControls: FormArray;
-  isAddingRow: boolean;
+  isAddingRow: boolean; 
   isActionButtonsVisible = false;
   selectedFile: any;
   visibleValueBox: boolean = false;
@@ -97,12 +98,39 @@ export class CreateProjectComponent implements OnInit {
   uploadedFilesToSave: { id: number; name: string; file: File }[] = [];
   uploadedResponseFilesToSave: { id: number, name: string; file: File }[] = [];
   uploadedOtherFilesToSave: { id: number | null; name: string; file: File }[] = [];
-  constructor(private route: ActivatedRoute, private breadcrumbService: AppBreadcrumbService, private zone: NgZone,
+  savedProjectId: any;
+  draftSaved: boolean = false;
+  draftSavedBB: boolean = false;
+  projectIDbb: number | null;
+  projectidVolume: number | null;
+  draftSavedVolume: boolean;
+  draftSavedCLI: boolean;
+  projectIdCLI: number | null;
+  constructor(private sharedService: SharedServiceService,private route: ActivatedRoute, private breadcrumbService: AppBreadcrumbService, private zone: NgZone,
     private datePipe: DatePipe, private messageService: MessageService, private fb: FormBuilder, public MasterTableservice: MasterTableService,
     private createBuildingBlockservice: CreateBuildingBlockService, public projectService: ProjectsService) {
   }
   ngOnInit() {
 
+    this.sharedService.draftSavedBB$.subscribe((draftSavedBB: boolean) => {
+      this.draftSavedBB = draftSavedBB;
+    });
+
+    this.sharedService.projectIDbb$.subscribe((projectIDbb: number | null) => {
+      this.projectIDbb = projectIDbb;
+    });
+    this.sharedService.draftSavedVolume$.subscribe((draftSavedVolume: boolean) => {
+      this.draftSavedVolume = draftSavedVolume;
+    });
+    this.sharedService.projectidVolume$.subscribe((projectidVolume: number) => {
+      this.projectidVolume = projectidVolume;
+    });
+    this.sharedService.draftSavedCLI$.subscribe((draftSavedCLI: boolean) => {
+      this.draftSavedCLI = draftSavedCLI;
+    });
+    this.sharedService.projectIdCLI$.subscribe((projectIdCLI: number) => {
+      this.projectIdCLI = projectIdCLI;
+    });
     this.myForm = this.fb.group({
       // Define your form controls here
       companyName: [''],
@@ -128,10 +156,14 @@ export class CreateProjectComponent implements OnInit {
     this.fetchActiveLocation();
 
     //get projid
+    
     this.route.queryParams.subscribe(params => {
       this.projId = params.projId;
-      this.getProjectDetails(this.projId);
-      console.log(params.projId)
+      if(this.projId != undefined){
+        this.getProjectDetails(this.projId);
+      }
+      
+    //  console.log(params.projId)
     });
 
     if (this.projId) {
@@ -159,7 +191,7 @@ export class CreateProjectComponent implements OnInit {
   }
   goToNextTab() {
     // this.activeIndex = (this.activeIndex + 1) % 8; 
-    console.log(this.myForm.value);
+   // console.log(this.myForm.value);
     this.activeIndex = (this.activeIndex + 1) % 8
     // this.addVolume.shareFunctionAddVolume()
 
@@ -188,7 +220,6 @@ export class CreateProjectComponent implements OnInit {
         this.companyOptions = [];
       }
     })
-
   }
   // ---------------get Opportunity name on company select------------------------//
 
@@ -201,7 +232,7 @@ export class CreateProjectComponent implements OnInit {
         this.opportunityNameOptions = res?.data;
 
         // Automatically select the opportunity name if it matches the response
-        const selectedOpportunityId = this.response.opportunityName?.id;
+        const selectedOpportunityId = this.response?.opportunityName?.id;
         if (selectedOpportunityId) {
           const matchingOpportunity = this.opportunityNameOptions.find(opportunity => opportunity.id === selectedOpportunityId);
           if (matchingOpportunity) {
@@ -224,7 +255,7 @@ export class CreateProjectComponent implements OnInit {
         this.IVOptions = res?.data;
 
         // Automatically select the industry vertical if it matches the response
-        const selectedIVId = this.response.industryVertical?.id;
+        const selectedIVId = this.response?.industryVertical?.id;
         if (selectedIVId) {
           const matchingIV = this.IVOptions.find(iv => iv.id === selectedIVId);
           if (matchingIV) {
@@ -351,11 +382,19 @@ export class CreateProjectComponent implements OnInit {
           ...destinationProjectLocationData
       
       ]
-    }
+    } 
 
     this.projectService.saveAsDraftProject(body).subscribe(
       (res) => {
+        //-------------for shareing data----//
+        this.projectService.setDraftData(res);
+        //--------------------end-------------//
         const savedProjectId = res.data.id;
+        if (savedProjectId) {
+          this.savedProjectId = savedProjectId; // Set the savedProjectId property
+          this.draftSaved = true; // Set draftSaved to true
+          // Rest of your logic
+      }
         console.log('Draft saved successfully:', savedProjectId);
 
         if (savedProjectId) {
@@ -679,10 +718,6 @@ export class CreateProjectComponent implements OnInit {
   }
 
 
-  // onRemoveUploadedFile(index: number): void {
-  //   this.uploadedFiles.splice(index, 1);
-  // }
-
   deleteProjectArtifact(index: number): void {
     if (index >= 0 && index < this.uploadedFiles.length) {
       const documentIdToDelete = this.uploadedFiles[index].id;
@@ -711,14 +746,6 @@ export class CreateProjectComponent implements OnInit {
   showDialogOthers() {
     this.visibleOthersBox = true;
   }
-
-  // onRemoveUploadedResponseFile(index: number): void {
-  //   this.uploadedResponseFiles.splice(index, 1);
-  // }
-
-  // onRemoveUploadedOtherFile(index: number): void {
-  //   this.uploadedOtherFiles.splice(index, 1);
-  // }
 
   onResponseCancelClick() {
     this.fileNameOC = "";
@@ -872,8 +899,14 @@ export class CreateProjectComponent implements OnInit {
   getProjectDetails(projectId): void {
     this.projectService.getProjectDetails(projectId).subscribe((res: any) => {
       if (res?.message === 'success') {
-        this.response = res.data.projectInformation; // Store the response data
-        this.populateForm(); // Call function to populate form with response data
+        this.draftSaved = true;
+        this.draftSavedBB = true;
+        this.draftSavedVolume = true;
+        this.projectidVolume = projectId;
+        this.projectIDbb = projectId;
+        this.draftSavedCLI = projectId;
+        this.response = res.data.projectInformation; 
+        this.populateForm(); 
       } else {
         // Handle error
       }
@@ -881,9 +914,7 @@ export class CreateProjectComponent implements OnInit {
   }
 
   populateForm(): void {
-
-
-    // Populate other form controls with the received data
+    
     this.myForm.patchValue({
       companyName: this.response.company?.id,
       customerCode: this.response.customerCode,
@@ -928,11 +959,6 @@ export class CreateProjectComponent implements OnInit {
       this.myForm.get('region').setValue(this.regionOptions[selectedRegionIndex].id);
     }
 
-
-
-    // const startDate = new Date(this.response.projectInformation.startDate);
-    // const endDate = new Date(this.response.projectInformation.endDate);
-    // this.myForm.get('selectedDateRange').setValue([startDate, endDate]);
 
   }
   downloadArtifactByIDOther(index: number) {
@@ -1010,5 +1036,7 @@ export class CreateProjectComponent implements OnInit {
     }
 
   }
+
+ 
 }
 

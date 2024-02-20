@@ -1,3 +1,4 @@
+<div> 
 <div class="grid p-fluid">
     <div class="col-12 md:col-4">
         <div class="card" style="min-height: 669px;">
@@ -15,59 +16,97 @@
                     </span>
                 </div>
                 <div class="col-12">
-
-                            <p-tree [value]="treeDataNew">
-                                <ng-template let-node pTemplate="default">
-                                    <span>
-                                        <span *ngIf="node.data?.type === 1" class="fas fa-folder"></span>
-                                        <span *ngIf="node.data?.type === 2" class="fa-regular fa-folder"></span>
-                                        <span *ngIf="node.data?.type === 3" class="far fa-folder-open"></span>
-                                        <span *ngIf="node.data?.type === 4" class="fas fa-boxes"></span>
-                                        {{ node.label }}
-                                    </span>
-                                </ng-template>
-                            </p-tree>
+                    <p-tree [value]="treeDataNew" [draggableNodes]="true" [droppableNodes]="true">
+                        <ng-template let-node pTemplate="default">
+                            <span [draggable]="node.data?.type === 4" (dragstart)="onNodeDragStart($event, node)">
+                                <span *ngIf="node.data?.type === 1" class="fas fa-folder"></span>
+                                <span *ngIf="node.data?.type === 2" class="fa-regular fa-folder"></span>
+                                <span *ngIf="node.data?.type === 3" class="far fa-folder-open"></span>
+                                <span *ngIf="node.data?.type === 4" class="fas fa-boxes"></span>
+                                {{ node.label }}
+                            </span>
+                        </ng-template>
+                    </p-tree>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 md:col-4" (nodeDrop)="onNodeDrop($event)">
+        <div class="card" style="min-height: 669px;" >
+            <div class="col-12">
+                <div class="grid">
+                    <div class="col-8">
+                        <h5>Selected Building Blocks</h5>
+                    </div>
+                    <div class="col-4" style="display: flex;justify-content: flex-end;">
+                        <p-button (click)="isExpanded = !isExpanded" class="p-button-outlined"
+                            label="{{ isExpanded ? 'Collapse All' : 'Expand All' }}"></p-button>
+                    </div>
+                </div>
+                <hr
+                    style="margin-top: 1px;margin-bottom: 22px;color: gray;background-color: #d9d2d2;height: 1px;border: none;">
+                <div *ngFor="let node of selectedNodes">
+                    <p-accordion [activeIndex]="isExpanded ? 0 : -1">
+                        <p-accordionTab [selected]="isExpanded" >
+                            <ng-template pTemplate="header">
+                                <div class="blue-header">{{ node.label }}</div>
+                            </ng-template>
+                            <div> 
+                                <ul>
+                                    <li *ngFor="let step of node.data?.stepsInformation | keyvalue" (click)="selectStep(step.key, isDestinationActive ? 1 : 0)">
+                                        <div><h6>{{ step.key }}</h6></div>
+                                        <!-- <ul>
+                                            <li *ngFor="let originDestination of step.value | keyvalue">
+                                                {{ originDestination.key }}: {{ originDestination.value }}
+                                            </li>
+                                        </ul> -->
+                                    </li>
+                                </ul>
+                            </div>
+                        </p-accordionTab>
+                    </p-accordion>
                 </div>
             </div>
         </div>
     </div>
     <div class="col-12 md:col-4">
         <div class="card" style="min-height: 669px;">
+            <div class="col-12">
+                <h5 id="heading">Location Configuration</h5>
+                <hr style="margin-top: 1px;margin-bottom: 22px;color: gray;background-color: #d9d2d2;height: 1px;border: none;">
+            </div>
+            <h6 *ngIf="selectedStep">Selected Step: {{ selectedStep }}</h6>
+            <div class="activeToggel">
+                <button class="toggleButton" type="button" [style.border-radius]="originButtonBorderRadius"
+                    [style.background-color]="originButtonColor" [style.border]="originButtonBorder"
+                    (click)="showOriginSection()"> Origin Location</button>
+                <button class="toggleButton" type="button" [style.border-radius]="destinationButtonBorderRadius"
+                    [style.background-color]="destinationButtonColor" [style.border]="destinationButtonBorder"
+                    (click)="showDestinationSection()"> Destination Location</button>
+            </div>
+            <br>
             <div>
-                <div class="col-12">
-                    <h5 id="heading">Selected Building Blocks</h5>
-                    <hr
-                        style="margin-top: 1px;margin-bottom: 22px;color: gray;background-color: #d9d2d2;height: 1px;border: none;">
-                </div>
-
+                <p-tree *ngIf="isOriginActive"  [value]="treeData" selectionMode="checkbox" class="w-full md:w-30rem"  [propagateSelectionUp]="false" [(selection)]="selectedOriginLocationNodes" (selectionChange)="onLocationNodeSelect($event)">
+                    <ng-template let-node pTemplate="default">
+                        <span>{{ node.label }}</span>
+                    </ng-template>
+                </p-tree>
+                
+                <p-tree *ngIf="isDestinationActive" [value]="treeData" selectionMode="checkbox" class="w-full md:w-30rem"  [propagateSelectionUp]="false" [(selection)]="selectedDestinationLocationNodes"  (selectionChange)="onLocationNodeSelect($event)">
+                        <ng-template let-node pTemplate="default">
+                            <span>{{ node.label }}</span>
+                        </ng-template>
+                </p-tree>
             </div>
         </div>
-
     </div>
-    <div class="col-12 md:col-4">
-
-
-        <div class="card" style="min-height: 669px;">
-            <div>
-                <div class="col-12">
-                    <h5 id="heading">Location Configuration</h5>
-
-                    <hr
-                        style="margin-top: 1px;margin-bottom: 22px;color: gray;background-color: #d9d2d2;height: 1px;border: none;">
-                </div>
-                <p>Validate pre-leg carrier booking information</p>
-                <div
-                    class="activeToggel">
-                    <button class="toggleButton" type="button" [style.border-radius]="originButtonBorderRadius"
-                        [style.background-color]="originButtonColor" [style.border]="originButtonBorder"
-                        (click)="showOriginSection()"> Origin Location</button>
-                    <button class="toggleButton" type="button" [style.border-radius]="destinationButtonBorderRadius"
-                        [style.background-color]="destinationButtonColor" [style.border]="destinationButtonBorder"
-                        (click)="showDestinationSection()"> Destination Location</button>
-                </div>
-
-            </div>
-        </div>
-
-    </div>
+    
+    <p-toast key="successToast"></p-toast>
+</div>
+<div class="col-12" style="display: flex;justify-content: flex-end;">
+    <button pButton pRipple type="button" label="Save As Draft" 
+        (click)="onSaveProjectBBClick()" class="p-button-outlined mr-2 mb-2"></button>
+    <button type="submit" pButton pRipple label="Continue" (click)="onClickContinue()" [disabled]="!draftSavedBB" class="mr-2 mb-2"></button>
+</div>
+<p style="font-weight: 500;"></p>
 </div>
