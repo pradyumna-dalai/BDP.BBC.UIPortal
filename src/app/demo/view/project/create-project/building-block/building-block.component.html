@@ -31,7 +31,7 @@
             </div>
         </div>
     </div>
-    <div class="col-12 md:col-4" (nodeDrop)="onNodeDrop($event)" (click)="getAllProcessStepbyBlockId(draggedNodeId)">
+    <div class="col-12 md:col-4" (nodeDrop)="onNodeDrop($event)">
         <div class="card" style="min-height: 669px;" >
             <div class="col-12">
                 <div class="grid">
@@ -51,7 +51,7 @@
                             <ng-template pTemplate="header">
                                 <div class="blue-header">{{ node.label }}</div>
                             </ng-template>
-                            <div>
+                            <div> 
                                 <ul>
                                     <li *ngFor="let step of node.data?.stepsInformation | keyvalue" (click)="selectStep(step.key, isDestinationActive ? 1 : 0)">
                                         <div><h6>{{ step.key }}</h6></div>
@@ -106,7 +106,7 @@
 <div class="col-12" style="display: flex;justify-content: flex-end;">
     <button pButton pRipple type="button" label="Save As Draft" 
         (click)="onSaveProjectBBClick()" class="p-button-outlined mr-2 mb-2"></button>
-    <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()" class="mr-2 mb-2"></button>
+    <button type="submit" pButton pRipple label="Continue" (click)="onClickContinue()" [disabled]="!draftSavedBB" class="mr-2 mb-2"></button>
 </div>
 <p style="font-weight: 500;"></p>
 </div>

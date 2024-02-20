@@ -317,40 +317,44 @@
                     <div class="col-12" style="display: flex;justify-content: flex-end;">
                         <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
                             (click)="onSaveAsDraftClick()" class="p-button-outlined mr-2 mb-2"></button>
-                        <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()"
+                        <button type="submit" pButton pRipple label="Continue" [disabled]="!draftSaved" (click)="goToNextTab()"
                             class="mr-2 mb-2"></button>
                     </div>
                     <p-toast key="successToast"></p-toast>
                     <p-toast key="errorToast"></p-toast>
         </form>
     </p-tabPanel>
-    <p-tabPanel header="Building Block">
-        <div>
-            <app-building-block></app-building-block>
+    <p-tabPanel header="Building Block" [disabled]="!draftSaved">
+        <div *ngIf="draftSaved">
+            <app-building-block (continueClicked)="goToNextTab()"></app-building-block>
         </div>
     </p-tabPanel>
 
-    <p-tabPanel header="Add Volume">
-        <div>
-            <app-add-volume></app-add-volume>
+    <p-tabPanel [disabled]="!draftSavedBB" header="Add Volume">
+        <div *ngIf="projectIDbb !== null">
+            <app-add-volume (onClickContinuetoAddVolume)="goToNextTab()" [projectIdbb]="projectIDbb"></app-add-volume>
+          </div>
+    </p-tabPanel>
 
 
+    <p-tabPanel header="Cost Line Item" [disabled]="!draftSavedVolume">
+        <div *ngIf="projectidVolume !== null">
+          <app-cost-line-item (continueClickedToCLI)="goToNextTab()" [projectidVolume]="projectidVolume"></app-cost-line-item>
         </div>
     </p-tabPanel>
-    <p-tabPanel header="Cost Line Item">
-        <div>
-            <app-cost-line-item></app-cost-line-item>
-        </div>
-       
-    </p-tabPanel>
-    <p-tabPanel header="Other Cost">
-        <div>
-            <app-other-cost></app-other-cost>
+    <p-tabPanel header="Other Cost(Optional)" [disabled]="!draftSavedCLI">
+        <div *ngIf="draftSavedCLI">
+            <app-other-cost (continueClickedToProjectCost)="goToNextTab()"></app-other-cost>
         </div>
     </p-tabPanel>
     <p-tabPanel header="Project Output">
         <div>
             <app-project-cost></app-project-cost>
+        </div>
+        <div class="col-12" style="display: flex;justify-content: flex-end;">
+            <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
+                (click)="SaveAsDraftProjects()" class="p-button-outlined mr-2 mb-2"></button>
+            <button type="submit" pButton pRipple label="Continue" [disabled]="!myForm.valid" (click)="goToNextTab()" class="mr-2 mb-2"></button>
         </div>
     </p-tabPanel>
 </p-tabView>

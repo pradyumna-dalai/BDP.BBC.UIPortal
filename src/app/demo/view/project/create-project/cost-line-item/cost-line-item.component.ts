@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component,Input,Output, EventEmitter } from '@angular/core';
 import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { SharedServiceService } from 'src/app/services/project-serivce/shared-service.service';
 
 @Component({
   selector: 'app-cost-line-item',
@@ -32,17 +33,23 @@ private _isExpanded = false;
   costLineItemDetailsResponse: any;
   projectId: any;
   projectName: any;
+  @Input() projectidVolume: number | null;
+  projectIdCLI: any;
+  draftSavedCLI: boolean = false;
+  @Output() continueClickedToCLI: EventEmitter<any> = new EventEmitter();
 
-constructor(private projectService:ProjectsService, private messageService: MessageService){
+constructor(private sharedService: SharedServiceService,private projectService:ProjectsService, private messageService: MessageService){
 
 }
 
 ngOnInit(){
-  this.getCostLineItemDetails(581);
+  this.getCostLineItemDetails(this.projectidVolume);
   }
 
-
-  //---------------------------------Cost line item--------------------------------------------//
+  onClickContinue() {
+    // Emit event to notify parent component to move to next tab
+    this.continueClickedToCLI.emit();
+}
 
 showOriginSectionCLI() {
   this.showOriginCLI = true;
@@ -113,6 +120,9 @@ saveCostLineItemDetails() {
 
     this.projectService.saveCostLineItemDetails(body).subscribe(
       (res) => {
+        console.log(res?.data?.projectId,"cli");
+        this.sharedService.setProjectIdCLI(res?.data?.projectId);
+        this.sharedService.setDraftSavedCLI(true);
         this.messageService.add({
           key: 'successToast',
           severity: 'success',

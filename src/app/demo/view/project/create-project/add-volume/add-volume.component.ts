@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input,Output, EventEmitter } from '@angular/core';
 import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { SharedServiceService } from 'src/app/services/project-serivce/shared-service.service';
 
 @Component({
   selector: 'app-add-volume',
@@ -29,13 +30,28 @@ visible: boolean = false;
   volumeDetails: any[]= [];
   dynamicColumns: any[] = [];
   allData: { projectId: any; projectName: any; buildingBlocks: any; };
-  constructor(private projectService:ProjectsService, private messageService: MessageService){
+  buildingBlocks: any;
+  buildingBlockNames: any[];
+  projectId: any;
+  projectName: any;
+  process: any;
 
+  @Input() projectIdbb: number | null;
+  @Output() onClickContinuetoAddVolume: EventEmitter<any> = new EventEmitter();
+  projectidVolume: any;
+  draftSavedVolume: boolean = false;
+  constructor(private sharedService: SharedServiceService,private projectService:ProjectsService, private messageService: MessageService){
+    this.process = { lines: [] };
   }
 
   ngOnInit(){
-  this.getVolumeDetails(338);
+  this.getVolumeDetails(this.projectIdbb);
+
   }
+  onClickContinue() {
+    // Emit event to notify parent component to move to next tab
+    this.onClickContinuetoAddVolume.emit();
+}
   public get isExpanded() {
     return this._isExpanded;
 }
@@ -77,109 +93,28 @@ showDestinationSection() {
 
 getVolumeDetails(projectId) {
   this.projectService.getvolumeDetails(projectId).subscribe((res: any) => {
-    if (res && res.data && res.data.buildingBlocks && res.data.buildingBlocks.length > 0) {
-      // Extracting all building blocks
-      const buildingBlocksData = res.data.buildingBlocks.map(block => {
-        return {
-          buildingBlockId: block.buildingBlockId,
-          buildingBlockName: block.buildingBlockName,
-          originService: block.originService,
-          destinationService: block.destinationService
-        };
-      });
-      
-      // Storing all data
-      this.allData = {
-        projectId: res.data.projectId,
-        projectName: res.data.projectName,
-        buildingBlocks: buildingBlocksData
-      };
-
-      // Storing volume details for dynamic columns
-      this.volumeDetails = res.data.buildingBlocks;
-      this.dynamicColumns = this.volumeDetails.reduce((acc, curr) => {
-        curr.originService.processes[0].lines[0].locationVolume.forEach(location => {
-          if (!acc.includes(location.locationName)) {
-            acc.push(location.locationName);
-          }
-        });
-        return acc;
-      }, []);
-    }
-  });
-}
-getConfigurableName(configurableId: number): string {
-  switch (configurableId) {
-      case 1:
-          return 'EDI';
-      case 2:
-          return 'Manual';
-      case 3:
-          return 'Others';
-      default:
-          return ''; // You might want to handle other cases appropriately
-  }
-}
-getLocationVolumeValue(buildingBlock: any, col: any): any {
-  // Implement the logic to get the value here, for example:
-  return this.getLocationVolume(buildingBlock, col);
-}
-
-setLocationVolumeValue(newValue: any, buildingBlock: any, col: any): void {
-  // Assuming buildingBlock contains the volume details for each location
-  // Find the location volume object corresponding to the column
-  const location = buildingBlock.originService.processes[0].lines[0].locationVolume.find(loc => loc.locationName === col);
-  // Update the volume value
-  if (location) {
-    location.volume = newValue;
-  }
-}
-getLocationVolume(buildingBlock: any, locationName: string): string {
-  // Implement logic to get the volume for the specified location
-  // For example:
-  const location = buildingBlock.originService.processes[0].lines[0].locationVolume.find(loc => loc.locationName === locationName);
-  return location ? location.volume : '';
-}
-
-
-onRowEditSave(buildingBlock: any) {
-  // Save logic
-  buildingBlock.editing = false;
-}
-
-onRowEditCancel(buildingBlock: any, ri: number) {
-  // Restore original values when cancelling edit mode
-  if (buildingBlock.dynamicColumns && buildingBlock.dynamicColumns.length > 0) {
-    buildingBlock.dynamicColumns.forEach(col => {
-      buildingBlock[col] = buildingBlock[col + '_original'];
-    });
-  }
-  buildingBlock.editing = false;
-}
-
-
-toggleEditMode(buildingBlock: any) {
-  buildingBlock.editing = !buildingBlock.editing;
-  if (buildingBlock.editing && buildingBlock.dynamicColumns && buildingBlock.dynamicColumns.length > 0) {
-      buildingBlock.dynamicColumns.forEach(col => {
-          // Store the original value before switching to edit mode
-          buildingBlock[col + '_original'] = buildingBlock[col];
-          // Initialize input value with the original value
-          buildingBlock[col + '_input'] = buildingBlock[col];
-      });
-  }
-}
-onRowEditInit(buildingBlock: any) {
-  buildingBlock.editing = true;
-  buildingBlock.dynamicColumnsInput = {};
-  this.dynamicColumns.forEach(col => {
-    buildingBlock.dynamicColumnsInput[col] = this.getLocationVolume(buildingBlock, col);
+    this.projectId = res.data.projectId;
+    this.projectName = res.data.projectName;
+    this.volumeDetails = res.data.buildingBlocks;
+        if (res && res.data && res.data.buildingBlocks && res.data.buildingBlocks.length > 0) {
+          // this.volumeDetails = res.data.buildingBlocks;
+          this.buildingBlocks = res.data.buildingBlocks;
+          this.buildingBlockNames = this.buildingBlocks.map(block => block.buildingBlockName);
+        }
   });
 }
 onSaveVolumeClick(){
-  this.projectService.savevolumeDetails(this.allData).subscribe(
+  if (this.volumeDetails && this.volumeDetails.length > 0) {
+  const body = {
+    projectId: this.projectId,
+    projectName: this.projectName,
+    buildingBlocks: this.volumeDetails
+  };
+
+  this.projectService.savevolumeDetails(body).subscribe(
     (res) => {
-      
+      this.sharedService.setProjectidVolume(res?.data?.projectId);
+      this.sharedService.setDraftSavedVolume(true);
       this.messageService.add({
         key: 'successToast',
         severity: 'success',
@@ -199,6 +134,83 @@ onSaveVolumeClick(){
   );
 
 }
+}
+ // Helper method to get unique location names from all lines
+ getLocationNames(lines: any[]): string[] {
+  let locationNames: string[] = [];
+  lines.forEach(line => {
+    line.locationVolume.forEach(location => {
+      if (!locationNames.includes(location.locationName)) {
+        locationNames.push(location.locationName);
+      }
+    });
+  });
+  return locationNames;
+}
+
+getLocationVolumes(locationVolume: any[], locationName: string): string | number {
+  const location = locationVolume.find(loc => loc.locationName === locationName);
+  return location ? location.volume : 'NA';
+}
+// Add these methods to your component class
+getLocationVolumeValue(locationVolume: any[], locationName: string): string | number {
+  const location = locationVolume.find(loc => loc.locationName === locationName);
+  return location ? location.volume : 'NA';
+}
+
+
+updateLocationVolume(newValue: number, index: number, locationName: string, lines: any[]) {
+  const location = lines[index].locationVolume.find(loc => loc.locationName === locationName);
+  if (location) {
+    location.volume = newValue;
+  }
+}
+
+getConfigurableName(configurableId: number): string {
+  switch (configurableId) {
+      case 1:
+          return 'EDI';
+      case 2:
+          return 'Manual';
+      case 3:
+          return 'Others';
+      default:
+          return ''; // You might want to handle other cases appropriately
+  }
+}
+
+
+toggleEditMode(line: any) {
+  line.editing = true; // Set editing mode to true for the specific row
+}
+
+onRowEditSave(line: any) {
+  // Save the edited data
+  line.editing = false; // Exit editing mode
+}
+
+onRowEditCancel(line: any, ri: number) {
+  // Cancel editing
+  // Reset any changes made to the row
+  line.editing = false; // Exit editing mode
+}
+toggleEditModeDL(line: any) {
+  line.editing = true; // Set editing mode to true for the specific row
+}
+
+onRowEditSaveDL(line: any) {
+  // Save the edited data
+  line.editing = false; // Exit editing mode
+}
+
+onRowEditCancelDL(line: any, ri: number) {
+  // Cancel editing
+  // Reset any changes made to the row
+  line.editing = false; // Exit editing mode
+}
+
+
+
 goToNextTab(){
   
 }

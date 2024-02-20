@@ -139,11 +139,32 @@ export class ProjectComponent {
         if (action === 'copy') {
           this.router.navigateByUrl('/create-project');
         } else if (action === 'delete') {
-          this.rowDisabledState[itemId] = true;
+          // this.rowDisabledState[itemId] = true;
+          this.deleteProject(itemId);
         }
       },
       header: this.confirmationHeader,
     });
+  }
+  deleteProject(itemId){
+    this.projectsService.deleteProject(itemId).subscribe((res: any) => {
+      if (res?.message == "success") {
+        this.messageService.add({
+          key: 'successToast',
+          severity: 'success',
+          summary: 'Success!',
+          detail: 'Row deleted Successfully.'
+        });
+        this.fetchAllProjectDetails();
+      } else {
+        this.messageService.add({
+          key: 'errorToast',
+          severity: 'error',
+          summary: 'Error!',
+          detail: 'Failed to delete the row.'
+        });
+      }
+    })
   }
 
   cancelDateRange() {

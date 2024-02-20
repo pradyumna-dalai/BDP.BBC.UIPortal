@@ -1,9 +1,10 @@
-import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit,Output, EventEmitter } from '@angular/core';
 import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
 import { MessageService, TreeDragDropService, TreeNode } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { CreateBuildingBlockService } from 'src/app/services/create-buildingBlock/create-building-block.service';
 import { AppMainComponent } from 'src/app/app.main.component';
+import { SharedServiceService } from 'src/app/services/project-serivce/shared-service.service';
 
 @Component({
   selector: 'app-building-block',
@@ -49,15 +50,17 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   getSavedBlocksDD: any;
   selectedDestinationLocationNodes: any;
   selectedOriginLocationNodes: any;
+  draftSavedBB: boolean = false;
+  projectIDbb: any;
+  @Output() continueClicked: EventEmitter<any> = new EventEmitter();
 
-  constructor(private projectService: ProjectsService, private messageService: MessageService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
+  constructor(private sharedService: SharedServiceService,private projectService: ProjectsService, private messageService: MessageService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
   //  console.log(' :',this.getSavedBlocksDD);
     this.projectService.draftData$.subscribe(data => {
       this.projectLocations = data.data.projectLocation.filter(loc => loc.originDestinationCode === 0 || loc.originDestinationCode === 1);
       this.projectId = data.data.id;
       this.projectName = data.data.projectInformation.projectName;
       this.getAllProjectBuildingBlock(this.projectId);
-      console.log('bbsave',this.getSavedBlocksDD);
 });
     this.getAllProjectBuildingBlock(this.projectId);
   }
@@ -65,6 +68,10 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loadTreeDataNew();
   }
+  onClickContinue() {
+    // Emit event to notify parent component to move to next tab
+    this.continueClicked.emit();
+}
   ngOnDestroy() {
     if (this.subscription) {
       this.subscription.unsubscribe();
@@ -194,7 +201,6 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       if (!this.selectedNodes.includes(node)) {
         this.selectedNodes.push(node);
         this.draggedNodeId = node.data?.id;
-        console.log('ssss',  this.draggedNodeId)
         this.getAllProcessStepbyBlockId(this.draggedNodeId);
       }
     } else {
@@ -439,6 +445,10 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
     };
     this.projectService.saveProjectBuildingBlock(body).subscribe({
       next: (response: any) => {
+        this.sharedService.setDraftSavedBB(true);
+        this.sharedService.setProjectIDbb(response?.data?.projectId); // Assuming response has projectId
+        this.draftSavedBB = true; // Optionally, set draftSavedBB locally if needed
+        this.projectIDbb = response.projectId; // Optionally, set projectIDbb locally if needed
         this.messageService.add({
           key: 'successToast',
           severity: 'success',
@@ -451,6 +461,8 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+ 
 
 
   goToNextTab() {
