@@ -112,7 +112,7 @@
                 <label>Country <span class="required">*</span></label>
                 <p-dropdown [options]="countryOptions" appendTo="body" [readonly]="editMode" 
                     placeholder="Select Country" optionLabel="name" optionValue="id" [filter]="true"
-                    filterBy="name" [style]="{ 'width': '100%' }" formControlName="country">
+                    filterBy="name" [style]="{ 'width': '100%' }" formControlName="country" (onChange)="onCountryChange($event)">
                 </p-dropdown>
                 <div *ngIf="FteForm.get('country')?.hasError('required') && FteForm.get('country')?.touched"
                     class="error-message">
