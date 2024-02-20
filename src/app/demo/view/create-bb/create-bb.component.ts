@@ -238,7 +238,7 @@ export class CreateBbComponent {
             if (error.error?.data['Scoping Card'].Message === 'All Fields Are Empty') {
               // Handle case where all fields are empty in the uploaded Excel file
               this.uploadError = 'All fields are empty.';
-            }
+            } 
           }
           // Set flag to show error message
           this.showUploaderror = true;
@@ -336,6 +336,7 @@ export class CreateBbComponent {
         // Handle HTTP errors here
         if (error.status === 400) {
           if (error.error && error.error.data) {
+            console.log(error.error.data['Commercial Reference'].Message)
             const commercialReferenceErrors = error.error.data['Commercial Reference'];
             const generalInformationErrors = error.error.data['General Information'];
             
