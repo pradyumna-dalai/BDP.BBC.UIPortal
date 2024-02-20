@@ -291,14 +291,12 @@ export class CreateProjectComponent implements OnInit {
       opportunityMangers = om.map(id => ({ id }))
     }
     this.dateRange = this.myForm.get('selectedDateRange').value;
-    console.log("DateRange",this.dateRange)
     
     let dateRange = this.dateRange
     if (typeof this.dateRange == 'string' && this.dateRange.indexOf("-") != -1) {
        dateRange = this.dateRange.split("-");
     }
-    
-    console.log("splite",dateRange)
+
     let dateRangevalEndDate = this.dateRange.endDate;
 
     const originProjectLocationData = this.OtableData.map((row: TableRow) => ({
@@ -363,7 +361,6 @@ export class CreateProjectComponent implements OnInit {
       
       ]
     }
-console.log("formDate",this.myForm.get('selectedDateRange').value)
     this.projectService.saveAsDraftProject(body).subscribe(
       (res) => {
         const savedProjectId = res.data.id;
