@@ -94,7 +94,6 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   loadTreeDataNew() {
     this.createBuildingBlockservice.getExplorerData(2).subscribe((data: any) => {
       this.treeDataNew = this.transformData(data.data);
-  //    console.log("treee", this.treeDataNew)
     },
       (error) => {
         console.error('Error loading tree data:', error);
