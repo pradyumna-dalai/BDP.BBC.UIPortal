@@ -416,8 +416,8 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
               originService: {
                 configurations: stepInfo.Origin.map((config: any) => {
                   return {
-                    configurationId: config.configurableId || '',
-                    configurationName: config.configurable || '',
+                    configurableId: config.configurableId || '',
+                    configurableName: config.configurable || '',
                     locations: this.selectedOriginLocationNodes.map(locationNode => ({
                       locationId: locationNode.data.id,
                       locationName: locationNode.label
@@ -429,8 +429,8 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
               destinationService: {
                 configurations: stepInfo.Destination.map((config: any) => {
                   return {
-                    configurationId: config.configurableId || '',
-                    configurationName: config.configurable || '',
+                    configurableId: config.configurableId || '',
+                    configurableName: config.configurable || '',
                     locations: this.selectedDestinationLocationNodes.map(locationNode => ({
                       locationId: locationNode.data.id,
                       locationName: locationNode.label
