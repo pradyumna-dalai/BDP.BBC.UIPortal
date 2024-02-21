@@ -12,6 +12,8 @@ export class SharedServiceService {
   private _draftSavedVolumeSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private _projectIdCLISubject: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(null);
   private _draftSavedCLISubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private _projectIdOCSubject: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(null);
+  private _draftSavedOCSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
 
   draftSavedBB$: Observable<boolean> = this._draftSavedBBSubject.asObservable();
@@ -20,6 +22,8 @@ export class SharedServiceService {
   draftSavedVolume$: Observable<boolean> = this._draftSavedVolumeSubject.asObservable();
   projectIdCLI$: Observable<number | null> = this._projectIdCLISubject.asObservable();
   draftSavedCLI$: Observable<boolean> = this._draftSavedCLISubject.asObservable();
+  projectIdOC$: Observable<number | null> = this._projectIdOCSubject.asObservable();
+  draftSavedOC$: Observable<boolean> = this._draftSavedOCSubject.asObservable();
 
   constructor() { }
 
@@ -42,5 +46,12 @@ export class SharedServiceService {
 
   setDraftSavedCLI(value: boolean): void {
     this._draftSavedCLISubject.next(value);
+  }
+  setProjectIdOtherCost(value: number | null): void {
+    this._projectIdOCSubject.next(value);
+  }
+
+  setDraftSavedOtherCost(value: boolean): void {
+    this._draftSavedOCSubject.next(value);
   }
 }
