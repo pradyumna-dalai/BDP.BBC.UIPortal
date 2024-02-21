@@ -231,16 +231,19 @@ export class CreateBbComponent {
         }
       },
       (error) => {
-        // Handle HTTP errors here
+
         if (error.status === 400) {
           if (error.error?.data) {
-            // Clear previous errors
-            if (error.error?.data['Scoping Card'].Message === 'All Fields Are Empty') {
-              // Handle case where all fields are empty in the uploaded Excel file
+   
+            if (error.error?.data['Scoping Card']?.Message === 'All Fields Are Empty') {
+
               this.uploadError = 'All fields are empty.';
-            } 
+            }
+            if (error.error?.data === 'please upload scoping card excel file') {
+
+              this.uploadError = 'Please upload scoping card excel file';
+            }  
           }
-          // Set flag to show error message
           this.showUploaderror = true;
         } else {
           // Handle other errors accordingly
@@ -286,11 +289,10 @@ export class CreateBbComponent {
       (res: any) => {
         this.resetErrorVariables();
         if (res?.message === 'Excel Upload Sucessfully') {
-          // Process successful response
           this.excelDataSheet1 = res?.data?.['General Information']
           this.excelDataSheet2 = res?.data?.['Commercial Reference']
 
-          // Update UI variables with the response data for Sheet2
+
           this.standard_service = this.excelDataSheet2['Standard Service'];
           this.sow = this.excelDataSheet2['SOW'];
           this.pre_requisite_info = this.excelDataSheet2['Pre-requsites information'];
@@ -299,14 +301,12 @@ export class CreateBbComponent {
           this.don_s = this.excelDataSheet2["Don'ts"];
           this.configurables = this.excelDataSheet2['Configurable'];
 
-          // Update UI variables with the response data for Sheet1
           this.seervice_desc = this.excelDataSheet1['Service Description'];
           this.customer_requirement = this.excelDataSheet1['Customer Requirements'];
           this.cvalue_to_psa_bdp = this.excelDataSheet1['PSA BDP Value Statement'];
 
           this.visibleCC = false;
           this.onPopupCancelCClick();
-          // Reset the upload screen
           this.resetUploadScreen();
           this.uploadInProgress = false;
           this.showUploaderror = false;
@@ -316,12 +316,6 @@ export class CreateBbComponent {
             summary: 'Success!',
             detail: 'Excel Uploaded successfully.'
           });
-          //        // Reset the file input value
-          // const fileInput = document.getElementById('fileUploadCC') as HTMLInputElement;
-          // if (fileInput) {
-          //   fileInput.value = ''; // Clear the file input value
-          // }
-          // Reset the file input value
           const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
           if (fileInput) {
             fileInput.value = '';
@@ -329,16 +323,22 @@ export class CreateBbComponent {
         } else {
       
         }
-        
+         
       },
       (error) => {
          this.resetErrorVariables();
         // Handle HTTP errors here
         if (error.status === 400) {
           if (error.error && error.error.data) {
-            console.log(error.error.data['Commercial Reference'].Message)
             const commercialReferenceErrors = error.error.data['Commercial Reference'];
             const generalInformationErrors = error.error.data['General Information'];
+            
+            if(error.error?.data['Commercial Reference']?.Message === 'All Fields Are Empty' || error.error?.data['General Information']?.Message){
+              this.uploadError = 'All Fields Are Empty';
+            }
+            if (error.error?.data == 'Please upload commercial card excel file') {
+              this.uploadError = 'Please upload commercial card excel file';
+            }
             
             
 
@@ -351,9 +351,7 @@ export class CreateBbComponent {
             // Set showUploaderror to true to display the error in the UI
             this.showUploaderror = true;
           }
-          if (error.error.data == 'please upload commercial card excel file') {
-            this.uploadError = 'Please upload commercial card excel file';
-          }
+          
           
         }
          else {
