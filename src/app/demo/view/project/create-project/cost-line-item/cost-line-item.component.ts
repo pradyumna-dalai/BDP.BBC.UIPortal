@@ -116,7 +116,7 @@ saveCostLineItemDetails() {
       projectId: this.projectId,
       projectName: this.projectName,
       buildingBlocks: this.costLineItemDetails
-    };
+    }; 
 
     this.projectService.saveCostLineItemDetails(body).subscribe(
       (res) => {

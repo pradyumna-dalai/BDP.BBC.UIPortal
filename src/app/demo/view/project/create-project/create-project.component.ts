@@ -108,6 +108,7 @@ export class CreateProjectComponent implements OnInit {
   projectIdCLI: number | null;
   draftSavedOC: boolean;
   projectIdOC: number | null;
+  
   constructor(private sharedService: SharedServiceService,private route: ActivatedRoute, private breadcrumbService: AppBreadcrumbService, private zone: NgZone,
     private datePipe: DatePipe, private messageService: MessageService, private fb: FormBuilder, public MasterTableservice: MasterTableService,
     private createBuildingBlockservice: CreateBuildingBlockService, public projectService: ProjectsService) {
@@ -458,6 +459,8 @@ export class CreateProjectComponent implements OnInit {
 
         this.originLocations = [...this.locationOptions];
         this.destinationLocations = [...this.locationOptions];
+        
+        
       } else {
         this.locationOptions = [];
         this.originLocations = [];
@@ -503,12 +506,15 @@ export class CreateProjectComponent implements OnInit {
   onOriginLocationChange(event: any) {
     const selectedLocationIds = event.value;
     if (selectedLocationIds && selectedLocationIds.length > 0) {
+    
       this.isActionButtonsVisible = true;
       this.destinationLocations = this.locationOptions.filter(loc => !selectedLocationIds.includes(loc.id));
     } else {
       this.isActionButtonsVisible = false;
       this.destinationLocations = [...this.locationOptions];
     }
+
+    
     const selectedCitiesOrign = this.locationOptions
       .filter(loc => selectedLocationIds.includes(loc.id))
       .map(city => ({ name: city.name }));
@@ -912,10 +918,31 @@ export class CreateProjectComponent implements OnInit {
         this.draftSavedVolume = true;
         this.projectidVolume = projectId;
         this.projectIDbb = projectId;
+        this.projectIdCLI = projectId;
         this.draftSavedCLI = true;
         this.draftSavedOC = true;
+        this.projectIdOC = projectId;
         this.response = res.data.projectInformation; 
-        this.populateForm(); 
+        this.populateForm();
+          //location//
+        var projectLocations = res.data.projectLocation;
+        if(res.data.projectLocation[0].originDestinationCode === 0){
+          this.enableOriginLocation = true;
+          if (projectLocations && projectLocations.length > 0) {
+            this.selectedCitiesOrign = projectLocations.map(location => location.location.id);
+            this.onOriginLocationChange({ value: this.selectedCitiesOrign });
+        }
+        }
+        if(res.data.projectLocation[1].originDestinationCode === 1){
+          this.enableDestinationLocation = true;
+          if (projectLocations && projectLocations.length > 0) {
+            if (projectLocations && projectLocations.length > 0) {
+              this.selectedCities = projectLocations.map(location => location.location.id);
+              this.onDestinationLocationChange({ value: this.selectedCities });
+          }
+          }
+        
+        }
       } else {
         // Handle error
       }
@@ -968,7 +995,7 @@ export class CreateProjectComponent implements OnInit {
       this.myForm.get('region').setValue(this.regionOptions[selectedRegionIndex].id);
     }
 
-
+ 
   }
   downloadArtifactByIDOther(index: number) {
     let fileName: string | null = null;
