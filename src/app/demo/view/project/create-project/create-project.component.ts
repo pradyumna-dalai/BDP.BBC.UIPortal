@@ -506,12 +506,15 @@ export class CreateProjectComponent implements OnInit {
   onOriginLocationChange(event: any) {
     const selectedLocationIds = event.value;
     if (selectedLocationIds && selectedLocationIds.length > 0) {
+    
       this.isActionButtonsVisible = true;
       this.destinationLocations = this.locationOptions.filter(loc => !selectedLocationIds.includes(loc.id));
     } else {
       this.isActionButtonsVisible = false;
       this.destinationLocations = [...this.locationOptions];
     }
+
+    
     const selectedCitiesOrign = this.locationOptions
       .filter(loc => selectedLocationIds.includes(loc.id))
       .map(city => ({ name: city.name }));
@@ -922,14 +925,24 @@ export class CreateProjectComponent implements OnInit {
         this.response = res.data.projectInformation; 
         this.populateForm();
           //location//
+        var projectLocations = res.data.projectLocation;
         if(res.data.projectLocation[0].originDestinationCode === 0){
           this.enableOriginLocation = true;
+          if (projectLocations && projectLocations.length > 0) {
+            this.selectedCitiesOrign = projectLocations.map(location => location.location.id);
+            this.onOriginLocationChange({ value: this.selectedCitiesOrign });
+        }
         }
         if(res.data.projectLocation[1].originDestinationCode === 1){
           this.enableDestinationLocation = true;
+          if (projectLocations && projectLocations.length > 0) {
+            if (projectLocations && projectLocations.length > 0) {
+              this.selectedCities = projectLocations.map(location => location.location.id);
+              this.onDestinationLocationChange({ value: this.selectedCities });
+          }
+          }
+        
         }
-      
-
       } else {
         // Handle error
       }
