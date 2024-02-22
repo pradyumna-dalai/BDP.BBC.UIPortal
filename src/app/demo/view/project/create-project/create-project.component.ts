@@ -912,42 +912,53 @@ export class CreateProjectComponent implements OnInit {
 
   getProjectDetails(projectId): void {
     this.projectService.getProjectDetails(projectId).subscribe((res: any) => {
-      if (res?.message === 'success') {
-        this.draftSaved = true;
-        this.draftSavedBB = true;
-        this.draftSavedVolume = true;
-        this.projectidVolume = projectId;
-        this.projectIDbb = projectId;
-        this.projectIdCLI = projectId;
-        this.draftSavedCLI = true;
-        this.draftSavedOC = true;
-        this.projectIdOC = projectId;
-        this.response = res.data.projectInformation; 
-        this.populateForm();
-          //location//
-        var projectLocations = res.data.projectLocation;
-        if(res.data.projectLocation[0].originDestinationCode === 0){
-          this.enableOriginLocation = true;
-          if (projectLocations && projectLocations.length > 0) {
-            this.selectedCitiesOrign = projectLocations.map(location => location.location.id);
-            this.onOriginLocationChange({ value: this.selectedCitiesOrign });
+        if (res?.message === 'success') {
+            this.draftSaved = true;
+            this.draftSavedBB = true;
+            this.draftSavedVolume = true;
+            this.projectidVolume = projectId;
+            this.projectIDbb = projectId;
+            this.projectIdCLI = projectId;
+            this.draftSavedCLI = true;
+            this.draftSavedOC = true;
+            this.projectIdOC = projectId;
+            this.response = res.data.projectInformation;
+
+            // Filter project locations based on originDestinationCode
+            const originLocations = res.data.projectLocation.filter(location => location.originDestinationCode === 0);
+            const destinationLocations = res.data.projectLocation.filter(location => location.originDestinationCode === 1);
+
+            // Populate OtableData with origin locations
+            this.OtableData = originLocations.map(location => ({
+                city: location.location.name,
+                Volume: location.volume,
+                Uom: location.uom.id,
+                editing: false, // Assuming initially not in editing mode
+                adding: false
+            }));
+
+            // Populate tableData with destination locations
+            this.tableData = destinationLocations.map(location => ({
+                city: location.location.name,
+                Volume: location.volume,
+                Uom: location.uom.id,
+                editing: false, // Assuming initially not in editing mode
+                adding: false
+            }));
+
+            // Enable respective location tabs
+            if (originLocations.length > 0) {
+                this.enableOriginLocation = true;
+            }
+
+            if (destinationLocations.length > 0) {
+                this.enableDestinationLocation = true;
+            }
+        } else {
+            // Handle error
         }
-        }
-        if(res.data.projectLocation[1].originDestinationCode === 1){
-          this.enableDestinationLocation = true;
-          if (projectLocations && projectLocations.length > 0) {
-            if (projectLocations && projectLocations.length > 0) {
-              this.selectedCities = projectLocations.map(location => location.location.id);
-              this.onDestinationLocationChange({ value: this.selectedCities });
-          }
-          }
-        
-        }
-      } else {
-        // Handle error
-      }
     });
-  }
+}
 
   populateForm(): void {
     
