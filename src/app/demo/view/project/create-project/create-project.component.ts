@@ -923,7 +923,7 @@ export class CreateProjectComponent implements OnInit {
             this.draftSavedOC = true;
             this.projectIdOC = projectId;
             this.response = res.data.projectInformation;
-
+            this.populateForm(); 
             const originLocations = res.data.projectLocation.filter(location => location.originDestinationCode === 0);
             const destinationLocations = res.data.projectLocation.filter(location => location.originDestinationCode === 1);
 
