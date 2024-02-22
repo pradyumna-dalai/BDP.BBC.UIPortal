@@ -924,29 +924,25 @@ export class CreateProjectComponent implements OnInit {
             this.projectIdOC = projectId;
             this.response = res.data.projectInformation;
 
-            // Filter project locations based on originDestinationCode
             const originLocations = res.data.projectLocation.filter(location => location.originDestinationCode === 0);
             const destinationLocations = res.data.projectLocation.filter(location => location.originDestinationCode === 1);
 
-            // Populate OtableData with origin locations
             this.OtableData = originLocations.map(location => ({
                 city: location.location.name,
                 Volume: location.volume,
                 Uom: location.uom.id,
-                editing: false, // Assuming initially not in editing mode
+                editing: false, 
                 adding: false
             }));
 
-            // Populate tableData with destination locations
             this.tableData = destinationLocations.map(location => ({
                 city: location.location.name,
                 Volume: location.volume,
                 Uom: location.uom.id,
-                editing: false, // Assuming initially not in editing mode
+                editing: false,
                 adding: false
             }));
 
-            // Enable respective location tabs
             if (originLocations.length > 0) {
                 this.enableOriginLocation = true;
             }
