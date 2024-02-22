@@ -108,6 +108,7 @@ export class CreateProjectComponent implements OnInit {
   projectIdCLI: number | null;
   draftSavedOC: boolean;
   projectIdOC: number | null;
+  
   constructor(private sharedService: SharedServiceService,private route: ActivatedRoute, private breadcrumbService: AppBreadcrumbService, private zone: NgZone,
     private datePipe: DatePipe, private messageService: MessageService, private fb: FormBuilder, public MasterTableservice: MasterTableService,
     private createBuildingBlockservice: CreateBuildingBlockService, public projectService: ProjectsService) {
@@ -458,6 +459,8 @@ export class CreateProjectComponent implements OnInit {
 
         this.originLocations = [...this.locationOptions];
         this.destinationLocations = [...this.locationOptions];
+        
+        
       } else {
         this.locationOptions = [];
         this.originLocations = [];
@@ -912,10 +915,21 @@ export class CreateProjectComponent implements OnInit {
         this.draftSavedVolume = true;
         this.projectidVolume = projectId;
         this.projectIDbb = projectId;
+        this.projectIdCLI = projectId;
         this.draftSavedCLI = true;
         this.draftSavedOC = true;
+        this.projectIdOC = projectId;
         this.response = res.data.projectInformation; 
-        this.populateForm(); 
+        this.populateForm();
+          //location//
+        if(res.data.projectLocation[0].originDestinationCode === 0){
+          this.enableOriginLocation = true;
+        }
+        if(res.data.projectLocation[1].originDestinationCode === 1){
+          this.enableDestinationLocation = true;
+        }
+      
+
       } else {
         // Handle error
       }
@@ -968,7 +982,7 @@ export class CreateProjectComponent implements OnInit {
       this.myForm.get('region').setValue(this.regionOptions[selectedRegionIndex].id);
     }
 
-
+ 
   }
   downloadArtifactByIDOther(index: number) {
     let fileName: string | null = null;

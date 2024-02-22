@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,Input } from '@angular/core';
 import * as html2pdf from 'html2pdf.js';
 import { MessageService } from 'primeng/api';
 import { AppMainComponent } from 'src/app/app.main.component';
@@ -23,6 +23,7 @@ export class ProjectCostComponent {
   projectId: any;
   getSavedBlocksDetails: any;
   getSavedBlockslist: any;
+  @Input() projectIdOC: number | null;
 
   constructor(private projectService: ProjectsService, private messageService: MessageService, private appMain: AppMainComponent) {
 
@@ -30,11 +31,16 @@ export class ProjectCostComponent {
 
   ngOnInit() {
     this.projectService.draftData$.subscribe(data => {
-      this.projectId = data.data.id;
-      console.log('Project Info', this.projectId);
+      this.projectId = data?.data?.id;
+      if(this.projectId != null || this.projectId != undefined){
       this.fetchProjectInfomation(this.projectId);
       this.fetchAllProjectBuildingBlock(this.projectId);
+      }
     });
+    if(this.projectIdOC != null || this.projectIdOC != undefined){
+      this.fetchProjectInfomation(this.projectIdOC);
+      this.fetchAllProjectBuildingBlock(this.projectIdOC);
+    }
 
   }
 
