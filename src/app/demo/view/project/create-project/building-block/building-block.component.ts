@@ -188,8 +188,6 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
     this.originButtonBorderRadius = '5px';
     this.destinationButtonBorderRadius = '5px';
     this.getTreeData(this.selectedStep, 1)
-    //console.log('isOriginActive:', this.isOriginActive); // Log status of origin flag
-    // console.log('isDestinationActive:', this.isDestinationActive)
 
   }
 
@@ -230,11 +228,12 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
     this._isExpanded = value;
   }
   removeSelectedNode(node: TreeNode): void {
-    const index = this.selectedNodes.findIndex(selectedNode => selectedNode.key === node.key);
+    const index = this.selectedNodes.findIndex(selectedNode => selectedNode.data.id === node.data.id);
     if (index !== -1) {
       this.selectedNodes.splice(index, 1);
     }
   }
+  
 
   //-------------------------------end here--------------------------------//
   getAllProcessStepbyBlockId(blockId: any) {
@@ -411,7 +410,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       return;
     }
     // let stepdata = this.stepwithInfo[this.selectedStep];
-    console.log("stepdata", step);
+    
     this.selectedOriginLocationNodes = [];
     this.selectedDestinationLocationNodes = [];
     this.selectedStep = step;
@@ -423,11 +422,11 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
     if (stepdata?.selectedDestinationLoc?.length) {
       this.selectedDestinationLocationNodes = stepdata.selectedDestinationLoc;
     }
-    console.log("stepdata-1", stepdata);
+   
     // if (originDestinationCode === 0 || originDestinationCode === 1) {
     // Only proceed if originDestinationCode is 0 or 1
     this.getTreeData(step, originDestinationCode,);
-    console.log("tree", this.getTreeData);
+   
     // } else {
     //  console.error('Invalid originDestinationCode:', originDestinationCode);
     // }
@@ -451,29 +450,51 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       projectName: this.projectName,
       buildingBlocks: Array.from(this.stepwithInfo.entries()).map(([buildingBlockId, buildingBlockData]: [number, any]) => {
         const buildingBlockDataAny: any = buildingBlockData;
-        // Extract the buildingBlockName from the first entry in buildingBlockData
         const buildingBlockName = buildingBlockDataAny[Object.keys(buildingBlockDataAny)[0]]?.buildingBlockName;
-
+  
         const processes = Object.entries(buildingBlockData).map(([_, processInfo]: [string, any]) => {
           if (processInfo.selectedOriginLoc.length > 0 || processInfo.selectedDestinationLoc.length > 0) {
-            const originServiceConfigurations = processInfo.selectedOriginLoc.map((loc: any) => ({
-              configurableId: loc.parent.data.id,
-              configurableName: loc.parent.data.name,
-              locations: [{
-                locationId: loc.data.id,
-                locationName: loc.data.name
-              }]
-            }));
-
-            const destinationServiceConfigurations = processInfo.selectedDestinationLoc.map((loc: any) => ({
-              configurableId: loc.parent.data.id,
-              configurableName: loc.parent.data.name,
-              locations: [{
-                locationId: loc.data.id,
-                locationName: loc.data.name
-              }]
-            }));
-
+            const originServiceConfigurations = [];
+            const destinationServiceConfigurations = [];
+  
+            processInfo.selectedOriginLoc.forEach((loc: any) => {
+              const configIndex = originServiceConfigurations.findIndex((config: any) => config.configurableId === loc.parent.data.id);
+              if (configIndex > -1) {
+                originServiceConfigurations[configIndex].locations.push({
+                  locationId: loc.data.id,
+                  locationName: loc.data.name
+                });
+              } else {
+                originServiceConfigurations.push({
+                  configurableId: loc.parent.data.id,
+                  configurableName: loc.parent.data.name,
+                  locations: [{
+                    locationId: loc.data.id,
+                    locationName: loc.data.name
+                  }]
+                });
+              }
+            });
+  
+            processInfo.selectedDestinationLoc.forEach((loc: any) => {
+              const configIndex = destinationServiceConfigurations.findIndex((config: any) => config.configurableId === loc.parent.data.id);
+              if (configIndex > -1) {
+                destinationServiceConfigurations[configIndex].locations.push({
+                  locationId: loc.data.id,
+                  locationName: loc.data.name
+                });
+              } else {
+                destinationServiceConfigurations.push({
+                  configurableId: loc.parent.data.id,
+                  configurableName: loc.parent.data.name,
+                  locations: [{
+                    locationId: loc.data.id,
+                    locationName: loc.data.name
+                  }]
+                });
+              }
+            });
+  
             return {
               processId: processInfo.operationStepId,
               processName: processInfo.stepName,
@@ -488,6 +509,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
             return null;
           }
         }).filter(process => process !== null);
+  
         return {
           buildingBlockId: buildingBlockId,
           buildingBlockName: buildingBlockName,
@@ -495,15 +517,11 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
         };
       }).filter(block => block.processes.length > 0)
     };
-
-
-    console.log(projectData);
-
+  
+  
     this.projectService.saveProjectBuildingBlock(projectData).subscribe({
       next: (response: any) => {
         this.sharedService.setDraftSavedBB(true);
-        console.log(response);
-        console.log(projectData);
         this.sharedService.setProjectIDbb(response?.data?.projectId);
         this.draftSavedBB = true;
         this.projectIDbb = response.projectId;
@@ -519,6 +537,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       }
     });
   }
+  
 
 
 
