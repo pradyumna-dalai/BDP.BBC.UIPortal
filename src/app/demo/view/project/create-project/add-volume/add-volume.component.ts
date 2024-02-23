@@ -159,8 +159,8 @@ getLocationVolumeValue(locationVolume: any[], locationName: string): string | nu
 }
 
 
-updateLocationVolume(newValue: number, index: number, locationName: string, lines: any[]) {
-  const location = lines[index].locationVolume.find(loc => loc.locationName === locationName);
+updateLocationVolume(newValue: number, locationName: string, line: any) {
+  const location = line.locationVolume.find(loc => loc.locationName === locationName);
   if (location) {
     location.volume = newValue;
   }
