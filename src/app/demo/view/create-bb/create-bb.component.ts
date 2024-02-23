@@ -295,7 +295,7 @@ export class CreateBbComponent {
 
           this.standard_service = this.excelDataSheet2['Standard Service'];
           this.sow = this.excelDataSheet2['SOW'];
-          this.pre_requisite_info = this.excelDataSheet2['Pre-requsites information'];
+          this.pre_requisite_info = this.excelDataSheet2['Pre-requisite information'];
           this.combined_value = this.excelDataSheet2['Combined Value'];
           this.do_s = this.excelDataSheet2['Dos'];
           this.don_s = this.excelDataSheet2["Don'ts"];
