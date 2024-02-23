@@ -14,6 +14,7 @@ export class AddVolumeComponent implements OnInit {
 Add_Volume:any;
 
 ///add voulume & CLI///
+editedValues: { [locationName: string]: number } = {};
 showOriginVolume: boolean = true;
 showDestinationVolume: boolean = false;
 originButtonColor: string = 'white';
@@ -158,14 +159,13 @@ getLocationVolumeValue(locationVolume: any[], locationName: string): string | nu
   return location ? location.volume : 'NA';
 }
 
-
-updateLocationVolume(newValue: number, index: number, locationName: string, lines: any[]) {
-  const location = lines[index].locationVolume.find(loc => loc.locationName === locationName);
+updateLocationVolume(newValue: number, locationName: string, line: any) {
+  const location = line.locationVolume.find(loc => loc.locationName === locationName);
   if (location) {
     location.volume = newValue;
+    this.editedValues[locationName] = newValue;
   }
 }
-
 getConfigurableName(configurableId: number): string {
   switch (configurableId) {
       case 1:
@@ -185,7 +185,15 @@ toggleEditMode(line: any) {
 }
 
 onRowEditSave(line: any) {
-  // Save the edited data
+  // Update the UI with edited values
+  Object.keys(this.editedValues).forEach(locationName => {
+    const newValue = this.editedValues[locationName];
+    const location = line.locationVolume.find(loc => loc.locationName === locationName);
+    if (location) {
+      location.volume = newValue;
+    }
+  });
+  this.editedValues = {}; // Clear edited values
   line.editing = false; // Exit editing mode
 }
 

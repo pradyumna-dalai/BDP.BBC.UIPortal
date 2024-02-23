@@ -23,10 +23,10 @@
                     <button class="toggleButton" type="button" [style.border-radius]="destinationButtonBorderRadius" [style.background-color]="destinationButtonColor" [style.border]="destinationButtonBorder" (click)="showDestinationSectionCLI()"> Destination Location</button>
                 </div>
                 <div style="margin-top:10px;" *ngIf="showOriginCLI">
-                    <p-accordion [activeIndex]="1">
+                    <p-accordion>
                         <ng-container *ngFor="let buildingBlock of buildingBlocks">
                         <ng-container *ngFor="let process of buildingBlock.originService.processes">
-                            <p-accordionTab  [header]="process.processName">
+                            <p-accordionTab  [header]="process.processName" [selected]="isExpanded">
                                 <p-table [value]="process.lines" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
                                     <ng-template pTemplate="header">
                                         <tr>
