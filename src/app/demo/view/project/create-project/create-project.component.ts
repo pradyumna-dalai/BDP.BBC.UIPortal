@@ -108,6 +108,7 @@ export class CreateProjectComponent implements OnInit {
   projectIdCLI: number | null;
   draftSavedOC: boolean;
   projectIdOC: number | null;
+  
   constructor(private sharedService: SharedServiceService,private route: ActivatedRoute, private breadcrumbService: AppBreadcrumbService, private zone: NgZone,
     private datePipe: DatePipe, private messageService: MessageService, private fb: FormBuilder, public MasterTableservice: MasterTableService,
     private createBuildingBlockservice: CreateBuildingBlockService, public projectService: ProjectsService) {
@@ -458,6 +459,8 @@ export class CreateProjectComponent implements OnInit {
 
         this.originLocations = [...this.locationOptions];
         this.destinationLocations = [...this.locationOptions];
+        
+        
       } else {
         this.locationOptions = [];
         this.originLocations = [];
@@ -503,12 +506,15 @@ export class CreateProjectComponent implements OnInit {
   onOriginLocationChange(event: any) {
     const selectedLocationIds = event.value;
     if (selectedLocationIds && selectedLocationIds.length > 0) {
+    
       this.isActionButtonsVisible = true;
       this.destinationLocations = this.locationOptions.filter(loc => !selectedLocationIds.includes(loc.id));
     } else {
       this.isActionButtonsVisible = false;
       this.destinationLocations = [...this.locationOptions];
     }
+
+    
     const selectedCitiesOrign = this.locationOptions
       .filter(loc => selectedLocationIds.includes(loc.id))
       .map(city => ({ name: city.name }));
@@ -906,21 +912,49 @@ export class CreateProjectComponent implements OnInit {
 
   getProjectDetails(projectId): void {
     this.projectService.getProjectDetails(projectId).subscribe((res: any) => {
-      if (res?.message === 'success') {
-        this.draftSaved = true;
-        this.draftSavedBB = true;
-        this.draftSavedVolume = true;
-        this.projectidVolume = projectId;
-        this.projectIDbb = projectId;
-        this.draftSavedCLI = true;
-        this.draftSavedOC = true;
-        this.response = res.data.projectInformation; 
-        this.populateForm(); 
-      } else {
-        // Handle error
-      }
+        if (res?.message === 'success') {
+            this.draftSaved = true;
+            this.draftSavedBB = true;
+            this.draftSavedVolume = true;
+            this.projectidVolume = projectId;
+            this.projectIDbb = projectId;
+            this.projectIdCLI = projectId;
+            this.draftSavedCLI = true;
+            this.draftSavedOC = true;
+            this.projectIdOC = projectId;
+            this.response = res.data.projectInformation;
+            this.populateForm(); 
+            const originLocations = res.data.projectLocation.filter(location => location.originDestinationCode === 0);
+            const destinationLocations = res.data.projectLocation.filter(location => location.originDestinationCode === 1);
+
+            this.OtableData = originLocations.map(location => ({
+                city: location.location.name,
+                Volume: location.volume,
+                Uom: location.uom.id,
+                editing: false, 
+                adding: false
+            }));
+
+            this.tableData = destinationLocations.map(location => ({
+                city: location.location.name,
+                Volume: location.volume,
+                Uom: location.uom.id,
+                editing: false,
+                adding: false
+            }));
+
+            if (originLocations.length > 0) {
+                this.enableOriginLocation = true;
+            }
+
+            if (destinationLocations.length > 0) {
+                this.enableDestinationLocation = true;
+            }
+        } else {
+            // Handle error
+        }
     });
-  }
+}
 
   populateForm(): void {
     
@@ -968,7 +1002,7 @@ export class CreateProjectComponent implements OnInit {
       this.myForm.get('region').setValue(this.regionOptions[selectedRegionIndex].id);
     }
 
-
+ 
   }
   downloadArtifactByIDOther(index: number) {
     let fileName: string | null = null;

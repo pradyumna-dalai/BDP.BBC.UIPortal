@@ -262,7 +262,7 @@
             </p-accordion>
 
             <h6><b>Documents</b></h6>
-            <p>Upload the following documnets: File Size < 5 mb,Format CSV,JPEG,Excel,PDF</p>
+            <p>Upload the following documents: File Size < 5 mb,Format CSV,JPEG,Excel,PDF</p>
                     <div class="p-fluid grid">
                         <div class="field col-12 md:col-4">
                             <div class="p-d-block">
@@ -343,13 +343,13 @@
         </div>
     </p-tabPanel>
     <p-tabPanel header="Other Cost" [disabled]="!draftSavedCLI">
-        <div *ngIf="draftSavedCLI">
-            <app-other-cost (continueClickedToProjectCost)="goToNextTab()"></app-other-cost>
+        <div *ngIf="projectIdCLI !== null">
+            <app-other-cost (continueClickedToProjectCost)="goToNextTab()" [projectIdCLI]="projectIdCLI"></app-other-cost>
         </div>
     </p-tabPanel>
     <p-tabPanel header="Project Output" [disabled]="!draftSavedOC">
-        <div *ngIf="draftSavedOC">
-            <app-project-cost></app-project-cost>
+        <div *ngIf="projectIdOC !== null">
+            <app-project-cost [projectIdOC]="projectIdOC"></app-project-cost>
         </div>
     </p-tabPanel>
 </p-tabView>
