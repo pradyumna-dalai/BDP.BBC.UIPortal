@@ -450,29 +450,51 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       projectName: this.projectName,
       buildingBlocks: Array.from(this.stepwithInfo.entries()).map(([buildingBlockId, buildingBlockData]: [number, any]) => {
         const buildingBlockDataAny: any = buildingBlockData;
-        // Extract the buildingBlockName from the first entry in buildingBlockData
         const buildingBlockName = buildingBlockDataAny[Object.keys(buildingBlockDataAny)[0]]?.buildingBlockName;
-
+  
         const processes = Object.entries(buildingBlockData).map(([_, processInfo]: [string, any]) => {
           if (processInfo.selectedOriginLoc.length > 0 || processInfo.selectedDestinationLoc.length > 0) {
-            const originServiceConfigurations = processInfo.selectedOriginLoc.map((loc: any) => ({
-              configurableId: loc.parent.data.id,
-              configurableName: loc.parent.data.name,
-              locations: [{
-                locationId: loc.data.id,
-                locationName: loc.data.name
-              }]
-            }));
-
-            const destinationServiceConfigurations = processInfo.selectedDestinationLoc.map((loc: any) => ({
-              configurableId: loc.parent.data.id,
-              configurableName: loc.parent.data.name,
-              locations: [{
-                locationId: loc.data.id,
-                locationName: loc.data.name
-              }]
-            }));
-
+            const originServiceConfigurations = [];
+            const destinationServiceConfigurations = [];
+  
+            processInfo.selectedOriginLoc.forEach((loc: any) => {
+              const configIndex = originServiceConfigurations.findIndex((config: any) => config.configurableId === loc.parent.data.id);
+              if (configIndex > -1) {
+                originServiceConfigurations[configIndex].locations.push({
+                  locationId: loc.data.id,
+                  locationName: loc.data.name
+                });
+              } else {
+                originServiceConfigurations.push({
+                  configurableId: loc.parent.data.id,
+                  configurableName: loc.parent.data.name,
+                  locations: [{
+                    locationId: loc.data.id,
+                    locationName: loc.data.name
+                  }]
+                });
+              }
+            });
+  
+            processInfo.selectedDestinationLoc.forEach((loc: any) => {
+              const configIndex = destinationServiceConfigurations.findIndex((config: any) => config.configurableId === loc.parent.data.id);
+              if (configIndex > -1) {
+                destinationServiceConfigurations[configIndex].locations.push({
+                  locationId: loc.data.id,
+                  locationName: loc.data.name
+                });
+              } else {
+                destinationServiceConfigurations.push({
+                  configurableId: loc.parent.data.id,
+                  configurableName: loc.parent.data.name,
+                  locations: [{
+                    locationId: loc.data.id,
+                    locationName: loc.data.name
+                  }]
+                });
+              }
+            });
+  
             return {
               processId: processInfo.operationStepId,
               processName: processInfo.stepName,
@@ -487,6 +509,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
             return null;
           }
         }).filter(process => process !== null);
+  
         return {
           buildingBlockId: buildingBlockId,
           buildingBlockName: buildingBlockName,
@@ -494,10 +517,8 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
         };
       }).filter(block => block.processes.length > 0)
     };
-
-
-    //console.log(projectData);
-
+  
+  
     this.projectService.saveProjectBuildingBlock(projectData).subscribe({
       next: (response: any) => {
         this.sharedService.setDraftSavedBB(true);
@@ -516,6 +537,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       }
     });
   }
+  
 
 
 
