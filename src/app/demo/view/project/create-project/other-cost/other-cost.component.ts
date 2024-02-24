@@ -1,4 +1,4 @@
-import { Component,Output, EventEmitter } from '@angular/core';
+import { Component,Output, EventEmitter,Input } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { AppMainComponent } from 'src/app/app.main.component';
 import { CreateBuildingBlockService } from 'src/app/services/create-buildingBlock/create-building-block.service';
@@ -29,19 +29,26 @@ export class OtherCostComponent {
   editedRowIndex: number = -1;
   grandTotalCost: number = 0;
   @Output() continueClickedToProjectCost: EventEmitter<any> = new EventEmitter();
+  @Input() projectIdCLI: number | null;
   constructor(private sharedService: SharedServiceService,private projectService: ProjectsService, private cd: ChangeDetectorRef, private messageService: MessageService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
 
   }
 
   ngOnInit() {
     this.projectService.draftData$.subscribe(data => {
-      this.projectLocations = data.data.projectLocation.filter(loc => loc.originDestinationCode === 0 || loc.originDestinationCode === 1);
-      this.projectId = data.data.id;
-      this.projectName = data.data.projectInformation.projectName;
+      this.projectLocations = data?.data?.projectLocation.filter(loc => loc.originDestinationCode === 0 || loc.originDestinationCode === 1);
+      this.projectId = data?.data?.id;
+      this.projectName = data?.data?.projectInformation.projectName;
       // console.log('othercost', this.projectLocations);
       this.generateDropdownOptions();
       this.getAllProjectOtherCost();
+      
     });
+    if(this.projectIdCLI != null || this.projectIdCLI != undefined)
+    {
+      this.getAllProjectOtherCostEdit(this.projectIdCLI);
+    }
+    
 
   }
   onClickContinue() {
@@ -51,7 +58,7 @@ export class OtherCostComponent {
 
 
   generateDropdownOptions() {
-    this.locationDropdownOptions = this.projectLocations.map(location => ({
+    this.locationDropdownOptions = this.projectLocations?.map(location => ({
       id: location.location.id,
       name: location.location.name,
       originDestinationCode: location.originDestinationCode
@@ -208,6 +215,41 @@ export class OtherCostComponent {
         }
       });
     }
+  }
+  getAllProjectOtherCostEdit(projId){
+      this.projectService.getAllOtherCost(projId).subscribe({
+        next: (response: any) => {
+         // console.log('Other costs response:', response);
+          const otherCosts = response?.data?.otherCosts;
+          if (Array.isArray(otherCosts)) {
+            this.tableData = otherCosts.map((item: any, index: number) => ({
+              id: index + 1,
+              costItem: item.costItemName,
+              location: {
+                id: item.locationId,
+                name: item.locationName,
+                originDestinationCode: item.originDestinationCode
+              },
+              totalCost: item.totalCost,
+              originDestination: item.originDestinationCode === 0 ? 'Origin' : 'Destination',
+              editing: false
+            }));
+            this.calculateGrandTotalCost();
+          } else {
+            console.error('Other costs array not found in response:', response);
+          }
+        },
+        error: (error) => {
+          console.error('Error fetching other costs:', error);
+          // this.messageService.add({
+          //   key: 'errorToast',
+          //   severity: 'error',
+          //   summary: 'Error!',
+          //   detail: 'Failed to fetch Project Other Cost.'
+          // });
+        }
+      });
+    
   }
 
 

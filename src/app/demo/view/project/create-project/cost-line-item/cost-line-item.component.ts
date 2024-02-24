@@ -116,7 +116,7 @@ saveCostLineItemDetails() {
       projectId: this.projectId,
       projectName: this.projectName,
       buildingBlocks: this.costLineItemDetails
-    };
+    }; 
 
     this.projectService.saveCostLineItemDetails(body).subscribe(
       (res) => {
@@ -140,6 +140,29 @@ saveCostLineItemDetails() {
       }
     );
   }
+}
+recalculateCLI(projectId){
+  const body = [{
+
+  }]
+  this.projectService.getCostLineItemDetailsReCalc(projectId,body).subscribe((res: any) => {
+   if(res.data == 'Success'){
+    this.getCostLineItemDetails(projectId);
+    this.messageService.add({
+      key: 'successToast',
+      severity: 'success',
+      summary: 'Success!',
+      detail: 'Recalculated successfully.'
+    });
+   }else{
+    this.messageService.add({
+      key: 'errorToast',
+      severity: 'error',
+      summary: 'Error!',
+      detail: 'Failed to recalculate data.'
+    });
+   }
+  });
 }
 goToNextTab(){
 

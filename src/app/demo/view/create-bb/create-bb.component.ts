@@ -231,52 +231,19 @@ export class CreateBbComponent {
         }
       },
       (error) => {
-        // Handle HTTP errors here
+
         if (error.status === 400) {
           if (error.error?.data) {
-            // Clear previous errors
-            if (error.error?.data.message === 'All Field Are Empty') {
-              // Handle case where all fields are empty in the uploaded Excel file
+   
+            if (error.error?.data['Scoping Card']?.Message === 'All Fields Are Empty') {
+
               this.uploadError = 'All fields are empty.';
             }
-            else if (error.error?.data === 'please upload scoping card excel file') {
+            if (error.error?.data === 'please upload scoping card excel file') {
+
               this.uploadError = 'Please upload scoping card excel file';
-            }
-             else {
-              // Iterate over error fields and update corresponding error messages
-              Object.keys(error.error.data['Scoping Card']).forEach((key) => {
-                switch (key) {
-                  case 'Deliverables':
-                    this.deliverablesError = error.error.data['Scoping Card'][key];
-                    
-                    break;
-                  case 'Value to PSA BDP':
-                    this.valueToPSABDPError = error.error.data['Scoping Card'][key];
-                    break;
-                  case 'Parameters':
-                    this.parametersError = error.error.data['Scoping Card'][key];
-                    break;
-                  case 'Service Description':
-                    this.serviceDescriptionError = error.error.data['Scoping Card'][key];
-                    break;
-                  case 'Stakeholders / Audience':
-                    this.stakeholdersAudienceError = error.error.data['Scoping Card'][key];
-                    break;
-                  case 'Customer Requirements':
-                    this.customerRequirementsError = error.error.data['Scoping Card'][key];
-                    break;
-                  case 'Configurable':
-                    this.configurableError = error.error.data['Scoping Card'][key];
-                    break;
-                  // Add additional cases for other fields as needed
-                  default:
-                    console.log(`Unhandled field: ${key}`);
-                    break;
-                }
-              });
-            }
+            }  
           }
-          // Set flag to show error message
           this.showUploaderror = true;
         } else {
           // Handle other errors accordingly
@@ -322,27 +289,24 @@ export class CreateBbComponent {
       (res: any) => {
         this.resetErrorVariables();
         if (res?.message === 'Excel Upload Sucessfully') {
-          // Process successful response
           this.excelDataSheet1 = res?.data?.['General Information']
           this.excelDataSheet2 = res?.data?.['Commercial Reference']
 
-          // Update UI variables with the response data for Sheet2
+
           this.standard_service = this.excelDataSheet2['Standard Service'];
           this.sow = this.excelDataSheet2['SOW'];
-          this.pre_requisite_info = this.excelDataSheet2['Pre-requsites information'];
+          this.pre_requisite_info = this.excelDataSheet2['Pre-requisite information'];
           this.combined_value = this.excelDataSheet2['Combined Value'];
           this.do_s = this.excelDataSheet2['Dos'];
           this.don_s = this.excelDataSheet2["Don'ts"];
           this.configurables = this.excelDataSheet2['Configurable'];
 
-          // Update UI variables with the response data for Sheet1
           this.seervice_desc = this.excelDataSheet1['Service Description'];
           this.customer_requirement = this.excelDataSheet1['Customer Requirements'];
           this.cvalue_to_psa_bdp = this.excelDataSheet1['PSA BDP Value Statement'];
 
           this.visibleCC = false;
           this.onPopupCancelCClick();
-          // Reset the upload screen
           this.resetUploadScreen();
           this.uploadInProgress = false;
           this.showUploaderror = false;
@@ -352,12 +316,6 @@ export class CreateBbComponent {
             summary: 'Success!',
             detail: 'Excel Uploaded successfully.'
           });
-          //        // Reset the file input value
-          // const fileInput = document.getElementById('fileUploadCC') as HTMLInputElement;
-          // if (fileInput) {
-          //   fileInput.value = ''; // Clear the file input value
-          // }
-          // Reset the file input value
           const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
           if (fileInput) {
             fileInput.value = '';
@@ -365,7 +323,7 @@ export class CreateBbComponent {
         } else {
       
         }
-        
+         
       },
       (error) => {
          this.resetErrorVariables();
@@ -374,6 +332,13 @@ export class CreateBbComponent {
           if (error.error && error.error.data) {
             const commercialReferenceErrors = error.error.data['Commercial Reference'];
             const generalInformationErrors = error.error.data['General Information'];
+            
+            if(error.error?.data['Commercial Reference']?.Message === 'All Fields Are Empty' || error.error?.data['General Information']?.Message){
+              this.uploadError = 'All Fields Are Empty';
+            }
+            if (error.error?.data == 'Please upload commercial card excel file') {
+              this.uploadError = 'Please upload commercial card excel file';
+            }
             
             
 
@@ -386,9 +351,7 @@ export class CreateBbComponent {
             // Set showUploaderror to true to display the error in the UI
             this.showUploaderror = true;
           }
-          if (error.error.data == 'please upload commercial card excel file') {
-            this.uploadError = 'Please upload commercial card excel file';
-          }
+          
           
         }
          else {
@@ -406,7 +369,7 @@ export class CreateBbComponent {
     this.standard_service_error = '';
     this.dos_error = '';
     this.sow_error = '';
-    this.combined_value_error = '';
+    this.combined_value_error = ''; 
     this.donts_error = '';
     this.configurables_error = '';
     this.pre_requisite_info_error = '';
