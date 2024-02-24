@@ -119,7 +119,7 @@
                                                         <button *ngIf="line.editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancelDL(line, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
                                                     </div>
                                                 </td>
-                                            <td style="text-align: center">{{ getConfigurableName(line.configurableId) }}</td>
+                                            <td style="text-align: center">{{ line.configurableName }}</td>
                                             <td style="text-align: center">{{ line.locationName }}</td>
                                             <td style="text-align: center">{{ line.volume }}</td>
                                             <td style="text-align: center">{{ line.uom }}</td>
