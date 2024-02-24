@@ -174,7 +174,10 @@ export class CreateProjectComponent implements OnInit {
         this.getProjectDetails(this.projId);
       }
       
-    //  console.log(params.projId)
+     this.projectId = params.projectId;
+     if(this.projectId != undefined){
+      this.getProjectDetails(this.projectId);
+    }
     });
 
     if (this.projId) {

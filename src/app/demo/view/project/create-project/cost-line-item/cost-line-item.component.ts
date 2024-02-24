@@ -120,7 +120,6 @@ saveCostLineItemDetails() {
 
     this.projectService.saveCostLineItemDetails(body).subscribe(
       (res) => {
-        console.log(res?.data?.projectId,"cli");
         this.sharedService.setProjectIdCLI(res?.data?.projectId);
         this.sharedService.setDraftSavedCLI(true);
         this.messageService.add({
