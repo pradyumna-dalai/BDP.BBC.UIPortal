@@ -1,0 +1,23 @@
+{
+  "production": {
+    "domain": "bdpint-smarthub-test.us.auth0.com",
+    "clientId": "ucN1Omk6Y3mXOL5VK5bZamtDB13kAiQq",
+    "audience": "https://bdpint-smarthub-test.us.auth0.com/api/v2/",
+    "apiUri": "http://localhost:4200",
+    "errorPath": "/auth-error"
+  },
+  "testing": {
+    "domain": "bdpint-smarthub-test.us.auth0.com",
+    "clientId": "2c2DQ0wuzBSTiUir9GaB26OKw5eeOp2s",
+    "audience": "https://bdpint-smarthub-test.us.auth0.com/api/v2/",
+    "apiUri": "http://localhost:4200",
+    "errorPath": "/auth-error"
+  },
+  "development": {
+    "domain": "bdpint-smarthub-dev.us.auth0.com",
+    "clientId": "JTEop0vS8P1rY0p3LfSWWV1BWf0U4Jkr",
+    "audience": "https://bdpint-smarthub-dev.us.auth0.com/api/v2/",
+    "apiUri": "http://localhost:4200",
+    "errorPath": "/auth-error"
+  }
+}
