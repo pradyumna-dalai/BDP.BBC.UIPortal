@@ -164,6 +164,12 @@ getCostLineItemDetails(projId: number): Observable<any> {
 
 }
 
+getCostLineItemDetailsReCalc(projId: number,body: any): Observable<any> {
+
+  return this.http.post<any>(url +`project/`+ projId + `/` + settings.AppRoutes.Auth.reCalculateCostLine,body);
+
+}
+
 saveCostLineItemDetails(body: any) {
 
   return this.http.post<any>(url + settings.AppRoutes.Auth.saveCostLineItemDetails, body);

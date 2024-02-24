@@ -5,6 +5,7 @@
         </div>
         <div class="md:col-6" style="display: flex; padding: 0px !important;
         justify-content: flex-end;">
+        <div style="padding: 5px;"><button (click)="recalculateCLI(this.projectidVolume)" pButton pRipple type="button">Recalculate</button></div>
           <div style="padding: 5px;"><button pButton pRipple type="button" (click)="isExpanded = !isExpanded">
             {{ isExpanded ? 'Collapse All' : 'Expand All' }}</button></div>
             <div style="padding: 5px;"><button pButton pRipple type="button">Download</button></div>

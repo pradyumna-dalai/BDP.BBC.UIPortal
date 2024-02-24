@@ -151,6 +151,8 @@ export namespace AppRoutes {
         public static readonly getCostLineItemDetails  = "cost-line-item"
 
         public static readonly saveCostLineItemDetails  = "project/cost-line-item"
+
+        public static readonly reCalculateCostLine  = "recalculate-cost-line"
  
         //------End-----------------------//
 
