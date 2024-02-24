@@ -14,14 +14,30 @@ const { domain, clientId, audience, apiUri, errorPath, } = config.development as
 };
 
 export const environment = {
-    production: false,
-  
-    sessionInfoInterval: 25 * 60 * 1000,
-    sessionTimeoutInterval: 5 * 60 * 1000,
-    sessionDialogInterval: 1 * 60 * 1000,
-    
-    // endpoint_url:"http://localhost:5000/buildingblocks/api/v1",
-    //endpoint_url:"http://bbc-dev-api.eba-wumjpfkg.us-east-1.elasticbeanstalk.com",
-    endpoint_url: "http://ec2-44-193-79-71.compute-1.amazonaws.com:5000",
-  };
-  
+  production: false,
+
+  sessionInfoInterval: 25 * 60 * 1000,
+  sessionTimeoutInterval: 5 * 60 * 1000,
+  sessionDialogInterval: 1 * 60 * 1000,
+
+  // endpoint_url:"http://localhost:5000/buildingblocks/api/v1",
+  //endpoint_url:"http://bbc-dev-api.eba-wumjpfkg.us-east-1.elasticbeanstalk.com",
+  endpoint_url: "http://ec2-44-193-79-71.compute-1.amazonaws.com:5000",
+  ump_endpoint_url: 'https://hubdev.bdpsmart.com/portal-api/',
+
+  smartHubUrl: "https://hubdev.bdpsmart.com/#",
+
+  auth0: {
+    domain,
+    clientId,
+    ...(audience && audience != 'YOUR_API_IDENTIFIER' ? { audience } : null),
+    redirectUri: window.location.origin,
+    errorPath,
+    state: {
+      redirectUrl: '/user'
+    }
+  },
+  httpInterceptor: {
+    allowedList: [`${apiUri}/*`],
+  }
+};

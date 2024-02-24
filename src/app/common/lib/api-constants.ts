@@ -158,4 +158,25 @@ export namespace AppRoutes {
 
     }
 
+    export abstract class UserApi {
+        public static readonly GET_USERS = "api/v1/user";
+        public static readonly APP_USERS = "api/app/v1";
+        public static readonly GET_USERS_PUBLIC = "public/users";
+        public static readonly GET_GLOBAL_API = "api/app/v1";
+        public static readonly REGISTRATION = "public/user/registration";
+
+        public static readonly GET_USER_BY_EMAIL = UserApi.GET_USERS;
+        public static readonly GET_CURRENT_USER = UserApi.GET_USERS + "/getUser";
+        public static readonly ADD_USER = UserApi.GET_USERS;
+        public static readonly UPDATE_USER = UserApi.GET_USERS;
+        public static readonly UPDATE_USER_PROFILE = UserApi.GET_USERS + "/updateUserProfile";
+        public static readonly GET_USER_APPS = UserApi.GET_USERS + "/getAssignedApps";
+        public static readonly IS_PASSWORD_EXPIRED = UserApi.APP_USERS + "/isPwdExpired";
+        public static readonly IS_APP_PERMITTED = UserApi.APP_USERS + "/isAppPermitted";
+        public static readonly EULA_VALIDATE = UserApi.APP_USERS + "/eula/validate";
+        public static readonly GET_ALL_APPS = UserApi.GET_GLOBAL_API + "/get-all-apps";
+        public static readonly APP_HIT_LOG = UserApi.GET_GLOBAL_API + "/log-login";
+
+    }
+
 }

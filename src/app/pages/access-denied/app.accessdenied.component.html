@@ -1,0 +1,18 @@
+<div class="exception-body access-page">
+
+    <div class="exception-top">
+        <img src="assets/layout/images/icon-access.png" alt="poseidon-layout" />
+    </div>
+
+    <div class="exception-bottom">
+        <div class="exception-wrapper">
+            <span class="exception-summary">Access Denied</span>
+            <span class="exception-detail">You Don't Have Permissions To Access This Resource</span>
+            <button pButton pRipple type="button" label="Logout" icon="pi pi-power-off" class="bdp-button primary"
+                style="width: 35%;color: white;" (click)="onLogout()"></button>
+            <a [routerLink]="['/']" class="logo">
+                <img src="assets/bdp/images/bdp-logo.svg" alt="poseidon-layout" class="logo-icon" />
+            </a>
+        </div>
+    </div>
+</div>

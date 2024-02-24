@@ -1,12 +1,14 @@
-import {Component, AfterViewInit, Renderer2, OnDestroy, OnInit} from '@angular/core';
+import { Component, AfterViewInit, Renderer2, OnDestroy, OnInit } from '@angular/core';
 import { MenuService } from './app.menu.service';
 import { PrimeNGConfig } from 'primeng/api';
 import { AppComponent } from './app.component';
+import { BDPAuthService } from './common/service';
+import { AppService } from './common/service/ump-app/app.service';
 
 @Component({
     selector: 'app-main',
     templateUrl: './app.main.component.html'
-    
+
 })
 export class AppMainComponent implements AfterViewInit, OnDestroy {
 
@@ -42,8 +44,16 @@ export class AppMainComponent implements AfterViewInit, OnDestroy {
 
     search = false;
 
-    constructor(public renderer: Renderer2, private menuService: MenuService, private primengConfig: PrimeNGConfig,
-                public app: AppComponent) { }
+    constructor(
+        public renderer: Renderer2,
+        private menuService: MenuService,
+        private primengConfig: PrimeNGConfig,
+        public app: AppComponent,
+        public bdpAuthService: BDPAuthService,
+        private appService: AppService) {
+        // UMP App hit logging
+        // this.appHitLogging();
+    }
 
     ngAfterViewInit() {
         // hides the horizontal submenus or top menu if outside is clicked
@@ -87,6 +97,12 @@ export class AppMainComponent implements AfterViewInit, OnDestroy {
             this.menuClick = false;
             this.rightPanelClick = false;
         });
+
+        // Inactivity check UMP
+        // this.bdpAuthService.checkInactivityStatus();
+
+        // Auth0 session check UMP
+        // this.bdpAuthService.checkAuthenticationStatus();
     }
 
     onMenuButtonClick(event) {
@@ -122,7 +138,8 @@ export class AppMainComponent implements AfterViewInit, OnDestroy {
         if (this.activeTopbarItem === item) {
             this.activeTopbarItem = null;
         } else {
-            this.activeTopbarItem = item; }
+            this.activeTopbarItem = item;
+        }
 
         if (item.className === 'search-item topbar-item') {
             this.search = !this.search;
@@ -199,6 +216,14 @@ export class AppMainComponent implements AfterViewInit, OnDestroy {
             document.body.className = document.body.className.replace(new RegExp('(^|\\b)' +
                 'blocked-scroll'.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
         }
+    }
+
+    appHitLogging() {
+        this.appService.appHitLogging().subscribe({
+            next: (res) => {
+                console.log("AppHit", res);
+            }
+        });
     }
 
     ngOnDestroy() {

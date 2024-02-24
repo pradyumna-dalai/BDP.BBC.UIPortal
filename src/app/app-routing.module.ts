@@ -1,23 +1,8 @@
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { DashboardDemoComponent } from './demo/view/dashboarddemo.component';
 import { AppMainComponent } from './app.main.component';
-import { AppNotfoundComponent } from './pages/app.notfound.component';
-import { ProjectComponent } from './demo/view/project/project.component';
-import { GlossaryComponent } from './demo/view/glossary/glossary.component';
-import { CreateBbComponent } from './demo/view/create-bb/create-bb.component';
-import { CreateProjectComponent } from './demo/view/project/create-project/create-project.component';
-import { LocationsComponent } from './demo/master-data/locations/locations.component';
-import { ChargeCodeComponent } from './demo/master-data/charge-code/charge-code.component';
-import { CategoryComponent } from './demo/master-data/category/category.component';
-import { ScopeComponent } from './demo/master-data/scope/scope.component';
-import { ProductComponent } from './demo/master-data/product/product.component';
-import { UOMComponent } from './demo/master-data/uom/uom.component';
-import { FteComponent } from './demo/master-data/fte/fte.component';
-import { ProcessConfigComponent } from './demo/master-data/process-config/process-config.component';
-
-
-
+import { AppNotfoundComponent } from './pages';
+import { AuthGuard as Auth0Guard } from '@auth0/auth0-angular';
 
 
 @NgModule({
@@ -27,21 +12,11 @@ import { ProcessConfigComponent } from './demo/master-data/process-config/proces
                 path: '',
                 component: AppMainComponent,
                 children: [
-                    { path: '', redirectTo: 'building-block', pathMatch: 'full' },
-                    { path: 'building-block', component: DashboardDemoComponent },
-                    { path: 'project', component: ProjectComponent },
-                    { path: 'glossary', component: GlossaryComponent },
-                    { path: 'create-buildingblocks', component: CreateBbComponent },
-                    { path: 'create-buildingblocks/:id', component: CreateBbComponent, },
-                    { path: 'create-project', component: CreateProjectComponent },
-                    { path: 'locations', component: LocationsComponent },
-                    { path: 'scope', component: ScopeComponent },
-                    { path: 'category', component: CategoryComponent },
-                    { path: 'product', component: ProductComponent },
-                    { path: 'charge-code', component: ChargeCodeComponent },
-                    { path: 'uom', component: UOMComponent },
-                    { path: 'fte', component: FteComponent },
-                    { path: 'processConfig', component: ProcessConfigComponent }
+                    {
+                        path: '',
+                        // canActivate: [Auth0Guard, AuthGuard],
+                        loadChildren: () => import('./app-main.module').then(m => m.MainModule),
+                    }
                 ]
             },
             { path: 'notfound', component: AppNotfoundComponent },

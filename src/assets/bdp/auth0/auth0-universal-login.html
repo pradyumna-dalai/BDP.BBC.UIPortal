@@ -1,0 +1,58 @@
+<div class="login-container bdp-smart-sence" id="bdpLoginWrapper">
+    <div class="login-box">
+        <div class="login-header">
+            <img id="loginLogo" />
+            <div class="bdp-instruction-text" id="bdpInstructionText">+ Sign In is a two step process. +</div>
+        </div>
+        <div id="errorMessage" class="alert alert-danger" style="display:none;"></div>
+        <form onsubmit="return false;" method="post" novalidate name="loginForm">
+            <div class="form-group" id="emailWrapper">
+                <input name="email" type="email" class="form-control" placeholder="Enter your account email address"
+                    id="emailInput">
+                <span class="bdp-email" id="editEmail" onclick="loginEdit(event)">Edit</span>
+            </div>
+            <div class="form-group" id="passwordWrapper" style="display:none;">
+                <input name="password" type="password" class="form-control" placeholder="Password" id="passwordInput"
+                    autocomplete="new-password">
+                <img src="" id="bdpPasswordVisibility" onclick="changePasswordVisibility()" />
+                <div id="slider">
+                    <div class="line"></div>
+                    <div class="subline inc"></div>
+                    <div class="subline dec"></div>
+                </div>
+            </div>
+            <div id="forgetPasswordWrapper" class="forget-Password-Wrapper" style="display:none;">
+                <p class="bdp-bottom-heading">
+                    <a id="forgetPassword" class="forgot-password">Forgot password?</a>
+                </p>
+            </div>
+            <div id="captchaContainer" class="captcha-container form-group"></div>
+            <button type="submit" id="btnLogin" class="btn btn-primary btn-block login-btn" onclick="bdpLogin(event)">
+                Continue
+            </button>
+            <p class="bdp-bottom-heading">
+                Existing User? &nbsp;
+                <a class="sign-up-redirect" id="needAppRedirect">Need another application?</a>
+            </p>
+            <p class="bdp-bottom-heading">
+                Don't have an account? &nbsp;
+                <a class="sign-up-redirect" id="signUpRedirect">Register</a>
+            </p>
+            <p id="bdpBottomHeading" class="bdp-bottom-heading">
+                <a class="" target="_blank" href="" id="bdpFAQ"> FAQs</a> |
+                <a class="" target="_blank" href="" id="mfaFAQ"> MFA User Guide </a>
+            </p>
+        </form>
+    </div>
+</div>
+<div id="windowLoader">
+    <div class="sk-wave-wrapper">
+        <div class="sk-wave">
+            <div class="sk-rect sk-rect1"></div>
+            <div class="sk-rect sk-rect2"></div>
+            <div class="sk-rect sk-rect3"></div>
+            <div class="sk-rect sk-rect4"></div>
+            <div class="sk-rect sk-rect5"></div>
+        </div>
+    </div>
+</div>

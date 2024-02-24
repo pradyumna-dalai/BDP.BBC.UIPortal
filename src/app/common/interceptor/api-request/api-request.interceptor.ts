@@ -4,8 +4,9 @@ import { HttpRequest,HttpHandler,HttpHeaders, HttpEvent,HttpInterceptor } from '
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NavigationEnd, Router } from '@angular/router';
-import { AuthService } from '../../service/auth/auth.service';
+import { BDPAuthService } from '../../service/auth/auth.service';
 import { StorageService } from '../../service/storage/storage.service';
+import { AppRoutes } from '../../lib';
 
 
 @Injectable()
@@ -13,35 +14,37 @@ export class ApiRequestInterceptor implements HttpInterceptor {
 
   constructor(
     public storageService: StorageService,
-    public authService: AuthService,
-    // public userService:UserService,
+    public authService: BDPAuthService,
     public router: Router) {
-      router.events.subscribe(event => {
-        if (event instanceof NavigationEnd) {
-          if (event.url == '/login') {
-            //cancle all api calls when logout
-            // this.authService.cancelPendingRequests();
-          }
-        }
-      });
+      router.events.subscribe(event => {});
     }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const tokenDetails = this.storageService.getItem('token');
-    const authUrls = [];
-    
+    const umpUrls = [
+      AppRoutes.UserApi.GET_CURRENT_USER,
+      AppRoutes.UserApi.IS_PASSWORD_EXPIRED,
+      AppRoutes.UserApi.EULA_VALIDATE,
+      AppRoutes.UserApi.IS_APP_PERMITTED,
+      AppRoutes.UserApi.GET_ALL_APPS,
+      AppRoutes.UserApi.APP_HIT_LOG
+    ]
 
     if (!/^(http|https):/i.test(request.url)) {
     
       let url = '';
-      
-        url = environment.endpoint_url + request.url
-      
       const headers: any = {
         'Authorization': tokenDetails != null && tokenDetails !== '' ? 'Bearer ' + tokenDetails : '',
        // 'Content-Type': 'application/json',
         'Cache-Control': 'no-cache'
       };
+
+      if (umpUrls.indexOf(request.url) >= 0) {
+        url = environment.ump_endpoint_url + request.url;
+      } else {
+        url = environment.endpoint_url + request.url;
+        headers['Content-Type'] = 'application/json';
+      }
       
       request = request.clone({
         url,

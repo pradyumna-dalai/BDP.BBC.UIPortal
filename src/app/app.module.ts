@@ -1,225 +1,50 @@
-import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {EditorModule} from 'primeng/editor';
-import {FormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
-import {BrowserModule} from '@angular/platform-browser';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {AppRoutingModule} from './app-routing.module';
-import {AccordionModule} from 'primeng/accordion';
-import {AutoCompleteModule} from 'primeng/autocomplete';
-import {AvatarModule} from 'primeng/avatar';
-import {AvatarGroupModule} from 'primeng/avatargroup';
-import {BadgeModule} from 'primeng/badge';
-import {BreadcrumbModule} from 'primeng/breadcrumb';
-import {ButtonModule} from 'primeng/button';
-import {CalendarModule} from 'primeng/calendar';
-import {CardModule} from 'primeng/card';
-import {CarouselModule} from 'primeng/carousel';
-import {CascadeSelectModule} from 'primeng/cascadeselect';
-import {ChartModule} from 'primeng/chart';
-import {CheckboxModule} from 'primeng/checkbox';
-import {ChipModule} from 'primeng/chip';
-import {ChipsModule} from 'primeng/chips';
-import {ConfirmDialogModule} from 'primeng/confirmdialog';
-import {ConfirmPopupModule} from 'primeng/confirmpopup';
-import {ColorPickerModule} from 'primeng/colorpicker';
-import {ContextMenuModule} from 'primeng/contextmenu';
-import {DataViewModule} from 'primeng/dataview';
-import {DialogModule} from 'primeng/dialog';
-import {DividerModule} from 'primeng/divider';
-import {DropdownModule} from 'primeng/dropdown';
-import {FieldsetModule} from 'primeng/fieldset';
-import {FileUploadModule} from 'primeng/fileupload';
-import {GalleriaModule} from 'primeng/galleria';
-import {ImageModule} from 'primeng/image';
-import {InplaceModule} from 'primeng/inplace';
-import {InputNumberModule} from 'primeng/inputnumber';
-import {InputMaskModule} from 'primeng/inputmask';
-import {InputSwitchModule} from 'primeng/inputswitch';
-import {InputTextModule} from 'primeng/inputtext';
-import {InputTextareaModule} from 'primeng/inputtextarea';
-import {KnobModule} from 'primeng/knob';
-import {ListboxModule} from 'primeng/listbox';
-import {MegaMenuModule} from 'primeng/megamenu';
-import {MenuModule} from 'primeng/menu';
-import {MenubarModule} from 'primeng/menubar';
-import {MessagesModule} from 'primeng/messages';
-import {MessageModule} from 'primeng/message';
-import {MultiSelectModule} from 'primeng/multiselect';
-import {OrderListModule} from 'primeng/orderlist';
-import {OrganizationChartModule} from 'primeng/organizationchart';
-import {OverlayPanelModule} from 'primeng/overlaypanel';
-import {PaginatorModule} from 'primeng/paginator';
-import {PanelModule} from 'primeng/panel';
-import {PanelMenuModule} from 'primeng/panelmenu';
-import {PasswordModule} from 'primeng/password';
-import {PickListModule} from 'primeng/picklist';
-import {ProgressBarModule} from 'primeng/progressbar';
-import {RadioButtonModule} from 'primeng/radiobutton';
-import {RatingModule} from 'primeng/rating';
-import {RippleModule} from 'primeng/ripple';
-import {ScrollPanelModule} from 'primeng/scrollpanel';
-import {ScrollTopModule} from 'primeng/scrolltop';
-import {SelectButtonModule} from 'primeng/selectbutton';
-import {SidebarModule} from 'primeng/sidebar';
-import {SkeletonModule} from 'primeng/skeleton';
-import {SlideMenuModule} from 'primeng/slidemenu';
-import {SliderModule} from 'primeng/slider';
-import {SplitButtonModule} from 'primeng/splitbutton';
-import {SplitterModule} from 'primeng/splitter';
-import {StepsModule} from 'primeng/steps';
-import {TabMenuModule} from 'primeng/tabmenu';
-import {TableModule} from 'primeng/table';
-import {TabViewModule} from 'primeng/tabview';
-import {TagModule} from 'primeng/tag';
-import {TerminalModule} from 'primeng/terminal';
-import {TieredMenuModule} from 'primeng/tieredmenu';
-import {TimelineModule} from 'primeng/timeline';
-import {ToastModule} from 'primeng/toast';
-import {ToggleButtonModule} from 'primeng/togglebutton';
-import {ToolbarModule} from 'primeng/toolbar';
-import {TooltipModule} from 'primeng/tooltip';
-import {TreeModule} from 'primeng/tree';
-import {TreeTableModule} from 'primeng/treetable';
-import {VirtualScrollerModule} from 'primeng/virtualscroller';
-import {FullCalendarModule} from '@fullcalendar/angular';
+import { NgModule } from '@angular/core';
+import { EditorModule } from 'primeng/editor';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AppRoutingModule } from './app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
-
 
 import { ApiErrorInterceptor, ApiRequestInterceptor } from '../app/common/index';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
-
-import {AppComponent} from './app.component';
-import {AppMainComponent} from './app.main.component';
-import {AppMenuComponent} from './app.menu.component';
-import {AppMenuitemComponent} from './app.menuitem.component';
-import {AppBreadcrumbComponent} from './app.breadcrumb.component';
-import {AppTopBarComponent} from './app.topbar.component';
-import {AppFooterComponent} from './app.footer.component';
-import {DashboardDemoComponent} from './demo/view/dashboarddemo.component';
-import {AppNotfoundComponent} from './pages/app.notfound.component';
-
-
-import {MenuService} from './app.menu.service';
-import {AppBreadcrumbService} from './app.breadcrumb.service';
-import { ProjectComponent } from './demo/view/project/project.component';
-import { GlossaryComponent } from './demo/view/glossary/glossary.component';
-import { CreateBbComponent } from './demo/view/create-bb/create-bb.component';
-
-import { NodeService } from './demo/service/nodeservice';
-import { SearchFilterComponent } from './common/search-filter/search-filter.component';
-import { CreateProjectComponent } from './demo/view/project/create-project/create-project.component';
+import { AppComponent } from './app.component';
+import { AppMainComponent } from './app.main.component';
+import { AppMenuComponent } from './app.menu.component';
+import { AppMenuitemComponent } from './app.menuitem.component';
+import { AppBreadcrumbComponent } from './app.breadcrumb.component';
+import { AppTopBarComponent } from './app.topbar.component';
+import { AppFooterComponent } from './app.footer.component';
+import { MenuService } from './app.menu.service';
+import { AppBreadcrumbService } from './app.breadcrumb.service';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
-import { ChargeCodeComponent } from './demo/master-data/charge-code/charge-code.component';
-import { LocationsComponent } from './demo/master-data/locations/locations.component';
-import { ScopeComponent } from './demo/master-data/scope/scope.component';
-import { CategoryComponent } from './demo/master-data/category/category.component';
-import { ProductComponent } from './demo/master-data/product/product.component';
-import { UOMComponent } from './demo/master-data/uom/uom.component';
-import { FteComponent } from './demo/master-data/fte/fte.component';
-import { ProcessConfigComponent } from './demo/master-data/process-config/process-config.component';
-import { BuildingBlockComponent } from './demo/view/project/create-project/building-block/building-block.component';
-import { AddVolumeComponent } from './demo/view/project/create-project/add-volume/add-volume.component';
-import { CostLineItemComponent } from './demo/view/project/create-project/cost-line-item/cost-line-item.component';
-import { OtherCostComponent } from './demo/view/project/create-project/other-cost/other-cost.component';
-import { ProjectCostComponent } from './demo/view/project/create-project/project-cost/project-cost.component';
 import { NgHttpLoaderModule } from 'ng-http-loader';
-
-
+/** Auth0 */
+import { AuthModule, AuthHttpInterceptor } from '@auth0/auth0-angular';
+import { environment } from 'src/environments/environment';
+import { PrimengModule } from './modules';
+import { AccessErrorComponent, AppAccessdeniedComponent, AppEndUserLicenseAgreementComponent, AppErrorComponent, AppNotfoundComponent, Auth0ErrorComponent, MaintenanceComponent } from './pages';
+import { LoadingComponent } from './pages/loading/loading.component';
 
 @NgModule({
     imports: [
         BrowserModule,
         EditorModule,
-        FormsModule,
         AppRoutingModule,
         HttpClientModule,
         BrowserAnimationsModule,
-        AccordionModule,
-        AutoCompleteModule,
-        AvatarGroupModule,
-        AvatarModule,
-        BadgeModule,
-        BreadcrumbModule,
-        ButtonModule,
-        CalendarModule,
-        CardModule,
-        CarouselModule,
-        CascadeSelectModule,
-        ChartModule,
-        CheckboxModule,
-        ChipModule,
-        ChipsModule,
-        ConfirmDialogModule,
-        ConfirmPopupModule,
-        ColorPickerModule,
-        ContextMenuModule,
-        DataViewModule,
-        DialogModule,
-        DividerModule,
-        DropdownModule,
-        FieldsetModule,
-        FullCalendarModule,
-        FileUploadModule,
-        GalleriaModule,
-        ImageModule,
-        InplaceModule,
-        InputNumberModule,
-        InputMaskModule,
-        InputSwitchModule,
-        InputTextModule,
-        InputTextareaModule,
-        KnobModule,
-        ListboxModule,
-        MegaMenuModule,
-        MenuModule,
-        MenubarModule,
-        MessageModule,
-        MessagesModule,
-        MultiSelectModule,
-        OrderListModule,
-        OrganizationChartModule,
-        OverlayPanelModule,
-        PaginatorModule,
-        PanelModule,
-        PanelMenuModule,
-        PasswordModule,
-        PickListModule,
-        ProgressBarModule,
-        RadioButtonModule,
-        RatingModule,
-        RippleModule,
-        ScrollPanelModule,
-        ScrollTopModule,
-        SelectButtonModule,
-        SidebarModule,
-        SkeletonModule,
-        SlideMenuModule,
-        SliderModule,
-        SplitButtonModule,
-        SplitterModule,
-        StepsModule,
-        TableModule,
-        TabMenuModule,
-        TabViewModule,
-        TagModule,
-        TerminalModule,
-        TieredMenuModule,
-        TimelineModule,
-        ToastModule,
-        ToggleButtonModule,
-        ToolbarModule,
-        TooltipModule,
-        TreeModule,
-        TreeTableModule,
-        VirtualScrollerModule,
-        ReactiveFormsModule,
         DatePipe,
-        NgxDaterangepickerMd.forRoot(),
-        CalendarModule,
-        NgHttpLoaderModule.forRoot(), 
-    
+        NgHttpLoaderModule.forRoot(),
+        PrimengModule,
+        /** Auth0 */
+        AuthModule.forRoot({
+            ...environment.auth0,
+            httpInterceptor: {
+                ...environment.httpInterceptor,
+            },
+        }),
     ],
     declarations: [
         AppComponent,
@@ -229,42 +54,36 @@ import { NgHttpLoaderModule } from 'ng-http-loader';
         AppBreadcrumbComponent,
         AppTopBarComponent,
         AppFooterComponent,
-        DashboardDemoComponent,
         AppNotfoundComponent,
-        ProjectComponent,
-        GlossaryComponent,
-        CreateBbComponent,
-        SearchFilterComponent,
-        CreateProjectComponent,
-        ChargeCodeComponent,
-        LocationsComponent,
-        ScopeComponent,
-        CategoryComponent,
-        ProductComponent,
-        UOMComponent,
-        FteComponent,
-        ProcessConfigComponent,
-        BuildingBlockComponent,
-        AddVolumeComponent,
-        CostLineItemComponent,
-        OtherCostComponent,
-        ProjectCostComponent,
-
+        AppAccessdeniedComponent,
+        AppErrorComponent,
+        AppEndUserLicenseAgreementComponent,
+        MaintenanceComponent,
+        LoadingComponent,
+        Auth0ErrorComponent,
+        AccessErrorComponent,
     ],
     providers: [
-     MenuService, AppBreadcrumbService, DatePipe,
-     {
-        provide: HTTP_INTERCEPTORS,
-        useClass: ApiRequestInterceptor,
-        multi: true
-    },
-    {
-        provide: HTTP_INTERCEPTORS,
-        useClass: ApiErrorInterceptor,
-        multi: true
-    },
+        MenuService, AppBreadcrumbService, DatePipe,
+        /** Auth0 */
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthHttpInterceptor,
+            multi: true,
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: ApiRequestInterceptor,
+            multi: true
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: ApiErrorInterceptor,
+            multi: true
+        },
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
+    exports: [PrimengModule]
 })
 export class AppModule {
 }

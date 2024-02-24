@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>BDP Smart XChange</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body,
+    html {
+      height: 100%;
+      background-size: cover;
+      background-color: #f9f9f9;
+    }
+
+    .login-container {
+      position: absolute;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+
+  <script>
+    const config = JSON.parse(
+      decodeURIComponent(escape(window.atob('@@config@@')))
+    );
+    /**
+     *  IMPORTANT
+     *  `SmartXchange-Test-Cognito` This is the DB connection name must provided 
+     *   as per connection name used in app.
+     *  Available at dashboard->Authentication->Database 
+     */
+    const connection = config.connection || 'SmartXchange-Prod-Cognito';
+    const appUrl = new URL(config.callbackURL);
+    (() => {
+      /* Add JS */
+      const customJs = document.createElement('script');
+      customJs.setAttribute("src", appUrl.origin + "/assets/bdp/auth0/auth0-universal-login.js");
+      document.head.appendChild(customJs);
+    })();      
+  </script>
+  <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+  <!--[if IE 8]>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/ie8/0.2.5/ie8.js"></script>
+  <![endif]-->
+
+  <!--[if lte IE 9]>
+  <script src="https://cdn.auth0.com/js/polyfills/1.0/base64.min.js"></script>
+  <script src="https://cdn.auth0.com/js/polyfills/1.0/es5-shim.min.js"></script>
+  <![endif]-->
+  <script src="https://cdn.auth0.com/js/auth0/9.18/auth0.min.js"></script>
+  <script src="https://cdn.auth0.com/js/polyfills/1.0/object-assign.min.js"></script>
+</head>
+
+<body>
+</body>
+
+</html>

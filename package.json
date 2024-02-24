@@ -29,6 +29,7 @@
         "@fullcalendar/interaction": "^6.0.3",
         "@fullcalendar/timegrid": "^6.0.3",
         "auth0-js": "^9.19.1",
+        "js-base64": "^3.7.5",
         "chart.js": "^3.3.2",
         "dayjs": "^1.11.10",
         "file-saver": "^2.0.5",

@@ -123,20 +123,20 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "browserTarget": "poseidon-cli:build"
+                        "browserTarget": "poseidon-ng:build"
                     },
                     "configurations": {
                         "production": {
-                            "browserTarget": "poseidon-cli:build:production"
+                            "browserTarget": "poseidon-ng:build:production"
                         },
                         "test": {
-                            "browserTarget": "poseidon-cli:build:test"
+                            "browserTarget": "poseidon-ng:build:test"
                         },
                         "dev": {
-                            "browserTarget": "poseidon-cli:build:dev"
+                            "browserTarget": "poseidon-ng:build:dev"
                         },
                         "development": {
-                            "browserTarget": "poseidon-cli:build:development"
+                            "browserTarget": "poseidon-ng:build:development"
                         }
                     },
                     "defaultConfiguration": "development"

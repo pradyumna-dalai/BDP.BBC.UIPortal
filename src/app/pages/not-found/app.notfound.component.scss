@@ -1,0 +1,25 @@
+#bdpNotFound {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100vh;
+    .logo {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+        img {
+            height: 80vh;
+            margin-bottom: 10px;
+        }
+    }
+
+    .bdp-details {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        text-align: center;
+        flex-direction: column;
+    }
+}
