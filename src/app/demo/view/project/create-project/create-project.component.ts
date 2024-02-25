@@ -108,6 +108,8 @@ export class CreateProjectComponent implements OnInit {
   projectIdCLI: number | null;
   draftSavedOC: boolean;
   projectIdOC: number | null;
+  projInfo: any;
+  projinfoidedit: any;
   
   constructor(private sharedService: SharedServiceService,private route: ActivatedRoute, private breadcrumbService: AppBreadcrumbService, private zone: NgZone,
     private datePipe: DatePipe, private messageService: MessageService, private fb: FormBuilder, public MasterTableservice: MasterTableService,
@@ -172,7 +174,10 @@ export class CreateProjectComponent implements OnInit {
         this.getProjectDetails(this.projId);
       }
       
-    //  console.log(params.projId)
+     this.projectId = params.projectId;
+     if(this.projectId != undefined){
+      this.getProjectDetails(this.projectId);
+    }
     });
 
     if (this.projId) {
@@ -357,9 +362,10 @@ export class CreateProjectComponent implements OnInit {
       }
     }));
     const body = {
-      id: this.projId,
+      id: this.projectId ||  '',
       description: "",
       projectInformation: {
+        id:this.projInfo ||  '',
         customerCode: this.myForm.get('customerCode').value,
         projectName: this.myForm.get('projectName').value,
         startDate: this.formatDate(dateRangevalStartDate),
@@ -397,6 +403,7 @@ export class CreateProjectComponent implements OnInit {
       (res) => {
         //-------------for shareing data----//
         this.projectService.setDraftData(res);
+        this.projInfo= res.data.projectInformation.id;
         //--------------------end-------------//
         const savedProjectId = res.data.id;
         if (savedProjectId) {
@@ -404,7 +411,6 @@ export class CreateProjectComponent implements OnInit {
           this.draftSaved = true; // Set draftSaved to true
           // Rest of your logic
       }
-        console.log('Draft saved successfully:', savedProjectId);
 
         if (savedProjectId) {
           this.projectId = savedProjectId;
@@ -923,6 +929,7 @@ export class CreateProjectComponent implements OnInit {
             this.draftSavedOC = true;
             this.projectIdOC = projectId;
             this.response = res.data.projectInformation;
+            this.projinfoidedit =  res.data.projectInformation.id
             this.populateForm(); 
             const originLocations = res.data.projectLocation.filter(location => location.originDestinationCode === 0);
             const destinationLocations = res.data.projectLocation.filter(location => location.originDestinationCode === 1);

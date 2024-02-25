@@ -115,10 +115,16 @@ deleteProjectDocument(id:number ) {
   return this.http.delete(downloadUrl);
 }
 
-/** get Project */
+/** get Project */ 
 getProjectDetails(projId: number): Observable<any> {
 
   return this.http.get<any>(`${url}${settings.AppRoutes.Auth.saveProjectDraft}/${projId}`);
+
+}
+copyProject(body): Observable<any> {
+  
+   return this.http.post<any>(url +`project/` +settings.AppRoutes.Auth.copyProject, body);
+  // return this.http.post<any>(`https://private-anon-fb6e707442-psabdpbbcapiblueprint.apiary-mock.com/version/project/copy`,body);
 
 }
 
@@ -161,6 +167,12 @@ getCostLineItemDetails(projId: number): Observable<any> {
   // return this.http.get<any>(`https://private-anon-b809d898f7-psabdpbbcapiblueprint.apiary-mock.com/project/projId/cost-line-item`);
 
   
+
+}
+
+getCostLineItemDetailsReCalc(projId: number,body: any): Observable<any> {
+
+  return this.http.post<any>(url +`project/`+ projId + `/` + settings.AppRoutes.Auth.reCalculateCostLine,body);
 
 }
 

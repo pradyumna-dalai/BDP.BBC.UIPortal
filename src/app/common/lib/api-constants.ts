@@ -67,6 +67,8 @@ export namespace AppRoutes {
 
         public static readonly getOpportuniyByCompany = "opportunity-name";
 
+        public static readonly copyProject = "copy";
+
 
         // --------------------create project---------------//
 
@@ -151,6 +153,8 @@ export namespace AppRoutes {
         public static readonly getCostLineItemDetails  = "cost-line-item"
 
         public static readonly saveCostLineItemDetails  = "project/cost-line-item"
+
+        public static readonly reCalculateCostLine  = "recalculate-cost-line"
  
         //------End-----------------------//
 

@@ -5,6 +5,7 @@
         </div>
         <div class="md:col-6" style="display: flex; padding: 0px !important;
         justify-content: flex-end;">
+        <div style="padding: 5px;"><button (click)="recalculateCLI(this.projectidVolume)" pButton pRipple type="button">Recalculate</button></div>
           <div style="padding: 5px;"><button pButton pRipple type="button" (click)="isExpanded = !isExpanded">
             {{ isExpanded ? 'Collapse All' : 'Expand All' }}</button></div>
             <div style="padding: 5px;"><button pButton pRipple type="button">Download</button></div>
@@ -23,10 +24,10 @@
                     <button class="toggleButton" type="button" [style.border-radius]="destinationButtonBorderRadius" [style.background-color]="destinationButtonColor" [style.border]="destinationButtonBorder" (click)="showDestinationSectionCLI()"> Destination Location</button>
                 </div>
                 <div style="margin-top:10px;" *ngIf="showOriginCLI">
-                    <p-accordion [activeIndex]="1">
+                    <p-accordion>
                         <ng-container *ngFor="let buildingBlock of buildingBlocks">
                         <ng-container *ngFor="let process of buildingBlock.originService.processes">
-                            <p-accordionTab  [header]="process.processName">
+                            <p-accordionTab  [header]="process.processName" [selected]="isExpanded">
                                 <p-table [value]="process.lines" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
                                     <ng-template pTemplate="header">
                                         <tr>
@@ -40,7 +41,7 @@
                                             <th style="text-align: center;width:7%">Takt Considered</th>
                                             <th style="text-align: center;width:7%">Total Cost</th>
                                             <th style="text-align: center;width:7%">Total HC</th>
-                                            <th style="text-align: center;width:7%">FTE Prodcutivity</th>
+                                            <th style="text-align: center;width:7%">FTE Prodcutivity(%)</th>
                                             <th style="text-align: center;width:7%">FTE Cost</th>
                                             <th style="text-align: center;width:7%">Comment</th>
                                         </tr>
@@ -104,7 +105,7 @@
                                                 <th style="text-align: center;width:7%">Takt Considered</th>
                                                 <th style="text-align: center;width:7%">Total Cost</th>
                                                 <th style="text-align: center;width:7%">Total HC</th>
-                                                <th style="text-align: center;width:7%">FTE Prodcutivity</th>
+                                                <th style="text-align: center;width:7%">FTE Prodcutivity(%)</th>
                                                 <th style="text-align: center;width:7%">FTE Cost</th>
                                                 <th style="text-align: center;width:7%">Comment</th>
                                             </tr>
@@ -118,7 +119,7 @@
                                                         <button *ngIf="line.editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancelDL(line, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
                                                     </div>
                                                 </td>
-                                            <td style="text-align: center">{{ getConfigurableName(line.configurableId) }}</td>
+                                            <td style="text-align: center">{{ line.configurableName }}</td>
                                             <td style="text-align: center">{{ line.locationName }}</td>
                                             <td style="text-align: center">{{ line.volume }}</td>
                                             <td style="text-align: center">{{ line.uom }}</td>
