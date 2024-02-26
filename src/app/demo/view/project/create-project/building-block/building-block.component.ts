@@ -66,12 +66,14 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
 
   constructor(private sharedService: SharedServiceService, private projectService: ProjectsService, private messageService: MessageService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
     //  console.log(' :',this.getSavedBlocksDD);
-    // this.projectService.draftData$.subscribe(data => {
-    //   this.projectLocations = data?.data?.projectLocation.filter(loc => loc.originDestinationCode === 0 || loc.originDestinationCode === 1);
-    //   this.projectId = data?.data?.id;
-    //   this.projectName = data?.data?.projectInformation?.projectName;
-    //   this.getAllProjectBuildingBlock(this.projectId);
-    // });
+    if(this.projinfoID==null){
+    this.projectService.draftData$.subscribe(data => {
+      this.projectLocations = data?.data?.projectLocation.filter(loc => loc.originDestinationCode === 0 || loc.originDestinationCode === 1);
+      this.projectId = data?.data?.id;
+      this.projectName = data?.data?.projectInformation?.projectName;
+    //  this.getAllProjectBuildingBlock(this.projectId);
+    });
+  }
     if(this.projinfoID!=null){
       this.getAllProjectBuildingBlock(this.projinfoID);
       this.fetchProjectInfomation(this.projinfoID);
@@ -515,7 +517,7 @@ hasConfigurations(step: any): boolean {
     
     stepdata.selectedOriginLoc = this.selectedOriginLocationNodes.map((node: any) => node);
     stepdata.selectedDestinationLoc = this.selectedDestinationLocationNodes.map((node: any) => node);
-    //console.log('information', this.stepwithInfo);
+    console.log('information', this.stepwithInfo);
     
   }
 

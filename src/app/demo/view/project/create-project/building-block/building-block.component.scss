@@ -1,15 +1,22 @@
-.activeToggel{
-    display: flex;background-color: rgb(0, 110, 255);padding: 10px;width: 19rem;border-radius: 8px;cursor: pointer;
+.activeToggel {
+    display: flex;
+    background-color: rgb(0, 110, 255);
+    padding: 10px;
+    width: 19rem;
+    border-radius: 8px;
+    cursor: pointer;
 }
-.toggleButton{
+
+.toggleButton {
     cursor: pointer
 }
+
 .blue-header {
     color: #007bff;
 }
 
 .block-header {
-    background-color: #007bff; 
+    background-color: #007bff;
 }
 
 // .trash-icon {
@@ -19,17 +26,18 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-  }
+}
 
-  .text-green{
+.text-green {
     color: rgb(45, 161, 64);
-  }
-  .text-grey{
- color:grey
-  }
-  .text-red{
-color: red;
-  }
-  .no{
-    display: block
-    }
+    cursor: pointer;
+}
+
+.text-grey {
+    color: grey
+}
+
+.text-red {
+    color: red;
+    cursor: pointer;
+}
