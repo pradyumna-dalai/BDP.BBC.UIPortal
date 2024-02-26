@@ -104,7 +104,7 @@ export class CreateProjectComponent implements OnInit {
   projectIDbb: number | null;
   projinfoID: number | null;
   projectidVolume: number | null;
-  draftSavedVolume: boolean;
+  draftSavedVolume: boolean; 
   draftSavedCLI: boolean;
   projectIdCLI: number | null;
   draftSavedOC: boolean;

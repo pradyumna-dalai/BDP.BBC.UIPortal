@@ -157,6 +157,11 @@ savevolumeDetails(body: any) {
 
 }
 
+downloadAddVolumeExcel(projId: number) {
+
+  return this.http.get(url +`project/`+ projId + `/` + settings.AppRoutes.Auth.exportAddVolume, { responseType: 'arraybuffer' as 'json' });
+}
+
 /** end */
 
 /** cost line item **/

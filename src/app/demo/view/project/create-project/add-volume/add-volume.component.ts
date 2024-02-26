@@ -93,6 +93,28 @@ showDestinationSection() {
   this.originButtonBorderRadius = '5px';
   this.destinationButtonBorderRadius = '5px';
 }
+downloadSampleSCExcel(event: Event,projectId) {
+  event.preventDefault();
+
+  this.projectService.downloadAddVolumeExcel(projectId).subscribe((res: any) => {
+    const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = 'AddVolume.xlsx';
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+    this.messageService.add({
+      key: 'successToast',
+      severity: 'success',
+      summary: 'Success!',
+      detail: 'Excel Downloaded successfully.'
+    });
+  });
+}
 
 getVolumeDetails(projectId) {
   this.projectService.getvolumeDetails(projectId).subscribe((res: any) => {
