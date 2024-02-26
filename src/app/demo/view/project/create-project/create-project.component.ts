@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
+import { Component, NgZone, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AppBreadcrumbService } from '../../../../app.breadcrumb.service';
 import { FormControl, FormGroup, Validators, FormBuilder, FormArray, AbstractControl } from '@angular/forms';
 import { MasterTableService } from '../../../../services/master-table.service';
@@ -28,7 +28,8 @@ interface TableRow {
   selector: 'app-create-project',
   templateUrl: './create-project.component.html',
   styleUrls: ['./create-project.component.scss'],
-  providers: [MessageService, ConfirmationService, EditableRow]
+  providers: [MessageService, ConfirmationService, EditableRow],
+  encapsulation: ViewEncapsulation.None
 })
 
 
