@@ -65,7 +65,7 @@ export class FteComponent {
     this.fetchAllFteDetails();
     this.fetchLocationRegion();
     // this.fetchLocationCountry();
-   // this.fetchLocation();
+    this.fetchLocation();
     this.FteForm = this.fb.group({
       id: [''],
       region : ['',Validators.required],
@@ -180,28 +180,22 @@ fetchLocationCountry() {
 }
 locationList:any;
 
-onCountryChange(event: any) {
-  const selectedCountryId = event.value; // Get the selected country ID
-  if (selectedCountryId) {
-      this.fetchLocation(selectedCountryId); // Fetch locations based on the selected country ID
-  } else {
-      // Handle case where no country is selected
-      this.locationOptions = []; // Clear location options
-  }
+fetchLocation() {
+  this.locationOptions = [];
+  this.masterDataService.getAllLocationDropdown().subscribe((res: any) => {
+    if (res?.message == "success") {
+      this.locationOptions = res?.data;
+      this.locationOptions = res?.data.map((country: any) => ({
+        ...country,
+      }));
+
+    } else {
+      this.locationOptions = [];
+    }
+  })
 }
 
-fetchLocation(countryId: any) {
-  this.masterDataService.getLocationByCountry(countryId).subscribe((res: any) => {
-      if (res?.message == "success") {
-          this.locationOptions = res?.data;
-          this.locationOptions = res?.data.map((location: any) => ({
-              ...location,
-          }));
-      } else {
-          this.locationOptions = [];
-      }
-  });
-}
+
 /**getFTE Details */
 
 fetchAllFteDetails(keyword: string = '') {

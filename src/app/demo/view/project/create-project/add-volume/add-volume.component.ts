@@ -1,20 +1,16 @@
-import { Component, OnInit,Input,Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
-import { ConfirmationService, MessageService } from 'primeng/api';
-import { SharedServiceService } from 'src/app/services/project-serivce/shared-service.service';
 
 @Component({
   selector: 'app-add-volume',
   templateUrl: './add-volume.component.html',
-  styleUrls: ['./add-volume.component.scss'],
-  providers: [MessageService, ConfirmationService]
+  styleUrls: ['./add-volume.component.scss']
 })
 export class AddVolumeComponent implements OnInit {
 
 Add_Volume:any;
 
 ///add voulume & CLI///
-editedValues: { [locationName: string]: number } = {};
 showOriginVolume: boolean = true;
 showDestinationVolume: boolean = false;
 originButtonColor: string = 'white';
@@ -30,29 +26,13 @@ private _isExpanded = false;
 visible: boolean = false;
   volumeDetails: any[]= [];
   dynamicColumns: any[] = [];
-  allData: { projectId: any; projectName: any; buildingBlocks: any; };
-  buildingBlocks: any;
-  buildingBlockNames: any[];
-  projectId: any;
-  projectName: any;
-  process: any;
+  constructor(private projectService:ProjectsService){
 
-  @Input() projectIdbb: number | null;
-  @Output() onClickContinuetoAddVolume: EventEmitter<any> = new EventEmitter();
-  projectidVolume: any;
-  draftSavedVolume: boolean = false;
-  constructor(private sharedService: SharedServiceService,private projectService:ProjectsService, private messageService: MessageService){
-    this.process = { lines: [] };
   }
 
   ngOnInit(){
-  this.getVolumeDetails(this.projectIdbb);
-
+  this.getVolumeDetails(23);
   }
-  onClickContinue() {
-    // Emit event to notify parent component to move to next tab
-    this.onClickContinuetoAddVolume.emit();
-}
   public get isExpanded() {
     return this._isExpanded;
 }
@@ -94,131 +74,102 @@ showDestinationSection() {
 
 getVolumeDetails(projectId) {
   this.projectService.getvolumeDetails(projectId).subscribe((res: any) => {
-    this.projectId = res.data.projectId;
-    this.projectName = res.data.projectName;
-    this.volumeDetails = res.data.buildingBlocks;
-        if (res && res.data && res.data.buildingBlocks && res.data.buildingBlocks.length > 0) {
-          // this.volumeDetails = res.data.buildingBlocks;
-          this.buildingBlocks = res.data.buildingBlocks;
-          this.buildingBlockNames = this.buildingBlocks.map(block => block.buildingBlockName);
-        }
+    this.volumeDetails = res.BuildingBlocks;
+    if (this.volumeDetails.length > 0) {
+      // Assuming location names structure is consistent across all building blocks
+      this.dynamicColumns = this.volumeDetails.reduce((acc, curr) => {
+        curr.originService.processes[0].lines[0].locationVolume.forEach(location => {
+          if (!acc.includes(location.locationName)) {
+            acc.push(location.locationName);
+          }
+        });
+        return acc;
+      }, []);
+    }
   });
 }
-onSaveVolumeClick(){
-  if (this.volumeDetails && this.volumeDetails.length > 0) {
-  const body = {
-    projectId: this.projectId,
-    projectName: this.projectName,
-    buildingBlocks: this.volumeDetails
-  };
+getLocationVolume(buildingBlock: any, locationName: string): string {
+  // Implement logic to get the volume for the specified location
+  // For example:
+  const location = buildingBlock.originService.processes[0].lines[0].locationVolume.find(loc => loc.locationName === locationName);
+  return location ? location.volume : '';
+}
 
+onSaveVolumeClick(){
+  const body ={
+    projectId: 1,
+    projectName: "Sample",
+    BuildingBlocks: [
+      {
+        buildingBlockId: 1,
+        buildingBlockName: "VOTAir",
+        originService: {
+          processes: [
+            {
+              processId: 1,
+              processName: "sample",
+              lines: [
+                {
+                  uom: "Container",
+                  configurable: "Manual",
+                  locationVolume: [
+                    {
+                      locationName: "Antwerp",
+                      unloc: "BEANR",
+                      volume: 100
+                    },
+                    {
+                      locationName: "Navashava",
+                      unloc: "INNSA",
+                      volume: 100
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        destinationService: {
+          processes: [
+            {
+              processId: 1,
+              processName: "sample",
+              lines: [
+                {
+                  uom: "Container",
+                  configurable: "Manual",
+                  locationVolume: [
+                    {
+                      locationName: "Antwerp",
+                      unloc: "BEANR",
+                      volume: 100
+                    },
+                    {
+                      locationName: "Navashava",
+                      unloc: "INNSA",
+                      volume: 100
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
   this.projectService.savevolumeDetails(body).subscribe(
     (res) => {
-      this.sharedService.setProjectidVolume(res?.data?.projectId);
-      this.sharedService.setDraftSavedVolume(true);
-      this.messageService.add({
-        key: 'successToast',
-        severity: 'success',
-        summary: 'Success!',
-        detail: 'Data saved successfully.'
-      });
+      
+      console.log(res,"kk");
     },
     (error) => {
 
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Failed to save data.'
-      });
+     
     }
   );
 
 }
-}
- // Helper method to get unique location names from all lines
- getLocationNames(lines: any[]): string[] {
-  let locationNames: string[] = [];
-  lines.forEach(line => {
-    line.locationVolume.forEach(location => {
-      if (!locationNames.includes(location.locationName)) {
-        locationNames.push(location.locationName);
-      }
-    });
-  });
-  return locationNames;
-}
-
-getLocationVolumes(locationVolume: any[], locationName: string): string | number {
-  const location = locationVolume.find(loc => loc.locationName === locationName);
-  return location ? location.volume : 'NA';
-}
-// Add these methods to your component class
-getLocationVolumeValue(locationVolume: any[], locationName: string): string | number {
-  const location = locationVolume.find(loc => loc.locationName === locationName);
-  return location ? location.volume : 'NA';
-}
-
-updateLocationVolume(newValue: number, locationName: string, line: any) {
-  const location = line.locationVolume.find(loc => loc.locationName === locationName);
-  if (location) {
-    location.volume = newValue;
-    this.editedValues[locationName] = newValue;
-  }
-}
-getConfigurableName(configurableId: number): string {
-  switch (configurableId) {
-      case 1:
-          return 'EDI';
-      case 2:
-          return 'Manual';
-      case 3:
-          return 'Others';
-      default:
-          return ''; // You might want to handle other cases appropriately
-  }
-}
-
-
-toggleEditMode(line: any) {
-  line.editing = true; // Set editing mode to true for the specific row
-}
-
-onRowEditSave(line: any) {
-  // Update the UI with edited values
-  Object.keys(this.editedValues).forEach(locationName => {
-    const newValue = this.editedValues[locationName];
-    const location = line.locationVolume.find(loc => loc.locationName === locationName);
-    if (location) {
-      location.volume = newValue;
-    }
-  });
-  this.editedValues = {}; // Clear edited values
-  line.editing = false; // Exit editing mode
-}
-
-onRowEditCancel(line: any, ri: number) {
-  // Cancel editing
-  // Reset any changes made to the row
-  line.editing = false; // Exit editing mode
-}
-toggleEditModeDL(line: any) {
-  line.editing = true; // Set editing mode to true for the specific row
-}
-
-onRowEditSaveDL(line: any) {
-  // Save the edited data
-  line.editing = false; // Exit editing mode
-}
-
-onRowEditCancelDL(line: any, ri: number) {
-  // Cancel editing
-  // Reset any changes made to the row
-  line.editing = false; // Exit editing mode
-}
-
-
-
 goToNextTab(){
   
 }

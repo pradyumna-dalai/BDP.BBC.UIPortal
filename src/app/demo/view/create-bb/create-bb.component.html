@@ -705,6 +705,19 @@
                     <h6><b>Upload</b></h6>
                     <div *ngIf="showUploaderror" style="color: red;">
                         <b>Upload error: Review the file before uploading.</b>
+                        <div *ngIf="!uploadError">
+                            <!-- Add similar divs for other fields -->
+                            <div *ngIf="standard_service_error">Standard Service Error: {{ standard_service_error }}</div>
+                            <div *ngIf="dos_error">Do's Error: {{ dos_error }}</div>
+                            <div *ngIf="sow_error">SOW Error: {{ sow_error }}</div>
+                            <div *ngIf="combined_value_error">Combined Value Error: {{ combined_value_error }}</div>
+                            <div *ngIf="donts_error">Dont's Error: {{ donts_error }}</div>
+                            <div *ngIf="configurables_error">Configurables Error: {{ configurables_error }}</div>
+                            <div *ngIf="pre_requisite_info_error">Pre-requisite Information Error: {{ pre_requisite_info_error }}</div>
+                            <div *ngIf="service_desc_error">Service Description Error: {{ service_desc_error }}</div>
+                            <div *ngIf="customer_requirement_error">Customer Requirement Error: {{ customer_requirement_error }}</div>
+                            <div *ngIf="cvalue_to_psa_bdp_error">Value To PSA BDP Error: {{ cvalue_to_psa_bdp_error }}</div>
+                        </div>
                         <div *ngIf="uploadError" style="color: red;">
                             {{ uploadError }}
                         </div>

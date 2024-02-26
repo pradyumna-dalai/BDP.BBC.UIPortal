@@ -67,8 +67,6 @@ export namespace AppRoutes {
 
         public static readonly getOpportuniyByCompany = "opportunity-name";
 
-        public static readonly copyProject = "copy";
-
 
         // --------------------create project---------------//
 
@@ -128,35 +126,7 @@ export namespace AppRoutes {
 
        public static readonly saveProcessConfigurable  = "process"
 
-
-       //-------------------------Project Building BLock -------------//
-
-       public static readonly getProcessStepbyBlockId = "process";
-
-       public static readonly ProjectBuildingBlock = "project-block-location";
-
-       public static readonly otherCost = "project/other-cost";
-
         
-       public static readonly project = "project";
-       public static readonly otherCosts = "other-cost";
-       //------add volume(Project)-----------------------//
-       
-       public static readonly getAddVoulmeDetails  = "volume"
-
-       public static readonly saveVoulmeDetails  = "project/volume"
-
-       //------End-----------------------//
-
-        //------cost line item(Project)-----------------------//
-       
-        public static readonly getCostLineItemDetails  = "cost-line-item"
-
-        public static readonly saveCostLineItemDetails  = "project/cost-line-item"
-
-        public static readonly reCalculateCostLine  = "recalculate-cost-line"
- 
-        //------End-----------------------//
 
     }
 

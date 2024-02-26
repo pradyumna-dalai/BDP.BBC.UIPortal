@@ -66,8 +66,9 @@
                 </div>
                 <div class="field col-12 md:col-6">
                     <div class="p-d-block"><label>Date Range<span class="requiredField">*</span></label></div>
-                    <input type="text" ngxDaterangepickerMd [lockStartDate]="false" formControlName="selectedDateRange"
-                        placeholder="Start Date-End Date" class="date_pick" />
+                    <!-- <input type="text" ngxDaterangepickerMd [lockStartDate]="false" formControlName="selectedDateRange"
+                        placeholder="Start Date-End Date" class="date_pick" /> -->
+                        <p-calendar  selectionMode="range"  formControlName="selectedDateRange" placeholder="start-date/end-date" [style.width]="'200px'" [style.height]="'200px'"></p-calendar>
                 </div>
                 <div class="field col-12 md:col-6">
                     <div class="p-d-block"><label>Design Notes<span class="requiredField">*</span></label></div>
@@ -95,8 +96,8 @@
             <div class="p-fluid grid">
                 <div class="field col-12 md:col-5">
                     <div class="p-d-flex p-align-center" style="padding-bottom: 8px;">
-                        <p-checkbox [binary]="true" inputId="ny" [ngModel]="enableOriginLocation"
-                            [ngModelOptions]="{standalone: true}" (onChange)="toggleOriginCheckbox()"></p-checkbox>
+                        <p-checkbox [binary]="true" inputId="ny" [ngModel]="enableOriginLocation" [ngModelOptions]="{standalone: true}"
+                            (onChange)="toggleOriginCheckbox()"></p-checkbox>
                         <label for="ny" style="padding-left: 6px;">Origin Location</label>
                     </div>
                     <p-multiSelect placeholder="Select Origin Location" optionLabel="name" optionValue="id"
@@ -110,8 +111,7 @@
                 <div class="field col-12 md:col-5">
                     <div class="p-d-flex p-align-center" style="padding-bottom: 8px;">
                         <p-checkbox value="Destination Location" inputId="nyz" [binary]="true"
-                            [ngModel]="enableDestinationLocation" (onChange)="toggleDestinationCheckbox()"
-                            [ngModelOptions]="{standalone: true}"></p-checkbox>
+                            [ngModel]="enableDestinationLocation" (onChange)="toggleDestinationCheckbox()"  [ngModelOptions]="{standalone: true}"></p-checkbox>
                         <label for="nyz" style="padding-left: 6px;">Destination Location</label>
                     </div>
                     <p-multiSelect placeholder="Select Destination Location" optionLabel="name" optionValue="id"
@@ -129,7 +129,7 @@
 
                     <div class="card">
                         <p-tabView>
-                            <p-tabPanel header="Origin Location">
+                            <p-tabPanel header="Origin Location" >
 
                                 <p-table [value]="OtableData" [tableStyle]="{'min-width': '50rem'}">
                                     <ng-template pTemplate="header">
@@ -262,94 +262,130 @@
             </p-accordion>
 
             <h6><b>Documents</b></h6>
-            <p>Upload the following documents: File Size < 5 mb,Format CSV,JPEG,Excel,PDF</p>
-                    <div class="p-fluid grid">
-                        <div class="field col-12 md:col-4">
-                            <div class="p-d-block">
-                                <p><b>A.</b> Value Document&nbsp; <a (click)="showDialogValue()"
-                                        style="text-decoration: underline;">Upload</a></p>
-                                <ul *ngIf="uploadedFiles.length > 0">
-                                    <li *ngFor="let file of uploadedFiles; let i = index" class="file-item">
-                                        <a (click)="downloadArtifactByIDValue(i)"
-                                            [pTooltip]="'Click on the file to Download'" [tooltipPosition]="'top'"
-                                            style="text-decoration: underline;">{{ file.name }}</a>
-                                        <button pButton pRipple type="button" icon="pi pi-trash"
-                                            (click)="deleteProjectArtifact(i)" style="margin-left: 8px;"
-                                            class="p-button-rounded p-button-text p-button-danger"></button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="field col-12 md:col-4">
-                            <div class="p-d-block">
-                                <p><b>B.</b> Response Document&nbsp; <a (click)="showDialogResponse()"
-                                        style="text-decoration: underline;">Upload</a></p>
-                                <ul *ngIf="uploadedResponseFiles.length > 0">
-                                    <li *ngFor="let file of uploadedResponseFiles; let i = index" class="file-item">
-                                        <a (click)="downloadArtifactByIDResponse(i)"
-                                            [pTooltip]="'Click on the file to Download'" [tooltipPosition]="'top'"
-                                            style="text-decoration: underline;">{{ file.name }}</a>
-                                        <button pButton pRipple type="button" icon="pi pi-trash"
-                                            (click)="deleteResponseArtifact(i)" style="margin-left: 8px;"
-                                            class="p-button-rounded p-button-text p-button-danger"></button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="field col-12 md:col-4">
-                            <div class="p-d-block">
-                                <p><b>C.</b> Others&nbsp; <a (click)="showDialogOthers()"
-                                        style="text-decoration: underline;">Upload</a></p>
-                                <ul *ngIf="uploadedOtherFiles.length > 0">
-                                    <li *ngFor="let file of uploadedOtherFiles; let i = index" class="file-item">
-                                        <a (click)="downloadArtifactByIDOther(i)"
-                                            [pTooltip]="'Click on the file to Download'" [tooltipPosition]="'top'"
-                                            style="text-decoration: underline;">{{ file.name }}</a>
-                                        <button pButton pRipple type="button" icon="pi pi-trash"
-                                            (click)="deleteOtherArtifact(i)" style="margin-left: 8px;"
-                                            class="p-button-rounded p-button-text p-button-danger"></button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+            <p>Upload the following documnets: File Size < 5 mb,Format CSV,JPEG,Excel,PDF</p>
+            <div class="p-fluid grid">
+                <div class="field col-12 md:col-4">
+                  <div class="p-d-block">
+                    <p><b>A.</b> Value Document&nbsp; <a (click)="showDialogValue()"
+                        style="text-decoration: underline;">Upload</a></p>
+                    <ul *ngIf="uploadedFiles.length > 0">
+                      <li *ngFor="let file of uploadedFiles; let i = index" class="file-item">
+                       <a (click)="downloadArtifactByIDValue(i)" [pTooltip]="'Click on the file to Download'" [tooltipPosition]="'top'"
+                        style="text-decoration: underline;">{{ file.name }}</a>  
+                        <button pButton pRipple type="button" icon="pi pi-trash" (click)="deleteProjectArtifact(i)"
+                          style="margin-left: 8px;" class="p-button-rounded p-button-text p-button-danger"></button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="field col-12 md:col-4">
+                  <div class="p-d-block">
+                    <p><b>B.</b> Response Document&nbsp; <a (click)="showDialogResponse()"
+                        style="text-decoration: underline;">Upload</a></p>
+                    <ul *ngIf="uploadedResponseFiles.length > 0">
+                      <li *ngFor="let file of uploadedResponseFiles; let i = index" class="file-item">
+                      <a (click)="downloadArtifactByIDResponse(i)" [pTooltip]="'Click on the file to Download'" [tooltipPosition]="'top'"
+                        style="text-decoration: underline;">{{ file.name }}</a>  
+                        <button pButton pRipple type="button" icon="pi pi-trash" (click)="deleteResponseArtifact(i)"
+                          style="margin-left: 8px;" class="p-button-rounded p-button-text p-button-danger"></button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="field col-12 md:col-4">
+                  <div class="p-d-block">
+                    <p><b>C.</b> Others&nbsp; <a  (click)="showDialogOthers()"
+                        style="text-decoration: underline;">Upload</a></p>
+                    <ul *ngIf="uploadedOtherFiles.length > 0">
+                      <li *ngFor="let file of uploadedOtherFiles; let i = index" class="file-item">
+                       <a (click)="downloadArtifactByIDOther(i)" [pTooltip]="'Click on the file to Download'" [tooltipPosition]="'top'"
+                        style="text-decoration: underline;">{{ file.name }}</a>  
+                        <button pButton pRipple type="button" icon="pi pi-trash" (click)="deleteOtherArtifact(i)"
+                          style="margin-left: 8px;" class="p-button-rounded p-button-text p-button-danger"></button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+            </div>
                     <hr class="aligndown">
                     <div class="col-12" style="display: flex;justify-content: flex-end;">
                         <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
-                            (click)="onSaveAsDraftClick()" class="p-button-outlined mr-2 mb-2"></button>
-                        <button type="submit" pButton pRipple label="Continue" [disabled]="!draftSaved" (click)="goToNextTab()"
+                            (click)= "onSaveAsDraftClick()" class="p-button-outlined mr-2 mb-2"></button>
+                        <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()"
                             class="mr-2 mb-2"></button>
                     </div>
                     <p-toast key="successToast"></p-toast>
                     <p-toast key="errorToast"></p-toast>
         </form>
+        <!-- <hr>
+            <h6><b>Documents</b></h6>
+            <p>Upload the following documnets: File Size < 5 mb,Format CSV,JPEG,Excel,PDF</p>
+            <div class="p-fluid grid">
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>Value Document</label></div>
+                    <p-fileUpload name="file" url="/your-upload-url" chooseLabel="Choose" uploadLabel="Upload" cancelLabel="Cancel"></p-fileUpload>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>Response Document</label></div>
+                    <p-fileUpload name="file" url="/your-upload-url" chooseLabel="Choose" uploadLabel="Upload" cancelLabel="Cancel"></p-fileUpload>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>Others</label></div>
+                    <p-fileUpload name="file" url="/your-upload-url" chooseLabel="Choose" uploadLabel="Upload" cancelLabel="Cancel"></p-fileUpload>
+                </div>
+            </div> -->
     </p-tabPanel>
-    <p-tabPanel header="Building Block" [disabled]="!draftSaved">
-        <div *ngIf="draftSaved">
-            <app-building-block (continueClicked)="goToNextTab()"></app-building-block>
+    <p-tabPanel header="Building Block">
+        <div>
+
+            <app-building-block></app-building-block>
+
+
+        </div>
+        <div class="col-12" style="display: flex;justify-content: flex-end;">
+            <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
+                (click)="SaveAsDraftProjects()" class="p-button-outlined mr-2 mb-2"></button>
+            <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()" class="mr-2 mb-2"></button>
         </div>
     </p-tabPanel>
 
-    <p-tabPanel [disabled]="!draftSavedBB" header="Add Volume">
-        <div *ngIf="projectIDbb !== null">
-            <app-add-volume (onClickContinuetoAddVolume)="goToNextTab()" [projectIdbb]="projectIDbb"></app-add-volume>
-          </div>
-    </p-tabPanel>
+    <p-tabPanel header="Add Volume">
+        <div>
+            <app-add-volume></app-add-volume>
 
 
-    <p-tabPanel header="Cost Line Item" [disabled]="!draftSavedVolume">
-        <div *ngIf="projectidVolume !== null">
-          <app-cost-line-item (continueClickedToCLI)="goToNextTab()" [projectidVolume]="projectidVolume"></app-cost-line-item>
         </div>
     </p-tabPanel>
-    <p-tabPanel header="Other Cost" [disabled]="!draftSavedCLI">
-        <div *ngIf="projectIdCLI !== null">
-            <app-other-cost (continueClickedToProjectCost)="goToNextTab()" [projectIdCLI]="projectIdCLI"></app-other-cost>
+    <p-tabPanel header="Cost Line Item">
+        <div>
+            <app-cost-line-item></app-cost-line-item>
+
+
+        </div>
+        <div class="col-12" style="display: flex;justify-content: flex-end;">
+            <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
+                (click)="SaveAsDraftProjects()" class="p-button-outlined mr-2 mb-2"></button>
+            <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()" class="mr-2 mb-2"></button>
         </div>
     </p-tabPanel>
-    <p-tabPanel header="Project Output" [disabled]="!draftSavedOC">
-        <div *ngIf="projectIdOC !== null">
-            <app-project-cost [projectIdOC]="projectIdOC"></app-project-cost>
+    <p-tabPanel header="Other Cost(Optional)">
+        <div>
+            <app-other-cost></app-other-cost>
+        </div>
+        <div class="col-12" style="display: flex;justify-content: flex-end;">
+            <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
+                (click)="SaveAsDraftProjects()" class="p-button-outlined mr-2 mb-2"></button>
+            <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()" class="mr-2 mb-2"></button>
+        </div>
+    </p-tabPanel>
+    <p-tabPanel header="Project Cost">
+       <div>
+        <app-project-cost></app-project-cost>
+       </div>
+        <div class="col-12" style="display: flex;justify-content: flex-end;">
+            <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
+                (click)="SaveAsDraftProjects()" class="p-button-outlined mr-2 mb-2"></button>
+            <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()" class="mr-2 mb-2"></button>
         </div>
     </p-tabPanel>
 </p-tabView>
@@ -397,18 +433,20 @@
                                 <p style="text-align: center;">{{fileNameOC}}</p>
                                 <input type="file" id="fileInput" (change)="onFileSelected($event)" multiple
                                     style="display: none;" accept=".csv, .jpeg, .jpg, .png, .xls, .xlsx, .pdf">
-
+                             
                             </div>
                         </div>
                     </div>
                     <div class="card_footer">
                         <div>
-                            <button type="submit" pButton pRipple class="btn" (click)="onRemoveClick()">
+                            <button type="submit" pButton pRipple class="btn" 
+                                (click)="onRemoveClick()" >
                                 Remove File
                             </button>
                         </div>
                         <div class="uplodBtn_right">
-                            <button type="submit" pButton pRipple class="btn" (click)="onUploadClick()">
+                            <button type="submit" pButton pRipple class="btn" 
+                                (click)="onUploadClick()">
                                 Submit
                             </button>
                             <button type="submit" (click)="onValueCancelClick()" pButton pRipple
@@ -462,18 +500,20 @@
                                 <p style="text-align: center;">{{fileNameOC}}</p>
                                 <input type="file" id="fileInput" (change)="onFileSelected($event)" multiple
                                     style="display: none;" accept=".csv, .jpeg, .jpg, .png, .xls, .xlsx, .pdf">
-
+                             
                             </div>
                         </div>
                     </div>
                     <div class="card_footer">
                         <div>
-                            <button type="submit" pButton pRipple class="btn" (click)="onRemoveClick()">
+                            <button type="submit" pButton pRipple class="btn" 
+                                (click)="onRemoveClick()"  >
                                 Remove File
                             </button>
                         </div>
                         <div class="uplodBtn_right">
-                            <button type="submit" pButton pRipple class="btn" (click)="onUploadResponseClick()">
+                            <button type="submit" pButton pRipple class="btn" 
+                                (click)="onUploadResponseClick()">
                                 Submit
                             </button>
                             <button type="submit" (click)="onResponseCancelClick()" pButton pRipple
@@ -527,18 +567,20 @@
                                 <p style="text-align: center;">{{fileNameOC}}</p>
                                 <input type="file" id="fileInput" (change)="onFileSelected($event)" multiple
                                     style="display: none;" accept=".csv, .jpeg, .jpg, .png, .xls, .xlsx, .pdf">
-
+                             
                             </div>
                         </div>
                     </div>
                     <div class="card_footer">
                         <div>
-                            <button type="submit" pButton pRipple class="btn" (click)="onRemoveClick()">
+                            <button type="submit" pButton pRipple class="btn" 
+                                (click)="onRemoveClick()" >
                                 Remove File
                             </button>
                         </div>
                         <div class="uplodBtn_right">
-                            <button type="submit" pButton pRipple class="btn" (click)="onUploadOtherClick()">
+                            <button type="submit" pButton pRipple class="btn" 
+                                (click)="onUploadOtherClick()">
                                 Submit
                             </button>
                             <button type="submit" (click)="onOthersCancelClick()" pButton pRipple
@@ -550,4 +592,4 @@
         </div>
     </div>
 </p-dialog>
-<!--------------------end----------------------------------------------------------------------------------->
+  <!--------------------end--------------------------------------------------- -->

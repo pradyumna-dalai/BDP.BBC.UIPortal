@@ -14,19 +14,15 @@ import {AppComponent} from './app.component';
             </div>
             <div class="col-12 md:col-6 bdp-align-right" style="display: flex;
             justify-content: flex-end;">
-                <!-- Copyright &#169; {{ currentYear }} BDP International, Inc -->
-                &#169; {{ currentYear }} PSA International Pte. Ltd. | &#169; {{ currentYear }} BDP International Inc. | All rights reserved
+                <!-- Copyright &#169; 2023 BDP International, Inc -->
+                &#169; 2023 PSA International Pte. Ltd. | &#169; 2023 BDP International Inc. | All rights reserved
             </div>
         </div>
     `
 })
 export class AppFooterComponent {
-    currentYear: number;
+
     constructor(public app: AppComponent) {}
 
-    
 
-    ngOnInit() {
-        this.currentYear = new Date().getFullYear();
-    }
 }
