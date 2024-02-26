@@ -147,7 +147,7 @@
 
 
     <div class="col-12" style="display: flex;justify-content: flex-end;">
-        <button pButton pRipple type="button" label="Save As Draft" 
+        <button pButton pRipple type="button" label="Save As Draft" *ngIf="projStatus !='Closed Won' && projStatus !='Close Lost'"
             (click)="onSaveVolumeClick()" class="p-button-outlined mr-2 mb-2"></button>
         <button type="submit" pButton pRipple label="Continue" (click)="onClickContinue()" class="mr-2 mb-2"></button>
     </div>

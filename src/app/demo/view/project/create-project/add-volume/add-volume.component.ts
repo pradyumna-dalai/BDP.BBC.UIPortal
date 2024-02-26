@@ -38,6 +38,7 @@ visible: boolean = false;
   process: any;
 
   @Input() projectIdbb: number | null;
+  @Input() projStatus: any | null;
   @Output() onClickContinuetoAddVolume: EventEmitter<any> = new EventEmitter();
   projectidVolume: any;
   draftSavedVolume: boolean = false;
@@ -47,6 +48,7 @@ visible: boolean = false;
 
   ngOnInit(){
   this.getVolumeDetails(this.projectIdbb);
+  this.projStatus = this.projStatus;
 
   }
   onClickContinue() {

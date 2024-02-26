@@ -34,6 +34,7 @@ private _isExpanded = false;
   projectId: any;
   projectName: any;
   @Input() projectidVolume: number | null;
+  @Input() projStatus: any | null;
   projectIdCLI: any;
   draftSavedCLI: boolean = false;
   @Output() continueClickedToCLI: EventEmitter<any> = new EventEmitter();
@@ -44,6 +45,7 @@ constructor(private sharedService: SharedServiceService,private projectService:P
 
 ngOnInit(){
   this.getCostLineItemDetails(this.projectidVolume);
+  this.projStatus = this.projStatus;
   }
 
   onClickContinue() {
