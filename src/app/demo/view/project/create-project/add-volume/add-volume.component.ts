@@ -93,7 +93,7 @@ showDestinationSection() {
   this.originButtonBorderRadius = '5px';
   this.destinationButtonBorderRadius = '5px';
 }
-downloadSampleSCExcel(event: Event,projectId) {
+downloadAddVolumeSCExcel(event: Event,projectId) {
   event.preventDefault();
 
   this.projectService.downloadAddVolumeExcel(projectId).subscribe((res: any) => {

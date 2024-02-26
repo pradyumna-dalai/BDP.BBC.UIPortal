@@ -188,6 +188,11 @@ saveCostLineItemDetails(body: any) {
 
 }
 
+downloadCLIExcel(projId: number) {
+
+  return this.http.get(url +`project/`+ projId + `/` + settings.AppRoutes.Auth.exportCLI, { responseType: 'arraybuffer' as 'json' });
+}
+
 /** end */
 
 
