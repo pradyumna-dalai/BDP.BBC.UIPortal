@@ -349,6 +349,17 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
     }
   }
 
+//   hasConfigurations(step: any): boolean {
+//     const hasOriginConfig = step.Origin.length > 0;
+//     const hasDestinationConfig = step.Destination.length > 0;
+//     console.log('Step:', step.stepName, 'Has Origin Config:', hasOriginConfig, 'Has Destination Config:', hasDestinationConfig);
+//     return hasOriginConfig && hasDestinationConfig;
+// }
+hasConfigurations(step: any): boolean {
+  return step.Origin.length === 0 && step.Destination.length === 0;
+}
+
+
   getTreeData(selectedStep: any, originDestinationCode: number): TreeNode[] {
     const blockId = selectedStep.value.blockId;
     const selectedNode = this.selectedNodes.find(node => node.data.id === blockId);
