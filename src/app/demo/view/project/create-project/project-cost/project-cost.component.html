@@ -1,16 +1,15 @@
 <div *ngIf="projectInfo!=null">
-
+    <div id="pdfContent"> 
     <div style="display: flex;">
         <div class="md:col-6" style="padding: 0px !important">
             <h5 style="margin: 0;">Project Cost</h5>
         </div>
         <div class="md:col-6" style="display: flex; padding: 0px !important;
         justify-content: flex-end;">
-            <div style="padding: 5px;"><button pButton pRipple type="button"  label="Download As Pdf" (click)="downloadAsPdf()"></button></div>
+            <!-- <div style="padding: 5px;"><button pButton pRipple type="button"  label="Download As Pdf" (click)="downloadAsPdf()"></button></div> -->
         </div>
     </div>
     <hr style="margin-top: 1px;margin-bottom: 22px;color: gray;background-color: #d9d2d2;height: 1px;border: none;">
-    <div id="pdfContent"> 
     <div class="activeToggel">
             <div style="margin-left: 12px;">
                 <button class="toggleButton" type="button" [style.border-radius]="originButtonBorderRadius"
@@ -77,49 +76,54 @@
             </div>
         </div> -->
         <div>
-           <p-table [value]="getSavedBlockslist?.buildingBlocks" dataKey="buildingBlockId" editMode="row"
-                [tableStyle]="{'min-width': '50rem'}"> <ng-template pTemplate="header">
+            <p-table [value]="getSavedBlockslist?.buildingBlocks" dataKey="buildingBlockId" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+                <ng-template pTemplate="header">
                     <tr>
                         <th style="width:20%">Service</th>
                         <th style="width:30%">Service Description</th>
                         <th style="width:10%">Service Steps</th>
-                        <th style="width:10%" colspan="3">Configurable</th>
-                        <th style="width:10%" colspan="3">Location</th>
+                        <th style="width:10%" *ngFor="let _ of getMaxConfigurations(getSavedBlockslist?.buildingBlocks)">
+                            Configurable
+                        </th>
+                        <th style="width:10%" *ngFor="let _ of getMaxLocations(getSavedBlockslist?.buildingBlocks)">
+                            Location
+                        </th>
                         <th style="width:10%">Origin/Destination</th>
                         <th style="width:10%">Remarks</th>
                     </tr>
-                </ng-template> <ng-template pTemplate="body" let-block let-ri="rowIndex">
-                    <tr>
-                        <td> <span>{{block?.buildingBlockName}}</span> </td>
-                        <td> <span>{{block?.serviceDescription}}</span> </td>
-                        <td>
-                            <div *ngFor="let process of block.processes">
-                                <div>
-                                    <p>{{process?.processNumber}}. {{process?.processName}}</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td colspan="3">
-                            <div *ngFor="let config of block.processes[ri].originService?.configurations">
-                                <span>{{config.configurableName}}</span>
-                            </div>
-                        </td>
-                        <td colspan="3">
-                            <div *ngFor="let config of block.processes[ri].originService?.configurations">
-                                <div *ngFor="let location of config.locations"> <span>{{location.locationName}}</span> </div>
-                            </div>
-                        </td>
-                      
-                        <td> 
-                            Origin/Destination
-                        </td>
-                        <td> NA </td>
-                    </tr>
-                </ng-template> <ng-template pTemplate="emptymessage">
+                </ng-template>
+                <ng-template pTemplate="body" let-block>
+                    <ng-container *ngFor="let process of block.processes; let i = index">
+                        <tr>
+                            <td *ngIf="i === 0"> <span>{{block?.buildingBlockName}}</span> </td>
+                            <td *ngIf="i === 0"> <span>{{block?.serviceDescription}}</span> </td>
+                            <td>
+                                <p>{{process?.processNumber}}. {{process?.processName}}</p>
+                            </td>
+                            <ng-container *ngFor="let config of process.originService?.configurations; let j = index">
+                                <td [attr.colspan]="getMaxConfigurations(getSavedBlockslist?.buildingBlocks)">
+                                    {{config.configurableName}}
+                                </td>
+                            </ng-container>
+                            <ng-container *ngFor="let config of process.originService?.configurations; let j = index">
+                                <td [attr.colspan]="getMaxLocations(getSavedBlockslist?.buildingBlocks)">
+                                    <div *ngFor="let location of config.locations">
+                                        <span>{{location.locationName}}</span>
+                                    </div>
+                                </td>
+                            </ng-container>
+                            <td> Origin/Destination </td>
+                            <td> NA </td>
+                        </tr>
+                    </ng-container>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
                     <tr>
                         <td style="text-align: center;" colspan="11">No Data found.</td>
                     </tr>
-                </ng-template> </p-table>
+                </ng-template>
+            </p-table>
+            
                 
         </div>
 
@@ -140,8 +144,8 @@
         </div>
     </div>
     <div class="col-12" style="display: flex;justify-content: flex-end;">
-        <!-- <button pButton pRipple type="button" label="Download As Pdf" (click)="downloadAsPdf()"
-            class="p-button-outlined mr-2 mb-2"></button> -->
+        <button pButton pRipple type="button" label="Download As Pdf" (click)="downloadAsPdf()"
+            class="p-button-outlined mr-2 mb-2"></button>
         <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()" class="mr-2 mb-2"></button>
     </div>
 
