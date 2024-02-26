@@ -8,7 +8,7 @@
         <div style="padding: 5px;"><button (click)="recalculateCLI(this.projectidVolume)" pButton pRipple type="button">Recalculate</button></div>
           <div style="padding: 5px;"><button pButton pRipple type="button" (click)="isExpanded = !isExpanded">
             {{ isExpanded ? 'Collapse All' : 'Expand All' }}</button></div>
-            <div style="padding: 5px;"><button pButton pRipple type="button">Download</button></div>
+            <div style="padding: 5px;"><button pButton pRipple type="button" (click)="downloadCLISCExcel($event,projectidVolume)">Download</button></div>
             <div style="padding: 5px;">
                 <button pButton pRipple type="button" (click)="showUploadDialog()">Import Excel</button>
             </div>
@@ -170,7 +170,7 @@
                 <a  style="text-decoration: underline;cursor: pointer;">Download Sample File</a>
               </h5>
         </div>
-    </ng-template>
+    </ng-template> 
     <hr>
     <div>
         <div class="p-fluid grid">

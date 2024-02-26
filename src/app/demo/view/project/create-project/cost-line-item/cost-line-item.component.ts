@@ -112,6 +112,28 @@ getConfigurableName(configurableId: number): string {
       return 'Unknown';
   }
 }
+downloadCLISCExcel(event: Event,projectId) {
+  event.preventDefault();
+
+  this.projectService.downloadAddVolumeExcel(projectId).subscribe((res: any) => {
+    const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = 'CostLineItem.xlsx';
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+    this.messageService.add({
+      key: 'successToast',
+      severity: 'success',
+      summary: 'Success!',
+      detail: 'Excel Downloaded successfully.'
+    });
+  });
+}
 saveCostLineItemDetails() {
   if (this.costLineItemDetails && this.costLineItemDetails.length > 0) {
     const body = {
