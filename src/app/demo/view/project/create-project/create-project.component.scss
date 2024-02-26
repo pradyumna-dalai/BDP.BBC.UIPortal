@@ -130,9 +130,9 @@ border: none;
 color: red; 
 cursor: pointer;
 }
-::ng-deep .p-calendar .p-datepicker {
-min-width: 0% !important;
-}
+// ::ng-deep .p-calendar .p-datepicker {
+// min-width: 0% !important;
+// }
 
 ::ng-deep .p-datepicker table {
 font-size: 10px !important;
@@ -140,4 +140,7 @@ margin: 0px !important;
 }
 ::ng-deep .p-datepicker table td {
 padding: 0 !important;
+}
+.p-calendar .p-datepicker {
+  min-width: 0% !important;
 }
