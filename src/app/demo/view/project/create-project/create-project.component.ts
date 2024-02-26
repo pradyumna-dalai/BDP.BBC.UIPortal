@@ -104,7 +104,7 @@ export class CreateProjectComponent implements OnInit {
   projectIDbb: number | null;
   projinfoID: number | null;
   projectidVolume: number | null;
-  draftSavedVolume: boolean;
+  draftSavedVolume: boolean; 
   draftSavedCLI: boolean;
   projectIdCLI: number | null;
   draftSavedOC: boolean;
@@ -200,6 +200,10 @@ export class CreateProjectComponent implements OnInit {
         { label: 'Create Project' },
       ]);
     }
+    
+  }
+  patchDateRangeValue(newValue: any) {
+    this.myForm.get('selectedDateRange').patchValue(newValue);
   }
 
 
@@ -322,7 +326,9 @@ export class CreateProjectComponent implements OnInit {
   formatDate(date: Date): string {
     return dayjs(date).format('YYYY-MM-DD');
   }
-
+  patchformatDate(date: Date): string {
+    return dayjs(date).format('MM/DD/YYYY');
+  }
   onSaveAsDraftClick() {
     this.SaveAsDraftProjects();
   }
@@ -335,7 +341,11 @@ export class CreateProjectComponent implements OnInit {
       opportunityMangers = om.map(id => ({ id }))
     }
     this.dateRange = this.myForm.get('selectedDateRange').value;
-    let dateRangevalStartDate = this.dateRange.startDate;
+    let dateRange = this.dateRange
+    if (typeof this.dateRange == 'string' && this.dateRange.indexOf("-") != -1) {
+       dateRange = this.dateRange.split("-");
+    }
+
     let dateRangevalEndDate = this.dateRange.endDate;
 
     const originProjectLocationData = this.OtableData.map((row: TableRow) => ({
@@ -371,8 +381,8 @@ export class CreateProjectComponent implements OnInit {
         id:this.projInfo ||  '',
         customerCode: this.myForm.get('customerCode').value,
         projectName: this.myForm.get('projectName').value,
-        startDate: this.formatDate(dateRangevalStartDate),
-        endDate: this.formatDate(dateRangevalEndDate),
+        startDate: this.formatDate(dateRange[0]),
+        endDate: this.formatDate(dateRange[1]),
         designNote: this.myForm.get('designNotes').value,
         implementationNote: this.myForm.get('impleNotes').value,
         company: {
@@ -969,7 +979,10 @@ export class CreateProjectComponent implements OnInit {
 }
 
   populateForm(): void {
-    
+    this.myForm.patchValue({
+      
+      selectedDateRange: `${this.patchformatDate(this.response.startDate)} - ${this.patchformatDate(this.response.endDate)}`,
+    });
     this.myForm.patchValue({
       companyName: this.response.company?.id,
       customerCode: this.response.customerCode,
