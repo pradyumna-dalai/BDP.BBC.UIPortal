@@ -300,6 +300,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
 
   updateNodeStepsInformation(node: any, stepsInformation: any[]) {
     const updatedStepsInformation = {};
+    
     let blockkeyId: number = 0;
     stepsInformation.forEach(stepInfo => {
       
@@ -410,7 +411,9 @@ hasConfigurations(step: any): boolean {
     //   console.error('Data is not available to generate tree data');
     //   return [];
     // }
-
+    let selectedOriginLocId = [];
+    let selectedDestinationLocId = [];
+    let seletedProcess=[];
 
     const treeData: TreeNode[] = [];
     updatedStepsInformation.forEach(element => {
@@ -418,6 +421,47 @@ hasConfigurations(step: any): boolean {
 
         const stepInfo = element[1];
         let originDestination: string;
+
+
+        
+        if (this.getSavedBlocks && this.getSavedBlocks.buildingBlocks) {
+            this.getSavedBlocks.buildingBlocks.forEach((ele) => {
+                if (
+                    ele.buildingBlockId == stepInfo.blockId &&
+                    ele.buildingBlockName == stepInfo.buildingBlockName
+                ) {
+                    if (ele.processes) {
+                        ele.processes.forEach((elem) => {
+                            if (
+                                elem.processNumber == stepInfo.processNumber &&
+                                elem.processName == stepInfo.stepName
+                            ) {
+                              let idBuilder=stepInfo.blockId+"."+elem.processId;
+                              if(elem.destinationService ){
+                                elem.destinationService.configurations.forEach(conf=>{
+                                  let destinationServiceIdBuilder=idBuilder+"."+conf.configurableId
+                                  conf.locations.forEach(loc=>{
+                                    selectedDestinationLocId.push(destinationServiceIdBuilder+"."+ loc.locationId)
+                                  })
+                                })
+                              }
+                              if(elem.originService ){
+                                elem.originService.configurations.forEach(conf=>{
+                                  let originServiceIdBuilder=idBuilder+"."+conf.configurableId
+                                  conf.locations.forEach(loc=>{
+                                    selectedOriginLocId.push(originServiceIdBuilder+"."+ loc.locationId)
+                                  })
+                                })
+                              }
+                              
+                            }
+                        });
+                    }
+                }
+            });
+        }
+
+
 
         if (originDestinationCode === 0) {
           originDestination = 'Origin';
@@ -464,6 +508,15 @@ hasConfigurations(step: any): boolean {
       }
     });
     this.treeData = treeData;
+
+    let origineArr=this.filterNodesBySelectedKeys(treeData, selectedOriginLocId);
+    
+    let finalOriginArray=origineArr.map(node => node.children || []);
+    selectedStep.selectedOriginLoc=[...finalOriginArray]
+    let destArr=this.filterNodesBySelectedKeys(treeData, selectedDestinationLocId);
+    
+    let finalDestArray=destArr.map(node => node.children || []);
+    selectedStep.selectedDestinationLoc=[...finalDestArray]
     //console.log('locationtree', treeData);
     return treeData;
   }
@@ -711,5 +764,45 @@ hasConfigurations(step: any): boolean {
       }
     });
   }
+
+
+
+  filterNodesBySelectedKeys(nodes: any[], selectedKeys: string[], parent?: any): any[] {
+    const filteredNodes: any[] = [];
+
+    nodes.forEach(node => {
+        if (selectedKeys.includes(node.key)) {
+            const filteredNode: any = {
+                key: node.key,
+                label: node.label,
+                data: node.data,
+                parent: parent,
+                partialSelected: false
+            };
+            filteredNodes.push(filteredNode);
+        } else if (node.children) {
+            const filteredChildren = this.filterNodesBySelectedKeys(node.children, selectedKeys, {
+                key: node.key,
+                label: node.label,
+                data: node.data,
+                parent: parent,
+                partialSelected: false
+            });
+            if (filteredChildren.length > 0) {
+                const newNode: any = {
+                    key: node.key,
+                    label: node.label,
+                    data: node.data,
+                    parent: parent,
+                    partialSelected: false
+                };
+                newNode.children = filteredChildren;
+                filteredNodes.push(newNode);
+            }
+        }
+    });
+
+    return filteredNodes;
+}
 
 }
