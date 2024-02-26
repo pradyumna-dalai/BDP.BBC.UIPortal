@@ -3,6 +3,7 @@ import { ProjectsService } from 'src/app/services/project-serivce/projects.servi
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { SharedServiceService } from 'src/app/services/project-serivce/shared-service.service';
 
+
 @Component({
   selector: 'app-cost-line-item',
   templateUrl: './cost-line-item.component.html',
@@ -52,7 +53,18 @@ ngOnInit(){
     // Emit event to notify parent component to move to next tab
     this.continueClickedToCLI.emit();
 }
+isFteProductivityExceedsMax = false;
 
+onFteProductivityChange(newValue: number) {
+  const maxValue = 100;
+  if (newValue > maxValue) {
+    this.isFteProductivityExceedsMax = true;
+    // You can also choose to reset the value to the max here if needed
+    // this.line.fteProductivity = maxValue;
+  } else {
+    this.isFteProductivityExceedsMax = false;
+  }
+}
 showOriginSectionCLI() {
   this.showOriginCLI = true;
   this.showDestinationCLI = false;
@@ -175,6 +187,7 @@ onRowEditInit(line: any) {
 onRowEditSave(line: any) {
   // Save the edited data
   line.editing = false; // Exit editing mode
+  
 }
 
 onRowEditCancel(line: any, ri: number) {
