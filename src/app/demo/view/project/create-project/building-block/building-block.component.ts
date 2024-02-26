@@ -46,7 +46,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   projectLocations: any;
   treeDataCalculated: any;
   selectedLocationNodes: TreeNode[] = [];
-  projectId: any;
+ // projectId: any;
   projectName: any;
   buildingBlocks: any;
   getSavedBlocks: any;
@@ -59,6 +59,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   projectIDbb: any;
   selectedBuildingBlocks: any[] = [];
   stepwithInfo = new Map();
+  @Input() projectId: number | null;
   @Output() continueClicked: EventEmitter<any> = new EventEmitter();
   @Input() projinfoID: number | null;
 
@@ -67,15 +68,15 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
     this.projectService.draftData$.subscribe(data => {
       this.projectLocations = data?.data?.projectLocation.filter(loc => loc.originDestinationCode === 0 || loc.originDestinationCode === 1);
       this.projectId = data?.data?.id;
-      this.projectName = data?.data?.projectInformation.projectName;
+      this.projectName = data?.data?.projectInformation?.projectName;
       this.getAllProjectBuildingBlock(this.projectId);
     });
-    this.getAllProjectBuildingBlock(this.projectId);
   }
 
   ngOnInit() {
     this.loadTreeDataNew();
     console.log(this.projinfoID,'projectid');
+    this.getAllProjectBuildingBlock(this.projectId);
   }
   onClickContinue() {
     // Emit event to notify parent component to move to next tab
@@ -261,6 +262,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
                 blockName: item.block,
                 stepId: item.id,
                 stepName: item.operationStep,
+                processNumber:item.processNumber,
                 originDestinationCode: originDestinationCode,
                 origin: [],
                 destination: [],
@@ -268,6 +270,11 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
                 configurable: item.configurable,
                 key: item.blockId + "." + item.id
               };
+            });
+            stepsInformation.sort((a, b) => {
+
+              return Number(a.processNumber) - Number(b.processNumber);
+        
             });
             this.updateNodeStepsInformation(node, stepsInformation);
           } else {
@@ -298,7 +305,8 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
           selectedDestinationLoc: [],
           key: stepInfo.key,
           blockId: stepInfo.blockId,
-          stepName: stepInfo.stepName
+          stepName: stepInfo.stepName,
+          processNumber:stepInfo.processNumber,
 
         };
       }
@@ -326,9 +334,9 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
     });
 
     this.stepwithInfo.set(blockkeyId, updatedStepsInformation);
-    //console.log('Send TO API Block Data to Extract', this.stepwithInfo);
+    console.log('Send TO API Block Data to Extract', this.stepwithInfo);
     node.data.stepsInformation = updatedStepsInformation;
-   // console.log('Step Information:', node.data.stepsInformation);
+    console.log('Step Information:', node.data.stepsInformation);
   }
 
   getByValue(map, searchKey) {
@@ -438,7 +446,6 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   onLocationNodeSelect(event: any): void {
     let mapVal = this.getByValue(this.stepwithInfo, this.selectedStep.value.blockId);
     let stepdata = mapVal[this.selectedStep.key];
-   // console.log("stepdata-2", stepdata);
     stepdata.selectedOriginLoc = this.selectedOriginLocationNodes.map((node: any) => node);
     stepdata.selectedDestinationLoc = this.selectedDestinationLocationNodes.map((node: any) => node);
     //console.log('information', this.stepwithInfo);

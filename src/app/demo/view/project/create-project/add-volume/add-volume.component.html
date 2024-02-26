@@ -53,14 +53,15 @@
                                             <ng-container *ngFor="let location of getLocationNames(process.lines); let i = index">
                                                 <td style="text-align: center; word-wrap: break-word;">
                                                     <div *ngIf="!line.editing; else editLocation">
-                                                        {{ getLocationVolumes(line.locationVolume, location) }}
-                                                    </div>
+                                                        {{ editedValues[location] !== undefined ? editedValues[location] : getLocationVolumes(line.locationVolume, location) }}
+                                                      </div>
                                                     <ng-template #editLocation>
                                                         <ng-container *ngIf="getLocationVolumeValue(line.locationVolume, location) !== 'NA'">
                                                             <input pInputText type="number" 
-                                                                [ngModel]="getLocationVolumeValue(line.locationVolume, location)"
-                                                                (ngModelChange)="updateLocationVolume($event, i, location, process.lines)"
-                                                                style="text-align: center;">
+                                                            [ngModel]="getLocationVolumeValue(line.locationVolume, location)"
+                                                            (ngModelChange)="updateLocationVolume($event, location, line)"
+                                                            style="text-align: center;">
+                                                                
                                                         </ng-container>
                                                     </ng-template>
                                                 </td>
@@ -108,7 +109,7 @@
                                                 {{ line.uomName }}
                                             </td>
                                             <td style="text-align: center; word-wrap: break-word;">
-                                                {{ getConfigurableName(line.configurableId) }}
+                                                {{ line.configurableName }}
                                             </td>
                                             <ng-container *ngFor="let location of getLocationNames(process.lines); let i = index">
                                                 <td style="text-align: center; word-wrap: break-word;">
@@ -188,18 +189,6 @@
                 <div class="custom-container">
                     <h6><b>Upload</b></h6>
                     <div  style="color: red;">
-                        <!-- <b>Upload error: Review the file before uploading.</b>
-                        <div *ngIf="!uploadError">
-                            <div *ngIf="deliverablesError">{{ deliverablesError }}</div>
-                        <div *ngIf="valueToPSABDPError">{{ valueToPSABDPError }}</div>
-                        <div *ngIf="parametersError">{{ parametersError }}</div>
-                        <div *ngIf="serviceDescriptionError">{{ serviceDescriptionError }}</div>
-                        <div *ngIf="stakeholdersAudienceError">{{ stakeholdersAudienceError }}</div>
-                        <div *ngIf="customerRequirementsError">{{ customerRequirementsError }}</div>
-                        <div *ngIf="configurableError">{{ configurableError }}</div> 
-                        </div>
-                       
-                        Add similar divs for other fields -->
                       </div>
                      
                     <div class="box">

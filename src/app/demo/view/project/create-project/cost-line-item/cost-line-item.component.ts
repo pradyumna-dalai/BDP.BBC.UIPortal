@@ -120,7 +120,6 @@ saveCostLineItemDetails() {
 
     this.projectService.saveCostLineItemDetails(body).subscribe(
       (res) => {
-        console.log(res?.data?.projectId,"cli");
         this.sharedService.setProjectIdCLI(res?.data?.projectId);
         this.sharedService.setDraftSavedCLI(true);
         this.messageService.add({
@@ -140,6 +139,29 @@ saveCostLineItemDetails() {
       }
     );
   }
+}
+recalculateCLI(projectId){
+  const body = [{
+
+  }]
+  this.projectService.getCostLineItemDetailsReCalc(projectId,body).subscribe((res: any) => {
+   if(res.data == 'Success'){
+    this.getCostLineItemDetails(projectId);
+    this.messageService.add({
+      key: 'successToast',
+      severity: 'success',
+      summary: 'Success!',
+      detail: 'Recalculated successfully.'
+    });
+   }else{
+    this.messageService.add({
+      key: 'errorToast',
+      severity: 'error',
+      summary: 'Error!',
+      detail: 'Failed to recalculate data.'
+    });
+   }
+  });
 }
 goToNextTab(){
 
