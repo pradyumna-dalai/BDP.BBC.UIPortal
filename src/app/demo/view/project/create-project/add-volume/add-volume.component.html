@@ -119,9 +119,10 @@
                                                     <ng-template #editLocation>
                                                         <ng-container *ngIf="getLocationVolumeValue(line.locationVolume, location) !== 'NA'">
                                                             <input pInputText type="number" 
-                                                                [ngModel]="getLocationVolumeValue(line.locationVolume, location)"
-                                                                (ngModelChange)="updateLocationVolume($event, i, location, process.lines)"
-                                                                style="text-align: center;">
+                                                            [ngModel]="getLocationVolumeValue(line.locationVolume, location)"
+                                                            (ngModelChange)="updateLocationVolume($event, location, line)"
+                                                            style="text-align: center;">
+                                                                
                                                         </ng-container>
                                                     </ng-template>
                                                 </td>
