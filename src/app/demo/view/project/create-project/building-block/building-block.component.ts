@@ -60,13 +60,14 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   selectedBuildingBlocks: any[] = [];
   stepwithInfo = new Map();
   @Output() continueClicked: EventEmitter<any> = new EventEmitter();
+  @Input() projinfoID: number | null;
 
   constructor(private sharedService: SharedServiceService, private projectService: ProjectsService, private messageService: MessageService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
     //  console.log(' :',this.getSavedBlocksDD);
     this.projectService.draftData$.subscribe(data => {
-      this.projectLocations = data.data.projectLocation.filter(loc => loc.originDestinationCode === 0 || loc.originDestinationCode === 1);
-      this.projectId = data.data.id;
-      this.projectName = data.data.projectInformation.projectName;
+      this.projectLocations = data?.data?.projectLocation.filter(loc => loc.originDestinationCode === 0 || loc.originDestinationCode === 1);
+      this.projectId = data?.data?.id;
+      this.projectName = data?.data?.projectInformation.projectName;
       this.getAllProjectBuildingBlock(this.projectId);
     });
     this.getAllProjectBuildingBlock(this.projectId);
@@ -74,6 +75,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadTreeDataNew();
+    console.log(this.projinfoID,'projectid');
   }
   onClickContinue() {
     // Emit event to notify parent component to move to next tab

@@ -102,12 +102,14 @@ export class CreateProjectComponent implements OnInit {
   draftSaved: boolean = false;
   draftSavedBB: boolean = false;
   projectIDbb: number | null;
+  projinfoID: number | null;
   projectidVolume: number | null;
   draftSavedVolume: boolean;
   draftSavedCLI: boolean;
   projectIdCLI: number | null;
   draftSavedOC: boolean;
   projectIdOC: number | null;
+  
   
   constructor(private sharedService: SharedServiceService,private route: ActivatedRoute, private breadcrumbService: AppBreadcrumbService, private zone: NgZone,
     private datePipe: DatePipe, private messageService: MessageService, private fb: FormBuilder, public MasterTableservice: MasterTableService,
@@ -914,6 +916,7 @@ export class CreateProjectComponent implements OnInit {
     this.projectService.getProjectDetails(projectId).subscribe((res: any) => {
         if (res?.message === 'success') {
             this.draftSaved = true;
+            this.projinfoID = projectId;
             this.draftSavedBB = true;
             this.draftSavedVolume = true;
             this.projectidVolume = projectId;

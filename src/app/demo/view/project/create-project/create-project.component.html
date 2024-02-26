@@ -326,7 +326,7 @@
     </p-tabPanel>
     <p-tabPanel header="Building Block" [disabled]="!draftSaved">
         <div *ngIf="draftSaved">
-            <app-building-block (continueClicked)="goToNextTab()"></app-building-block>
+            <app-building-block (continueClicked)="goToNextTab()" [projinfoID]="projinfoID"></app-building-block>
         </div>
     </p-tabPanel>
 
