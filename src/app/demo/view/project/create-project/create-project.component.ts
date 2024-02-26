@@ -111,6 +111,7 @@ export class CreateProjectComponent implements OnInit {
   projectIdOC: number | null;
   projInfo: any;
   projinfoidedit: any;
+  projStatus: any;
   
   
   constructor(private sharedService: SharedServiceService,private route: ActivatedRoute, private breadcrumbService: AppBreadcrumbService, private zone: NgZone,
@@ -932,7 +933,8 @@ export class CreateProjectComponent implements OnInit {
             this.draftSavedOC = true;
             this.projectIdOC = projectId;
             this.response = res.data.projectInformation;
-            this.projinfoidedit =  res.data.projectInformation.id
+            this.projinfoidedit =  res.data.projectInformation.id;
+            this.projStatus = this.response.projectStatus?.name;
             this.populateForm(); 
             const originLocations = res.data.projectLocation.filter(location => location.originDestinationCode === 0);
             const destinationLocations = res.data.projectLocation.filter(location => location.originDestinationCode === 1);

@@ -29,6 +29,7 @@ export class OtherCostComponent {
   editedRowIndex: number = -1;
   grandTotalCost: number = 0;
   @Output() continueClickedToProjectCost: EventEmitter<any> = new EventEmitter();
+  @Input() projStatus: any | null;
   @Input() projectIdCLI: number | null;
   constructor(private sharedService: SharedServiceService,private projectService: ProjectsService, private cd: ChangeDetectorRef, private messageService: MessageService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
 
@@ -48,7 +49,7 @@ export class OtherCostComponent {
     {
       this.getAllProjectOtherCostEdit(this.projectIdCLI);
     }
-    
+    this.projStatus = this.projStatus;
 
   }
   onClickContinue() {

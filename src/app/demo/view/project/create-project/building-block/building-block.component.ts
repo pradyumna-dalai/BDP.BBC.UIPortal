@@ -62,6 +62,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   @Input() projectId: number | null;
   @Output() continueClicked: EventEmitter<any> = new EventEmitter();
   @Input() projinfoID: number | null;
+  @Input() projStatus: any | null;
 
   constructor(private sharedService: SharedServiceService, private projectService: ProjectsService, private messageService: MessageService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
     //  console.log(' :',this.getSavedBlocksDD);
@@ -79,6 +80,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
     if(this.projinfoID!=null){
     this.getAllProjectBuildingBlock(this.projinfoID);
     }
+    this.projStatus = this.projStatus;
   }
   onClickContinue() {
     // Emit event to notify parent component to move to next tab
@@ -535,7 +537,10 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       next: (response: any) => {
         this.sharedService.setDraftSavedBB(true);
         this.sharedService.setProjectIDbb(response?.data?.projectId);
-        this.draftSavedBB = true;
+        if(this.projStatus != 'Close Lost' || this.projStatus != 'Closed Won'){
+          this.draftSavedBB = true;
+        }
+        
         this.projectIDbb = response.projectId;
         this.messageService.add({
           key: 'successToast',
