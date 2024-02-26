@@ -140,6 +140,7 @@ onSaveVolumeClick(){
     (res) => {
       this.sharedService.setProjectidVolume(res?.data?.projectId);
       this.sharedService.setDraftSavedVolume(true);
+      this.getVolumeDetails(res?.data?.projectId);
       this.messageService.add({
         key: 'successToast',
         severity: 'success',

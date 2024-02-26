@@ -124,6 +124,7 @@ saveCostLineItemDetails() {
       (res) => {
         this.sharedService.setProjectIdCLI(res?.data?.projectId);
         this.sharedService.setDraftSavedCLI(true);
+        this.getCostLineItemDetails(res?.data?.projectId);
         this.messageService.add({
           key: 'successToast',
           severity: 'success',
