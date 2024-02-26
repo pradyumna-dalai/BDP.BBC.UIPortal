@@ -76,7 +76,9 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loadTreeDataNew();
     console.log(this.projinfoID,'projectid');
-    this.getAllProjectBuildingBlock(this.projectId);
+    if(this.projinfoID!=null){
+    this.getAllProjectBuildingBlock(this.projinfoID);
+    }
   }
   onClickContinue() {
     // Emit event to notify parent component to move to next tab
@@ -333,6 +335,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       }
     });
 
+
     this.stepwithInfo.set(blockkeyId, updatedStepsInformation);
     console.log('Send TO API Block Data to Extract', this.stepwithInfo);
     node.data.stepsInformation = updatedStepsInformation;
@@ -351,10 +354,10 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
     const selectedNode = this.selectedNodes.find(node => node.data.id === blockId);
     const updatedStepsInformation = selectedNode?.data?.stepsInformation;
     const projectLocation = this.projectLocations;
-    if (!updatedStepsInformation || !projectLocation) {
-      console.error('Data is not available to generate tree data');
-      return [];
-    }
+    // if (!updatedStepsInformation || !projectLocation) {
+    //   console.error('Data is not available to generate tree data');
+    //   return [];
+    // }
 
 
     const treeData: TreeNode[] = [];
@@ -455,7 +458,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   //----------------------------------------Save Porject Draft------------------------------//
   onSaveProjectBBClick() {
     const projectData = {
-      projectId: this.projectId,
+      projectId: this.projectId || this.projinfoID,
       projectName: this.projectName,
       buildingBlocks: Array.from(this.stepwithInfo.entries()).map(([buildingBlockId, buildingBlockData]: [number, any]) => {
         const buildingBlockDataAny: any = buildingBlockData;
@@ -594,9 +597,8 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
     });
   }
 
-  getAllProjectBuildingBlock(projectId: any) {
-    if (this.projectId != null) {
-      this.projectService.getProjectBuildingBlocks(this.projectId).subscribe({
+  getAllProjectBuildingBlock(_projinfoID) {
+      this.projectService.getProjectBuildingBlocks(this.projinfoID).subscribe({
         next: (response: any) => {
           this.getSavedBlocks = response.data;
           this.getSavedBlocksDD = response.data.buildingBlocks.map((block: any) => ({
@@ -606,7 +608,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
           this.matchBuildingBlocksToNodes();
         }
       });
-    }
+    
   }
 
   matchBuildingBlocksToNodes(): void {
