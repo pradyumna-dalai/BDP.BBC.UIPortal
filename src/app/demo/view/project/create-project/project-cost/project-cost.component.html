@@ -1,16 +1,17 @@
-<div *ngIf="projectInfo">
-    <div id="pdfContent">
-        <div style="display: flex;">
-            <div class="md:col-6" style="padding: 0px !important">
-                <h5 style="margin: 0;">Project Cost</h5>
-            </div>
-            <div class="md:col-6" style="display: flex; padding: 0px !important;
-        justify-content: flex-end;">
-                <div style="padding: 5px;"><button pButton pRipple type="button">Download</button></div>
-            </div>
+<div *ngIf="projectInfo!=null">
+
+    <div style="display: flex;">
+        <div class="md:col-6" style="padding: 0px !important">
+            <h5 style="margin: 0;">Project Cost</h5>
         </div>
-        <hr style="margin-top: 1px;margin-bottom: 22px;color: gray;background-color: #d9d2d2;height: 1px;border: none;">
-        <div class="activeToggel">
+        <div class="md:col-6" style="display: flex; padding: 0px !important;
+        justify-content: flex-end;">
+            <div style="padding: 5px;"><button pButton pRipple type="button"  label="Download As Pdf" (click)="downloadAsPdf()"></button></div>
+        </div>
+    </div>
+    <hr style="margin-top: 1px;margin-bottom: 22px;color: gray;background-color: #d9d2d2;height: 1px;border: none;">
+    <div id="pdfContent"> 
+    <div class="activeToggel">
             <div style="margin-left: 12px;">
                 <button class="toggleButton" type="button" [style.border-radius]="originButtonBorderRadius"
                     [style.background-color]="originButtonColor" [style.border]="originButtonBorder"
@@ -26,42 +27,42 @@
         <div class="p-fluid grid">
             <div class="col-12 md:col-4">
                 <label><b>Company Name</b></label><br>
-                <label>{{projectInfo.company.name}}</label>
+                <label>{{projectInfo?.company?.name}}</label>
             </div>
             <div class="col-12 md:col-4">
                 <label><b>Company Code</b></label><br>
-                <label>{{projectInfo.customerCode}}</label>
+                <label>{{projectInfo?.customerCode}}</label>
             </div>
             <div class="col-12 md:col-4">
                 <label><b>Industry Vertical</b></label><br>
-                <label>{{projectInfo.industryVertical.name}}</label>
+                <label>{{projectInfo?.industryVertical?.name}}</label>
             </div>
             <div class="col-12 md:col-4">
                 <label><b>Region</b></label><br>
-                <label>{{projectInfo.region.name}}</label>
+                <label>{{projectInfo?.region?.name}}</label>
             </div>
             <div class="col-12 md:col-4">
                 <label><b>Opportunity Name</b></label><br>
-                <label>{{projectInfo.opportunityName.name}}
+                <label>{{projectInfo?.opportunityName?.name}}
                 </label>
             </div>
             <div class="col-12 md:col-4">
                 <label><b>Opportunity Manager</b></label><br>
-                <label>{{ getOpportunityManagerNames(projectInfo.opportunityManager) }}</label>
+                <label>{{ getOpportunityManagerNames(projectInfo?.opportunityManager) }}</label>
             </div>
             <div class="col-12 md:col-4">
                 <label><b>Project Stage</b></label><br>
-                <label>{{projectInfo.projectStage.name}}
+                <label>{{projectInfo?.projectStage?.name}}
                 </label>
             </div>
             <div class="col-12 md:col-4">
                 <label><b>Project Status</b></label><br>
-                <label>{{projectInfo.projectStatus.name}}
+                <label>{{projectInfo?.projectStatus?.name}}
                 </label>
             </div>
             <div class="col-12 md:col-4">
                 <label><b>Status Date</b></label><br>
-                <label>{{projectInfo.startDate | date:'dd MMM yyyy'}}
+                <label>{{projectInfo?.startDate | date:'dd MMM yyyy'}}
                 </label>
             </div>
         </div>
@@ -76,114 +77,71 @@
             </div>
         </div> -->
         <div>
-            <!-- <p-table [value]="" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
-                <ng-template pTemplate="header">
+           <p-table [value]="getSavedBlockslist?.buildingBlocks" dataKey="buildingBlockId" editMode="row"
+                [tableStyle]="{'min-width': '50rem'}"> <ng-template pTemplate="header">
                     <tr>
                         <th style="width:20%">Service</th>
                         <th style="width:30%">Service Description</th>
                         <th style="width:10%">Service Steps</th>
-                        <th style="width:10%">Configurable </th>
-                        <th style="width:10%">Location</th>
+                        <th style="width:10%" colspan="3">Configurable</th>
+                        <th style="width:10%" colspan="3">Location</th>
                         <th style="width:10%">Origin/Destination</th>
                         <th style="width:10%">Remarks</th>
                     </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
+                </ng-template> <ng-template pTemplate="body" let-block let-ri="rowIndex">
                     <tr>
+                        <td> <span>{{block?.buildingBlockName}}</span> </td>
+                        <td> <span>{{block?.serviceDescription}}</span> </td>
                         <td>
-                            <span>1st Mile Coordination</span>
+                            <div *ngFor="let process of block.processes">
+                                <div>
+                                    <p>{{process?.processNumber}}. {{process?.processName}}</p>
+                                </div>
+                            </div>
                         </td>
-                        <td>
-                            <span>Pre-carriage service and various coordination...</span>
+                        <td colspan="3">
+                            <div *ngFor="let config of block.processes[ri].originService?.configurations">
+                                <span>{{config.configurableName}}</span>
+                            </div>
                         </td>
-                        <td>
-                            <span>Step 1</span>
+                        <td colspan="3">
+                            <div *ngFor="let config of block.processes[ri].originService?.configurations">
+                                <div *ngFor="let location of config.locations"> <span>{{location.locationName}}</span> </div>
+                            </div>
                         </td>
-                        <td>
-                            EDI
+                      
+                        <td> 
+                            Origin/Destination
                         </td>
-                        <td>
-                            Antwerp,Terkey
-                        </td>
-                        <td>
-                            Origin,Origin
-                        </td>
-                        <td>
-                            NA,Na
-                        </td>
-
+                        <td> NA </td>
                     </tr>
-                </ng-template>
-                <ng-template pTemplate="emptymessage">
+                </ng-template> <ng-template pTemplate="emptymessage">
                     <tr>
-                        <td style="text-align: center;" colspan="18">No Data found.</td>
+                        <td style="text-align: center;" colspan="11">No Data found.</td>
                     </tr>
-                </ng-template>
-            </p-table> -->
-            <p-table [value]="getSavedBlockslist" dataKey="buildingBlockId" editMode="row" [tableStyle]="{'min-width': '50rem'}">
-                <ng-template pTemplate="header">
-                  <tr>
-                    <th style="width:20%">Service</th>
-                    <th style="width:30%">Service Description</th>
-                    <th style="width:10%">Service Steps</th>
-                    <th style="width:10%">Configurable</th>
-                    <th style="width:10%">Location</th>
-                    <th style="width:10%">Origin/Destination</th>
-                    <th style="width:10%">Remarks</th>
-                  </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
-                  <tr>
-                    <td>
-                      <span>{{product.buildingBlockName}}</span>
-                    </td>
-                    <td>
-                        <span>{{product.serviceDescription}}</span>
-                      </td>
-                    <td>
-                      <p *ngFor="let process of product.processes">{{process.processName}}</p>
-                    </td>
-
-                    <td>
-                      <span *ngFor="let config of product.processes[ri].originService.configurations">{{config.configurationName}}</span>
-                    </td>
-                    <td>
-                      <span *ngFor="let location of product.processes[ri].originService.configurations[0].locations">{{location.locationName}}</span>
-                    </td>
-                    <td>
-                      <span *ngFor="let process of product.processes">{{process.originService.configurations[0].locations[0].unloc}}</span>
-                    </td>
-                    <td>
-                         NA
-                    </td>
-                  </tr>
-                </ng-template>
-                <ng-template pTemplate="emptymessage">
-                  <tr>
-                    <td style="text-align: center;" colspan="18">No Data found.</td>
-                  </tr>
-                </ng-template>
-              </p-table>
+                </ng-template> </p-table>
+                
         </div>
+
         <hr style="margin-top: 1px;margin-bottom: 22px;color: gray;background-color: #d9d2d2;height: 1px;border: none;">
         <div class="p-fluid grid">
             <div class="col-12">
                 <label><b>Implementation Notes</b></label><br>
                 <span>
-                    {{projectInfo.implementationNote}}
+                    {{projectInfo?.implementationNote}}
                 </span>
             </div>
             <div class="col-12">
                 <label><b>Design Notes</b></label><br>
                 <span>
-                    {{projectInfo.designNote}}
+                    {{projectInfo?.designNote}}
                 </span>
             </div>
         </div>
     </div>
     <div class="col-12" style="display: flex;justify-content: flex-end;">
-        <button pButton pRipple type="button" label="Download As Pdf" (click)="downloadAsPdf()"
-            class="p-button-outlined mr-2 mb-2"></button>
+        <!-- <button pButton pRipple type="button" label="Download As Pdf" (click)="downloadAsPdf()"
+            class="p-button-outlined mr-2 mb-2"></button> -->
         <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()" class="mr-2 mb-2"></button>
     </div>
 

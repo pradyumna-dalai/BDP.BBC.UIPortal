@@ -46,7 +46,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   projectLocations: any;
   treeDataCalculated: any;
   selectedLocationNodes: TreeNode[] = [];
-  projectId: any;
+ // projectId: any;
   projectName: any;
   buildingBlocks: any;
   getSavedBlocks: any;
@@ -59,21 +59,26 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   projectIDbb: any;
   selectedBuildingBlocks: any[] = [];
   stepwithInfo = new Map();
+  @Input() projectId: number | null;
   @Output() continueClicked: EventEmitter<any> = new EventEmitter();
+  @Input() projinfoID: number | null;
 
   constructor(private sharedService: SharedServiceService, private projectService: ProjectsService, private messageService: MessageService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
     //  console.log(' :',this.getSavedBlocksDD);
     this.projectService.draftData$.subscribe(data => {
-      this.projectLocations = data.data.projectLocation.filter(loc => loc.originDestinationCode === 0 || loc.originDestinationCode === 1);
-      this.projectId = data.data.id;
-      this.projectName = data.data.projectInformation.projectName;
+      this.projectLocations = data?.data?.projectLocation.filter(loc => loc.originDestinationCode === 0 || loc.originDestinationCode === 1);
+      this.projectId = data?.data?.id;
+      this.projectName = data?.data?.projectInformation?.projectName;
       this.getAllProjectBuildingBlock(this.projectId);
     });
-    this.getAllProjectBuildingBlock(this.projectId);
   }
 
   ngOnInit() {
     this.loadTreeDataNew();
+    console.log(this.projinfoID,'projectid');
+    if(this.projinfoID!=null){
+    this.getAllProjectBuildingBlock(this.projinfoID);
+    }
   }
   onClickContinue() {
     // Emit event to notify parent component to move to next tab
@@ -259,6 +264,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
                 blockName: item.block,
                 stepId: item.id,
                 stepName: item.operationStep,
+                processNumber:item.processNumber,
                 originDestinationCode: originDestinationCode,
                 origin: [],
                 destination: [],
@@ -266,6 +272,11 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
                 configurable: item.configurable,
                 key: item.blockId + "." + item.id
               };
+            });
+            stepsInformation.sort((a, b) => {
+
+              return Number(a.processNumber) - Number(b.processNumber);
+        
             });
             this.updateNodeStepsInformation(node, stepsInformation);
           } else {
@@ -296,7 +307,8 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
           selectedDestinationLoc: [],
           key: stepInfo.key,
           blockId: stepInfo.blockId,
-          stepName: stepInfo.stepName
+          stepName: stepInfo.stepName,
+          processNumber:stepInfo.processNumber,
 
         };
       }
@@ -323,10 +335,11 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       }
     });
 
+
     this.stepwithInfo.set(blockkeyId, updatedStepsInformation);
-    //console.log('Send TO API Block Data to Extract', this.stepwithInfo);
+    console.log('Send TO API Block Data to Extract', this.stepwithInfo);
     node.data.stepsInformation = updatedStepsInformation;
-   // console.log('Step Information:', node.data.stepsInformation);
+    console.log('Step Information:', node.data.stepsInformation);
   }
 
   getByValue(map, searchKey) {
@@ -341,10 +354,10 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
     const selectedNode = this.selectedNodes.find(node => node.data.id === blockId);
     const updatedStepsInformation = selectedNode?.data?.stepsInformation;
     const projectLocation = this.projectLocations;
-    if (!updatedStepsInformation || !projectLocation) {
-      console.error('Data is not available to generate tree data');
-      return [];
-    }
+    // if (!updatedStepsInformation || !projectLocation) {
+    //   console.error('Data is not available to generate tree data');
+    //   return [];
+    // }
 
 
     const treeData: TreeNode[] = [];
@@ -436,7 +449,6 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   onLocationNodeSelect(event: any): void {
     let mapVal = this.getByValue(this.stepwithInfo, this.selectedStep.value.blockId);
     let stepdata = mapVal[this.selectedStep.key];
-   // console.log("stepdata-2", stepdata);
     stepdata.selectedOriginLoc = this.selectedOriginLocationNodes.map((node: any) => node);
     stepdata.selectedDestinationLoc = this.selectedDestinationLocationNodes.map((node: any) => node);
     //console.log('information', this.stepwithInfo);
@@ -446,7 +458,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   //----------------------------------------Save Porject Draft------------------------------//
   onSaveProjectBBClick() {
     const projectData = {
-      projectId: this.projectId,
+      projectId: this.projectId || this.projinfoID,
       projectName: this.projectName,
       buildingBlocks: Array.from(this.stepwithInfo.entries()).map(([buildingBlockId, buildingBlockData]: [number, any]) => {
         const buildingBlockDataAny: any = buildingBlockData;
@@ -585,9 +597,8 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
     });
   }
 
-  getAllProjectBuildingBlock(projectId: any) {
-    if (this.projectId != null) {
-      this.projectService.getProjectBuildingBlocks(this.projectId).subscribe({
+  getAllProjectBuildingBlock(_projinfoID) {
+      this.projectService.getProjectBuildingBlocks(this.projinfoID).subscribe({
         next: (response: any) => {
           this.getSavedBlocks = response.data;
           this.getSavedBlocksDD = response.data.buildingBlocks.map((block: any) => ({
@@ -597,7 +608,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
           this.matchBuildingBlocksToNodes();
         }
       });
-    }
+    
   }
 
   matchBuildingBlocksToNodes(): void {
