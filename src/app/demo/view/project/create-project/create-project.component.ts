@@ -933,6 +933,7 @@ export class CreateProjectComponent implements OnInit {
   getProjectDetails(projectId): void {
     this.projectService.getProjectDetails(projectId).subscribe((res: any) => {
         if (res?.message === 'success') {
+            //this.projectService.setDraftData(res);
             this.draftSaved = true;
             this.projinfoID = projectId;
             this.draftSavedBB = true;
