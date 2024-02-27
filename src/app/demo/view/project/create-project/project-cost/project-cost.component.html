@@ -91,7 +91,9 @@
                 </ng-template> <ng-template pTemplate="body" let-block let-ri="rowIndex">
                     <tr>
                         <td> <span>{{block?.buildingBlockName}}</span> </td>
-                        <td> <span>{{block?.serviceDescription}}</span> </td>
+                        <td>
+                        <span [innerHTML]="block?.serviceDescription" style="padding-top: 4px;"></span>
+                        </td>
                         <td>
                             <div *ngFor="let process of block.processes">
                                 <div>
