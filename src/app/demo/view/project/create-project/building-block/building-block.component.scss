@@ -35,6 +35,12 @@
 }
 
 .text-red {
-    color: #007bff;
+    color: rgb(0, 110, 255);;
     cursor: pointer;
+}
+
+.bdp-step{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
 }
