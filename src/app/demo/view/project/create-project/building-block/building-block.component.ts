@@ -590,41 +590,57 @@ hasConfigurations(step: any): boolean {
             const destinationServiceConfigurations = [];
   
             processInfo.selectedOriginLoc.forEach((loc: any) => {
+              if(loc.parent!=undefined){
               const configIndex = originServiceConfigurations.findIndex((config: any) => config.configurableId === loc.parent.data.id);
               if (configIndex > -1) {
-                originServiceConfigurations[configIndex].locations.push({
-                  locationId: loc.data.id,
-                  locationName: loc.data.name
-                });
-              } else {
                 originServiceConfigurations.push({
                   configurableId: loc.parent.data.id,
                   configurableName: loc.parent.data.name,
                   locations: [{
-                    locationId: loc.data.id,
-                    locationName: loc.data.name
+                   locationId: loc.data.id,
+                   locationName: loc.data.name
                   }]
                 });
               }
-            });
-  
-            processInfo.selectedDestinationLoc.forEach((loc: any) => {
-              const configIndex = destinationServiceConfigurations.findIndex((config: any) => config.configurableId === loc.parent.data.id);
+            }
+            else{
+              const configIndex = originServiceConfigurations.findIndex((config: any) => config.locationId === loc.data.id);
               if (configIndex > -1) {
-                destinationServiceConfigurations[configIndex].locations.push({
-                  locationId: loc.data.id,
-                  locationName: loc.data.name
-                });
-              } else {
-                destinationServiceConfigurations.push({
-                  configurableId: loc.parent.data.id,
-                  configurableName: loc.parent.data.name,
+                originServiceConfigurations.push({
                   locations: [{
-                    locationId: loc.data.id,
-                    locationName: loc.data.name
+                   locationId: loc.data.id,
+                   locationName: loc.data.name
                   }]
                 });
+            }
+          }
+          });
+  
+              processInfo.selectedDestinationLoc.forEach((loc: any) => {
+                if(loc.parent!=undefined){
+                const configIndex = destinationServiceConfigurations.findIndex((config: any) => config.configurableId === loc.parent.data.id);
+                if (configIndex > -1) {
+                  destinationServiceConfigurations.push({
+                    configurableId: loc.parent.data.id,
+                    configurableName: loc.parent.data.name,
+                    locations: [{
+                     locationId: loc.data.id,
+                     locationName: loc.data.name
+                    }]
+                  });
+                }
               }
+              else{
+                const configIndex = destinationServiceConfigurations.findIndex((config: any) => config.locationId === loc.data.id);
+                if (configIndex > -1) {
+                destinationServiceConfigurations.push({
+                    locations: [{
+                     locationId: loc.data.id,
+                     locationName: loc.data.name
+                    }]
+                  });
+              }
+            }
             });
   
             return {
