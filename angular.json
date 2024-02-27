@@ -38,13 +38,11 @@
                             "node_modules/primeng/resources/themes/saga-blue/theme.css",
                             "node_modules/primeng/resources/primeng.min.css",
                             "node_modules/flag-icon-css/css/flag-icons.min.css"
-
                         ],
                         "scripts": [
                             "node_modules/prismjs/prism.js",
                             "node_modules/prismjs/components/prism-typescript.js",
                             "node_modules/quill/dist/quill.js"
-
                         ]
                     },
                     "configurations": {
@@ -133,7 +131,12 @@
                             "outputHashing": "all"
                         },
                         "development": {
-                            
+                            "buildOptimizer": false,
+                            "optimization": false,
+                            "vendorChunk": true,
+                            "extractLicenses": false,
+                            "sourceMap": true,
+                            "namedChunks": true
                         }
                     },
                     "defaultConfiguration": "production"
@@ -207,6 +210,6 @@
         }
     },
     "cli": {
-      "analytics": false
+        "analytics": false
     }
 }

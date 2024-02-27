@@ -120,13 +120,15 @@
                                         class="p-button-rounded p-button-text p-button-danger"
                                     ></button>
                                 </ng-template>
-                                <div>
+                                <div class="bdp-step">
                                   
-                                    <li *ngFor="let step of node.data?.stepsInformation" style="display: inline-block; vertical-align: top;" [ngClass]="step[1].stepStatus === 0 ? 'text-grey' : step[1].stepStatus === 1 ? 'text-red' : 'text-green'" (click)="selectStep(step[1], isDestinationActive ? 1 : 0)">
-                                        <div class="grid">
-                                        <div class="col-1" style="font-weight: bold;color: #1d2125;">{{ step[1].processNumber }}&nbsp;)</div><div class="11" style="padding-top:14px; padding-left: 14px ;width: 32rem;">{{ step[1].stepName }}</div>   
+                                    <li *ngFor="let step of node.data?.stepsInformation" style="display: inline-block; justify-content:space-between;vertical-align: top;" [ngClass]="step[1].stepStatus === 0 ? 'text-grey' : step[1].stepStatus === 1 ? 'text-red' : 'text-green'" (click)="selectStep(step[1], isDestinationActive ? 1 : 0)">
+                                        <div style="display: inline-flex;padding-top: 14px;">
+                                        <div  style="font-weight: bold;color: #1d2125;padding-left: 1px;">{{ step[1].processNumber }}&nbsp;)&nbsp;&nbsp;</div><div>{{ step[1].stepName }}</div>  
                                         </div>
+                                        <br>
                                     </li>
+                                   
                                  
                                     
                                 </div>
