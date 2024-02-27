@@ -146,6 +146,8 @@ export namespace AppRoutes {
 
        public static readonly saveVoulmeDetails  = "project/volume"
 
+       public static readonly exportAddVolume  = "volume/export"
+
        //------End-----------------------//
 
         //------cost line item(Project)-----------------------//
@@ -155,6 +157,8 @@ export namespace AppRoutes {
         public static readonly saveCostLineItemDetails  = "project/cost-line-item"
 
         public static readonly reCalculateCostLine  = "recalculate-cost-line"
+
+        public static readonly exportCLI  = "cost-line-item/export"
  
         //------End-----------------------//
 

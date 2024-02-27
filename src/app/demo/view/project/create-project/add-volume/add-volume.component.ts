@@ -38,6 +38,7 @@ visible: boolean = false;
   process: any;
 
   @Input() projectIdbb: number | null;
+  @Input() projStatus: any | null;
   @Output() onClickContinuetoAddVolume: EventEmitter<any> = new EventEmitter();
   projectidVolume: any;
   draftSavedVolume: boolean = false;
@@ -47,6 +48,7 @@ visible: boolean = false;
 
   ngOnInit(){
   this.getVolumeDetails(this.projectIdbb);
+  this.projStatus = this.projStatus;
 
   }
   onClickContinue() {
@@ -91,6 +93,28 @@ showDestinationSection() {
   this.originButtonBorderRadius = '5px';
   this.destinationButtonBorderRadius = '5px';
 }
+downloadAddVolumeSCExcel(event: Event,projectId) {
+  event.preventDefault();
+
+  this.projectService.downloadAddVolumeExcel(projectId).subscribe((res: any) => {
+    const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = 'AddVolume.xlsx';
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+    this.messageService.add({
+      key: 'successToast',
+      severity: 'success',
+      summary: 'Success!',
+      detail: 'Excel Downloaded successfully.'
+    });
+  });
+}
 
 getVolumeDetails(projectId) {
   this.projectService.getvolumeDetails(projectId).subscribe((res: any) => {
@@ -116,6 +140,7 @@ onSaveVolumeClick(){
     (res) => {
       this.sharedService.setProjectidVolume(res?.data?.projectId);
       this.sharedService.setDraftSavedVolume(true);
+      this.getVolumeDetails(res?.data?.projectId);
       this.messageService.add({
         key: 'successToast',
         severity: 'success',

@@ -65,9 +65,10 @@
                         filterBy="name"></p-multiSelect>
                 </div>
                 <div class="field col-12 md:col-6">
-                    <div class="p-d-block"><label>Date Range<span class="requiredField">*</span></label></div>
-                    <input type="text" ngxDaterangepickerMd [lockStartDate]="false" formControlName="selectedDateRange"
-                        placeholder="Start Date-End Date" class="date_pick" />
+                    <div class="p-d-block"><label>Start Date-End Date<span class="requiredField">*</span></label></div>
+                    <!-- <input type="text" ngxDaterangepickerMd [lockStartDate]="false" formControlName="selectedDateRange"
+                        placeholder="Start Date-End Date" class="date_pick" /> -->
+                        <p-calendar  selectionMode="range"  formControlName="selectedDateRange" placeholder="start-date/end-date" [style.width]="'200px'" [style.height]="'200px'"></p-calendar>
                 </div>
                 <div class="field col-12 md:col-6">
                     <div class="p-d-block"><label>Design Notes<span class="requiredField">*</span></label></div>
@@ -326,25 +327,25 @@
     </p-tabPanel>
     <p-tabPanel header="Building Block" [disabled]="!draftSaved">
         <div *ngIf="draftSaved">
-            <app-building-block (continueClicked)="goToNextTab()" [projinfoID]="projinfoID"></app-building-block>
+            <app-building-block (continueClicked)="goToNextTab()" [projStatus]="projStatus" [projinfoID]="projinfoID"></app-building-block>
         </div>
     </p-tabPanel>
 
     <p-tabPanel [disabled]="!draftSavedBB" header="Add Volume">
         <div *ngIf="projectIDbb !== null">
-            <app-add-volume (onClickContinuetoAddVolume)="goToNextTab()" [projectIdbb]="projectIDbb"></app-add-volume>
+            <app-add-volume (onClickContinuetoAddVolume)="goToNextTab()" [projStatus]="projStatus" [projectIdbb]="projectIDbb"></app-add-volume>
           </div>
     </p-tabPanel>
 
 
     <p-tabPanel header="Cost Line Item" [disabled]="!draftSavedVolume">
         <div *ngIf="projectidVolume !== null">
-          <app-cost-line-item (continueClickedToCLI)="goToNextTab()" [projectidVolume]="projectidVolume"></app-cost-line-item>
+          <app-cost-line-item (continueClickedToCLI)="goToNextTab()" [projStatus]="projStatus" [projectidVolume]="projectidVolume"></app-cost-line-item>
         </div>
     </p-tabPanel>
     <p-tabPanel header="Other Cost" [disabled]="!draftSavedCLI">
         <div *ngIf="projectIdCLI !== null">
-            <app-other-cost (continueClickedToProjectCost)="goToNextTab()" [projectIdCLI]="projectIdCLI"></app-other-cost>
+            <app-other-cost (continueClickedToProjectCost)="goToNextTab()" [projStatus]="projStatus" [projectIdCLI]="projectIdCLI"></app-other-cost>
         </div>
     </p-tabPanel>
     <p-tabPanel header="Project Output" [disabled]="!draftSavedOC">

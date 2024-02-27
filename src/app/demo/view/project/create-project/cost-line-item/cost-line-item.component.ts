@@ -34,6 +34,7 @@ private _isExpanded = false;
   projectId: any;
   projectName: any;
   @Input() projectidVolume: number | null;
+  @Input() projStatus: any | null;
   projectIdCLI: any;
   draftSavedCLI: boolean = false;
   @Output() continueClickedToCLI: EventEmitter<any> = new EventEmitter();
@@ -44,6 +45,7 @@ constructor(private sharedService: SharedServiceService,private projectService:P
 
 ngOnInit(){
   this.getCostLineItemDetails(this.projectidVolume);
+  this.projStatus = this.projStatus;
   }
 
   onClickContinue() {
@@ -110,6 +112,28 @@ getConfigurableName(configurableId: number): string {
       return 'Unknown';
   }
 }
+downloadCLISCExcel(event: Event,projectId) {
+  event.preventDefault();
+
+  this.projectService.downloadAddVolumeExcel(projectId).subscribe((res: any) => {
+    const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = 'CostLineItem.xlsx';
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+    this.messageService.add({
+      key: 'successToast',
+      severity: 'success',
+      summary: 'Success!',
+      detail: 'Excel Downloaded successfully.'
+    });
+  });
+}
 saveCostLineItemDetails() {
   if (this.costLineItemDetails && this.costLineItemDetails.length > 0) {
     const body = {
@@ -122,6 +146,7 @@ saveCostLineItemDetails() {
       (res) => {
         this.sharedService.setProjectIdCLI(res?.data?.projectId);
         this.sharedService.setDraftSavedCLI(true);
+        this.getCostLineItemDetails(res?.data?.projectId);
         this.messageService.add({
           key: 'successToast',
           severity: 'success',
