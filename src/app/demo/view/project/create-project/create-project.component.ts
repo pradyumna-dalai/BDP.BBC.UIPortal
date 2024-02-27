@@ -173,15 +173,17 @@ export class CreateProjectComponent implements OnInit {
     //get projid
     
     this.route.queryParams.subscribe(params => {
-      this.projId = params.projId;
-      if(this.projId != undefined){
+      
+      if(params.projId != undefined){
+        this.projId = params.projId;
+      this.projectId = params.projId;
         this.getProjectDetails(this.projId);
       }
       
-     this.projectId = params.projectId;
-     if(this.projectId != undefined){
-      this.getProjectDetails(this.projectId);
-    }
+     
+    //  if(this.projectId != undefined){
+    //   this.getProjectDetails(this.projectId);
+    // }
     });
 
     if (this.projId) {
@@ -379,7 +381,7 @@ export class CreateProjectComponent implements OnInit {
       id: this.projectId ||  '',
       description: "",
       projectInformation: {
-        id:this.projInfo ||  '',
+        id:this.projinfoidedit ||  '',
         customerCode: this.myForm.get('customerCode').value,
         projectName: this.myForm.get('projectName').value,
         startDate: this.formatDate(dateRange[0]),
