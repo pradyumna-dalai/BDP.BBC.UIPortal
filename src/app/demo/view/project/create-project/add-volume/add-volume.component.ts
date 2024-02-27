@@ -188,7 +188,8 @@ updateLocationVolume(newValue: number, locationName: string, line: any) {
   const location = line.locationVolume.find(loc => loc.locationName === locationName);
   if (location) {
     location.volume = newValue;
-    this.editedValues[locationName] = newValue;
+    line.editedValues = line.editedValues || {}; // Initialize editedValues if not already present
+    line.editedValues[locationName] = newValue; // Store edited value for this specific line
   }
 }
 getConfigurableName(configurableId: number): string {
