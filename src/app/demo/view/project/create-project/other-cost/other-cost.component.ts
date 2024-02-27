@@ -237,7 +237,7 @@ export class OtherCostComponent {
             }));
             this.calculateGrandTotalCost();
           } else {
-            console.error('Other costs array not found in response:', response);
+      //      console.error('Other costs array not found in response:', response);
           }
         },
         error: (error) => {
