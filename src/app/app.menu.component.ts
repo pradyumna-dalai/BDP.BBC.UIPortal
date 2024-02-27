@@ -73,9 +73,9 @@ export class AppMenuComponent implements OnInit {
             case 'product category':
                 return 'pi pi-bars';
             case 'fte - full time employee':
-                return 'pi pi-fw pi-desktop';
+                return 'pi pi-fw pi-users';
             case 'process configurable':
-                return 'pi pi-fw pi-desktop';
+                return 'pi pi-fw pi-cog';
             default:
                 return 'pi pi-fw pi-desktop';
         }
