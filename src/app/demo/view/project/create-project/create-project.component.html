@@ -100,6 +100,8 @@
                             [ngModelOptions]="{standalone: true}" (onChange)="toggleOriginCheckbox()"></p-checkbox>
                         <label for="ny" style="padding-left: 6px;">Origin Location</label>
                     </div>
+
+                    
                     <p-multiSelect placeholder="Select Origin Location" optionLabel="name" optionValue="id"
                         display="chip" [showClear]="true" [options]="originLocations" [disabled]="!enableOriginLocation"
                         (onChange)="onOriginLocationChange($event)" [(ngModel)]="selectedCitiesOrign"
