@@ -92,11 +92,11 @@ fetchAllProjectBuildingBlock(projectId: any) {
       next: (response: any) => {
         this.getSavedBlockslist = response.data;
         console.log("Table BB", this.getSavedBlockslist)
-        this.getSavedBlocksDetails = response.data.buildingBlocks.map((block: any) => ({
-          buildingBlockId: block.buildingBlockId,
-          buildingBlockName: block.buildingBlockName
-        }));
-        console.log("Table BB",  this.getSavedBlocksDetails);
+        // this.getSavedBlocksDetails = response.data.buildingBlocks.map((block: any) => ({
+        //   // buildingBlockId: block.buildingBlockId,
+        //   // buildingBlockName: block.buildingBlockName
+        // }));
+       // console.log("Table BB2",  this.getSavedBlocksDetails);
       }
     });
   }
