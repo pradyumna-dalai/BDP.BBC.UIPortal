@@ -178,7 +178,7 @@ export class CreateProjectComponent implements OnInit {
         this.getProjectDetails(this.projId);
       }
       
-     this.projectId = params.projectId;
+     this.projectId = params.projId;
      if(this.projectId != undefined){
       this.getProjectDetails(this.projectId);
     }
@@ -375,11 +375,13 @@ export class CreateProjectComponent implements OnInit {
         id: row.Uom
       }
     }));
+
+
     const body = {
       id: this.projectId ||  '',
       description: "",
       projectInformation: {
-        id:this.projInfo ||  '',
+        id:this.projinfoidedit ||  '',
         customerCode: this.myForm.get('customerCode').value,
         projectName: this.myForm.get('projectName').value,
         startDate: this.formatDate(dateRange[0]),
