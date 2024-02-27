@@ -42,7 +42,7 @@ mark {
   background: #FFF8E1;
   padding: 0.25rem 0.4rem;
   border-radius: 5px;
-  font-family: "Open Sans";
+  font-family: "Montserrat", sans-serif !important;
 }
 
 blockquote {
@@ -178,7 +178,7 @@ p:last-child {
 }
 /* open-sans-300 - latin-ext_latin */
 @font-face {
-  font-family: "Open Sans";
+  font-family: "Montserrat", sans-serif !important;
   font-style: normal;
   font-weight: 300;
   src: url("../fonts/open-sans-v18-latin-ext_latin-300.eot");
@@ -188,7 +188,7 @@ p:last-child {
 }
 /* open-sans-regular - latin-ext_latin */
 @font-face {
-  font-family: "Open Sans";
+  font-family: "Montserrat", sans-serif !important;
   font-style: normal;
   font-weight: 400;
   src: url("../fonts/open-sans-v18-latin-ext_latin-regular.eot");
@@ -198,7 +198,7 @@ p:last-child {
 }
 /* open-sans-600 - latin-ext_latin */
 @font-face {
-  font-family: "Open Sans";
+  font-family: "Montserrat", sans-serif !important;
   font-style: normal;
   font-weight: 600;
   src: url("../fonts/open-sans-v18-latin-ext_latin-600.eot");
@@ -208,7 +208,7 @@ p:last-child {
 }
 /* open-sans-700 - latin-ext_latin */
 @font-face {
-  font-family: "Open Sans";
+  font-family: "Montserrat", sans-serif !important;
   font-style: normal;
   font-weight: 700;
   src: url("../fonts/open-sans-v18-latin-ext_latin-700.eot");
@@ -4392,7 +4392,7 @@ html {
 }
 
 body {
-  font-family: "Open Sans";
+  font-family: "Montserrat", sans-serif !important;
   font-size: 14px;
   color: #515C66;
   -webkit-font-smoothing: antialiased;
