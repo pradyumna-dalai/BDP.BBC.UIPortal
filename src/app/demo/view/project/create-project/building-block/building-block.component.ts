@@ -30,6 +30,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   loading: boolean = false;
   showOriginVolume: boolean = true;
   showDestinationVolume: boolean = false;
+  selected
   originButtonColor: string = 'white';
   destinationButtonColor: string = 'rgb(0, 110, 255)';
   originButtonBorder: string = '1px solid rgb(0, 110, 255)';
@@ -43,6 +44,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   selectedStep: any = null;
   isOriginActive: boolean = true;
   isDestinationActive: boolean = false;
+  selectedCheckBox:boolean=false
   activeIndex: number;
   projectLocations: any;
   treeDataCalculated: any;
@@ -500,7 +502,7 @@ hasConfigurations(step: any): boolean {
                 name: config.configurable
               },
               children: locationChildren,
-              selectable: false
+              selectable: true
             });
           }
         });
@@ -509,15 +511,15 @@ hasConfigurations(step: any): boolean {
     });
     this.treeData = treeData;
 
-    let origineArr=this.filterNodesBySelectedKeys(treeData, selectedOriginLocId);
-    
-    let finalOriginArray=origineArr.map(node => node.children || []);
+    this.selectedOriginLocationNodes=this.filterNodesBySelectedKeys(treeData, selectedOriginLocId);
+    let finalOriginArray=this.selectedOriginLocationNodes.map(node => node.children || []);
+    this.selectedOriginLocationNodes.push(...finalOriginArray.flat());
+    console.log(this.selectedOriginLocationNodes)
     selectedStep.selectedOriginLoc=[...finalOriginArray]
-    let destArr=this.filterNodesBySelectedKeys(treeData, selectedDestinationLocId);
-    
-    let finalDestArray=destArr.map(node => node.children || []);
-    selectedStep.selectedDestinationLoc=[...finalDestArray]
-    //console.log('locationtree', treeData);
+    this.selectedDestinationLocationNodes=this.filterNodesBySelectedKeys(treeData, selectedDestinationLocId);
+    let finalDestArray=this.selectedDestinationLocationNodes.map(node => node.children || []);
+     this.selectedDestinationLocationNodes.push(...finalDestArray.flat());
+    console.log(this.selectedOriginLocationNodes)
     return treeData;
   }
 
@@ -530,15 +532,16 @@ hasConfigurations(step: any): boolean {
     }
     // let stepdata = this.stepwithInfo[this.selectedStep];
     
-    this.selectedOriginLocationNodes = [];
+    // this.selectedOriginLocationNodes = [];
     this.selectedDestinationLocationNodes = [];
     this.selectedStep = step;
 
     if (step?.selectedOriginLoc?.length) {
-      this.selectedOriginLocationNodes = step.selectedOriginLoc;
+      // this.selectedOriginLocationNodes = step.selectedOriginLoc;
     }
     if (step?.selectedDestinationLoc?.length) {
       this.selectedDestinationLocationNodes = step.selectedDestinationLoc;
+
     }
    
     // if (originDestinationCode === 0 || originDestinationCode === 1) {
@@ -580,7 +583,7 @@ hasConfigurations(step: any): boolean {
       buildingBlocks: Array.from(this.stepwithInfo.entries()).map(([buildingBlockId, buildingBlockData]: [number, any]) => {
         const buildingBlockDataAny: any = buildingBlockData;
         const buildingBlockName = buildingBlockDataAny[Object.keys(buildingBlockDataAny)[0]]?.buildingBlockName;
-  
+       console.log(this.stepwithInfo)
         const processes = Object.entries(buildingBlockData).map(([_, processInfo]: [string, any]) => {
           if (processInfo.selectedOriginLoc.length > 0 || processInfo.selectedDestinationLoc.length > 0) {
             const originServiceConfigurations = [];
@@ -777,7 +780,7 @@ hasConfigurations(step: any): boolean {
                 label: node.label,
                 data: node.data,
                 parent: parent,
-                partialSelected: false
+                selectable: false
             };
             filteredNodes.push(filteredNode);
         } else if (node.children) {
@@ -786,7 +789,7 @@ hasConfigurations(step: any): boolean {
                 label: node.label,
                 data: node.data,
                 parent: parent,
-                partialSelected: false
+                selectable: false
             });
             if (filteredChildren.length > 0) {
                 const newNode: any = {
@@ -794,7 +797,7 @@ hasConfigurations(step: any): boolean {
                     label: node.label,
                     data: node.data,
                     parent: parent,
-                    partialSelected: false
+                    selectable: false
                 };
                 newNode.children = filteredChildren;
                 filteredNodes.push(newNode);
