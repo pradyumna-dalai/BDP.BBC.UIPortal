@@ -3,88 +3,82 @@
         <div class="md:col-6" style="padding: 0px !important">
             <h5 style="margin: 0;">Other Cost</h5>
         </div>
-        <div class="md:col-6" style="display: flex; padding: 0px !important;
-        justify-content: flex-end;">
+        <div class="md:col-6" style="display: flex; padding: 0px !important; justify-content: flex-end;">
+            <div class="mr-2 mb-2">
+                <h5 style="margin: 0;padding-top: 8px;padding-right: 30px;">Grand Total Cost: {{ grandTotalCost |
+                    currency }}</h5>
+            </div>
             <div>
-                <button pButton pRipple type="button" label="Add"
-                 class="p-button-outlined mr-2 mb-2" 
-                 style="background: rgba(33, 150, 243, 0.04);color: #8b8989;border: 1px solid #d1c5c5;padding: 4px;padding-left: 10px;padding-right: 10px;"></button>
+                <button type="submit" (click)="addRow()" pButton pRipple label=" Add " class="mr-2 mb-2"></button>
             </div>
         </div>
     </div>
-    <hr style="margin-top: 1px;margin-bottom: 22px;color: gray;background-color: #d9d2d2;height: 1px;border: none;">
-  
-
-<div style="margin-top:10px;" >
-            <p-table [value]="" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th style="width:20%">Action</th>
-                        <th style="width:20%">Cost Item</th>
-                        <th style="width:20%">Location</th>
-                        <th style="width:20%">Total Cost </th>
-                        <th style="width:20%">Origin/Destination</th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
-                    <tr >
-                        <td>
-                            <div class="flex align-items-center justify-content-center gap-2">
-                                <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(product)" class="p-button-rounded p-button-text"></button>
-                                <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(product)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                                <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(product, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
-                            </div>
-                        </td>
-                        <td>
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <input pInputText type="text" >
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                 Development Cost
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        <td>
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <input pInputText type="text"  required>
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                Budapest
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        <td>
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <p-dropdown [options]="statuses" appendTo="body"  [style]="{'width':'100%'}"></p-dropdown>
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    <!-- {{product.inventoryStatus}} -->
-                                    $27000.00
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        <td>
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <input pInputText type="text" >
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    Origin
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        
-                    </tr>
-                </ng-template>
-            <ng-template pTemplate="emptymessage">
+    <hr
+        style="margin-top: 1px; margin-bottom: 22px; color: gray; background-color: #d9d2d2; height: 1px; border: none;">
+    <div style="margin-top: 10px;">
+        <p-table [value]="tableData" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+            <ng-template pTemplate="header">
                 <tr>
-                    <td style="text-align: center;" colspan="18">No Data found.</td>
+                    <th style="width: 20%">Action</th>
+                    <th style="width: 20%">Cost Item</th>
+                    <th style="width: 20%">Location</th>
+                    <th style="width: 20%">Total Cost</th>
+                    <th style="width: 20%">Origin/Destination</th>
                 </tr>
             </ng-template>
-            </p-table>
-       
-</div>
+            <ng-template pTemplate="body" let-cost let-ri="rowIndex">
+                <tr>
+                    <td>
+                        <div>
+                            <button pButton pRipple type="button" (click)="onRowEditInit(ri)" *ngIf="!cost.editing"
+                                pInitEditableRow icon="pi pi-pencil" class="p-button-rounded p-button-text"></button>
+                            <button pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
+                                (click)="onRowEditSave(ri)" *ngIf="cost.editing"
+                                class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                            <button pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+                                (click)="onRowEditCancel(ri)" *ngIf="cost.editing"
+                                class="p-button-rounded p-button-text p-button-danger"></button>
+                            <button pButton pRipple type="button" icon="pi pi-trash" (click)="onRowDelete(ri)"
+                                *ngIf="!cost.editing" class="p-button-rounded p-button-text p-button-danger"></button>
+                        </div>
+                    </td>
+                    <td>
+                        <span *ngIf="!cost.editing">{{ cost.costItem }}</span>
+                        <input *ngIf="cost.editing" pInputText type="text" [(ngModel)]="cost.costItem"
+                            placeholder="Enter Cost Item" required>
+                    </td>
+                    <td>
+                        <span *ngIf="!cost.editing">{{ cost.location?.name }}</span>
+                        <p-dropdown *ngIf="cost.editing" [options]="locationDropdownOptions" [(ngModel)]="cost.id"
+                            (ngModelChange)="updateOriginDestination(cost)" optionValue="id" optionLabel="name"
+                            placeholder="Select Location" [style]="{ 'width':'100%' }" [appendTo]="'body'"
+                            [filter]="true" [showClear]="true"></p-dropdown>
+                    </td>
+                    <td>
+                        <span *ngIf="!cost.editing">{{ cost.totalCost | currency }}</span>
+                        <input *ngIf="cost.editing" [(ngModel)]="cost.totalCost" placeholder="Enter Total Cost"
+                            pInputText type="number" [min]="0" required>
+                    </td>
+                    <td>
+                        <span *ngIf="!cost.editing">{{ cost.originDestination }}</span>
+                        <span *ngIf="cost.editing">{{ getOriginDestination(cost) }}</span>
+                    </td>
+
+                </tr>
+
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td style="text-align: center;" colspan="5">No Data found.</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+    <div class="col-12" style="display: flex;justify-content: flex-end;">
+        <button pButton pRipple type="button" *ngIf="projStatus !='Closed Won' && projStatus !='Close Lost'" label="Save As Draft" (click)="saveProjectsOtherCostItem()"
+            class="p-button-outlined mr-2 mb-2"></button>
+        <button type="submit" pButton pRipple label="Continue" (click)="onClickContinue()" class="mr-2 mb-2"></button>
+    </div>
+    <p-toast key="successToast"></p-toast>
+    <p-toast key="errorToast"></p-toast>
 </div>

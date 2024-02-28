@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
+import { Component, NgZone, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AppBreadcrumbService } from '../../../../app.breadcrumb.service';
 import { FormControl, FormGroup, Validators, FormBuilder, FormArray, AbstractControl } from '@angular/forms';
 import { MasterTableService } from '../../../../services/master-table.service';
@@ -10,6 +10,7 @@ import { EditableRow, Table } from 'primeng/table';
 import { AddVolumeComponent } from './add-volume/add-volume.component';
 import { ActivatedRoute } from '@angular/router';
 import { CreateBuildingBlockService } from 'src/app/services/create-buildingBlock/create-building-block.service';
+import { SharedServiceService } from 'src/app/services/project-serivce/shared-service.service';
 
 interface UomData {
   id: number;
@@ -27,7 +28,8 @@ interface TableRow {
   selector: 'app-create-project',
   templateUrl: './create-project.component.html',
   styleUrls: ['./create-project.component.scss'],
-  providers: [MessageService, ConfirmationService, EditableRow]
+  providers: [MessageService, ConfirmationService, EditableRow],
+  encapsulation: ViewEncapsulation.None
 })
 
 
@@ -69,7 +71,7 @@ export class CreateProjectComponent implements OnInit {
   enableDestinationLocation: boolean = false;
   isRowEditMode: boolean[] = [];
   originTableControls: FormArray;
-  isAddingRow: boolean;
+  isAddingRow: boolean; 
   isActionButtonsVisible = false;
   selectedFile: any;
   visibleValueBox: boolean = false;
@@ -97,12 +99,53 @@ export class CreateProjectComponent implements OnInit {
   uploadedFilesToSave: { id: number; name: string; file: File }[] = [];
   uploadedResponseFilesToSave: { id: number, name: string; file: File }[] = [];
   uploadedOtherFilesToSave: { id: number | null; name: string; file: File }[] = [];
-  constructor(private route: ActivatedRoute, private breadcrumbService: AppBreadcrumbService, private zone: NgZone,
+  savedProjectId: any;
+  draftSaved: boolean = false;
+  draftSavedBB: boolean = false;
+  projectIDbb: number | null;
+  projinfoID: number | null;
+  projectidVolume: number | null;
+  draftSavedVolume: boolean; 
+  draftSavedCLI: boolean;
+  projectIdCLI: number | null;
+  draftSavedOC: boolean;
+  projectIdOC: number | null;
+  projInfo: any;
+  projinfoidedit: any;
+  projStatus: any;
+  
+  
+  constructor(private sharedService: SharedServiceService,private route: ActivatedRoute, private breadcrumbService: AppBreadcrumbService, private zone: NgZone,
     private datePipe: DatePipe, private messageService: MessageService, private fb: FormBuilder, public MasterTableservice: MasterTableService,
     private createBuildingBlockservice: CreateBuildingBlockService, public projectService: ProjectsService) {
   }
   ngOnInit() {
 
+    this.sharedService.draftSavedBB$.subscribe((draftSavedBB: boolean) => {
+      this.draftSavedBB = draftSavedBB;
+    });
+
+    this.sharedService.projectIDbb$.subscribe((projectIDbb: number | null) => {
+      this.projectIDbb = projectIDbb;
+    });
+    this.sharedService.draftSavedVolume$.subscribe((draftSavedVolume: boolean) => {
+      this.draftSavedVolume = draftSavedVolume;
+    });
+    this.sharedService.projectidVolume$.subscribe((projectidVolume: number) => {
+      this.projectidVolume = projectidVolume;
+    });
+    this.sharedService.draftSavedCLI$.subscribe((draftSavedCLI: boolean) => {
+      this.draftSavedCLI = draftSavedCLI;
+    });
+    this.sharedService.projectIdCLI$.subscribe((projectIdCLI: number) => {
+      this.projectIdCLI = projectIdCLI;
+    });
+    this.sharedService.projectIdOC$.subscribe((projectIdOC: number) => {
+      this.projectIdOC = projectIdOC;
+    });
+    this.sharedService.draftSavedOC$.subscribe((draftSavedOC: boolean) => {
+      this.draftSavedOC = draftSavedOC;
+    });
     this.myForm = this.fb.group({
       // Define your form controls here
       companyName: [''],
@@ -128,10 +171,17 @@ export class CreateProjectComponent implements OnInit {
     this.fetchActiveLocation();
 
     //get projid
+    
     this.route.queryParams.subscribe(params => {
       this.projId = params.projId;
-      this.getProjectDetails(this.projId);
-      console.log(params.projId)
+      if(this.projId != undefined){
+        this.getProjectDetails(this.projId);
+      }
+      
+     this.projectId = params.projId;
+     if(this.projectId != undefined){
+      this.getProjectDetails(this.projectId);
+    }
     });
 
     if (this.projId) {
@@ -151,6 +201,10 @@ export class CreateProjectComponent implements OnInit {
         { label: 'Create Project' },
       ]);
     }
+    
+  }
+  patchDateRangeValue(newValue: any) {
+    this.myForm.get('selectedDateRange').patchValue(newValue);
   }
 
 
@@ -159,7 +213,7 @@ export class CreateProjectComponent implements OnInit {
   }
   goToNextTab() {
     // this.activeIndex = (this.activeIndex + 1) % 8; 
-    console.log(this.myForm.value);
+   // console.log(this.myForm.value);
     this.activeIndex = (this.activeIndex + 1) % 8
     // this.addVolume.shareFunctionAddVolume()
 
@@ -188,7 +242,6 @@ export class CreateProjectComponent implements OnInit {
         this.companyOptions = [];
       }
     })
-
   }
   // ---------------get Opportunity name on company select------------------------//
 
@@ -201,7 +254,7 @@ export class CreateProjectComponent implements OnInit {
         this.opportunityNameOptions = res?.data;
 
         // Automatically select the opportunity name if it matches the response
-        const selectedOpportunityId = this.response.opportunityName?.id;
+        const selectedOpportunityId = this.response?.opportunityName?.id;
         if (selectedOpportunityId) {
           const matchingOpportunity = this.opportunityNameOptions.find(opportunity => opportunity.id === selectedOpportunityId);
           if (matchingOpportunity) {
@@ -224,7 +277,7 @@ export class CreateProjectComponent implements OnInit {
         this.IVOptions = res?.data;
 
         // Automatically select the industry vertical if it matches the response
-        const selectedIVId = this.response.industryVertical?.id;
+        const selectedIVId = this.response?.industryVertical?.id;
         if (selectedIVId) {
           const matchingIV = this.IVOptions.find(iv => iv.id === selectedIVId);
           if (matchingIV) {
@@ -274,7 +327,9 @@ export class CreateProjectComponent implements OnInit {
   formatDate(date: Date): string {
     return dayjs(date).format('YYYY-MM-DD');
   }
-
+  patchformatDate(date: Date): string {
+    return dayjs(date).format('MM/DD/YYYY');
+  }
   onSaveAsDraftClick() {
     this.SaveAsDraftProjects();
   }
@@ -287,7 +342,11 @@ export class CreateProjectComponent implements OnInit {
       opportunityMangers = om.map(id => ({ id }))
     }
     this.dateRange = this.myForm.get('selectedDateRange').value;
-    let dateRangevalStartDate = this.dateRange.startDate;
+    let dateRange = this.dateRange
+    if (typeof this.dateRange == 'string' && this.dateRange.indexOf("-") != -1) {
+       dateRange = this.dateRange.split("-");
+    }
+
     let dateRangevalEndDate = this.dateRange.endDate;
 
     const originProjectLocationData = this.OtableData.map((row: TableRow) => ({
@@ -316,14 +375,17 @@ export class CreateProjectComponent implements OnInit {
         id: row.Uom
       }
     }));
+
+
     const body = {
-      id: this.projId,
+      id: this.projectId ||  '',
       description: "",
       projectInformation: {
+        id:this.projinfoidedit ||  '',
         customerCode: this.myForm.get('customerCode').value,
         projectName: this.myForm.get('projectName').value,
-        startDate: this.formatDate(dateRangevalStartDate),
-        endDate: this.formatDate(dateRangevalEndDate),
+        startDate: this.formatDate(dateRange[0]),
+        endDate: this.formatDate(dateRange[1]),
         designNote: this.myForm.get('designNotes').value,
         implementationNote: this.myForm.get('impleNotes').value,
         company: {
@@ -351,12 +413,20 @@ export class CreateProjectComponent implements OnInit {
           ...destinationProjectLocationData
       
       ]
-    }
+    } 
 
     this.projectService.saveAsDraftProject(body).subscribe(
       (res) => {
+        //-------------for shareing data----//
+        this.projectService.setDraftData(res);
+        this.projInfo= res.data.projectInformation.id;
+        //--------------------end-------------//
         const savedProjectId = res.data.id;
-        console.log('Draft saved successfully:', savedProjectId);
+        if (savedProjectId) {
+          this.savedProjectId = savedProjectId; // Set the savedProjectId property
+          this.draftSaved = true; // Set draftSaved to true
+          // Rest of your logic
+      }
 
         if (savedProjectId) {
           this.projectId = savedProjectId;
@@ -411,6 +481,8 @@ export class CreateProjectComponent implements OnInit {
 
         this.originLocations = [...this.locationOptions];
         this.destinationLocations = [...this.locationOptions];
+        
+        
       } else {
         this.locationOptions = [];
         this.originLocations = [];
@@ -456,12 +528,15 @@ export class CreateProjectComponent implements OnInit {
   onOriginLocationChange(event: any) {
     const selectedLocationIds = event.value;
     if (selectedLocationIds && selectedLocationIds.length > 0) {
+    
       this.isActionButtonsVisible = true;
       this.destinationLocations = this.locationOptions.filter(loc => !selectedLocationIds.includes(loc.id));
     } else {
       this.isActionButtonsVisible = false;
       this.destinationLocations = [...this.locationOptions];
     }
+
+    
     const selectedCitiesOrign = this.locationOptions
       .filter(loc => selectedLocationIds.includes(loc.id))
       .map(city => ({ name: city.name }));
@@ -679,10 +754,6 @@ export class CreateProjectComponent implements OnInit {
   }
 
 
-  // onRemoveUploadedFile(index: number): void {
-  //   this.uploadedFiles.splice(index, 1);
-  // }
-
   deleteProjectArtifact(index: number): void {
     if (index >= 0 && index < this.uploadedFiles.length) {
       const documentIdToDelete = this.uploadedFiles[index].id;
@@ -711,14 +782,6 @@ export class CreateProjectComponent implements OnInit {
   showDialogOthers() {
     this.visibleOthersBox = true;
   }
-
-  // onRemoveUploadedResponseFile(index: number): void {
-  //   this.uploadedResponseFiles.splice(index, 1);
-  // }
-
-  // onRemoveUploadedOtherFile(index: number): void {
-  //   this.uploadedOtherFiles.splice(index, 1);
-  // }
 
   onResponseCancelClick() {
     this.fileNameOC = "";
@@ -871,19 +934,59 @@ export class CreateProjectComponent implements OnInit {
 
   getProjectDetails(projectId): void {
     this.projectService.getProjectDetails(projectId).subscribe((res: any) => {
-      if (res?.message === 'success') {
-        this.response = res.data.projectInformation; // Store the response data
-        this.populateForm(); // Call function to populate form with response data
-      } else {
-        // Handle error
-      }
+        if (res?.message === 'success') {
+            //this.projectService.setDraftData(res);
+            this.draftSaved = true;
+            this.projinfoID = projectId;
+            this.draftSavedBB = true;
+            this.draftSavedVolume = true;
+            this.projectidVolume = projectId;
+            this.projectIDbb = projectId;
+            this.projectIdCLI = projectId;
+            this.draftSavedCLI = true;
+            this.draftSavedOC = true;
+            this.projectIdOC = projectId;
+            this.response = res.data.projectInformation;
+            this.projinfoidedit =  res.data.projectInformation.id;
+            this.projStatus = this.response.projectStatus?.name;
+            this.populateForm(); 
+            const originLocations = res.data.projectLocation.filter(location => location.originDestinationCode === 0);
+            const destinationLocations = res.data.projectLocation.filter(location => location.originDestinationCode === 1);
+
+            this.OtableData = originLocations.map(location => ({
+                city: location.location.name,
+                Volume: location.volume,
+                Uom: location.uom.id,
+                editing: false, 
+                adding: false
+            }));
+
+            this.tableData = destinationLocations.map(location => ({
+                city: location.location.name,
+                Volume: location.volume,
+                Uom: location.uom.id,
+                editing: false,
+                adding: false
+            }));
+
+            if (originLocations.length > 0) {
+                this.enableOriginLocation = true;
+            }
+
+            if (destinationLocations.length > 0) {
+                this.enableDestinationLocation = true;
+            }
+        } else {
+            // Handle error
+        }
     });
-  }
+}
 
   populateForm(): void {
-
-
-    // Populate other form controls with the received data
+    this.myForm.patchValue({
+      
+      selectedDateRange: `${this.patchformatDate(this.response.startDate)} - ${this.patchformatDate(this.response.endDate)}`,
+    });
     this.myForm.patchValue({
       companyName: this.response.company?.id,
       customerCode: this.response.customerCode,
@@ -928,12 +1031,7 @@ export class CreateProjectComponent implements OnInit {
       this.myForm.get('region').setValue(this.regionOptions[selectedRegionIndex].id);
     }
 
-
-
-    // const startDate = new Date(this.response.projectInformation.startDate);
-    // const endDate = new Date(this.response.projectInformation.endDate);
-    // this.myForm.get('selectedDateRange').setValue([startDate, endDate]);
-
+ 
   }
   downloadArtifactByIDOther(index: number) {
     let fileName: string | null = null;
@@ -1010,5 +1108,7 @@ export class CreateProjectComponent implements OnInit {
     }
 
   }
+
+ 
 }
 

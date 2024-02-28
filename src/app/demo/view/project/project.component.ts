@@ -47,6 +47,11 @@ export class ProjectComponent {
   rows: any = 10;
   newSortField: any;
   newSortOrder: any;
+  visible: boolean = false;
+  selectedProjectName: string = '';
+  dateRangeCopy: any;
+  selected: any;
+ 
 
   predefinedDateRanges: SelectItem[] = [
     { label: 'Last 1 Year', value: 'last1Year' },
@@ -57,12 +62,13 @@ export class ProjectComponent {
 
   selectedPredefinedDateRange: SelectItem;
   confirmationHeader: string;
+  selectedProjectId: any;
   onDateRangeSelect(event: any) { }
 
   formatDate(date: Date): string {
-    return dayjs(date).format('DD.MM.YY');
+    return dayjs(date).format('YYYY-MM-DD');
   }
-  constructor(private datePipe: DatePipe, private breadcrumbService: AppBreadcrumbService, private messageService: MessageService, private confirmationService: ConfirmationService, private router: Router, private projectsService: ProjectsService) {
+  constructor(private projectService:ProjectsService,private datePipe: DatePipe, private breadcrumbService: AppBreadcrumbService, private messageService: MessageService, private confirmationService: ConfirmationService, private router: Router, private projectsService: ProjectsService) {
     this.breadcrumbService.setItems([
       { label: 'Project' }
     ]);
@@ -70,6 +76,7 @@ export class ProjectComponent {
 
   
   ngOnInit() {
+    
     this.fetchAllProjectDetails();
     this.selectedPredefinedDateRange = this.predefinedDateRanges[0];
     this.projectsService.data$.subscribe((res)=> {
@@ -139,11 +146,84 @@ export class ProjectComponent {
         if (action === 'copy') {
           this.router.navigateByUrl('/create-project');
         } else if (action === 'delete') {
-          this.rowDisabledState[itemId] = true;
+          this.deleteProject(itemId);
         }
       },
       header: this.confirmationHeader,
     });
+  }
+  showCopyDialog(item: any) { 
+  this.selectedProjectName = item.projectName+"_copy"; 
+  this.selectedProjectId = item.id;
+  this.visible = true;
+}
+onCopySubmit(){
+if(this.selectedProjectName == ""){
+  this.messageService.add({
+    key: 'errorToast',
+    severity: 'error',
+    summary: 'Error!',
+    detail: 'Project name can not be blank'
+  });
+}else if(this.formatDate(this.selected.startDate) == "Invalid Date" || this.formatDate(this.selected.endDate) == "Invalid Date"){
+  this.messageService.add({
+    key: 'errorToast',
+    severity: 'error',
+    summary: 'Error!',
+    detail: 'Date Range can not be blank'
+  });
+}
+else{
+ const body= {
+    projectId: this.selectedProjectId,
+    projectName: this.selectedProjectName,
+    projectStartDate: this.formatDate(this.selected.startDate),
+    projectEndDate: this.formatDate(this.selected.endDate)
+  }
+  this.projectService.copyProject(body).subscribe((res: any) => {
+   if(res?.message == 'success'){
+    this.messageService.add({
+      key: 'successToast',
+      severity: 'success',
+      summary: 'Success!',
+      detail: 'Project copied successfully.'
+    });
+    var projectId = res?.data;
+    this.router.navigate(['/create-project'], { queryParams: { projectId: projectId } });
+   }else{
+    this.messageService.add({
+      key: 'errorToast',
+      severity: 'error',
+      summary: 'Error!',
+      detail: 'Failed to copy Project.'
+    });
+   }
+  });
+}
+}
+onCancel(){
+  this.visible = false;
+}
+
+  deleteProject(itemId){
+    this.projectsService.deleteProject(itemId).subscribe((res: any) => {
+      if (res?.message == "success") {
+        this.messageService.add({
+          key: 'successToast',
+          severity: 'success',
+          summary: 'Success!',
+          detail: 'Row deleted Successfully.'
+        });
+        this.fetchAllProjectDetails();
+      } else {
+        this.messageService.add({
+          key: 'errorToast',
+          severity: 'error',
+          summary: 'Error!',
+          detail: 'Failed to delete the row.'
+        });
+      }
+    })
   }
 
   cancelDateRange() {
@@ -191,8 +271,8 @@ export class ProjectComponent {
         this.proejctdetails = res?.data.projects.map((item: any) => {
           const opportunityManagers = item.projectInformation?.opportunityManager?.map(manager => manager?.name).join(', ');
           //console.log('opp',opportunityManagers);
-          const formattedStartDate = this.datePipe.transform(item.projectInformation?.startDate, 'dd-MM-yyyy');
-          const formattedEndDate = this.datePipe.transform(item.projectInformation?.endDate, 'dd-MM-yyyy');
+          const formattedStartDate = this.datePipe.transform(item.projectInformation?.startDate, 'd MMM yyyy');
+          const formattedEndDate = this.datePipe.transform(item.projectInformation?.endDate, 'd MMM yyyy');
           return {
             companyname: item.projectInformation?.company?.name,
             id: item?.id,

@@ -15,6 +15,8 @@ var url = "/buildingblocks/api/v1/"
   providedIn: 'root'
 })
 export class ProjectsService {
+  private draftDataSubject = new BehaviorSubject<any>(null);
+  draftData$ = this.draftDataSubject.asObservable();
 
   constructor(protected http: HttpClient) { }
 
@@ -24,12 +26,19 @@ saveAsDraftProject(body: any){
   return this.http.post<any>(url + settings.AppRoutes.Auth.saveProjectDraft, body);
 }
 
+setDraftData(data: any) {
+  this.draftDataSubject.next(data);
+}
+
+
+////////////////////////////------------------shared-----------------------------//
+
 private buildingDataSubject = new BehaviorSubject<any>('');
   buildingData$ = this.buildingDataSubject.asObservable();
 
-  shareBuildingData(newData: string) {
+shareBuildingData(newData: string) {
     this.dataSubject.next(newData);
-  }
+}
 
 getAllProjectDetails(params: any): Observable<any>{
   let httpParams = new HttpParams();
@@ -39,6 +48,10 @@ getAllProjectDetails(params: any): Observable<any>{
     }
   });
   return this.http.get<any>(url + settings.AppRoutes.Auth.getallProjects,{ params: httpParams});
+}
+deleteProject(id:number) {
+  const downloadUrl = `${url}${settings.AppRoutes.Auth.saveProjectDraft}/${id}`;
+  return this.http.delete(downloadUrl);
 }
 
 downloadProjectData(startDate: string, endDate: string): Observable<HttpResponse<Blob>> {
@@ -55,8 +68,6 @@ downloadProjectData(startDate: string, endDate: string): Observable<HttpResponse
 
   return this.http.get<Blob>(url + settings.AppRoutes.Auth.exportProjectsinExcel, options);
 }
-
-
 
 
 private dataSubject = new BehaviorSubject<any>(''); 
@@ -104,14 +115,29 @@ deleteProjectDocument(id:number ) {
   return this.http.delete(downloadUrl);
 }
 
-
-/** get Project */
-
+/** get Project */ 
 getProjectDetails(projId: number): Observable<any> {
 
   return this.http.get<any>(`${url}${settings.AppRoutes.Auth.saveProjectDraft}/${projId}`);
 
 }
+copyProject(body): Observable<any> {
+  
+   return this.http.post<any>(url +`project/` +settings.AppRoutes.Auth.copyProject, body);
+  // return this.http.post<any>(`https://private-anon-fb6e707442-psabdpbbcapiblueprint.apiary-mock.com/version/project/copy`,body);
+
+}
+
+//--------------------Project BB----------------------------------//
+getProcessStepByBlockId(blockId: number ){
+  const blockIdStr = blockId.toString(); 
+  return this.http.get<any>(`${url}${settings.AppRoutes.Auth.getProcessStepbyBlockId}?blockId=${blockIdStr}`);
+}
+
+
+
+
+//--------------------------end---------------------------------//
 
 
 
@@ -119,15 +145,78 @@ getProjectDetails(projId: number): Observable<any> {
 
 getvolumeDetails(projId: number): Observable<any> {
 
-  return this.http.get<any>(`https://private-anon-5e21fd3c5c-psabdpbbcapiblueprint.apiary-mock.com/version/project/projId/volume`);
+  return this.http.get<any>(url +`project/`+ projId + `/` + settings.AppRoutes.Auth.getAddVoulmeDetails);
+
+  
 
 }
+
 savevolumeDetails(body: any) {
 
-  return this.http.post<any>(`https://private-anon-78832734d7-psabdpbbcapiblueprint.apiary-mock.com/version/project/projectId/volume`,body);
+  return this.http.post<any>(url + settings.AppRoutes.Auth.saveVoulmeDetails, body);
 
+}
+
+downloadAddVolumeExcel(projId: number) {
+
+  return this.http.get(url +`project/`+ projId + `/` + settings.AppRoutes.Auth.exportAddVolume, { responseType: 'arraybuffer' as 'json' });
 }
 
 /** end */
+
+/** cost line item **/
+
+getCostLineItemDetails(projId: number): Observable<any> {
+
+   return this.http.get<any>(url +`project/`+ projId + `/` + settings.AppRoutes.Auth.getCostLineItemDetails);
+  // return this.http.get<any>(`https://private-anon-b809d898f7-psabdpbbcapiblueprint.apiary-mock.com/project/projId/cost-line-item`);
+
+  
+
+}
+
+getCostLineItemDetailsReCalc(projId: number,body: any): Observable<any> {
+
+  return this.http.post<any>(url +`project/`+ projId + `/` + settings.AppRoutes.Auth.reCalculateCostLine,body);
+
+}
+
+saveCostLineItemDetails(body: any) {
+
+  return this.http.post<any>(url + settings.AppRoutes.Auth.saveCostLineItemDetails, body);
+  // return this.http.post<any>(`https://private-anon-b809d898f7-psabdpbbcapiblueprint.apiary-mock.com/project/cost-line-item`, body);
+
+}
+
+downloadCLIExcel(projId: number) {
+
+  return this.http.get(url +`project/`+ projId + `/` + settings.AppRoutes.Auth.exportCLI, { responseType: 'arraybuffer' as 'json' });
+}
+
+/** end */
+
+
+//-------------------------------------------Project Building Block ------------------------------------------------------//
+saveProjectBuildingBlock(body:any): Observable<any> {
+  return this.http.post<any>(url + settings.AppRoutes.Auth.ProjectBuildingBlock, body);
+}
+
+getProjectBuildingBlocks(projectId:number){
+  return this.http.get<any>(`${url}${settings.AppRoutes.Auth.ProjectBuildingBlock}/${projectId}`);
+}
+
+//-----------------------------------------------------end------------------------------------------------------------------//
+
+
+//-----------------------------------------------Project Other Cost-----------------------//
+saveProjectOtherCost(body:any): Observable<any> {
+  return this.http.post<any>(url + settings.AppRoutes.Auth.otherCost, body);
+}
+
+
+getAllOtherCost(projectId:number){
+  return this.http.get<any>(`${url}${settings.AppRoutes.Auth.project}/${projectId}/${settings.AppRoutes.Auth.otherCosts}`);
+}
+
 }
 

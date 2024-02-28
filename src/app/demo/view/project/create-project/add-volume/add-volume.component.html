@@ -7,128 +7,150 @@
         justify-content: flex-end;">
           <div style="padding: 5px;"><button pButton pRipple type="button" (click)="isExpanded = !isExpanded">
             {{ isExpanded ? 'Collapse All' : 'Expand All' }}</button></div>
-            <div style="padding: 5px;"><button pButton pRipple type="button">Download</button></div>
+            <div style="padding: 5px;"><button pButton pRipple (click)="downloadAddVolumeSCExcel($event,projectIdbb)" type="button">Download</button></div>
             <div style="padding: 5px;">
                 <button pButton pRipple type="button" (click)="showUploadDialog()">Import Excel</button>
             </div>
         </div>
     </div>
-    <hr style="margin-top: 1px;
-    margin-bottom: 22px;
-    color: gray;
-    background-color: #d9d2d2;
-    height: 1px; 
-    border: none;">
-    <p-accordion [activeIndex]="0">
-        <ng-container *ngFor="let block of volumeDetails">
-            <p-accordionTab [header]="block.buildingBlockName" [selected]="isExpanded">
-                <div>
-                    <div class="activeToggel">
-                        <button class="toggleButton" type="button" [style.border-radius]="originButtonBorderRadius" [style.background-color]="originButtonColor" [style.border]="originButtonBorder" (click)="showOriginSection()"> Origin Location</button>
-                        <button class="toggleButton" type="button" [style.border-radius]="destinationButtonBorderRadius" [style.background-color]="destinationButtonColor" [style.border]="destinationButtonBorder" (click)="showDestinationSection()"> Destination Location</button>
-                    </div>
+    <hr style="margin-top: 1px;margin-bottom: 22px;color: gray;background-color: #d9d2d2;height: 1px;border: none;">
+   <p-accordion [activeIndex]="0">
+    <ng-container *ngFor="let block of buildingBlocks">
+        <p-accordionTab [header]="block.buildingBlockName" [selected]="isExpanded">
+            <div class="activeToggel">
+                <button class="toggleButton" type="button" [style.border-radius]="originButtonBorderRadius" [style.background-color]="originButtonColor" [style.border]="originButtonBorder" (click)="showOriginSection()"> Origin Location</button>
+                <button class="toggleButton" type="button" [style.border-radius]="destinationButtonBorderRadius" [style.background-color]="destinationButtonColor" [style.border]="destinationButtonBorder" (click)="showDestinationSection()"> Destination Location</button>
+            </div>
+            <div style="margin-top:10px;" *ngIf="showOriginVolume">
+                <ng-container *ngFor="let process of block.originService.processes">
+                    <p-accordion>
+                        <p-accordionTab [header]="process.processName" [selected]="isExpanded">
+                            <div>
+                                <p-table dataKey="id" [value]="process.lines" [tableStyle]="{'min-width': '50rem'}">
+                                    <ng-template pTemplate="header">
+                                        <tr>
+                                            <th style="text-align: center;">Action</th>
+                                            <th style="text-align: center;">UOM</th>
+                                            <th style="text-align: center;">Configurable</th>
+                                            <ng-container *ngFor="let location of getLocationNames(process.lines)">
+                                                <th style="text-align: center;">{{ location }}</th>
+                                            </ng-container>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-line let-editing="editing" let-ri="rowIndex">
+                                        <tr *ngIf="line">
+                                            <td style="text-align: center; word-wrap: break-word;">
+                                                <div class="align-items-center gap-2">
+                                                    <button *ngIf="!line.editing" pButton pRipple type="button" icon="pi pi-pencil" (click)="toggleEditMode(line)" class="p-button-rounded p-button-text"></button>
+                                                    <button *ngIf="line.editing" pButton pRipple type="button" icon="pi pi-check" (click)="onRowEditSave(line)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                                                    <button *ngIf="line.editing" pButton pRipple type="button" icon="pi pi-times" (click)="onRowEditCancel(line, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                                                </div>
+                                            </td>
+                                            <td style="text-align: center; word-wrap: break-word;">
+                                                {{ line.uomName }}
+                                            </td>
+                                            <td style="text-align: center;word-wrap: break-word;">{{ line.configurableName }}</td>
+                                            <ng-container *ngFor="let location of getLocationNames(process.lines); let i = index">
+                                                <td style="text-align: center; word-wrap: break-word;">
+                                                    <div *ngIf="!line.editing; else editLocation">
+                                                        {{ editedValues[location] !== undefined ? editedValues[location] : getLocationVolumes(line.locationVolume, location) }}
+                                                      </div>
+                                                    <ng-template #editLocation>
+                                                        <ng-container *ngIf="getLocationVolumeValue(line.locationVolume, location) !== 'NA'">
+                                                            <input pInputText type="number" 
+                                                            [ngModel]="getLocationVolumeValue(line.locationVolume, location)"
+                                                            (ngModelChange)="updateLocationVolume($event, location, line)"
+                                                            style="text-align: center;">
+                                                                
+                                                        </ng-container>
+                                                    </ng-template>
+                                                </td>
+                                            </ng-container>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="emptymessage">
+                                        <tr>
+                                            <td style="text-align: center;" colspan="18">No Data found.</td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </div>
+                        </p-accordionTab>
+                    </p-accordion>
+                    
+                </ng-container>
+            </div>
+            <div style="margin-top:10px;" *ngIf="showDestinationVolume">
+                <ng-container *ngFor="let process of block.destinationService.processes">
+                    <p-accordion>
+                        <p-accordionTab [header]="process.processName" [selected]="isExpanded">
+                            <div>
+                                <p-table dataKey="id" [value]="process.lines" [tableStyle]="{'min-width': '50rem'}">
+                                    <ng-template pTemplate="header">
+                                        <tr>
+                                            <th style="text-align: center;">Action</th>
+                                            <th style="text-align: center;">UOM</th>
+                                            <th style="text-align: center;">Configurable</th>
+                                            <ng-container *ngFor="let location of getLocationNames(process.lines)">
+                                                <th style="text-align: center;">{{ location }}</th>
+                                            </ng-container>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-line let-editing="editing" let-ri="rowIndex">
+                                        <tr *ngIf="line">
+                                            <td style="text-align: center; word-wrap: break-word;">
+                                                <div class="align-items-center gap-2">
+                                                    <button *ngIf="!line.editing" pButton pRipple type="button" icon="pi pi-pencil" (click)="toggleEditModeDL(line)" class="p-button-rounded p-button-text"></button>
+                                                    <button *ngIf="line.editing" pButton pRipple type="button" icon="pi pi-check" (click)="onRowEditSaveDL(line)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                                                    <button *ngIf="line.editing" pButton pRipple type="button" icon="pi pi-times" (click)="onRowEditCancelDL(line, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                                                </div>
+                                            </td>
+                                            <td style="text-align: center; word-wrap: break-word;">
+                                                {{ line.uomName }}
+                                            </td>
+                                            <td style="text-align: center; word-wrap: break-word;">
+                                                {{ line.configurableName }}
+                                            </td>
+                                            <ng-container *ngFor="let location of getLocationNames(process.lines); let i = index">
+                                                <td style="text-align: center; word-wrap: break-word;">
+                                                    <div *ngIf="!line.editing; else editLocation">
+                                                        {{ getLocationVolumes(line.locationVolume, location) }}
+                                                    </div>
+                                                    <ng-template #editLocation>
+                                                        <ng-container *ngIf="getLocationVolumeValue(line.locationVolume, location) !== 'NA'">
+                                                            <input pInputText type="number" 
+                                                            [ngModel]="getLocationVolumeValue(line.locationVolume, location)"
+                                                            (ngModelChange)="updateLocationVolume($event, location, line)"
+                                                            style="text-align: center;">
+                                                                
+                                                        </ng-container>
+                                                    </ng-template>
+                                                </td>
+                                            </ng-container>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="emptymessage">
+                                        <tr>
+                                            <td style="text-align: center;" colspan="18">No Data found.</td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </div>
+                        </p-accordionTab>
+                    </p-accordion>
+                    
+                </ng-container>
+            </div>
             
-                    <div style="margin-top:10px;" *ngIf="showOriginVolume">
-                        <p-accordion>
-                            <ng-container *ngFor="let process of block.originService.processes">
-                                <p-accordionTab [header]="process.processName" [selected]="isExpanded">
-                                    <p-table dataKey="id" [value]="volumeDetails" editMode="row" [tableStyle]="{'min-width': '50rem'}">
-                                        <ng-template pTemplate="header">
-                                            <tr>
-                                                <th style="width:20%">Action</th>
-                                                
-                                                <th style="width:20%">UOM</th>
-                                                <th style="width:20%">Configurable</th>
-                                                <th *ngFor="let col of dynamicColumns">{{ col }}</th>
-                                            </tr>
-                                        </ng-template>
-                                        <ng-template pTemplate="body" let-buildingBlock let-editing="editing" let-ri="rowIndex">
-                                            <tr *ngIf="buildingBlock">
-                                              <td>
-                                                <div class="align-items-center gap-2">
-                                                  <button  pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(buildingBlock)" class="p-button-rounded p-button-text"></button>
-                                                  <button  pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(buildingBlock)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                                                  <button  pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(buildingBlock, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
-                                                </div>
-                                              </td>
-                                              <td>
-                                                {{ buildingBlock.originService?.processes[0].lines[0]?.uom }}
-                                              </td>
-                                              <td>
-                                                {{ buildingBlock.originService?.processes[0].lines[0]?.configurable }}
-                                              </td>
-                                              <!-- Display volume for each dynamic column -->
-                                              <td *ngFor="let col of dynamicColumns">
-                                                {{ getLocationVolume(buildingBlock, col) }}
-                                              </td>
-                                            </tr>
-                                          </ng-template>
-                                                
-                                    <ng-template pTemplate="emptymessage">
-                                        <tr>
-                                            <td style="text-align: center;" colspan="18">No Data found.</td>
-                                        </tr>
-                                    </ng-template>
-                                    </p-table>
-                                </p-accordionTab>
-                            </ng-container>
-                        </p-accordion>
-                    </div>
-                    <div style="margin-top:10px;" *ngIf="showDestinationVolume">
-                        <p-accordion>
-                            <ng-container *ngFor="let process of block.destinationService.processes">
-                                <p-accordionTab [header]="process.processName" [selected]="isExpanded">
-                                    <p-table dataKey="id" [value]="volumeDetails" editMode="row" [tableStyle]="{'min-width': '50rem'}">
-                                        <ng-template pTemplate="header">
-                                            <tr>
-                                                <th style="width:20%">Action</th>
-                                                
-                                                <th style="width:20%">UOM</th>
-                                                <th style="width:20%">Configurable</th>
-                                                <th *ngFor="let col of dynamicColumns">{{ col }}</th>
-                                            </tr>
-                                        </ng-template>
-                                        <ng-template pTemplate="body" let-buildingBlock let-editing="editing" let-ri="rowIndex">
-                                            <tr *ngIf="buildingBlock">
-                                              <td>
-                                                <div class="align-items-center gap-2">
-                                                  <button  pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(buildingBlock)" class="p-button-rounded p-button-text"></button>
-                                                  <button  pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(buildingBlock)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                                                  <button  pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(buildingBlock, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
-                                                </div>
-                                              </td>
-                                              <td>
-                                                {{ buildingBlock.destinationService?.processes[0].lines[0]?.uom }}
-                                              </td>
-                                              <td>
-                                                {{ buildingBlock.destinationService?.processes[0].lines[0]?.configurable }}
-                                              </td>
-                                              <!-- Display volume for each dynamic column -->
-                                              <td *ngFor="let col of dynamicColumns">
-                                                {{ getLocationVolume(buildingBlock, col) }}
-                                              </td>
-                                            </tr>
-                                          </ng-template>
-                                                
-                                    <ng-template pTemplate="emptymessage">
-                                        <tr>
-                                            <td style="text-align: center;" colspan="18">No Data found.</td>
-                                        </tr>
-                                    </ng-template>
-                                    </p-table>
-                                </p-accordionTab>
-                            </ng-container>
-                        </p-accordion>
-                    </div>
-                </div>
-            </p-accordionTab>
-        </ng-container>
-        
-    </p-accordion>
+        </p-accordionTab>
+    </ng-container>
+</p-accordion>
+
+
     <div class="col-12" style="display: flex;justify-content: flex-end;">
-        <button pButton pRipple type="button" label="Save As Draft" 
+        <button pButton pRipple type="button" label="Save As Draft" *ngIf="projStatus !='Closed Won' && projStatus !='Close Lost'"
             (click)="onSaveVolumeClick()" class="p-button-outlined mr-2 mb-2"></button>
-        <button type="submit" pButton pRipple label="Continue" (click)="goToNextTab()" class="mr-2 mb-2"></button>
+        <button type="submit" pButton pRipple label="Continue" (click)="onClickContinue()" class="mr-2 mb-2"></button>
     </div>
     <p style="font-weight: 500;"></p>
     
@@ -168,18 +190,6 @@
                 <div class="custom-container">
                     <h6><b>Upload</b></h6>
                     <div  style="color: red;">
-                        <!-- <b>Upload error: Review the file before uploading.</b>
-                        <div *ngIf="!uploadError">
-                            <div *ngIf="deliverablesError">{{ deliverablesError }}</div>
-                        <div *ngIf="valueToPSABDPError">{{ valueToPSABDPError }}</div>
-                        <div *ngIf="parametersError">{{ parametersError }}</div>
-                        <div *ngIf="serviceDescriptionError">{{ serviceDescriptionError }}</div>
-                        <div *ngIf="stakeholdersAudienceError">{{ stakeholdersAudienceError }}</div>
-                        <div *ngIf="customerRequirementsError">{{ customerRequirementsError }}</div>
-                        <div *ngIf="configurableError">{{ configurableError }}</div> 
-                        </div>
-                       
-                        Add similar divs for other fields -->
                       </div>
                      
                     <div class="box">
@@ -218,3 +228,5 @@
 
     </div>
 </p-dialog>
+<p-toast key="successToast" position="top-right"></p-toast>
+<p-toast key="errorToast" position="top-right"></p-toast>
