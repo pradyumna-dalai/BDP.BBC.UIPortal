@@ -55,8 +55,8 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   getSavedBlocks: any;
   savedBlockedId: any;
   getSavedBlocksDD: any;
-  selectedDestinationLocationNodes: any;
-  selectedOriginLocationNodes: any;
+  selectedDestinationLocationNodes: any[]=[];
+  selectedOriginLocationNodes: any[]=[];
   selectedOriginLocationNodesbody: any[] = [];
   draftSavedBB: boolean = false;
   projectIDbb: any;
@@ -514,15 +514,35 @@ hasConfigurations(step: any): boolean {
     });
     this.treeData = treeData;
 
-    this.selectedOriginLocationNodes=this.filterNodesBySelectedKeys(treeData, selectedOriginLocId);
-    let finalOriginArray=this.selectedOriginLocationNodes.map(node => node.children || []);
+    let filterNodeForOrigin=this.filterNodesBySelectedKeys(treeData, selectedOriginLocId);
+    let finalOriginArray=filterNodeForOrigin.map(node => node.children || []);
+    let areEqualOrigin=false;
+    for(let i=0;i<treeData.length;i++){
+      if(filterNodeForOrigin[i].children.length === this.treeData[i].children.length)
+      {
+        areEqualOrigin=true;
+      }
+      if(areEqualOrigin==true){
+        this.selectedOriginLocationNodes.push(filterNodeForOrigin[i])
+      }
+    }
     this.selectedOriginLocationNodes.push(...finalOriginArray.flat());
     console.log(this.selectedOriginLocationNodes)
     selectedStep.selectedOriginLoc=[...finalOriginArray]
-    this.selectedDestinationLocationNodes=this.filterNodesBySelectedKeys(treeData, selectedDestinationLocId);
-    let finalDestArray=this.selectedDestinationLocationNodes.map(node => node.children || []);
+    let filterNodeForDestination=this.filterNodesBySelectedKeys(treeData, selectedDestinationLocId);
+    let finalDestArray=filterNodeForDestination.map(node => node.children || []);
+    let areEqualDestination=false;
+    for(let i=0;i<treeData.length;i++){
+      if(filterNodeForDestination[i].children.length === this.treeData[i].children.length)
+      {
+        areEqualDestination=true;
+      }
+      if(areEqualDestination==true){
+        this.selectedDestinationLocationNodes=filterNodeForDestination[i]
+      }
+    }
      this.selectedDestinationLocationNodes.push(...finalDestArray.flat());
-    console.log(this.selectedOriginLocationNodes)
+    console.log(this.selectedDestinationLocationNodes)
     return treeData;
   }
 
@@ -592,10 +612,10 @@ hasConfigurations(step: any): boolean {
             const originServiceConfigurations = [];
             const destinationServiceConfigurations = [];
   
-            processInfo.selectedOriginLoc.forEach((loc: any) => {
+            processInfo.selectedOriginLoc.flat().forEach((loc: any) => {
               if(loc.parent!=undefined){
               const configIndex = originServiceConfigurations.findIndex((config: any) => config.configurableId === loc.parent.data.id);
-              if (configIndex > -1) {
+              if (configIndex == -1) {
                 originServiceConfigurations.push({
                   configurableId: loc.parent.data.id,
                   configurableName: loc.parent.data.name,
@@ -605,25 +625,9 @@ hasConfigurations(step: any): boolean {
                   }]
                 });
               }
-            }
-            else{
-              const configIndex = originServiceConfigurations.findIndex((config: any) => config.locationId === loc.data.id);
-              if (configIndex > -1) {
-                originServiceConfigurations.push({
-                  locations: [{
-                   locationId: loc.data.id,
-                   locationName: loc.data.name
-                  }]
-                });
-            }
-          }
-          });
-  
-              processInfo.selectedDestinationLoc.forEach((loc: any) => {
-                if(loc.parent!=undefined){
-                const configIndex = destinationServiceConfigurations.findIndex((config: any) => config.configurableId === loc.parent.data.id);
-                if (configIndex > -1) {
-                  destinationServiceConfigurations.push({
+              else{
+                if(configIndex>-1){
+                  originServiceConfigurations.push({
                     configurableId: loc.parent.data.id,
                     configurableName: loc.parent.data.name,
                     locations: [{
@@ -633,15 +637,75 @@ hasConfigurations(step: any): boolean {
                   });
                 }
               }
+            }
+            else{
+              const configIndex = originServiceConfigurations.findIndex((config: any) => config.locationId === loc.data.id);
+              if (configIndex == -1) {
+                originServiceConfigurations.push({
+                  locations: [{
+                   locationId: loc.data.id,
+                   locationName: loc.data.name
+                  }]
+                });
+            }
+            else{
+              if(configIndex>-1){
+                originServiceConfigurations.push({
+                  locations: [{
+                   locationId: loc.data.id,
+                   locationName: loc.data.name
+                  }]
+                });
+              }
+            }
+          }
+          console.log(originServiceConfigurations)
+          });
+              processInfo.selectedDestinationLoc.flat().forEach((loc: any) => {
+                if(loc.parent!=undefined){
+                const configIndex = destinationServiceConfigurations.findIndex((config: any) => config.configurableId === loc.parent.data.id);
+                if (configIndex == -1) {
+                  destinationServiceConfigurations.push({
+                    configurableId: loc.parent.data.id,
+                    configurableName: loc.parent.data.name,
+                    locations: [{
+                     locationId: loc.data.id,
+                     locationName: loc.data.name
+                    }]
+                  });
+                }
+                else{
+                  if(configIndex > -1){
+                    destinationServiceConfigurations.push({
+                      configurableId: loc.parent.data.id,
+                      configurableName: loc.parent.data.name,
+                      locations: [{
+                       locationId: loc.data.id,
+                       locationName: loc.data.name
+                      }]
+                  });
+                }
+              }
+            }
               else{
                 const configIndex = destinationServiceConfigurations.findIndex((config: any) => config.locationId === loc.data.id);
-                if (configIndex > -1) {
+                if (configIndex == -1) {
                 destinationServiceConfigurations.push({
                     locations: [{
                      locationId: loc.data.id,
                      locationName: loc.data.name
                     }]
                   });
+              }
+              else{
+                if(configIndex > -1){
+                  destinationServiceConfigurations.push({
+                    locations: [{
+                     locationId: loc.data.id,
+                     locationName: loc.data.name
+                    }]
+                  });
+                }
               }
             }
             });
