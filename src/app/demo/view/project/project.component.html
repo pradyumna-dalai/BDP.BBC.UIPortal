@@ -138,8 +138,9 @@ currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
        
         <div class="field col-12 md:col-12 customCSS" style="margin-top: -27px;">
           <div class="p-d-block"><label>Start Date-End Date<span class="requiredField">*</span></label></div>
-          <input type="text" ngxDaterangepickerMd [lockStartDate]="false"
-          placeholder="Start Date-End Date" [(ngModel)]="selected"  class="date_pick" />
+          <!-- <input type="text" ngxDaterangepickerMd [lockStartDate]="false"
+          placeholder="Start Date-End Date" [(ngModel)]="selected"  class="date_pick" /> -->
+          <p-calendar [(ngModel)]="selected" selectionMode="range" [readonlyInput]="true" placeholder="start-date/end-date" class="depp"></p-calendar>
         </div>
     </div>
     <div class="col-12" style="display: flex;justify-content: flex-end;">

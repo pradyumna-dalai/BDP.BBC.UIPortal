@@ -177,8 +177,8 @@ else{
  const body= {
     projectId: this.selectedProjectId,
     projectName: this.selectedProjectName,
-    projectStartDate: this.formatDate(this.selected.startDate),
-    projectEndDate: this.formatDate(this.selected.endDate)
+    projectStartDate: this.formatDate(this.selected[0]),
+    projectEndDate: this.formatDate(this.selected[1])
   }
   this.projectService.copyProject(body).subscribe((res: any) => {
    if(res?.message == 'success'){
