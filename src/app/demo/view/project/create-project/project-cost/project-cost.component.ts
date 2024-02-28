@@ -91,7 +91,7 @@ fetchAllProjectBuildingBlock(projectId: any) {
     this.projectService.getProjectBuildingBlocks(projectId).subscribe({
       next: (response: any) => {
         this.getSavedBlockslist = response.data;
-        console.log("Table BB", this.getSavedBlockslist)
+       // console.log("Table BB", this.getSavedBlockslist)
         // this.getSavedBlocksDetails = response.data.buildingBlocks.map((block: any) => ({
         //   // buildingBlockId: block.buildingBlockId,
         //   // buildingBlockName: block.buildingBlockName
@@ -106,13 +106,13 @@ fetchAllProjectBuildingBlock(projectId: any) {
 
 //------------------------------------------------Download Pdf--------------------------------------------------//
   downloadAsPdf() {
-    const element = document.getElementById('pdfContent');
+    const element = document.getElementById('pdf-content');
     const opt = {
       margin: 1,
-      filename: 'project_info.pdf',
+      filename: 'BBC_SOW.pdf',
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: { scale: 2 },
-      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+      jsPDF: { unit: 'in', format: 'a3', orientation: 'portrait' }
     };
     html2pdf().from(element).set(opt).save();
   }

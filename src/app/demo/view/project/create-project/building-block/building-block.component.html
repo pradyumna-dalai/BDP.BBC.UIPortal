@@ -120,13 +120,15 @@
                                         class="p-button-rounded p-button-text p-button-danger"
                                     ></button>
                                 </ng-template>
-                                <div>
+                                <div class="bdp-step">
                                   
-                                    <li *ngFor="let step of node.data?.stepsInformation" style="display: inline-block; vertical-align: top;" [ngClass]="step[1].stepStatus === 0 ? 'text-grey' : step[1].stepStatus === 1 ? 'text-red' : 'text-green'" (click)="selectStep(step[1], isDestinationActive ? 1 : 0)">
-                                        <div class="grid">
-                                        <div class="col-1" style="font-weight: bold;">{{ step[1].processNumber }}-</div><div class="11" style="padding-top:14px; padding-left: 14px ;width: 25rem;">{{ step[1].stepName }}</div>   
+                                    <li *ngFor="let step of node.data?.stepsInformation" style="display: inline-block; justify-content:space-between;vertical-align: top;" [ngClass]="step[1].stepStatus === 0 ? 'text-grey' : step[1].stepStatus === 1 ? 'text-red' : 'text-green'" (click)="selectStep(step[1], isDestinationActive ? 1 : 0)">
+                                        <div style="display: inline-flex;padding-top: 14px;">
+                                        <div  style="font-weight: bold;color: #1d2125;padding-left: 1px;">{{ step[1].processNumber }}&nbsp;)&nbsp;&nbsp;</div><div>{{ step[1].stepName }}</div>  
                                         </div>
+                                        <br>
                                     </li>
+                                   
                                  
                                     
                                 </div>
@@ -211,24 +213,11 @@
 
         <p-toast key="successToast"></p-toast>
     </div>
-    <div class="col-12" style="display: flex; justify-content: flex-end">
-        <button
-            pButton
-            pRipple
-            type="button"
-            label="Save As Draft"
-            (click)="onSaveProjectBBClick()"
-            class="p-button-outlined mr-2 mb-2"
-        ></button>
-        <button
-            type="submit"
-            pButton
-            pRipple
-            label="Continue"
-            (click)="onClickContinue()"
-            [disabled]="!draftSavedBB"
-            class="mr-2 mb-2"
-        ></button>
+    <div class="col-12" style="display: flex;justify-content: flex-end;">
+        <button pButton pRipple type="button" *ngIf="projStatus !='Closed Won' && projStatus !='Close Lost'" label="Save As Draft" (click)="onSaveProjectBBClick()"
+            class="p-button-outlined mr-2 mb-2"></button>
+        <button type="submit" pButton pRipple label="Continue" (click)="onClickContinue()" 
+            class="mr-2 mb-2"></button>
     </div>
     <p style="font-weight: 500"></p>
 </div>

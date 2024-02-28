@@ -65,15 +65,18 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   @Input() projectId: number | null;
   @Output() continueClicked: EventEmitter<any> = new EventEmitter();
   @Input() projinfoID: number | null;
+  @Input() projStatus: any | null;
 
   constructor(private sharedService: SharedServiceService, private projectService: ProjectsService, private messageService: MessageService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
     //  console.log(' :',this.getSavedBlocksDD);
-    // this.projectService.draftData$.subscribe(data => {
-    //   this.projectLocations = data?.data?.projectLocation.filter(loc => loc.originDestinationCode === 0 || loc.originDestinationCode === 1);
-    //   this.projectId = data?.data?.id;
-    //   this.projectName = data?.data?.projectInformation?.projectName;
-    //   this.getAllProjectBuildingBlock(this.projectId);
-    // });
+    if(this.projinfoID==null){
+    this.projectService.draftData$.subscribe(data => {
+      this.projectLocations = data?.data?.projectLocation.filter(loc => loc.originDestinationCode === 0 || loc.originDestinationCode === 1);
+      this.projectId = data?.data?.id;
+      this.projectName = data?.data?.projectInformation?.projectName;
+    //  this.getAllProjectBuildingBlock(this.projectId);
+    });
+  }
     if(this.projinfoID!=null){
       this.getAllProjectBuildingBlock(this.projinfoID);
       this.fetchProjectInfomation(this.projinfoID);
@@ -87,7 +90,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
     this.getAllProjectBuildingBlock(this.projinfoID);
     this.fetchProjectInfomation(this.projinfoID);
     }
-    
+    this.projStatus = this.projStatus;
   }
   onClickContinue() {
     // Emit event to notify parent component to move to next tab
@@ -571,7 +574,7 @@ hasConfigurations(step: any): boolean {
     
     stepdata.selectedOriginLoc = this.selectedOriginLocationNodes.map((node: any) => node);
     stepdata.selectedDestinationLoc = this.selectedDestinationLocationNodes.map((node: any) => node);
-    //console.log('information', this.stepwithInfo);
+    console.log('information', this.stepwithInfo);
     
   }
 
@@ -671,7 +674,10 @@ hasConfigurations(step: any): boolean {
       next: (response: any) => {
         this.sharedService.setDraftSavedBB(true);
         this.sharedService.setProjectIDbb(response?.data?.projectId);
-        this.draftSavedBB = true;
+        if(this.projStatus != 'Close Lost' || this.projStatus != 'Closed Won'){
+          this.draftSavedBB = true;
+        }
+        
         this.projectIDbb = response.projectId;
         this.messageService.add({
           key: 'successToast',

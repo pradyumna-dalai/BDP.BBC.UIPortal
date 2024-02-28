@@ -4,3 +4,25 @@
 .toggleButton{
     cursor: pointer
 }
+th, td {
+    padding: 5px; /* Adjust as needed */
+    margin: 0; /* Adjust as needed */
+}
+
+.pdf-content { font-family: Arial, sans-serif; max-width: 8.27in; margin: 0 auto; padding: 0.5in; background-color: #f9f9f9; }
+
+.pdf-content h5 { font-size: 14pt; margin-top: 12pt; margin-bottom: 6pt; }
+
+.pdf-content label { font-size: 10pt; }
+
+.pdf-content span { font-size: 10pt; }
+
+.pdf-content .p-fluid { margin-top: 12pt; margin-bottom: 12pt; }
+
+.pdf-content .p-fluid .p-col-12 { margin-bottom: 12pt; }
+
+.pdf-content .toggleButton { font-size: 10pt; padding: 5pt 10pt; border-radius: 4px; background-color: #e9ecef; border: 1px solid #ced4da; margin-right: 6pt; cursor: pointer; }
+
+.pdf-content .toggleButton:hover { background-color: #d9d9d9; }
+
+.pdf-content hr { border: none; border-top: 1px solid #d9d2d2; margin: 12pt 0; }

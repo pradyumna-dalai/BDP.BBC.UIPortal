@@ -271,8 +271,8 @@ onCancel(){
         this.proejctdetails = res?.data.projects.map((item: any) => {
           const opportunityManagers = item.projectInformation?.opportunityManager?.map(manager => manager?.name).join(', ');
           //console.log('opp',opportunityManagers);
-          const formattedStartDate = this.datePipe.transform(item.projectInformation?.startDate, 'dd-MM-yyyy');
-          const formattedEndDate = this.datePipe.transform(item.projectInformation?.endDate, 'dd-MM-yyyy');
+          const formattedStartDate = this.datePipe.transform(item.projectInformation?.startDate, 'd MMM yyyy');
+          const formattedEndDate = this.datePipe.transform(item.projectInformation?.endDate, 'd MMM yyyy');
           return {
             companyname: item.projectInformation?.company?.name,
             id: item?.id,
