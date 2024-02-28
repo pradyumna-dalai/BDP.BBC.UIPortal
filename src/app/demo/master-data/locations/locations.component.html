@@ -106,7 +106,7 @@
         <div class="p-grid p-field">
             <div class="formgrid grid">
                 <div class="field col-12 md:col-5">
-                    <label>Locaton Name<span class="required">*</span></label>
+                    <label>Location Name<span class="required">*</span></label>
                     <input id="name" type="text" formControlName="name" placeholder="Location Name"
                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
                     <div *ngIf="locationForm.get('name')?.hasError('required') && locationForm.get('name')?.touched"
