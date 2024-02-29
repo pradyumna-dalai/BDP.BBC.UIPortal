@@ -115,6 +115,14 @@ deleteProjectDocument(id:number ) {
   return this.http.delete(downloadUrl);
 }
 
+getAllProjectArtifacts(scopeId: number, entityId: number): Observable<any> {
+  return this.http.get<any>(`${url}${settings.AppRoutes.Auth.getAllFiles}/?scopeId=${scopeId}/&entityId=${entityId}/&limitSize=3/&removeDuplicate=false`);
+}
+
+
+
+//------------------------------get uploaded files------------------------//
+
 /** get Project */ 
 getProjectDetails(projId: number): Observable<any> {
 
