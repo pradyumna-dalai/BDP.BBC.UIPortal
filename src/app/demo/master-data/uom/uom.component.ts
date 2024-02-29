@@ -225,20 +225,12 @@ export class UOMComponent implements AfterViewInit{
             (error) => {
                
                 if (error.status === 400) {
-                  if(error.error.data[0] == 'Name should not be more than 50 words'){
+                  if(error.error.data[0] == 'Description should not be more than 1000 characters'){
                     this.messageService.add({
                       key: 'errorToast',
                       severity: 'error',
                       summary: 'Error!',
-                      detail: error.error.data[0].value
-                    });
-                  }
-                    else if(error.error.data[0] == 'Description exceed length'){
-                    this.messageService.add({
-                      key: 'errorToast',
-                      severity: 'error',
-                      summary: 'Error!',
-                      detail: 'Description should not be more than 1000 words'
+                      detail: 'Description should not be more than 1000 characters'
                     });
                   }
                   else if(error.error.data[0] == 'UOM name exists'){

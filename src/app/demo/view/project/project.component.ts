@@ -189,7 +189,7 @@ else{
       detail: 'Project copied successfully.'
     });
     var projectId = res?.data;
-    this.router.navigate(['/create-project'], { queryParams: { projectId: projectId } });
+    this.router.navigate(['/create-project'], { queryParams: { projId: projectId } });
    }else{
     this.messageService.add({
       key: 'errorToast',
