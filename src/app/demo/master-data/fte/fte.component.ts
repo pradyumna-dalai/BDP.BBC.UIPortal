@@ -105,9 +105,9 @@ export class FteComponent {
   //   this.findLocationID()
   // }
   findLocationID(){
-        console.log("findCountry_Id",this.countryID)
+
       this.locationOptions.filter((res)=> res.country.id === this.countryID);
-        console.log(this.locationList)  
+
   }
 
 
