@@ -152,10 +152,10 @@
     </form>
     <!-- <hr> -->
     <ng-template pTemplate="footer">
-        <p-button label="{{ editMode ? 'Update' : 'Add' }}" (click)="createProductScope()"
-            [disabled]="!ScopeForm.valid || processing"></p-button>&nbsp;&nbsp;
-        <p-button label="Cancel" (click)="displayCreateScopeDialog = false"
-            class="p-button-outlined mr-2 mb-2"></p-button>
+        <button pButton pRipple label="Cancel" (click)="displayCreateScopeDialog = false"
+            class="p-button-outlined mr-2 mb-2"></button>
+        <button pButton pRipple label="{{ editMode ? 'Update' : 'Add' }}" class="mr-2 mb-2" (click)="createProductScope()"
+            [disabled]="!ScopeForm.valid || processing"></button>
     </ng-template>
 </p-dialog>
 <p-toast></p-toast>

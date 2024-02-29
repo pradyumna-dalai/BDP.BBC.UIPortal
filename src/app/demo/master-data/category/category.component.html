@@ -8,9 +8,9 @@
             </span>
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
-            <button type="button" pButton pRipple label="Clear" (click)="clear(dt2)" class="mr-2 mb-2"></button>
-            <button type="button" pButton pRipple label="Export" class="mr-2 mb-2" pTooltip="Export in Excel File"
+            <button type="button" pButton pRipple label="Export" class="p-button-outlined mr-2 mb-2" pTooltip="Export in Excel File"
                 (click)="downloadExcel($event)" tooltipPosition="top"></button>
+            <button type="button" pButton pRipple label="Clear" (click)="clear(dt2)" class="p-button-outlined mr-2 mb-2"></button>
             <button type="button" pButton pRipple label=" Add " (click)="showCreateCategoryDialoge()" icon="pi pi-plus"
                 class="mr-2 mb-2"></button>
         </div>
@@ -173,9 +173,9 @@
         </div>
     </form>
     <ng-template pTemplate="footer">
-        <p-button label="{{ editMode ? 'Update' : 'Add' }}" (click)="createProductCategory()"
-            [disabled]="!CategoryForm.valid|| processing"></p-button>&nbsp;&nbsp;
-        <p-button label="Cancel" (click)="cancelUpdate()"></p-button>
+        <button pButton pRipple label="Cancel" class="p-button-outlined mr-2 mb-2" (click)="cancelUpdate()"></button>
+        <button pButton pRipple label="{{ editMode ? 'Update' : 'Add' }}" class="mr-2 mb-2" (click)="createProductCategory()"
+            [disabled]="!CategoryForm.valid|| processing"></button>
     </ng-template>
 </p-dialog>
 <p-toast></p-toast>
