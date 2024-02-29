@@ -8,9 +8,9 @@
             </span>
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
-            <button type="button" pButton pRipple label="Clear" (click)="clear(dt2)" class="mr-2 mb-2"></button>
-            <button type="button" pButton pRipple label="Export" class="mr-2 mb-2" (click)="downloadExcel($event)"
+            <button type="button" pButton pRipple label="Export" class="p-button-outlined mr-2 mb-2" (click)="downloadExcel($event)"
                 pTooltip="Export in Excel File" tooltipPosition="top"></button>
+            <button type="button" pButton pRipple label="Clear" (click)="clear(dt2)" class="p-button-outlined mr-2 mb-2"></button>
             <button type="button" pButton pRipple label=" Add " (click)="showCreateLocationDialog()" icon="pi pi-plus"
                 class="mr-2 mb-2"></button>
         </div>
@@ -180,9 +180,10 @@
     </form>
     <!-- <hr> -->
     <ng-template pTemplate="footer">
-        <p-button label="{{ editMode ? 'Update' : 'Add' }}" (click)="addLocationsDetails()"
-            [disabled]="!locationForm.valid || processing"></p-button>&nbsp;&nbsp;
-        <p-button label="Cancel" (click)="cancelUpdate()"></p-button>
+        <button pButton pRipple label="Cancel" class="p-button-outlined mr-2 mb-2" (click)="cancelUpdate()"></button>
+        <button pButton pRipple label="{{ editMode ? 'Update' : 'Add' }}" (click)="addLocationsDetails()"
+            [disabled]="!locationForm.valid || processing" class="mr-2 mb-2"></button>
+        
     </ng-template>
 </p-dialog>
 <p-toast></p-toast>
