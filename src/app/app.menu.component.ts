@@ -15,6 +15,7 @@ import { NavigationEnd, Router } from '@angular/router';
         .active {
             background-color:#4d555e; /* Apply your active state styling here */
             color: #FFFFFF; /* Text color for active state */
+            border-radius:7px !important;
          
         }
     `]

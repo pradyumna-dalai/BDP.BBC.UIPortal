@@ -24,7 +24,7 @@ import {AppMainComponent} from './app.main.component';
                         
                         <li #profile class="topbar-item user-profile"
                             [ngClass]="{'active-topmenuitem':appMain.activeTopbarItem === profile}">
-                            <a href="#" (click)="appMain.onTopbarItemClick($event,profile)">
+                            <a href="#">
                                 <img class="profile-image" style="border-radius:50%;" src="assets/layout/images/avatar.png" alt="demo">
                                 <div class="profile-info" style="margin-top: 5px;">
                                     <h6>Solution User</h6>
@@ -59,3 +59,5 @@ export class AppTopBarComponent {
     }
 
 }
+
+// (click)="appMain.onTopbarItemClick($event,profile)"

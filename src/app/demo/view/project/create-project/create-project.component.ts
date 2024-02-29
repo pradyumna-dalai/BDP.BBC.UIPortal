@@ -113,6 +113,7 @@ export class CreateProjectComponent implements OnInit {
   projInfo: any;
   projinfoidedit: any;
   projStatus: any;
+  projectDocument: any;
   
   
   constructor(private sharedService: SharedServiceService,private route: ActivatedRoute, private breadcrumbService: AppBreadcrumbService, private zone: NgZone,
@@ -187,7 +188,7 @@ export class CreateProjectComponent implements OnInit {
     if (this.projId) {
       this.breadcrumbService.setItems([
         {
-          label: 'PROJECT',
+          label: 'Project',
           routerLink: 'project'
         },
         { label: 'Update Project' },
@@ -195,8 +196,9 @@ export class CreateProjectComponent implements OnInit {
     } else {
       this.breadcrumbService.setItems([
         {
-          label: 'PROJECT',
+          label: 'Project',
           routerLink: 'project'
+
         },
         { label: 'Create Project' },
       ]);
@@ -798,7 +800,55 @@ export class CreateProjectComponent implements OnInit {
   }
   //-------------------------------------------------end-----------------------------------------//
 
+  getProjectDetails(projectId): void {
+    this.projectService.getProjectDetails(projectId).subscribe((res: any) => {
+        if (res?.message === 'success') {
+            //this.projectService.setDraftData(res);
+            this.draftSaved = true;
+            this.projinfoID = projectId;
+            this.draftSavedBB = true;
+            this.draftSavedVolume = true;
+            this.projectidVolume = projectId;
+            this.projectIDbb = projectId;
+            this.projectIdCLI = projectId;
+            this.draftSavedCLI = true;
+            this.draftSavedOC = true;
+            this.projectIdOC = projectId;
+            this.response = res.data.projectInformation;
+            this.projinfoidedit =  res.data.projectInformation.id;
+            this.projStatus = this.response.projectStatus?.name;
+            this.populateForm(); 
+            const originLocations = res.data.projectLocation.filter(location => location.originDestinationCode === 0);
+            const destinationLocations = res.data.projectLocation.filter(location => location.originDestinationCode === 1);
 
+            this.OtableData = originLocations.map(location => ({
+                city: location.location.name,
+                Volume: location.volume,
+                Uom: location.uom.id,
+                editing: false, 
+                adding: false
+            }));
+
+            this.tableData = destinationLocations.map(location => ({
+                city: location.location.name,
+                Volume: location.volume,
+                Uom: location.uom.id,
+                editing: false,
+                adding: false
+            }));
+
+            if (originLocations.length > 0) {
+                this.enableOriginLocation = true;
+            }
+
+            if (destinationLocations.length > 0) {
+                this.enableDestinationLocation = true;
+            }
+        } else {
+            // Handle error
+        }
+    });
+}
   //-------------------------------------Delete  Document By ID -----------------------------------//
 
   deleteResponseArtifact(index: number): void {
@@ -932,56 +982,6 @@ export class CreateProjectComponent implements OnInit {
     }
   }
 
-  getProjectDetails(projectId): void {
-    this.projectService.getProjectDetails(projectId).subscribe((res: any) => {
-        if (res?.message === 'success') {
-            //this.projectService.setDraftData(res);
-            this.draftSaved = true;
-            this.projinfoID = projectId;
-            this.draftSavedBB = true;
-            this.draftSavedVolume = true;
-            this.projectidVolume = projectId;
-            this.projectIDbb = projectId;
-            this.projectIdCLI = projectId;
-            this.draftSavedCLI = true;
-            this.draftSavedOC = true;
-            this.projectIdOC = projectId;
-            this.response = res.data.projectInformation;
-            this.projinfoidedit =  res.data.projectInformation.id;
-            this.projStatus = this.response.projectStatus?.name;
-            this.populateForm(); 
-            const originLocations = res.data.projectLocation.filter(location => location.originDestinationCode === 0);
-            const destinationLocations = res.data.projectLocation.filter(location => location.originDestinationCode === 1);
-
-            this.OtableData = originLocations.map(location => ({
-                city: location.location.name,
-                Volume: location.volume,
-                Uom: location.uom.id,
-                editing: false, 
-                adding: false
-            }));
-
-            this.tableData = destinationLocations.map(location => ({
-                city: location.location.name,
-                Volume: location.volume,
-                Uom: location.uom.id,
-                editing: false,
-                adding: false
-            }));
-
-            if (originLocations.length > 0) {
-                this.enableOriginLocation = true;
-            }
-
-            if (destinationLocations.length > 0) {
-                this.enableDestinationLocation = true;
-            }
-        } else {
-            // Handle error
-        }
-    });
-}
-
   populateForm(): void {
     this.myForm.patchValue({
       
@@ -1109,6 +1109,11 @@ export class CreateProjectComponent implements OnInit {
 
   }
 
- 
+ fetchAllProjectArtifact(scopeId: number, entityId: number){
+      this.projectService.getAllProjectArtifacts(scopeId,entityId).subscribe((res: any) => {
+        if (res?.message == "success") {
+        }
+      })
+ }
 }
 

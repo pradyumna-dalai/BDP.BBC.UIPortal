@@ -5052,13 +5052,14 @@ body a:hover {
   font-size: 12px;
   font-weight: normal;
   color: #657380;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
 }
 .layout-breadcrumb .breadcrumb .route-bar-breadcrumb > li i {
   font-size: 10px;
 }
 .layout-breadcrumb .breadcrumb .route-bar-breadcrumb > li .p-link {
-  color: #515C66;
+  /* color: #515C66; */
+  color: #2c84d8;
   -moz-transition: color 0.2s;
   -o-transition: color 0.2s;
   -webkit-transition: color 0.2s;
