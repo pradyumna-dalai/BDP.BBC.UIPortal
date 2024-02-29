@@ -98,6 +98,11 @@ findRegionId(event){
     return status === true || status === 'active' ? 'Active' : 'Inactive';
   }
 
+  getTextColor(status: boolean): string {
+    return this.getSeverity(status) === 'success' ? '#1BB162' : '#ec4e4e';
+  }
+  
+  
   //--------------------------fetch location-------------------------------//
 
   fetchAllLocationDetails(keyword: string = ''): void{

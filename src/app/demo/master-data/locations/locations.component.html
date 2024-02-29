@@ -66,8 +66,9 @@
                             class="pi pi-pencil"></i></span>&nbsp;
                 </td>
                 <td style="text-align: center; word-wrap: break-word;">
-                    <p-tag [value]="getSeverityLabel(item.status)" [severity]="getSeverity(item.status)"></p-tag>
-                </td>
+                    <span [ngStyle]="{'color': getTextColor(item.status)}">{{ getSeverityLabel(item.status) }}</span>
+                  </td>
+                  
                 <td style="text-align: center; word-wrap: break-word;">{{ item.region.name }}</td>
                 <td style="text-align: center; word-wrap: break-word;">{{ item.country.name }}</td>
                 <td style="text-align: center; word-wrap: break-word;">{{ item.name }}</td>
