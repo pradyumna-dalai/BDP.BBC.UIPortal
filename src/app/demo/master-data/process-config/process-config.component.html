@@ -26,11 +26,13 @@
         <tr>
             <td style="text-align: center; white-space: nowrap;" [frozen]="true"> <!-- Add frozen attribute here -->
                 <span style="cursor: pointer; display: inline-block;" (click)="toggleEditMode(i)">
-                    <button pButton pRipple type="button" class="p-button-rounded p-button-text" (click)="editModes[i] ? saveProcess(rowData) : editProcess()" [icon]="'pi pi-' + (editModes[i] ? 'check' : 'pencil')"></button>
+                    <button pButton pRipple type="button"  class="p-button-rounded p-button-text" 
+                    [class.p-button-success]="editModes[i]" 
+                    [class.mr-2]="editModes[i]" (click)="editModes[i] ? saveProcess(rowData) : editProcess()" [icon]="'pi pi-' + (editModes[i] ? 'check' : 'pencil')"></button>
                 </span>&nbsp;
                 <span style="cursor: pointer; display: inline-block;">
                 <button pButton pRipple type="button" class="p-button-rounded p-button-text" icon="pi pi-{{ editModes[i] ? 'times' : 'plus' }}" *ngIf="!editModes[i]" (click)="addNewRow(i)"></button>
-                <button pButton pRipple type="button" class="p-button-rounded p-button-text"   icon="pi pi-times" *ngIf="editModes[i]" (click)="toggleEditMode(i)"></button>
+                <button pButton pRipple type="button"  icon="pi pi-times" *ngIf="editModes[i]"    class="p-button-rounded p-button-text p-button-danger" (click)="toggleEditMode(i)"></button>
                 </span>
             </td>
             <td style="text-align: center;white-space: nowrap;" *ngFor="let col of columns">
@@ -113,7 +115,7 @@
             <div class="custom-container">
                 <h6><b>Instructions</b></h6>
                 <ul class="list">
-                <li>Maximum File Size: 2MB</li>
+                <li>Maximum File Size: 5MB</li>
                 <li>File Format: xlsx</li>
                 </ul>
                 <ol class="list" type="1">
