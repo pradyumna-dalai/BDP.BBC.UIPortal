@@ -118,7 +118,7 @@ export class UOMComponent implements AfterViewInit{
     });
   }
   onGlobalSearch(keyword: string): void {
-    // Clear any existing timeout
+    console.log(keyword);
     if (this.searchTimeout) {
      clearTimeout(this.searchTimeout);
  }
@@ -129,7 +129,16 @@ export class UOMComponent implements AfterViewInit{
  }, 500);
  }
   clear(table: Table) {
-    table.clear();
+    table.reset();
+    this.onSort(Event);
+    this.clearSearchInput()
+
+}
+clearSearchInput(): void {
+  const searchInput = document.getElementById('gSearch') as HTMLInputElement;
+  if (searchInput) {
+    searchInput.value = '';
+  }
 }
   onPageChange(event: any) {
     this.currentPage = event.page + 1;
@@ -143,7 +152,12 @@ export class UOMComponent implements AfterViewInit{
     this.newSortOrder = (event.order === 1) ? 'asc' : 'desc';
   
     if (this.newSortField !== this.sortField || this.newSortOrder !== this.sortOrder) {
-      this.sortField = this.newSortField;
+      if(this.newSortField == undefined){
+        this.sortField = "";
+      }else{
+        this.sortField = this.newSortField;
+      }
+      
       this.sortOrder = this.newSortOrder;
       this.currentPage = 1;
       this.fetchAllUOMDetails();
