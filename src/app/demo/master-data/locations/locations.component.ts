@@ -87,7 +87,6 @@ export class LocationsComponent {
   }
 findRegionId(event){
   const region = event.value;
-  console.log("regionid",region);
   this.regionId= region;
   this.fetchLocationCountry()
 }
@@ -112,9 +111,8 @@ findRegionId(event){
       if (res?.message === 'success') {
         this.locationdetails = res.data.location;
         this.totalRecords = res?.data.totalElements;
-        console.log('fetch location details:', this.totalRecords);
       } else {
-        console.error('Failed to fetch Location details:', res);
+      // error
       }
     });
   }
@@ -237,7 +235,6 @@ findRegionId(event){
         body['id'] = this.selectedLocation.id;
         this.masterDataService.updateLocations(body).subscribe(
           (response) => {
-            console.log(response);
             this.displayCreateLocationDialog = false;
             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Location updated successfully!' });
             //   this.createForm();
@@ -246,7 +243,6 @@ findRegionId(event){
             this.processing = false; 
           },
           (error) => {
-            console.error(error);
             this.processing = false; 
           }
         );
@@ -254,7 +250,6 @@ findRegionId(event){
         this.modeTitle = 'Add';
         this.masterDataService.addLocations(body).subscribe(
           (response) => {
-            console.log(response);
             this.displayCreateLocationDialog = false;
             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Location added successfully!' });
             this.totalRecords += 1;
@@ -262,7 +257,6 @@ findRegionId(event){
             this.processing = false; 
           },
           (error) => {
-            console.error(error);
             if (error.status === 400 && error.error?.message === 'Fill required field(s)') {
               const errorMessage = error.error.data?.join(', ') || 'Error in adding location';
               this.messageService.add({ severity: 'error', summary: 'Error', detail: errorMessage });
@@ -286,7 +280,6 @@ findRegionId(event){
   updateLocationDetails(location: any) {
     this.editMode = true;
     this.modeTitle = 'Edit';
-    console.log("pathValue_location")
     if (this.selectedLocation) {
 
       this.locationForm.patchValue({
@@ -297,7 +290,6 @@ findRegionId(event){
         description: this.selectedLocation.description,
         status: this.selectedLocation.status ? 'active' : 'inactive',
       });
-      console.log('df', this.locationForm)
       this.displayCreateLocationDialog = true;
     
     }
