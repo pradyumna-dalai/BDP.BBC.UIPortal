@@ -116,7 +116,7 @@ deleteProjectDocument(id:number ) {
 }
 
 getAllProjectArtifacts(scopeId: number, entityId: number): Observable<any> {
-  return this.http.get<any>(`${url}${settings.AppRoutes.Auth.getAllFiles}/?scopeId=${scopeId}/&entityId=${entityId}/&limitSize=3/&removeDuplicate=false`);
+  return this.http.get<any>(`${url}${settings.AppRoutes.Auth.getAllFiles}?scopeId=${scopeId}&entityId=${entityId}&limitSize=3&removeDuplicate=false`);
 }
 
 
