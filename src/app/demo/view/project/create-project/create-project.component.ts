@@ -114,11 +114,15 @@ export class CreateProjectComponent implements OnInit {
   projinfoidedit: any;
   projStatus: any;
   projectDocument: any;
+  scopeId: number;
+
+
   
   
   constructor(private sharedService: SharedServiceService,private route: ActivatedRoute, private breadcrumbService: AppBreadcrumbService, private zone: NgZone,
     private datePipe: DatePipe, private messageService: MessageService, private fb: FormBuilder, public MasterTableservice: MasterTableService,
     private createBuildingBlockservice: CreateBuildingBlockService, public projectService: ProjectsService) {
+    
   }
   ngOnInit() {
 
@@ -170,7 +174,9 @@ export class CreateProjectComponent implements OnInit {
     this.getProjectStage();
     this.getOpportunityManger();
     this.fetchActiveLocation();
+    
 
+   
     //get projid
     
     this.route.queryParams.subscribe(params => {
@@ -203,7 +209,7 @@ export class CreateProjectComponent implements OnInit {
         { label: 'Create Project' },
       ]);
     }
-    
+    this.enterEditMode();
   }
   patchDateRangeValue(newValue: any) {
     this.myForm.get('selectedDateRange').patchValue(newValue);
@@ -849,6 +855,57 @@ export class CreateProjectComponent implements OnInit {
         }
     });
 }
+populateForm(): void {
+  this.myForm.patchValue({
+    
+    selectedDateRange: `${this.patchformatDate(this.response.startDate)} - ${this.patchformatDate(this.response.endDate)}`,
+  });
+  this.myForm.patchValue({
+    companyName: this.response.company?.id,
+    customerCode: this.response.customerCode,
+    opportunityName: this.response.opportunityName?.id,
+    industryVertical: this.response.industryVertical?.id,
+    region: this.response.region?.id,
+    projectName: this.response.projectName,
+    projectStage: this.response.projectStage?.id,
+    projectStatus: this.response.projectStatus?.id,
+    // opportunityManager: this.response.opportunityManager.map(manager => manager.id),
+    designNotes: this.response.designNote,
+    impleNotes: this.response.implementationNote,
+
+  });
+
+  // Automatically fetch and set opportunity names based on the selected company
+  if (this.response.company) {
+    this.onCompanySelect({ value: this.response.company.id });
+  }
+  // Automatically fetch and set industry vertical based on the selected opportunity name
+  if (this.response.opportunityName) {
+    this.onOpportunitySelect({ value: this.response.opportunityName.id });
+  }
+
+  // Set selected opportunity managers
+  if (this.response.opportunityManager && this.response.opportunityManager.length > 0) {
+    const selectedOpportunityManagers = this.response.opportunityManager.map(manager => manager.id);
+    this.myForm.get('opportunityManger').setValue(selectedOpportunityManagers);
+  }
+  const selectedRegionIndex = this.regionOptions.findIndex(region => region.id === this.response.region?.id);
+  const selectedProjectStageIndex = this.projectStageOptions.findIndex(stage => stage.id === this.response.projectStage?.id);
+
+  if (selectedProjectStageIndex !== -1) {
+    this.myForm.get('projectStage').setValue(this.projectStageOptions[selectedProjectStageIndex].id);
+    // Automatically fetch and set project status based on the selected project stage
+    this.OnStageSelectProjectstatus({ value: this.response.projectStage.id });
+  }
+
+
+
+  if (selectedRegionIndex !== -1) {
+    this.myForm.get('region').setValue(this.regionOptions[selectedRegionIndex].id);
+  }
+
+
+}
   //-------------------------------------Delete  Document By ID -----------------------------------//
 
   deleteResponseArtifact(index: number): void {
@@ -892,7 +949,6 @@ export class CreateProjectComponent implements OnInit {
         }
       );
     }
-    // Clear the array after uploading
     this.uploadedOtherFilesToSave = [];
   }
 
@@ -981,58 +1037,6 @@ export class CreateProjectComponent implements OnInit {
       console.log('No file selected for Response.');
     }
   }
-
-  populateForm(): void {
-    this.myForm.patchValue({
-      
-      selectedDateRange: `${this.patchformatDate(this.response.startDate)} - ${this.patchformatDate(this.response.endDate)}`,
-    });
-    this.myForm.patchValue({
-      companyName: this.response.company?.id,
-      customerCode: this.response.customerCode,
-      opportunityName: this.response.opportunityName?.id,
-      industryVertical: this.response.industryVertical?.id,
-      region: this.response.region?.id,
-      projectName: this.response.projectName,
-      projectStage: this.response.projectStage?.id,
-      projectStatus: this.response.projectStatus?.id,
-      // opportunityManager: this.response.opportunityManager.map(manager => manager.id),
-      designNotes: this.response.designNote,
-      impleNotes: this.response.implementationNote,
-
-    });
-
-    // Automatically fetch and set opportunity names based on the selected company
-    if (this.response.company) {
-      this.onCompanySelect({ value: this.response.company.id });
-    }
-    // Automatically fetch and set industry vertical based on the selected opportunity name
-    if (this.response.opportunityName) {
-      this.onOpportunitySelect({ value: this.response.opportunityName.id });
-    }
-
-    // Set selected opportunity managers
-    if (this.response.opportunityManager && this.response.opportunityManager.length > 0) {
-      const selectedOpportunityManagers = this.response.opportunityManager.map(manager => manager.id);
-      this.myForm.get('opportunityManger').setValue(selectedOpportunityManagers);
-    }
-    const selectedRegionIndex = this.regionOptions.findIndex(region => region.id === this.response.region?.id);
-    const selectedProjectStageIndex = this.projectStageOptions.findIndex(stage => stage.id === this.response.projectStage?.id);
-
-    if (selectedProjectStageIndex !== -1) {
-      this.myForm.get('projectStage').setValue(this.projectStageOptions[selectedProjectStageIndex].id);
-      // Automatically fetch and set project status based on the selected project stage
-      this.OnStageSelectProjectstatus({ value: this.response.projectStage.id });
-    }
-
-
-
-    if (selectedRegionIndex !== -1) {
-      this.myForm.get('region').setValue(this.regionOptions[selectedRegionIndex].id);
-    }
-
- 
-  }
   downloadArtifactByIDOther(index: number) {
     let fileName: string | null = null;
     if (index >= 0 && index < this.uploadedOtherFiles.length) {
@@ -1058,7 +1062,6 @@ export class CreateProjectComponent implements OnInit {
 
     }
   }
-
   downloadArtifactByIDResponse(index: number) {
     let fileName: string | null = null;
     if (index >= 0 && index < this.uploadedResponseFiles.length) {
@@ -1109,11 +1112,31 @@ export class CreateProjectComponent implements OnInit {
 
   }
 
- fetchAllProjectArtifact(scopeId: number, entityId: number){
-      this.projectService.getAllProjectArtifacts(scopeId,entityId).subscribe((res: any) => {
-        if (res?.message == "success") {
-        }
-      })
- }
+
+  enterEditMode() {
+  if (this.projId) {
+  
+    this.fetchAllProjectArtifact(2, this.projId);
+  
+    this.fetchAllProjectArtifact(3, this.projId);
+  
+    this.fetchAllProjectArtifact(4, this.projId);
+  }
+  }
+
+  fetchAllProjectArtifact(scopeId: number, entityId: number) {
+  this.projectService.getAllProjectArtifacts(scopeId, this.projId).subscribe((res: any) => {
+    if (res?.message == "success" && res?.data) {
+      if (scopeId === 2) {
+        this.uploadedFiles = res.data; 
+      } else if (scopeId === 3) {
+        this.uploadedResponseFiles = res.data; 
+      } else if (scopeId === 4) {
+        this.uploadedOtherFiles = res.data; 
+      }
+    }
+  });
+  }
+
 }
 
