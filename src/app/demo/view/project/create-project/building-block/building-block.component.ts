@@ -396,17 +396,6 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
     }
   }
 
-//   hasConfigurations(step: any): boolean {
-//     const hasOriginConfig = step.Origin.length > 0;
-//     const hasDestinationConfig = step.Destination.length > 0;
-//     console.log('Step:', step.stepName, 'Has Origin Config:', hasOriginConfig, 'Has Destination Config:', hasDestinationConfig);
-//     return hasOriginConfig && hasDestinationConfig;
-// }
-hasConfigurations(step: any): boolean {
-  return step.Origin.length === 0 && step.Destination.length === 0;
-}
-
-
   getTreeData(selectedStep: any, originDestinationCode: number): TreeNode[] {
     const blockId = selectedStep.value.blockId;
     const selectedNode = this.selectedNodes.find(node => node.data.id === blockId);
@@ -763,46 +752,6 @@ hasConfigurations(step: any): boolean {
     this.activeIndex = (this.activeIndex + 2) % 8
   }
   //----------------------------------------------------end-----------------------------------//
-  updateSelectedBuildingBlock(node: TreeNode, originDestinationCode: number): void {
-    const index = this.selectedBuildingBlocks.findIndex(block => block.buildingBlockId === node.data.id);
-    if (index !== -1) {
-      // Update existing building block
-      const selectedBlock = this.selectedBuildingBlocks[index];
-      selectedBlock.processes = Object.keys(node.data.stepsInformation).map((operationStep: string) => {
-        const stepInfo = node.data.stepsInformation[operationStep];
-        return {
-          processId: stepInfo.operationStepId,
-          processName: operationStep,
-          originService: originDestinationCode === 0 ? this.getSelectedConfigurations(stepInfo.Origin) : [],
-          destinationService: originDestinationCode === 1 ? this.getSelectedConfigurations(stepInfo.Destination) : []
-        };
-      });
-    } else {
-      // Add new building block
-      const newBlock = {
-        buildingBlockId: node.data.id,
-        buildingBlockName: node.label,
-        processes: Object.keys(node.data.stepsInformation).map((operationStep: string) => {
-          const stepInfo = node.data.stepsInformation[operationStep];
-          return {
-            processId: stepInfo.operationStepId,
-            processName: operationStep,
-            originService: originDestinationCode === 0 ? this.getSelectedConfigurations(stepInfo.Origin) : [],
-            destinationService: originDestinationCode === 1 ? this.getSelectedConfigurations(stepInfo.Destination) : []
-          };
-        })
-      };
-      this.selectedBuildingBlocks.push(newBlock);
-    }
-  }
-  // Function to get the selected configurations
-  getSelectedConfigurations(configurations: SelectedConfiguration[]): SelectedConfiguration[] {
-    return configurations.filter(config => {
-      return this.isOriginActive ? this.selectedOriginLocationNodes.some(location => location.data.id === config.locations[0].locationId) :
-        this.selectedDestinationLocationNodes.some(location => location.data.id === config.locations[0].locationId);
-    });
-  }
-
   getAllProjectBuildingBlock(_projinfoID) {
       this.projectService.getProjectBuildingBlocks(this.projinfoID).subscribe({
         next: (response: any) => {
@@ -892,6 +841,47 @@ hasConfigurations(step: any): boolean {
     });
 
     return filteredNodes;
+}
+
+
+updateSelectedBuildingBlock(node: TreeNode, originDestinationCode: number): void {
+  const index = this.selectedBuildingBlocks.findIndex(block => block.buildingBlockId === node.data.id);
+  if (index !== -1) {
+    // Update existing building block
+    const selectedBlock = this.selectedBuildingBlocks[index];
+    selectedBlock.processes = Object.keys(node.data.stepsInformation).map((operationStep: string) => {
+      const stepInfo = node.data.stepsInformation[operationStep];
+      return {
+        processId: stepInfo.operationStepId,
+        processName: operationStep,
+        originService: originDestinationCode === 0 ? this.getSelectedConfigurations(stepInfo.Origin) : [],
+        destinationService: originDestinationCode === 1 ? this.getSelectedConfigurations(stepInfo.Destination) : []
+      };
+    });
+  } else {
+    // Add new building block
+    const newBlock = {
+      buildingBlockId: node.data.id,
+      buildingBlockName: node.label,
+      processes: Object.keys(node.data.stepsInformation).map((operationStep: string) => {
+        const stepInfo = node.data.stepsInformation[operationStep];
+        return {
+          processId: stepInfo.operationStepId,
+          processName: operationStep,
+          originService: originDestinationCode === 0 ? this.getSelectedConfigurations(stepInfo.Origin) : [],
+          destinationService: originDestinationCode === 1 ? this.getSelectedConfigurations(stepInfo.Destination) : []
+        };
+      })
+    };
+    this.selectedBuildingBlocks.push(newBlock);
+  }
+}
+// Function to get the selected configurations
+getSelectedConfigurations(configurations: SelectedConfiguration[]): SelectedConfiguration[] {
+  return configurations.filter(config => {
+    return this.isOriginActive ? this.selectedOriginLocationNodes.some(location => location.data.id === config.locations[0].locationId) :
+      this.selectedDestinationLocationNodes.some(location => location.data.id === config.locations[0].locationId);
+  });
 }
 
 }
