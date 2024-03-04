@@ -74,7 +74,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       this.projectLocations = data?.data?.projectLocation.filter(loc => loc.originDestinationCode === 0 || loc.originDestinationCode === 1);
       this.projectId = data?.data?.id;
       this.projectName = data?.data?.projectInformation?.projectName;
-    //  this.getAllProjectBuildingBlock(this.projectId);
+      this.getAllProjectBuildingBlock(this.projectId);
     });
   }
     if(this.projinfoID!=null){
@@ -513,7 +513,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
     for(let i=0;i<treeData.length;i++){
       console.log('Loop iteration:', i);
       console.log('Current treeData:', treeData[i]);
-      if(filterNodeForOrigin[i].children.length === this.treeData[i].children.length)
+      if(filterNodeForOrigin[i]?.children.length === this.treeData[i]?.children.length)
       {
         areEqualOrigin=true;
       }
@@ -528,7 +528,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
     let finalDestArray=filterNodeForDestination.map(node => node.children || []);
     let areEqualDestination=false;
     for(let i=0;i<treeData.length;i++){
-      if(filterNodeForDestination[i].children.length === this.treeData[i].children.length)
+      if(filterNodeForDestination[i]?.children.length === this.treeData[i]?.children.length)
       {
         areEqualDestination=true;
       }
