@@ -8,9 +8,9 @@
             </span>
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
-            <button type="button" pButton pRipple label="Clear" (click)="clear(dt2)" class="mr-2 mb-2"></button>
-            <button type="button" pButton pRipple label="Export" class="mr-2 mb-2" (click)="downloadExcel($event)"
+            <button type="button" pButton pRipple label="Export" class="p-button-outlined mr-2 mb-2" (click)="downloadExcel($event)"
                 pTooltip="Export in Excel File" tooltipPosition="top"></button>
+            <button type="button" pButton pRipple label="Clear" (click)="clear(dt2)" class="p-button-outlined mr-2 mb-2"></button>
             <button type="button" pButton pRipple label=" Add " (click)="showCreateLocationDialog()" icon="pi pi-plus"
                 class="mr-2 mb-2"></button>
         </div>
@@ -73,8 +73,8 @@
                 <td style="text-align: center; word-wrap: break-word;">{{ item.name }}</td>
                 <td style="text-align: center; word-wrap: break-word;">{{ item.locationCode }}</td>
                 <td style="text-align: center; max-width: 200px; overflow: hidden;" [title]="item.description">
-                    <span *ngIf="item.description.length > 50">{{ item.description.slice(0, 20) + '...' }}</span>
-                    <span *ngIf="!item.description || item.description.length <= 50">{{ item.description }}</span>
+                    <span *ngIf="item.description?.length > 50">{{ item.description?.slice(0, 20) + '...' }}</span>
+                    <span *ngIf="!item.description || item.description?.length <= 50">{{ item.description }}</span>
                 </td>                
                 <td style="text-align: center; word-wrap: break-word;">{{ item.createdBy }}</td>
                 <td style="text-align: center; word-wrap: break-word;">{{ item.createdDate | date:'dd MMM yyyy' }}</td>
@@ -106,7 +106,7 @@
         <div class="p-grid p-field">
             <div class="formgrid grid">
                 <div class="field col-12 md:col-5">
-                    <label>Locaton Name<span class="required">*</span></label>
+                    <label>Location Name<span class="required">*</span></label>
                     <input id="name" type="text" formControlName="name" placeholder="Location Name"
                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
                     <div *ngIf="locationForm.get('name')?.hasError('required') && locationForm.get('name')?.touched"
@@ -180,9 +180,10 @@
     </form>
     <!-- <hr> -->
     <ng-template pTemplate="footer">
-        <p-button label="{{ editMode ? 'Update' : 'Add' }}" (click)="addLocationsDetails()"
-            [disabled]="!locationForm.valid || processing"></p-button>&nbsp;&nbsp;
-        <p-button label="Cancel" (click)="cancelUpdate()"></p-button>
+        <button pButton pRipple label="Cancel" class="p-button-outlined mr-2 mb-2" (click)="cancelUpdate()"></button>
+        <button pButton pRipple label="{{ editMode ? 'Update' : 'Add' }}" (click)="addLocationsDetails()"
+            [disabled]="!locationForm.valid || processing" class="mr-2 mb-2"></button>
+        
     </ng-template>
 </p-dialog>
 <p-toast></p-toast>

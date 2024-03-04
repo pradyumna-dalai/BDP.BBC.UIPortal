@@ -3,8 +3,8 @@
         <div class="col-6">
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
-            <button type="button" pButton pRipple label="Export" [disabled]="true" class="mr-2 mb-2" ></button>
-            <button type="button" pButton pRipple label="Import" [disabled]="true" (click)="showDialog()"  class="mr-2 mb-2" ></button>
+            <button type="button" pButton pRipple label="Export" [disabled]="true" class="p-button-outlined mr-2 mb-2" ></button>
+            <button type="button" pButton pRipple label="Import"  [disabled]="true" (click)="showDialog()"  class="mr-2 mb-2" ></button>
     </div>
     </div>
     <p-table  #dt1 [showCurrentPageReport]="true" 
@@ -26,11 +26,13 @@
         <tr>
             <td style="text-align: center; white-space: nowrap;" [frozen]="true"> <!-- Add frozen attribute here -->
                 <span style="cursor: pointer; display: inline-block;" (click)="toggleEditMode(i)">
-                    <button pButton pRipple type="button" class="p-button-rounded p-button-text" (click)="editModes[i] ? saveProcess(rowData) : editProcess()" [icon]="'pi pi-' + (editModes[i] ? 'check' : 'pencil')"></button>
+                    <button pButton pRipple type="button"  class="p-button-rounded p-button-text" 
+                    [class.p-button-success]="editModes[i]" 
+                    [class.mr-2]="editModes[i]" (click)="editModes[i] ? saveProcess(rowData) : editProcess()" [icon]="'pi pi-' + (editModes[i] ? 'check' : 'pencil')"></button>
                 </span>&nbsp;
                 <span style="cursor: pointer; display: inline-block;">
                 <button pButton pRipple type="button" class="p-button-rounded p-button-text" icon="pi pi-{{ editModes[i] ? 'times' : 'plus' }}" *ngIf="!editModes[i]" (click)="addNewRow(i)"></button>
-                <button pButton pRipple type="button" class="p-button-rounded p-button-text"   icon="pi pi-times" *ngIf="editModes[i]" (click)="toggleEditMode(i)"></button>
+                <button pButton pRipple type="button"  icon="pi pi-times" *ngIf="editModes[i]"    class="p-button-rounded p-button-text p-button-danger" (click)="toggleEditMode(i)"></button>
                 </span>
             </td>
             <td style="text-align: center;white-space: nowrap;" *ngFor="let col of columns">
@@ -113,7 +115,7 @@
             <div class="custom-container">
                 <h6><b>Instructions</b></h6>
                 <ul class="list">
-                <li>Maximum File Size: 2MB</li>
+                <li>Maximum File Size: 5MB</li>
                 <li>File Format: xlsx</li>
                 </ul>
                 <ol class="list" type="1">
@@ -149,15 +151,15 @@
                     </p-progressBar>
                     <div class="card_footer">
                         <div>
-                            <button type="submit" pButton pRipple class=" btn" (click)="onCancelClick()">
+                            <button type="submit" pButton pRipple class="p-button-outlined mr-2 mb-2" (click)="onCancelClick()">
                             Remove File
                         </button> 
                         </div>
                         <div class="uplodBtn_right">
-                        <button type="submit" pButton pRipple class="btn" >
+                        <button type="submit" pButton pRipple class="mr-2 mb-2" >
                             Submit
                         </button>
-                        <button type="submit" (click)="onPopupCancelclick()"  pButton pRipple class=" btn">Cancel</button>
+                        <button type="submit" (click)="onPopupCancelclick()"  pButton pRipple class="p-button-outlined mr-2 mb-2">Cancel</button>
                         </div>
                     </div>
                     </div>

@@ -129,7 +129,7 @@ this.searchTimeout = setTimeout(() => {
 clearSearchInput(): void {
   // Assuming you have a reference to the input element, you can clear its value
   const searchInput = document.getElementById('gSearch') as HTMLInputElement;
-
+  console.log(searchInput,"ssdsss");
   // Or if you are using a framework like Angular, you can use a ViewChild or ngModel to get the reference
 
   if (searchInput) {
