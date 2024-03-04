@@ -197,7 +197,7 @@ export class CreateProjectComponent implements OnInit {
           label: 'Project',
           routerLink: 'project'
         },
-        { label: 'Update Project' },
+        { label: 'Edit Project' },
       ]);
     } else {
       this.breadcrumbService.setItems([
