@@ -132,7 +132,6 @@ export class UOMComponent implements AfterViewInit{
     table.reset();
     this.onSort(Event);
     this.clearSearchInput()
-
 }
 clearSearchInput(): void {
   const searchInput = document.getElementById('gSearch') as HTMLInputElement;
