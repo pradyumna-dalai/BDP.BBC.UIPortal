@@ -77,10 +77,6 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
      // this.getAllProjectBuildingBlock(this.projectId);
     });
   }
-    if(this.projinfoID!=null){
-      this.getAllProjectBuildingBlock(this.projinfoID);
-      this.fetchProjectInfomation(this.projinfoID);
-      }
   }
 
   ngOnInit() {
@@ -872,12 +868,20 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   matchBuildingBlocksToNodes(): void {
     this.getSavedBlocksDD.forEach((block: any) => {
       const matchedNode = this.findNodeById(block.buildingBlockId, this.treeDataNew);
+      console.log("matchedNode:", matchedNode);
+      console.log("selectedNodes:", this.selectedNodes);
       if (matchedNode) {
+        const existingIndex = this.selectedNodes.findIndex((node: any) => node.data.id === matchedNode.data.id);
+        if (existingIndex !== -1) {
+          this.selectedNodes.splice(existingIndex, 1);
+        }
         this.selectedNodes.push(matchedNode);
         this.getAllProcessStepbyBlockId(block.buildingBlockId);
       }
     });
   }
+  
+  
 
   findNodeById(id: any, nodes: TreeNode[]): TreeNode | null {
     for (const node of nodes) {
