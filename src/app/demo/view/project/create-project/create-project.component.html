@@ -328,7 +328,7 @@
         </form>
     </p-tabPanel>
     <p-tabPanel header="Building Block" [disabled]="!draftSaved">
-        <div *ngIf="draftSaved">
+        <div *ngIf="projinfoID !== null">
             <app-building-block #buildingBlockComponent (continueClicked)="goToNextTab()" [projStatus]="projStatus" [projinfoID]="projinfoID"></app-building-block>
         </div>
     </p-tabPanel>

@@ -1197,7 +1197,7 @@ populateForm(): void {
     
     if (event.index === 1) 
     { 
-      // this.buildingBlockComponent.ngOnInit();
+       this.buildingBlockComponent.ngOnInit();
     }
     if (event.index === 2) 
     { 
