@@ -1,4 +1,4 @@
-<p-tabView [(activeIndex)]="activeIndex">
+<p-tabView [(activeIndex)]="activeIndex" (onChange)="onTabChange($event)">
     <p-tabPanel header="Project Information">
         <div>
             <h5>Project Information</h5>
@@ -312,7 +312,7 @@
                                             (click)="deleteOtherArtifact(i)" style="margin-left: 8px;"
                                             class="p-button-rounded p-button-text p-button-danger"></button>
                                     </li>
-                                </ul>
+                                </ul> 
                             </div>
                         </div>
                     </div>
@@ -329,30 +329,30 @@
     </p-tabPanel>
     <p-tabPanel header="Building Block" [disabled]="!draftSaved">
         <div *ngIf="draftSaved">
-            <app-building-block (continueClicked)="goToNextTab()" [projStatus]="projStatus" [projinfoID]="projinfoID"></app-building-block>
+            <app-building-block #buildingBlockComponent (continueClicked)="goToNextTab()" [projStatus]="projStatus" [projinfoID]="projinfoID"></app-building-block>
         </div>
     </p-tabPanel>
 
     <p-tabPanel [disabled]="!draftSavedBB" header="Add Volume">
         <div *ngIf="projectIDbb !== null">
-            <app-add-volume (onClickContinuetoAddVolume)="goToNextTab()" [projStatus]="projStatus" [projectIdbb]="projectIDbb"></app-add-volume>
-          </div>
+          <app-add-volume  #addVolumeComponent (onClickContinuetoAddVolume)="goToNextTab()" [projStatus]="projStatus" [projectIdbb]="projectIDbb"></app-add-volume>
+        </div>
     </p-tabPanel>
 
 
     <p-tabPanel header="Cost Line Item" [disabled]="!draftSavedVolume">
         <div *ngIf="projectidVolume !== null">
-          <app-cost-line-item (continueClickedToCLI)="goToNextTab()" [projStatus]="projStatus" [projectidVolume]="projectidVolume"></app-cost-line-item>
+          <app-cost-line-item #costLineItemComponent (continueClickedToCLI)="goToNextTab()" [projStatus]="projStatus" [projectidVolume]="projectidVolume"></app-cost-line-item>
         </div>
     </p-tabPanel>
     <p-tabPanel header="Other Cost" [disabled]="!draftSavedCLI">
         <div *ngIf="projectIdCLI !== null">
-            <app-other-cost (continueClickedToProjectCost)="goToNextTab()" [projStatus]="projStatus" [projectIdCLI]="projectIdCLI"></app-other-cost>
+            <app-other-cost #otherCostComponent (continueClickedToProjectCost)="goToNextTab()" [projStatus]="projStatus" [projectIdCLI]="projectIdCLI"></app-other-cost>
         </div>
     </p-tabPanel>
     <p-tabPanel header="Project Output" [disabled]="!draftSavedOC">
         <div *ngIf="projectIdOC !== null">
-            <app-project-cost [projectIdOC]="projectIdOC"></app-project-cost>
+            <app-project-cost #projectCostComponent [projectIdOC]="projectIdOC"></app-project-cost>
         </div>
     </p-tabPanel>
 </p-tabView>

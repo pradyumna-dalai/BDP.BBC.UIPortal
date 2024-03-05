@@ -165,6 +165,9 @@ saveCostLineItemDetails() {
           summary: 'Success!',
           detail: 'Data saved successfully.'
         });
+        // setTimeout(() => {
+        //   this.onClickContinue();
+        // }, 2000);  
       },
       (error) => {
         this.messageService.add({
