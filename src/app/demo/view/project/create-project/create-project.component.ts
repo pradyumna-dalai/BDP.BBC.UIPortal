@@ -8,6 +8,10 @@ import dayjs from 'dayjs';
 import { DatePipe } from '@angular/common';
 import { EditableRow, Table } from 'primeng/table';
 import { AddVolumeComponent } from './add-volume/add-volume.component';
+import { CostLineItemComponent } from './cost-line-item/cost-line-item.component';
+import { BuildingBlockComponent } from './building-block/building-block.component';
+import { OtherCostComponent } from './other-cost/other-cost.component';
+import { ProjectCostComponent } from './project-cost/project-cost.component';
 import { ActivatedRoute } from '@angular/router';
 import { CreateBuildingBlockService } from 'src/app/services/create-buildingBlock/create-building-block.service';
 import { SharedServiceService } from 'src/app/services/project-serivce/shared-service.service';
@@ -34,7 +38,12 @@ interface TableRow {
 
 
 export class CreateProjectComponent implements OnInit {
-  @ViewChild(AddVolumeComponent) addVolume!: AddVolumeComponent;
+  // @ViewChild(AddVolumeComponent) addVolume!: AddVolumeComponent;
+  @ViewChild('addVolumeComponent', { static: false }) addVolumeComponent: AddVolumeComponent;
+  @ViewChild('costLineItemComponent', { static: false }) costLineItemComponent: CostLineItemComponent; 
+  @ViewChild('buildingBlockComponent', { static: false }) buildingBlockComponent: BuildingBlockComponent; 
+  @ViewChild('otherCostComponent', { static: false }) otherCostComponent: OtherCostComponent;
+  @ViewChild('projectCostComponent', { static: false }) projectCostComponent: ProjectCostComponent;
   projId: number;
   date: Date | undefined;
   activeIndex: number = 0;
@@ -214,19 +223,12 @@ export class CreateProjectComponent implements OnInit {
   patchDateRangeValue(newValue: any) {
     this.myForm.get('selectedDateRange').patchValue(newValue);
   }
-
-
   getForm(): FormGroup {
     return this.myForm;
   }
-  goToNextTab() {
-    // this.activeIndex = (this.activeIndex + 1) % 8; 
-   // console.log(this.myForm.value);
+  goToNextTab() 
+  {
     this.activeIndex = (this.activeIndex + 1) % 8
-    // this.addVolume.shareFunctionAddVolume()
-
-
-
   }
 
   // ---------------get Region------------------------//
@@ -431,11 +433,10 @@ export class CreateProjectComponent implements OnInit {
         //--------------------end-------------//
         const savedProjectId = res.data.id;
         if (savedProjectId) {
-          this.savedProjectId = savedProjectId; // Set the savedProjectId property
-          this.draftSaved = true; // Set draftSaved to true
-          // Rest of your logic
+          this.savedProjectId = savedProjectId; 
+          this.draftSaved = true; 
       }
-
+      
         if (savedProjectId) {
           this.projectId = savedProjectId;
 
@@ -452,7 +453,7 @@ export class CreateProjectComponent implements OnInit {
             key: 'successToast',
             severity: 'success',
             summary: 'Success!',
-            detail: 'Project draft is saved Successfully.'
+            detail: 'Project information draft is saved Successfully.'
           });
         }
       },
@@ -1136,6 +1137,31 @@ populateForm(): void {
       }
     }
   });
+  }
+  onTabChange(event) {
+    // Check which tab is active
+    
+    if (event.index === 1) 
+    { 
+      // this.buildingBlockComponent.ngOnInit();
+    }
+    if (event.index === 2) 
+    { 
+      this.addVolumeComponent.ngOnInit();
+    }
+    if (event.index === 3) 
+    { 
+      this.costLineItemComponent.ngOnInit();
+    }
+    if (event.index === 4) 
+    { 
+      this.otherCostComponent.ngOnInit();
+    }
+    if (event.index === 5) 
+    { 
+      this.projectCostComponent.ngOnInit();
+    }
+    
   }
 
 }

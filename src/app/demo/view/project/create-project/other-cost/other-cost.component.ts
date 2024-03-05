@@ -166,6 +166,7 @@ export class OtherCostComponent {
           summary: 'Success!',
           detail: 'Project Other Cost Saved successfully.'
         });
+     
       },
       error: (error) => {
         this.messageService.add({

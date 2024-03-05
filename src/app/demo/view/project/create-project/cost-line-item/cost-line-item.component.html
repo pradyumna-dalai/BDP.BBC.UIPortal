@@ -69,7 +69,8 @@
                                             <td style="text-align: center">{{ line.totalHC }}</td>
                                             <td style="text-align: center">
                                                 <ng-container *ngIf="!line.editing">{{ line.fteProductivity }}</ng-container>
-                                                <input pInputText *ngIf="line.editing" type="number" [(ngModel)]="line.fteProductivity" max="100">
+                                                <input pInputText *ngIf="line.editing" type="number" [ngModel]="line.fteProductivity" (ngModelChange)="onFteProductivityChange($event)">
+                                                <div *ngIf="isFteProductivityExceedsMax" style="color: red;" class="text-danger">Value cannot exceed 100</div>
                                             </td>
                                             <td style="text-align: center">{{ line.fteCost }}</td>
                                             <td style="text-align: center">{{ line.comment }}</td>
