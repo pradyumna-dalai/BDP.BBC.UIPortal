@@ -132,7 +132,6 @@ export class UOMComponent implements AfterViewInit{
     table.reset();
     this.onSort(Event);
     this.clearSearchInput()
-
 }
 clearSearchInput(): void {
   const searchInput = document.getElementById('gSearch') as HTMLInputElement;
@@ -207,22 +206,22 @@ clearSearchInput(): void {
             },
             (error) => {
               if (error.status === 400) {
-                if(error.error.data[0] == 'Name should not be more than 50 words'){
+                if(error.error.data[0] == 'UOM name exists\nDescription should not be more than 1000 characters'){
                   this.messageService.add({
                     key: 'errorToast',
                     severity: 'error',
                     summary: 'Error!',
-                    detail: error.error.data[0].value
+                    detail: 'UOM name exists\nDescription should not be more than 1000 characters'
                   });
                 }
-                else if(error.error.data[0] == 'Description exceed length'){
-                this.messageService.add({
-                  key: 'errorToast',
-                  severity: 'error',
-                  summary: 'Error!',
-                  detail: 'Description should not be more than 1000 words'
-                });
-            }
+               else if(error.error.data[0] == 'Description should not be more than 1000 characters'){
+                  this.messageService.add({
+                    key: 'errorToast',
+                    severity: 'error',
+                    summary: 'Error!',
+                    detail: 'Description should not be more than 1000 characters'
+                  });
+                }
             else{
               this.handleError();
             }

@@ -3,7 +3,7 @@
         <div class="col-6">
             <span class="p-input-icon-right">
                 <i class="pi pi-search"></i>
-                <input pInputText type="text" (input)="onGlobalSearch($event.target.value)"
+                <input pInputText type="text" id="gSearch" (input)="onGlobalSearch($event.target.value)"
                 placeholder="Search Keyword" />
             </span>
         </div>
@@ -59,8 +59,8 @@
                 <th style="text-align: center; width: 200px" pSortableColumn="updatedBy" [frozen]="true"
                     class="sticky-header">Updated By<p-sortIcon field="updatedBy"></p-sortIcon></th>
 
-                <th style="text-align: center; width: 200px" pSortableColumn="updatedAt" [frozen]="true"
-                    class="sticky-header">Updated At<p-sortIcon field="updatedAt"></p-sortIcon></th>
+                <th style="text-align: center; width: 200px" pSortableColumn="updatedDate" [frozen]="true"
+                    class="sticky-header">Updated At<p-sortIcon field="updatedDate"></p-sortIcon></th>
             </tr>
 
         </ng-template>
@@ -80,8 +80,8 @@
                 <td style="text-align: center; word-wrap: break-word;">{{ category.scope.name }}</td>
                 <td style="text-align: center; word-wrap: break-word;">{{ category.name }}</td>
                 <td style="text-align: center; max-width: 200px; overflow: hidden;" [title]="category.description">
-                    <span *ngIf="category.description.length > 50">{{ category.description.slice(0, 20) + '...' }}</span>
-                    <span *ngIf="!category.description || category.description.length <= 50">{{ category.description }}</span>
+                    <span *ngIf="category.description?.length > 50">{{ category.description?.slice(0, 20) + '...' }}</span>
+                    <span *ngIf="!category.description || category.description?.length <= 50">{{ category.description }}</span>
                 </td>  
                 <td style="text-align: center; word-wrap: break-word;">{{ category.createdBy }}</td>
                 <td style="text-align: center; word-wrap: break-word;">{{ category.createdDate | date:'dd MMM yyyy' }}
