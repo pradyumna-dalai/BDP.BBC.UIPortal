@@ -74,7 +74,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       this.projectLocations = data?.data?.projectLocation.filter(loc => loc.originDestinationCode === 0 || loc.originDestinationCode === 1);
       this.projectId = data?.data?.id;
       this.projectName = data?.data?.projectInformation?.projectName;
-      this.getAllProjectBuildingBlock(this.projectId);
+     // this.getAllProjectBuildingBlock(this.projectId);
     });
   }
     if(this.projinfoID!=null){
@@ -521,24 +521,26 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
         this.selectedOriginLocationNodes.push(filterNodeForOrigin[i])
       }
     }
-    this.selectedOriginLocationNodes.push(...finalOriginArray.flat());
-    console.log(this.selectedOriginLocationNodes)
-    selectedStep.selectedOriginLoc=[...finalOriginArray]
-    let filterNodeForDestination=this.filterNodesBySelectedKeys(treeData, selectedDestinationLocId);
-    let finalDestArray=filterNodeForDestination.map(node => node.children || []);
-    let areEqualDestination=false;
+      this.selectedOriginLocationNodes.push(...finalOriginArray.flat());
+      console.log(this.selectedOriginLocationNodes)
+      selectedStep.selectedOriginLoc=[...finalOriginArray]
+      let filterNodeForDestination=this.filterNodesBySelectedKeys(treeData, selectedDestinationLocId);
+      let finalDestArray=filterNodeForDestination.map(node => node.children || []);
+      let areEqualDestination=false;
     for(let i=0;i<treeData.length;i++){
       if(filterNodeForDestination[i]?.children.length === this.treeData[i]?.children.length)
       {
         areEqualDestination=true;
       }
       if(areEqualDestination==true){
-        this.selectedDestinationLocationNodes=filterNodeForDestination[i]
+        this.selectedDestinationLocationNodes.push(filterNodeForDestination[i])
       }
     }
      this.selectedDestinationLocationNodes.push(...finalDestArray.flat());
-    console.log(this.selectedDestinationLocationNodes)
-    return treeData;
+     selectedStep.selectedDestinationLoc=[...finalDestArray]
+     console.log(this.selectedDestinationLocationNodes)
+     console.log(selectedStep.selectedDestinationLoc)
+     return treeData;
   }
 
 
@@ -859,8 +861,10 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
             buildingBlockId: block.buildingBlockId,
             buildingBlockName: block.buildingBlockName
           }));
+          if (this.treeDataNew) {
           this.matchBuildingBlocksToNodes();
         }
+      }
       });
     
   }
@@ -890,7 +894,6 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
     return null;
   }
 
-
   fetchProjectInfomation(projinfoID): void {
     this.projectService.getProjectDetails(projinfoID).subscribe((res: any) => {
       if (res?.message === 'success') {
@@ -904,42 +907,61 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
 
 
 
-  filterNodesBySelectedKeys(nodes: any[], selectedKeys: string[], parent?: any): any[] {
-    const filteredNodes: any[] = [];
+//   filterNodesBySelectedKeys(nodes: any[], selectedKeys: string[], parent?: any): any[] {
+//     const filteredNodes: any[] = [];
 
-    nodes.forEach(node => {
-        if (selectedKeys.includes(node.key)) {
-            const filteredNode: any = {
-                key: node.key,
-                label: node.label,
-                data: node.data,
-                parent: parent,
-                selectable: false
-            };
-            filteredNodes.push(filteredNode);
-        } else if (node.children) {
-            const filteredChildren = this.filterNodesBySelectedKeys(node.children, selectedKeys, {
-                key: node.key,
-                label: node.label,
-                data: node.data,
-                parent: parent,
-                selectable: false
-            });
-            if (filteredChildren.length > 0) {
-                const newNode: any = {
-                    key: node.key,
-                    label: node.label,
-                    data: node.data,
-                    parent: parent,
-                    selectable: false
-                };
-                newNode.children = filteredChildren;
-                filteredNodes.push(newNode);
-            }
-        }
-    });
+//     nodes.forEach(node => {
+//         if (selectedKeys.includes(node.key)) {
+//             const filteredNode: any = {
+//                 key: node.key,
+//                 label: node.label,
+//                 data: node.data,
+//                 parent: parent,
+//                 selectable: false
+//             };
+//             filteredNodes.push(filteredNode);
+//         } else if (node.children) {
+//             const filteredChildren = this.filterNodesBySelectedKeys(node.children, selectedKeys, {
+//                 key: node.key,
+//                 label: node.label,
+//                 data: node.data,
+//                 parent: parent,
+//                 selectable: false
+//             });
+//             if (filteredChildren.length > 0) {
+//                 const newNode: any = {
+//                     key: node.key,
+//                     label: node.label,
+//                     data: node.data,
+//                     parent: parent,
+//                     selectable: false
+//                 };
+//                 newNode.children = filteredChildren;
+//                 filteredNodes.push(newNode);
+//             }
+//         }
+//     });
 
-    return filteredNodes;
+//     return filteredNodes;
+// }
+
+filterNodesBySelectedKeys(nodes: any[], selectedKeys: string[], parent?: any): any[] {
+  const filteredNodes: any[] = [];
+
+  nodes.forEach(node => {
+      if (node) {
+          if (selectedKeys.includes(node.key)) {
+              filteredNodes.push({ ...node, parent, selectable: false });
+          } else if (node.children) {
+              const filteredChildren = this.filterNodesBySelectedKeys(node.children, selectedKeys, node);
+              if (filteredChildren.length > 0) {
+                  filteredNodes.push({ ...node, children: filteredChildren, parent, selectable: false });
+              }
+          }
+      }
+  });
+
+  return filteredNodes;
 }
 
 
