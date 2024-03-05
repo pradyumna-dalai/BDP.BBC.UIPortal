@@ -131,10 +131,64 @@ export class CreateProjectComponent implements OnInit {
   constructor(private sharedService: SharedServiceService,private route: ActivatedRoute, private breadcrumbService: AppBreadcrumbService, private zone: NgZone,
     private datePipe: DatePipe, private messageService: MessageService, private fb: FormBuilder, public MasterTableservice: MasterTableService,
     private createBuildingBlockservice: CreateBuildingBlockService, public projectService: ProjectsService) {
-    
+      this.sharedService.draftSavedBB$.subscribe((draftSavedBB: boolean) => {
+        this.draftSavedBB = draftSavedBB;
+      });
+  
+      this.sharedService.projectIDbb$.subscribe((projectIDbb: number | null) => {
+        this.projectIDbb = projectIDbb;
+      });
+      this.sharedService.draftSavedVolume$.subscribe((draftSavedVolume: boolean) => {
+        this.draftSavedVolume = draftSavedVolume;
+      });
+      this.sharedService.projectidVolume$.subscribe((projectidVolume: number) => {
+        this.projectidVolume = projectidVolume;
+      });
+      this.sharedService.draftSavedCLI$.subscribe((draftSavedCLI: boolean) => {
+        this.draftSavedCLI = draftSavedCLI;
+      });
+      this.sharedService.projectIdCLI$.subscribe((projectIdCLI: number) => {
+        this.projectIdCLI = projectIdCLI;
+      });
+      this.sharedService.projectIdOC$.subscribe((projectIdOC: number) => {
+        this.projectIdOC = projectIdOC;
+      });
+      this.sharedService.draftSavedOC$.subscribe((draftSavedOC: boolean) => {
+        this.draftSavedOC = draftSavedOC;
+      });
+      this.route.queryParams.subscribe(params => {
+        this.projId = params.projId;
+        if(this.projId != undefined){
+          this.getProjectDetails(this.projId);
+        }
+        
+       this.projectId = params.projId;
+       if(this.projectId != undefined){
+        this.getProjectDetails(this.projectId);
+      }
+      });
+  
+      if (this.projId) {
+        this.breadcrumbService.setItems([
+          {
+            label: 'Project',
+            routerLink: 'project'
+          },
+          { label: 'Edit Project' },
+        ]);
+      } else {
+        this.breadcrumbService.setItems([
+          {
+            label: 'Project',
+            routerLink: 'project'
+  
+          },
+          { label: 'Create Project' },
+        ]);
+      }
+      this.enterEditMode();
   }
   ngOnInit() {
-
     this.sharedService.draftSavedBB$.subscribe((draftSavedBB: boolean) => {
       this.draftSavedBB = draftSavedBB;
     });
