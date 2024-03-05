@@ -225,7 +225,11 @@ export class CategoryComponent {
     const newSortOrder = event.order === 1 ? 'asc' : 'desc'; 
   
     if (newSortField !== this.sortField || newSortOrder !== this.sortOrder) {
-      this.sortField = newSortField;
+      if(newSortField == undefined){
+        this.sortField = "";
+      }else{
+        this.sortField = newSortField;
+      }
       this.sortOrder = newSortOrder;
       this.currentPage = 1;
       this.fetchProductCategory();
@@ -234,6 +238,13 @@ export class CategoryComponent {
   clear(table: Table) {
     table.clear();
     this.onSort(Event);
+    this.clearSearchInput()
+  }
+  clearSearchInput(): void {
+    const searchInput = document.getElementById('gSearch') as HTMLInputElement;
+    if (searchInput) {
+      searchInput.value = '';
+    }
   }
   //-------------------------------end---------------------------------------------------//
   //------------------------------UpdateScope--------------------------------------------//

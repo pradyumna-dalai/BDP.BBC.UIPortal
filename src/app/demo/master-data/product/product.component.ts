@@ -119,7 +119,7 @@ export class ProductComponent {
  }
   clear(table: Table) {
     table.reset();
-    this.fetchAllProdcutDetails();
+    this.onSort(Event);
     this.clearSearchInput()
 }
 clearSearchInput(): void {
