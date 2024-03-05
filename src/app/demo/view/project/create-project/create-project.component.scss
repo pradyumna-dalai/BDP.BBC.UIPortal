@@ -5,6 +5,8 @@
   color: red;;
 }
 
+
+
 .align{
   margin-top: -7px;
   margin-bottom: 22px;
@@ -25,17 +27,17 @@
 .p-dropdown .ui-dropdown-label {
   font-size: 2px; /* Adjust the font size as needed */
 }
-label{
-  font-size: 16px;
-}
+// label{
+//   font-size: 16px;
+// }
 
 
 .blue-checkbox {
   color: blue; 
 }
 .p-accordion-toggle-icon {
-  margin-right: 0.5rem;
-  position: absolute;
+  // margin-right: 0.5rem;
+  // position: absolute;
   right: 0rem;
 }
 
@@ -128,9 +130,9 @@ border: none;
 color: red; 
 cursor: pointer;
 }
-::ng-deep .p-calendar .p-datepicker {
-min-width: 0% !important;
-}
+// ::ng-deep .p-calendar .p-datepicker {
+// min-width: 0% !important;
+// }
 
 ::ng-deep .p-datepicker table {
 font-size: 10px !important;
@@ -138,4 +140,7 @@ margin: 0px !important;
 }
 ::ng-deep .p-datepicker table td {
 padding: 0 !important;
+}
+.p-calendar .p-datepicker {
+  min-width: 0% !important;
 }

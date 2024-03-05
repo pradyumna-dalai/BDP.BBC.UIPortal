@@ -70,7 +70,7 @@
     <hr class="align">
     <div class="p-fluid grid">
         <div class="field col-12 md:col-6">
-            <div class="heading"><label>Service Description</label></div><br>
+            <div class="heading"><label>Service Description<span class="requiredField">*</span></label></div><br>
             <p-editor placeholder="Add Your Description Here...." [(ngModel)]="seervice_desc"
                 [style]="{'height':'220px'}">
                 <ng-template pTemplate="header">
@@ -91,7 +91,7 @@
             </p-editor>
         </div>
         <div class="field col-12 md:col-6">
-            <div class="heading"><label>Value to PSA BDP</label></div><br>
+            <div class="heading"><label>Value to PSA BDP<span class="requiredField">*</span></label></div><br>
             <p-editor placeholder="Add Your Description Here...." [(ngModel)]="value_to_psa_bdp"
                 [style]="{'height':'220px'}">
                 <ng-template pTemplate="header">
@@ -112,7 +112,7 @@
             </p-editor>
         </div>
         <div class="field col-12 md:col-6">
-            <div class="heading"><label>Customer Requirements</label></div><br>
+            <div class="heading"><label>Customer Requirements<span class="requiredField">*</span></label></div><br>
             <p-editor placeholder="Add Your Description Here...." [(ngModel)]="customer_requirement"
                 [style]="{'height':'220px'}">
                 <ng-template pTemplate="header">
@@ -133,7 +133,7 @@
             </p-editor>
         </div>
         <div class="field col-12 md:col-6">
-            <div class="heading"><label>Parameters</label></div><br>
+            <div class="heading"><label>Parameters<span class="requiredField">*</span></label></div><br>
             <p-editor placeholder="Add Your Description Here...." [(ngModel)]="parameters" [style]="{'height':'220px'}">
                 <ng-template pTemplate="header">
                     <span class="ql-formats">
@@ -153,7 +153,7 @@
             </p-editor>
         </div>
         <div class="field col-12 md:col-6">
-            <div class="heading"><label>Deliverables</label></div><br>
+            <div class="heading"><label>Deliverables<span class="requiredField">*</span></label></div><br>
             <p-editor placeholder="Add Your Description Here...." [(ngModel)]="deliverables"
                 [style]="{'height':'220px'}">
                 <ng-template pTemplate="header">
@@ -174,7 +174,7 @@
             </p-editor>
         </div>
         <div class="field col-12 md:col-6">
-            <div class="heading"><label>Configurable</label></div><br>
+            <div class="heading"><label>Configurable<span class="requiredField">*</span></label></div><br>
             <p-editor placeholder="Add Your Description Here...." [(ngModel)]="configurables"
                 [style]="{'height':'220px'}">
                 <ng-template pTemplate="header">
@@ -195,7 +195,7 @@
             </p-editor>
         </div>
         <div class="field col-12 md:col-6">
-            <div class="heading"><label>Stakeholder/Audience</label></div><br>
+            <div class="heading"><label>Stakeholder/Audience<span class="requiredField">*</span></label></div><br>
             <p-editor placeholder="Add Your Description Here...." [(ngModel)]="stakeholders_audience"
                 [style]="{'height':'220px'}">
                 <ng-template pTemplate="header">
@@ -216,7 +216,7 @@
             </p-editor>
         </div>
         <div class="field col-12 md:col-6">
-            <div class="heading"><label>Mode Of Transport</label></div><br>
+            <div class="heading"><label>Mode Of Transport<span class="requiredField">*</span></label></div><br>
             <p-multiSelect [options]="mot" placeholder="Select Mode Of Transport" optionValue="id"
                 [(ngModel)]="selectedMod" optionLabel="name"></p-multiSelect>
         </div>
@@ -320,7 +320,7 @@
         <p-tabPanel header="General Information">
             <div class="p-fluid grid">
                 <div class="field col-12 md:col-6">
-                    <div class="heading"><label>Service Description</label></div><br>
+                    <div class="heading"><label>Service Description<span class="requiredField">*</span></label></div><br>
                     <p-editor placeholder="Add Your Description Here...." [(ngModel)]="seervice_desc"
                         [style]="{'height':'220px'}">
                         <ng-template pTemplate="header">
@@ -341,7 +341,7 @@
                     </p-editor>
                 </div>
                 <div class="field col-12 md:col-6">
-                    <div class="heading"><label>Customer Requirements</label></div><br>
+                    <div class="heading"><label>Customer Requirements<span class="requiredField">*</span></label></div><br>
                     <p-editor placeholder="Add Your Description Here...." [(ngModel)]="customer_requirement"
                         [style]="{'height':'220px'}">
                         <ng-template pTemplate="header">
@@ -362,7 +362,7 @@
                     </p-editor>
                 </div>
                 <div class="field col-12 md:col-6">
-                    <div class="heading"><label>PSA BDP Value Statement</label></div><br>
+                    <div class="heading"><label>PSA BDP Value Statement<span class="requiredField">*</span></label></div><br>
                     <p-editor placeholder="Add Your Description Here...." [(ngModel)]="cvalue_to_psa_bdp"
                         [style]="{'height':'220px'}">
                         <ng-template pTemplate="header">
@@ -383,7 +383,7 @@
                     </p-editor>
                 </div>
                 <div class="field col-12 md:col-6">
-                    <div class="heading"><label>Mode Of Transport</label></div><br>
+                    <div class="heading"><label>Mode Of Transport<span class="requiredField">*</span></label></div><br>
                     <p-multiSelect [options]="mot" optionValue="id" placeholder="Select Mode Of Transport"
                         [(ngModel)]="selectedMod" optionLabel="name"></p-multiSelect>
                 </div>
@@ -407,7 +407,7 @@
         <p-tabPanel header="Commercial Reference">
             <div class="p-fluid grid">
                 <div class="field col-12 md:col-6">
-                    <div class="heading"><label>Standard Service</label></div><br>
+                    <div class="heading"><label>Standard Service<span class="requiredField">*</span></label></div><br>
                     <p-editor placeholder="Add Your Description Here...." [(ngModel)]="standard_service"
                         [style]="{'height':'220px'}">
                         <ng-template pTemplate="header">
@@ -428,7 +428,7 @@
                     </p-editor>
                 </div>
                 <div class="field col-12 md:col-6">
-                    <div class="heading"><label>SOW</label></div><br>
+                    <div class="heading"><label>SOW<span class="requiredField">*</span></label></div><br>
                     <p-editor placeholder="Add Your Description Here...." [(ngModel)]="sow"
                         [style]="{'height':'220px'}">
                         <ng-template pTemplate="header">
@@ -449,7 +449,7 @@
                     </p-editor>
                 </div>
                 <div class="field col-12 md:col-6">
-                    <div class="heading"><label>Pre-requisite Information</label></div><br>
+                    <div class="heading"><label>Pre-requisite Information<span class="requiredField">*</span></label></div><br>
                     <p-editor placeholder="Add Your Description Here...." [(ngModel)]="pre_requisite_info"
                         [style]="{'height':'220px'}">
                         <ng-template pTemplate="header">
@@ -470,7 +470,7 @@
                     </p-editor>
                 </div>
                 <div class="field col-12 md:col-6">
-                    <div class="heading"><label>Combined Value</label></div><br>
+                    <div class="heading"><label>Combined Value<span class="requiredField">*</span></label></div><br>
                     <p-editor placeholder="Add Your Description Here...." [(ngModel)]="combined_value"
                         [style]="{'height':'220px'}">
                         <ng-template pTemplate="header">
@@ -491,7 +491,7 @@
                     </p-editor>
                 </div>
                 <div class="field col-12 md:col-6">
-                    <div class="heading"><label>Do's</label></div><br>
+                    <div class="heading"><label>Do's<span class="requiredField">*</span></label></div><br>
                     <p-editor placeholder="Add Your Description Here...." [(ngModel)]="do_s"
                         [style]="{'height':'220px'}">
                         <ng-template pTemplate="header">
@@ -512,7 +512,7 @@
                     </p-editor>
                 </div>
                 <div class="field col-12 md:col-6">
-                    <div class="heading"><label>Dont's</label></div><br>
+                    <div class="heading"><label>Dont's<span class="requiredField">*</span></label></div><br>
                     <p-editor placeholder="Add Your Description Here...." [(ngModel)]="don_s"
                         [style]="{'height':'220px'}">
                         <ng-template pTemplate="header">
@@ -533,7 +533,7 @@
                     </p-editor>
                 </div>
                 <div class="field col-12 md:col-6">
-                    <div class="heading"><label>Configurable</label></div><br>
+                    <div class="heading"><label>Configurable<span class="requiredField">*</span></label></div><br>
                     <p-editor placeholder="Add Your Description Here...." [(ngModel)]="configurables"
                         [style]="{'height':'220px'}">
                         <ng-template pTemplate="header">
@@ -645,18 +645,18 @@
                     </p-progressBar>
                     <div class="card_footer">
                         <div>
-                            <button type="submit" pButton pRipple class=" btn" [disabled]="!uploadFilesc"
+                            <button type="submit" pButton pRipple class="p-button-outlined mr-2 mb-2" [disabled]="!uploadFilesc"
                                 (click)="onCancelClickSC()">
                                 Remove File
                             </button> 
                         </div>
                         <div class="uplodBtn_right">
-                            <button type="submit" pButton pRipple class=" btn" [disabled]="!uploadFilesc"
+                            <button type="submit" pButton pRipple class="mr-2 mb-2" [disabled]="!uploadFilesc"
                                 (click)="makeScopingCardApiServiceCall()">
                                 Submit
                             </button>
                             <button type="submit" (click)="onPopupCancelSCClick()" pButton pRipple
-                                class=" btn">Cancel</button>
+                                class="p-button-outlined mr-2 mb-2">Cancel</button>
                         </div>
                     </div>
                 </div>
@@ -728,18 +728,18 @@
                     </p-progressBar>
                     <div class="card_footer">
                         <div>
-                            <button type="submit" pButton pRipple class=" btn" [disabled]="!uploadFilecc"
+                            <button type="submit" pButton pRipple class="p-button-outlined mr-2 mb-2" [disabled]="!uploadFilecc"
                                 (click)="onCancelClickCC()">
                                 Remove File
                             </button>
                         </div>
                         <div class="uplodBtn_right">
-                            <button type="submit" pButton pRipple class=" btn" [disabled]="!uploadFilecc"
+                            <button type="submit" pButton pRipple class="mr-2 mb-2" [disabled]="!uploadFilecc"
                                 (click)="makeCommercialCardApiServiceCall()">
                                 Submit
                             </button>
                             <button type="submit" (click)="onPopupCancelCClick()" pButton pRipple
-                                class=" btn">Cancel</button>
+                            class="p-button-outlined mr-2 mb-2">Cancel</button>
                         </div>
                     </div>
                 </div>
@@ -799,18 +799,18 @@
                     </div>
                     <div class="card_footer">
                         <div>
-                            <button type="submit" pButton pRipple class="btn" [disabled]="!selectedFile"
+                            <button type="submit" pButton pRipple class="p-button-outlined mr-2 mb-2" [disabled]="!selectedFile"
                                 (click)="onRemoveOperationClick()">
                                 Remove File
                             </button>
                         </div>
                         <div class="uplodBtn_right">
-                            <button type="submit" pButton pRipple class="btn" [disabled]="!selectedFile"
+                            <button type="submit" pButton pRipple class="mr-2 mb-2" [disabled]="!selectedFile"
                                 (click)="onUploadClick($event)">
                                 Submit
                             </button>
                             <button type="submit" (click)="onOperarationCancelClick()" pButton pRipple
-                                class="btn">Cancel</button>
+                            class="p-button-outlined mr-2 mb-2">Cancel</button>
                         </div>
                     </div>
                 </div>

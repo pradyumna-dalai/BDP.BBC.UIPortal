@@ -14,8 +14,9 @@ import { NavigationEnd, Router } from '@angular/router';
     ,styles: [`
         .active {
             background-color:#4d555e; /* Apply your active state styling here */
-            color: #fff; /* Text color for active state */
+            color: #FFFFFF; /* Text color for active state */
             border-radius:7px !important;
+         
         }
     `]
 })
@@ -73,9 +74,9 @@ export class AppMenuComponent implements OnInit {
             case 'product category':
                 return 'pi pi-bars';
             case 'fte - full time employee':
-                return 'pi pi-fw pi-desktop';
+                return 'pi pi-fw pi-users';
             case 'process configurable':
-                return 'pi pi-fw pi-desktop';
+                return 'pi pi-fw pi-cog';
             default:
                 return 'pi pi-fw pi-desktop';
         }

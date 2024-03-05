@@ -118,7 +118,7 @@ export class UOMComponent implements AfterViewInit{
     });
   }
   onGlobalSearch(keyword: string): void {
-    // Clear any existing timeout
+    console.log(keyword);
     if (this.searchTimeout) {
      clearTimeout(this.searchTimeout);
  }
@@ -129,7 +129,16 @@ export class UOMComponent implements AfterViewInit{
  }, 500);
  }
   clear(table: Table) {
-    table.clear();
+    table.reset();
+    this.onSort(Event);
+    this.clearSearchInput()
+
+}
+clearSearchInput(): void {
+  const searchInput = document.getElementById('gSearch') as HTMLInputElement;
+  if (searchInput) {
+    searchInput.value = '';
+  }
 }
   onPageChange(event: any) {
     this.currentPage = event.page + 1;
@@ -143,7 +152,12 @@ export class UOMComponent implements AfterViewInit{
     this.newSortOrder = (event.order === 1) ? 'asc' : 'desc';
   
     if (this.newSortField !== this.sortField || this.newSortOrder !== this.sortOrder) {
-      this.sortField = this.newSortField;
+      if(this.newSortField == undefined){
+        this.sortField = "";
+      }else{
+        this.sortField = this.newSortField;
+      }
+      
       this.sortOrder = this.newSortOrder;
       this.currentPage = 1;
       this.fetchAllUOMDetails();
@@ -225,20 +239,12 @@ export class UOMComponent implements AfterViewInit{
             (error) => {
                
                 if (error.status === 400) {
-                  if(error.error.data[0] == 'Name should not be more than 50 words'){
+                  if(error.error.data[0] == 'Description should not be more than 1000 characters'){
                     this.messageService.add({
                       key: 'errorToast',
                       severity: 'error',
                       summary: 'Error!',
-                      detail: error.error.data[0].value
-                    });
-                  }
-                    else if(error.error.data[0] == 'Description exceed length'){
-                    this.messageService.add({
-                      key: 'errorToast',
-                      severity: 'error',
-                      summary: 'Error!',
-                      detail: 'Description should not be more than 1000 words'
+                      detail: 'Description should not be more than 1000 characters'
                     });
                   }
                   else if(error.error.data[0] == 'UOM name exists'){

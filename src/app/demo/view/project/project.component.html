@@ -21,7 +21,7 @@
   <button type="button" pButton pRipple label="Create Project" [routerLink]="['/create-project']"
   class="mr-2 mb-2"></button>
   <button type="button" pButton pRipple label="Export Excel" (click)="toggleDateRangeSelection()"
-  class="mr-2 mb-2 btnwidth"></button>
+  class="p-button-outlined mr-2 mb-2 btnwidth"></button>
  </div>
       
  </div>    
@@ -41,7 +41,7 @@
   <ng-template pTemplate="header">
     <tr>
       <th style="text-align: center;width: 50px" [frozen]="true" class="sticky-header">Actions</th>
-      <th style="text-align: center; width: 200px" pSortableColumn="companyname" [frozen]="true" class="sticky-header">
+      <th style="text-align: center; width: 260px" pSortableColumn="companyname" [frozen]="true" class="sticky-header">
         Company Name<p-sortIcon field="companyname"></p-sortIcon>
       </th>
       <!-- <th style="text-align: center; width: 200px" pSortableColumn="id" [frozen]="true" class="sticky-header">
@@ -75,9 +75,9 @@
   <ng-template pTemplate="body" let-item>
     <tr>
       <td style="text-align: center;">
-        <span style="cursor: pointer;" (click)="showCopyDialog(item)"><i class="pi pi-copy"></i></span>&nbsp;
+        <span style="cursor: pointer;" (click)="showCopyDialog(item)"><i style="color: #2ca5ea;" class="pi pi-copy"></i></span>&nbsp;
         <span style="cursor: pointer;" (click)="confirm('delete', item.id)">
-          <i class="pi pi-trash"></i>
+          <i style="color: red;" class="pi pi-trash"></i>
         </span>
       </td>
       <td style="text-align: center; word-wrap: break-word;">
