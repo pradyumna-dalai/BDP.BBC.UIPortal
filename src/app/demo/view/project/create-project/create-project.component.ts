@@ -8,6 +8,10 @@ import dayjs from 'dayjs';
 import { DatePipe } from '@angular/common';
 import { EditableRow, Table } from 'primeng/table';
 import { AddVolumeComponent } from './add-volume/add-volume.component';
+import { CostLineItemComponent } from './cost-line-item/cost-line-item.component';
+import { BuildingBlockComponent } from './building-block/building-block.component';
+import { OtherCostComponent } from './other-cost/other-cost.component';
+import { ProjectCostComponent } from './project-cost/project-cost.component';
 import { ActivatedRoute } from '@angular/router';
 import { CreateBuildingBlockService } from 'src/app/services/create-buildingBlock/create-building-block.service';
 import { SharedServiceService } from 'src/app/services/project-serivce/shared-service.service';
@@ -34,7 +38,12 @@ interface TableRow {
 
 
 export class CreateProjectComponent implements OnInit {
-  @ViewChild(AddVolumeComponent) addVolume!: AddVolumeComponent;
+  // @ViewChild(AddVolumeComponent) addVolume!: AddVolumeComponent;
+  @ViewChild('addVolumeComponent', { static: false }) addVolumeComponent: AddVolumeComponent;
+  @ViewChild('costLineItemComponent', { static: false }) costLineItemComponent: CostLineItemComponent; 
+  @ViewChild('buildingBlockComponent', { static: false }) buildingBlockComponent: BuildingBlockComponent; 
+  @ViewChild('otherCostComponent', { static: false }) otherCostComponent: OtherCostComponent;
+  @ViewChild('projectCostComponent', { static: false }) projectCostComponent: ProjectCostComponent;
   projId: number;
   date: Date | undefined;
   activeIndex: number = 0;
@@ -116,16 +125,69 @@ export class CreateProjectComponent implements OnInit {
   projectDocument: any;
   scopeId: number;
 
-
   
   
   constructor(private sharedService: SharedServiceService,private route: ActivatedRoute, private breadcrumbService: AppBreadcrumbService, private zone: NgZone,
     private datePipe: DatePipe, private messageService: MessageService, private fb: FormBuilder, public MasterTableservice: MasterTableService,
     private createBuildingBlockservice: CreateBuildingBlockService, public projectService: ProjectsService) {
-    
+      this.sharedService.draftSavedBB$.subscribe((draftSavedBB: boolean) => {
+        this.draftSavedBB = draftSavedBB;
+      });
+  
+      this.sharedService.projectIDbb$.subscribe((projectIDbb: number | null) => {
+        this.projectIDbb = projectIDbb;
+      });
+      this.sharedService.draftSavedVolume$.subscribe((draftSavedVolume: boolean) => {
+        this.draftSavedVolume = draftSavedVolume;
+      });
+      this.sharedService.projectidVolume$.subscribe((projectidVolume: number) => {
+        this.projectidVolume = projectidVolume;
+      });
+      this.sharedService.draftSavedCLI$.subscribe((draftSavedCLI: boolean) => {
+        this.draftSavedCLI = draftSavedCLI;
+      });
+      this.sharedService.projectIdCLI$.subscribe((projectIdCLI: number) => {
+        this.projectIdCLI = projectIdCLI;
+      });
+      this.sharedService.projectIdOC$.subscribe((projectIdOC: number) => {
+        this.projectIdOC = projectIdOC;
+      });
+      this.sharedService.draftSavedOC$.subscribe((draftSavedOC: boolean) => {
+        this.draftSavedOC = draftSavedOC;
+      });
+      this.route.queryParams.subscribe(params => {
+        this.projId = params.projId;
+        if(this.projId != undefined){
+          this.getProjectDetails(this.projId);
+        }
+        
+       this.projectId = params.projId;
+       if(this.projectId != undefined){
+        this.getProjectDetails(this.projectId);
+      }
+      });
+  
+      if (this.projId) {
+        this.breadcrumbService.setItems([
+          {
+            label: 'Project',
+            routerLink: 'project'
+          },
+          { label: 'Edit Project' },
+        ]);
+      } else {
+        this.breadcrumbService.setItems([
+          {
+            label: 'Project',
+            routerLink: 'project'
+  
+          },
+          { label: 'Create Project' },
+        ]);
+      }
+      this.enterEditMode();
   }
   ngOnInit() {
-
     this.sharedService.draftSavedBB$.subscribe((draftSavedBB: boolean) => {
       this.draftSavedBB = draftSavedBB;
     });
@@ -211,22 +273,16 @@ export class CreateProjectComponent implements OnInit {
     }
     this.enterEditMode();
   }
+ 
   patchDateRangeValue(newValue: any) {
     this.myForm.get('selectedDateRange').patchValue(newValue);
   }
-
-
   getForm(): FormGroup {
     return this.myForm;
   }
-  goToNextTab() {
-    // this.activeIndex = (this.activeIndex + 1) % 8; 
-   // console.log(this.myForm.value);
+  goToNextTab() 
+  {
     this.activeIndex = (this.activeIndex + 1) % 8
-    // this.addVolume.shareFunctionAddVolume()
-
-
-
   }
 
   // ---------------get Region------------------------//
@@ -431,11 +487,10 @@ export class CreateProjectComponent implements OnInit {
         //--------------------end-------------//
         const savedProjectId = res.data.id;
         if (savedProjectId) {
-          this.savedProjectId = savedProjectId; // Set the savedProjectId property
-          this.draftSaved = true; // Set draftSaved to true
-          // Rest of your logic
+          this.savedProjectId = savedProjectId; 
+          this.draftSaved = true; 
       }
-
+      
         if (savedProjectId) {
           this.projectId = savedProjectId;
 
@@ -452,9 +507,10 @@ export class CreateProjectComponent implements OnInit {
             key: 'successToast',
             severity: 'success',
             summary: 'Success!',
-            detail: 'Project draft is saved Successfully.'
+            detail: 'Project information draft is saved Successfully.'
           });
         }
+        this.getProjectDetails(this.projId);
       },
       (error) => {
 
@@ -1136,6 +1192,31 @@ populateForm(): void {
       }
     }
   });
+  }
+  onTabChange(event) {
+    // Check which tab is active
+    
+    if (event.index === 1) 
+    { 
+       this.buildingBlockComponent.ngOnInit();
+    }
+    if (event.index === 2) 
+    { 
+      this.addVolumeComponent.ngOnInit();
+    }
+    if (event.index === 3) 
+    { 
+      this.costLineItemComponent.ngOnInit();
+    }
+    if (event.index === 4) 
+    { 
+      this.otherCostComponent.ngOnInit();
+    }
+    if (event.index === 5) 
+    { 
+      this.projectCostComponent.ngOnInit();
+    }
+    
   }
 
 }

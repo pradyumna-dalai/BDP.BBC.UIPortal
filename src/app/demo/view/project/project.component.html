@@ -20,7 +20,7 @@
  <div class="project_right">
   <button type="button" pButton pRipple label="Create Project" [routerLink]="['/create-project']"
   class="mr-2 mb-2"></button>
-  <button type="button" pButton pRipple label="Export Excel" (click)="toggleDateRangeSelection()"
+  <button type="button" pButton pRipple label="Download Excel" (click)="toggleDateRangeSelection()"
   class="p-button-outlined mr-2 mb-2 btnwidth"></button>
  </div>
       
@@ -44,15 +44,28 @@
       <th style="text-align: center; width: 260px" pSortableColumn="companyname" [frozen]="true" class="sticky-header">
         Company Name<p-sortIcon field="companyname"></p-sortIcon>
       </th>
+      <th style="text-align: center; width: 260px" pSortableColumn="" [frozen]="true" class="sticky-header">
+        Company Code<p-sortIcon></p-sortIcon>
+      </th>
+      <th style="text-align: center; width: 260px" pSortableColumn="" [frozen]="true" class="sticky-header">
+        Industry Vertical<p-sortIcon field=""></p-sortIcon>
+      </th>
+      <th style="text-align: center; width: 260px" pSortableColumn="" [frozen]="true" class="sticky-header">
+        Opportunity Id<p-sortIcon field=""></p-sortIcon>
+      </th>
+      <th style="text-align: center; width: 200px" pSortableColumn="opportunityName" [frozen]="true"
+      class="sticky-header">Opportunity Name<p-sortIcon field="opportunityName"></p-sortIcon>
+      </th>
+      <th style="text-align: center; width: 200px" pSortableColumn="" [frozen]="true"
+      class="sticky-header">Region<p-sortIcon field=""></p-sortIcon>
+      </th>
       <!-- <th style="text-align: center; width: 200px" pSortableColumn="id" [frozen]="true" class="sticky-header">
         Project ID<p-sortIcon field="id"></p-sortIcon>
       </th> -->
       <th style="text-align: center; width: 200px" pSortableColumn="projectName" [frozen]="true" class="sticky-header">
         Project Name<p-sortIcon field="projectName"></p-sortIcon>
       </th>
-      <th style="text-align: center; width: 200px" pSortableColumn="opportunityName" [frozen]="true"
-        class="sticky-header">Opportunity Name<p-sortIcon field="opportunityName"></p-sortIcon>
-      </th>
+     
       <th style="text-align: center; width: 200px" pSortableColumn="projectStage" [frozen]="true" class="sticky-header">
         Project Stage<p-sortIcon field="projectStage"></p-sortIcon>
       </th>
@@ -68,8 +81,21 @@
       <th style="text-align: center; width: 200px" pSortableColumn="endDate" [frozen]="true" class="sticky-header">
         End Date<p-sortIcon field="endDate"></p-sortIcon>
       </th>
-
-
+      <th style="text-align: center; width: 200px" pSortableColumn="" [frozen]="true" class="sticky-header">
+        Scope & Assumptions <p-sortIcon field=""></p-sortIcon>
+      </th>
+      <th style="text-align: center; width: 200px" pSortableColumn="" [frozen]="true" class="sticky-header">
+        Origin Location <p-sortIcon field=""></p-sortIcon>
+      </th>
+      <th style="text-align: center; width: 200px" pSortableColumn="" [frozen]="true" class="sticky-header">
+        Destination Location <p-sortIcon field=""></p-sortIcon>
+      </th>
+      <th style="text-align: center; width: 200px" pSortableColumn="" [frozen]="true" class="sticky-header">
+       Total Cost <p-sortIcon field=""></p-sortIcon>
+      </th>
+      <th style="text-align: center; width: 200px" pSortableColumn="" [frozen]="true" class="sticky-header">
+        Total Revenue <p-sortIcon field=""></p-sortIcon>
+       </th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-item>
@@ -83,14 +109,23 @@
       <td style="text-align: center; word-wrap: break-word;">
         <span>{{item.companyname}}</span>
       </td>
-      <!-- <td style="text-align: center; word-wrap: break-word;">
-        <span>{{item.id}}</span>
-      </td> -->
       <td style="text-align: center; word-wrap: break-word;">
-        <span><a [routerLink]="['/create-project']" [queryParams]="{ projId: item.id }">{{item.projectName}}</a></span>
+        <span>NA</span>
+      </td>
+      <td style="text-align: center; word-wrap: break-word;">
+        <span>NA</span>
+      </td>
+      <td style="text-align: center; word-wrap: break-word;">
+        <span>NA</span>
       </td>
       <td style="text-align: center; word-wrap: break-word;">
         <span>{{item.opportunityName}}</span>
+      </td>
+      <td style="text-align: center; word-wrap: break-word;">
+        <span>NA</span>
+      </td>
+      <td style="text-align: center; word-wrap: break-word;">
+        <span><a [routerLink]="['/create-project']" [queryParams]="{ projId: item.id }">{{item.projectName}}</a></span>
       </td>
       <td style="text-align: center; word-wrap: break-word;">
         <span>{{item.projectStage}}</span>
@@ -108,6 +143,25 @@
         <span>{{item.endDate}}</span>
       </td>
 
+      <td style="text-align: center; word-wrap: break-word;">
+        <span>NA</span>
+      </td>
+
+      <td style="text-align: center; word-wrap: break-word;">
+        <span>NA</span>
+      </td>
+
+      <td style="text-align: center; word-wrap: break-word;">
+        <span>NA</span>
+      </td>
+
+      <td style="text-align: center; word-wrap: break-word;">
+        <span>NA</span>
+      </td>
+
+      <td style="text-align: center; word-wrap: break-word;">
+        <span>NA</span>
+      </td>
 
 
     </tr>

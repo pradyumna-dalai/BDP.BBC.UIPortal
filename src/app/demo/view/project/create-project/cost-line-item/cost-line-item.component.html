@@ -10,7 +10,7 @@
             {{ isExpanded ? 'Collapse All' : 'Expand All' }}</button></div>
             <div style="padding: 5px;"><button pButton pRipple type="button" (click)="downloadCLISCExcel($event,projectidVolume)">Download</button></div>
             <div style="padding: 5px;">
-                <button pButton pRipple type="button" (click)="showUploadDialog()">Import Excel</button>
+                <button pButton pRipple type="button" (click)="showUploadDialog()">Upload Excel</button>
             </div>
         </div>
     </div>
@@ -69,7 +69,8 @@
                                             <td style="text-align: center">{{ line.totalHC }}</td>
                                             <td style="text-align: center">
                                                 <ng-container *ngIf="!line.editing">{{ line.fteProductivity }}</ng-container>
-                                                <input pInputText *ngIf="line.editing" type="number" [(ngModel)]="line.fteProductivity" max="100">
+                                                <input pInputText *ngIf="line.editing" type="number" [ngModel]="line.fteProductivity" (ngModelChange)="onFteProductivityChange($event)">
+                                                <div *ngIf="isFteProductivityExceedsMax" style="color: red;" class="text-danger">Value cannot exceed 100</div>
                                             </td>
                                             <td style="text-align: center">{{ line.fteCost }}</td>
                                             <td style="text-align: center">{{ line.comment }}</td>
@@ -155,17 +156,18 @@
     <div class="col-12" style="display: flex;justify-content: flex-end;">
         <button pButton pRipple type="button" label="Save As Draft" 
             (click)="saveCostLineItemDetails()" *ngIf="projStatus !='Closed Won' && projStatus !='Close Lost'" class="p-button-outlined mr-2 mb-2"></button>
-        <button type="submit" pButton pRipple label="Continue" (click)="onClickContinue()" class="mr-2 mb-2"></button>
+            <button type="submit" pButton pRipple label="Submit" [disabled]="true" class="mr-2 mb-2"></button>
+            <!-- <button type="submit" pButton pRipple label="Continue" (click)="onClickContinue()" class="mr-2 mb-2"></button> -->
     </div>
 </div>
 
-<p-dialog header="Import Excel" [(visible)]="visible" [modal]="true"   [style]="{width: '50vw'}" >
+<p-dialog header="Upload Excel" [(visible)]="visible" [modal]="true"   [style]="{width: '50vw'}" >
     <!-- <div class="page-under-construction">
         <img src="assets/layout/images/page-under-construction.jpg" alt="No Building Blocks Found">
     </div> -->
     <ng-template pTemplate="header">
         <div style="width: 100%;">
-            <h5 style="display: contents;">Import From Excel</h5>&nbsp;&nbsp;&nbsp;
+            <h5 style="display: contents;">Upload From Excel</h5>&nbsp;&nbsp;&nbsp;
             <h5 style="display: contents;">
                 <a  style="text-decoration: underline;cursor: pointer;">Download Sample File</a>
               </h5>

@@ -172,7 +172,9 @@ findRegionId(event){
     });
     this.editMode = false;
     this.modeTitle = 'Add';
-
+    this.regionOptions = [];
+    this.countryOptions = [];
+    this.fetchLocationRegion();
   }
 
   saveLocation() {

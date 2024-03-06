@@ -10,7 +10,7 @@ import { SharedServiceService } from 'src/app/services/project-serivce/shared-se
   providers: [MessageService, ConfirmationService]
 })
 export class AddVolumeComponent implements OnInit {
-
+  @Output() continueClickedToCLI: EventEmitter<any> = new EventEmitter<any>();
 Add_Volume:any;
 
 ///add voulume & CLI///
@@ -51,10 +51,7 @@ visible: boolean = false;
   this.projStatus = this.projStatus;
 
   }
-  onClickContinue() {
-    // Emit event to notify parent component to move to next tab
-    this.onClickContinuetoAddVolume.emit();
-}
+ 
   public get isExpanded() {
     return this._isExpanded;
 }
@@ -128,38 +125,37 @@ getVolumeDetails(projectId) {
         }
   });
 }
-onSaveVolumeClick(){
+onSaveVolumeClick() {
   if (this.volumeDetails && this.volumeDetails.length > 0) {
-  const body = {
-    projectId: this.projectId,
-    projectName: this.projectName,
-    buildingBlocks: this.volumeDetails
-  };
+    const body = {
+      projectId: this.projectId,
+      projectName: this.projectName,
+      buildingBlocks: this.volumeDetails
+    };
+    this.projectService.savevolumeDetails(body).subscribe(
+      (res) => {
+        this.sharedService.setProjectidVolume(res?.data?.projectId);
+        this.sharedService.setDraftSavedVolume(true);
+        this.getVolumeDetails(res?.data?.projectId);
 
-  this.projectService.savevolumeDetails(body).subscribe(
-    (res) => {
-      this.sharedService.setProjectidVolume(res?.data?.projectId);
-      this.sharedService.setDraftSavedVolume(true);
-      this.getVolumeDetails(res?.data?.projectId);
-      this.messageService.add({
-        key: 'successToast',
-        severity: 'success',
-        summary: 'Success!',
-        detail: 'Data saved successfully.'
-      });
-    },
-    (error) => {
+        this.messageService.add({
+          key: 'successToast',
+          severity: 'success',
+          summary: 'Success!',
+          detail: 'Data saved successfully.'
+        });
 
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Failed to save data.'
-      });
-    }
-  );
-
-}
+      },
+      (error) => {
+        this.messageService.add({
+          key: 'errorToast',
+          severity: 'error',
+          summary: 'Error!',
+          detail: 'Failed to save data.'
+        });
+      }
+    );
+  }
 }
  // Helper method to get unique location names from all lines
  getLocationNames(lines: any[]): string[] {
@@ -218,6 +214,7 @@ onRowEditSave(line: any) {
     if (location) {
       location.volume = newValue;
     }
+   
   });
   this.editedValues = {}; // Clear edited values
   line.editing = false; // Exit editing mode
@@ -245,8 +242,12 @@ onRowEditCancelDL(line: any, ri: number) {
 
 
 
-goToNextTab(){
+onClickContinue() {
+  // Emit event to notify parent component to move to next tab
+  this.onClickContinuetoAddVolume.emit();
   
 }
-
+onContinueClickedToCLI(event: any) {
+  this.continueClickedToCLI.emit(event);
+}
 }
