@@ -25,14 +25,14 @@ import { ProcessConfigComponent } from './demo/master-data/process-config/proces
         RouterModule.forRoot([
             {
                 path: '',
-                redirectTo: 'building-block',
+                redirectTo: 'project',
                 pathMatch: 'full'
             },
 
             {
                 path: '', component: AppMainComponent,
                 children: [
-                    { path: '', redirectTo: 'building-block', pathMatch: 'full' },
+                    { path: '', redirectTo: 'project', pathMatch: 'full' },
                     { path: 'project', component: ProjectComponent },
                     { path: 'glossary', component: GlossaryComponent },
                     { path: 'create-buildingblocks', component: CreateBbComponent },
