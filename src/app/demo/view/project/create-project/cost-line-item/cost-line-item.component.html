@@ -156,7 +156,8 @@
     <div class="col-12" style="display: flex;justify-content: flex-end;">
         <button pButton pRipple type="button" label="Save As Draft" 
             (click)="saveCostLineItemDetails()" *ngIf="projStatus !='Closed Won' && projStatus !='Close Lost'" class="p-button-outlined mr-2 mb-2"></button>
-        <button type="submit" pButton pRipple label="Continue" (click)="onClickContinue()" class="mr-2 mb-2"></button>
+            <button type="submit" pButton pRipple label="Submit" [disabled]="true" class="mr-2 mb-2"></button>
+            <!-- <button type="submit" pButton pRipple label="Continue" (click)="onClickContinue()" class="mr-2 mb-2"></button> -->
     </div>
 </div>
 

@@ -320,7 +320,7 @@
                     <div class="col-12" style="display: flex;justify-content: flex-end;">
                         <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
                             (click)="onSaveAsDraftClick()" class="p-button-outlined mr-2 mb-2"></button>
-                        <button type="submit" pButton pRipple label="Continue" [disabled]="!draftSaved" (click)="goToNextTab()"
+                        <button type="submit" pButton pRipple label="Submit" [disabled]="true" (click)="goToNextTab()"
                             class="mr-2 mb-2"></button>
                     </div>
                     <p-toast key="successToast"></p-toast>
