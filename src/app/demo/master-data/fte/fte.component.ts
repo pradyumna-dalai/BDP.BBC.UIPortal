@@ -106,7 +106,7 @@ export class FteComponent {
   // }
   findLocationID(){
 
-      this.locationOptions.filter((res)=> res.country.id === this.countryID);
+      this.locationOptions?.filter((res)=> res.country.id === this.countryID);
 
   }
 
@@ -142,7 +142,10 @@ export class FteComponent {
     });
     this.editMode = false;
     this.modeTitle = 'Add';
-    
+     this.regionOptions = [];
+     this.countryOptions = [];
+     this.locationOptions = [];
+     this.fetchLocationRegion();
   }
 
 /**Region get Data */
@@ -257,17 +260,20 @@ clearSearchInput(): void {
 
 fteRowData:any;
 editDisable:boolean = false;
-editFteRow(ftes: any){
-this.fteRowData = ftes;
-console.log("patch",this.fteRowData)
-  this.updateLocationDetails()
+
+editFteRow(fte: any) {
+  this.fteRowData = fte;
+  this.updateLocationDetails();
 }
 updateLocationDetails() {
   this.editMode = true;
   this.modeTitle = 'Edit';
-  if(this.countryOptions){
-    
-  }
+  
+  // Fetch location options based on the selected country ID
+  this.fetchLocation(this.fteRowData.country.id);
+  
+  // Set a timeout to ensure that the location options are loaded before setting the selected value
+  setTimeout(() => {
     this.FteForm.patchValue({
       region: this.fteRowData.region.id,
       country: this.fteRowData.country.id,
@@ -275,9 +281,10 @@ updateLocationDetails() {
       fte_month: this.fteRowData.monthlyCost,
       ftf_year: this.fteRowData.yearlyCost,
       Work_Time_Year: this.fteRowData.yearlyWorkingMin,
-      status: this.fteRowData.status ? 'active' : 'inactive',
+      status: this.fteRowData.status ? 'active' : 'inactive'
     });
     this.displayCreateFteDialog = true;
+  }, 500); // Adjust the timeout duration as needed
 }
 
 /**@Add_FTE_Data Form*/
