@@ -85,7 +85,8 @@ export class ProjectComponent {
       }
     })
     this.getDataFromFilter()
-    
+    this.selectedPredefinedDateRange = { label: 'Custom', value: 'custom' };
+
   }
   isloader:boolean= false;
   getDataFromFilter(){
@@ -315,34 +316,23 @@ onCancel(){
   exportData() {
     this.startDateString = this.selectedStartDate.toISOString();
     this.endDateString = this.selectedEndDate.toISOString();
-
+  
     if (this.selectedStartDate && this.selectedEndDate) {
       this.projectsService.downloadProjectData(this.startDateString, this.endDateString).subscribe(
         (response: HttpResponse<Blob>) => {
-          // Check if the response content type is 'application/json'
-          const contentType = response.headers.get('Content-Type');
-          if (contentType && contentType.indexOf('application/json') !== -1) {
-            // The server returned an error message in JSON format
-            const reader = new FileReader();
-            reader.onloadend = () => {
-              const errorResponse = JSON.parse(reader.result as string);
-              console.error('Download error:', errorResponse);
-              this.messageService.add({ severity: 'error', summary: 'Error', detail: 'File download failed!' });
-            };
-            reader.readAsText(response.body);
-          } else {
-            // The server provided the correct Excel file
-            const blob = new Blob([response.body], { type: response.body.type });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'BBC_Project_List.xlsx';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            window.URL.revokeObjectURL(url);
-
+          // Handle response
+          if (response) {
+            // Handle successful download
+            // Reset selection to "Custom"
+            this.selectedPredefinedDateRange = { label: 'Custom', value: 'custom' };
+            this.selectedStartDate = null;
+            this.selectedEndDate = null;
+            this.showDateRangeSelection = false;
+            // Display success message
             this.messageService.add({ key: 'successToast', severity: 'success', summary: 'Success', detail: 'File downloaded successfully!' });
+          } else {
+            // Handle error
+            this.messageService.add({ key: 'error', severity: 'error', summary: 'Error', detail: 'File download failed!' });
           }
         },
         (error) => {
@@ -350,14 +340,11 @@ onCancel(){
           this.messageService.add({ key: 'error', severity: 'error', summary: 'Error', detail: 'File download failed!' });
         }
       );
-      this.selectedStartDate = null;
-      this.selectedEndDate = null;
-      this.showDateRangeSelection = false;
     } else {
       console.warn('Please select a date range before exporting.');
     }
   }
-
+  
 
   showDateRangeDialog() {
     this.selectedPredefinedDateRange = this.predefinedDateRanges[0]; // Set default to 'Last 1 Year'
