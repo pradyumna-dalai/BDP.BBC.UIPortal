@@ -125,7 +125,6 @@ export class CreateProjectComponent implements OnInit {
   projectDocument: any;
   scopeId: number;
 
-
   
   
   constructor(private sharedService: SharedServiceService,private route: ActivatedRoute, private breadcrumbService: AppBreadcrumbService, private zone: NgZone,
@@ -220,6 +219,7 @@ export class CreateProjectComponent implements OnInit {
     }
     this.enterEditMode();
   }
+ 
   patchDateRangeValue(newValue: any) {
     this.myForm.get('selectedDateRange').patchValue(newValue);
   }
@@ -456,6 +456,7 @@ export class CreateProjectComponent implements OnInit {
             detail: 'Project information draft is saved Successfully.'
           });
         }
+        this.getProjectDetails(this.projId);
       },
       (error) => {
 

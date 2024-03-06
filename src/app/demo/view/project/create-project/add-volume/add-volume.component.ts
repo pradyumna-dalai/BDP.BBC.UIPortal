@@ -132,7 +132,6 @@ onSaveVolumeClick() {
       projectName: this.projectName,
       buildingBlocks: this.volumeDetails
     };
-
     this.projectService.savevolumeDetails(body).subscribe(
       (res) => {
         this.sharedService.setProjectidVolume(res?.data?.projectId);
