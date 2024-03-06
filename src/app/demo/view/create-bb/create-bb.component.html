@@ -64,7 +64,7 @@
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
 
-            <a (click)="showDialogScopingCard()" style="text-decoration: underline;">Import From Excel</a>
+            <a (click)="showDialogScopingCard()" style="text-decoration: underline;">Upload From Excel</a>
         </div>
     </div>
     <hr class="align">
@@ -246,7 +246,7 @@
             <a style="text-decoration: underline;" [pTooltip]="'Download Uploaded Operation Card File'"
                 [tooltipPosition]="'top'" (click)="downloadOperationCardExcelFile($event)" *ngIf="showDownload" >Download
                 Excel</a> &nbsp;&nbsp;
-            <a (click)="showDialogOperationCard()" style="text-decoration: underline;" *ngIf="blockId">Import From Excel</a>
+            <a (click)="showDialogOperationCard()" style="text-decoration: underline;" *ngIf="blockId">Upload From Excel</a>
         </div>
     </div>
     <hr class="align">
@@ -259,7 +259,7 @@
                 <h4>No Preview To Show</h4>
             </div>
             <div style="display: flex;justify-content: center;">
-                <h6>Select Import From Excel to Upload the details</h6>
+                <h6>Select Upload From Excel to Upload the details</h6>
             </div>
         </div>
     </div>
@@ -310,7 +310,7 @@
             <h5>Commercial Card</h5>
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
-            <a (click)="showDialogCommercialCard()" style="text-decoration: underline;">Import From Excel</a>
+            <a (click)="showDialogCommercialCard()" style="text-decoration: underline;">Upload From Excel</a>
         </div>
     </div>
     <hr class="align">
@@ -574,13 +574,13 @@
 </div>
  
 <!-- import from excel dialog(Scoping Card) -->
-<p-dialog header="Import Excel" [(visible)]="visibleSC" [style]="{width: '50vw'}">
+<p-dialog header="Upload Excel" [(visible)]="visibleSC" [style]="{width: '50vw'}">
     <!-- <div class="page-under-construction">
         <img src="assets/layout/images/page-under-construction.jpg" alt="No Building Blocks Found">
     </div> -->
     <ng-template pTemplate="header">
         <div style="width: 100%;">
-            <h5 style="display: contents;">Import From Excel</h5>&nbsp;&nbsp;&nbsp;
+            <h5 style="display: contents;">Upload From Excel</h5>&nbsp;&nbsp;&nbsp;
             <h5 style="display: contents;">
                 <a href="#" (click)="downloadSampleSCExcel($event)" style="text-decoration: underline;">Download Sample
                     File</a>
@@ -668,13 +668,13 @@
     </div>
 </p-dialog>
 <!-- import from excel dialog(Commercial Card) -->
-<p-dialog header="Import Excel" [(visible)]="visibleCC" [style]="{width: '50vw'}">
+<p-dialog header="Upload Excel" [(visible)]="visibleCC" [style]="{width: '50vw'}">
     <!-- <div class="page-under-construction">
         <img src="assets/layout/images/page-under-construction.jpg" alt="No Building Blocks Found">
     </div> -->
     <ng-template pTemplate="header">
         <div style="width: 100%;">
-            <h5 style="display: contents;">Import From Excel</h5>&nbsp;&nbsp;&nbsp;
+            <h5 style="display: contents;">Upload From Excel</h5>&nbsp;&nbsp;&nbsp;
             <h5 style="display: contents;">
                 <a href="#" (click)="downloadSampleCCExcel($event)" style="text-decoration: underline;">Download Sample
                     File</a>
@@ -752,10 +752,10 @@
     </div>
 </p-dialog>
 <!-- import from excel dialog(Operation Card) -->
-<p-dialog header="Import Excel" [(visible)]="visibleOperationBox" [style]="{width: '50vw'}">
+<p-dialog header="Upload Excel" [(visible)]="visibleOperationBox" [style]="{width: '50vw'}">
     <ng-template pTemplate="header">
         <div style="width: 100%;">
-            <h5 style="display: contents;">Import From Excel</h5>&nbsp;&nbsp;&nbsp;
+            <h5 style="display: contents;">Upload From Excel</h5>&nbsp;&nbsp;&nbsp;
             <h5 style="display: contents;">
                 <a href="#" (click)="downloadSampleOpExcel($event)" style="text-decoration: underline;">Download Sample
                     File</a>
