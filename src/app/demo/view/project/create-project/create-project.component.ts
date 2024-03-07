@@ -636,16 +636,17 @@ export class CreateProjectComponent implements OnInit {
   }
   OrignsaveRow(rowIndex: number) {
     const rowData = this.OtableData[rowIndex];
-    if (!rowData.Volume || rowData.Uom === null) {
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Volume and UOM are required for each row in Origin Location.'
-      });
-    } else {
-      rowData.editing = false;
-    }
+    rowData.editing = false;
+    // if (!rowData.Volume || rowData.Uom === null) {
+    //   this.messageService.add({
+    //     key: 'errorToast',
+    //     severity: 'error',
+    //     summary: 'Error!',
+    //     detail: 'Volume and UOM are required for each row in Origin Location.'
+    //   });
+    // } else {
+    //   rowData.editing = false;
+    // }
   }
   OrigndiscardRow(rowIndex: any) {
     if (this.OtableData[rowIndex].adding || this.OtableData[rowIndex].editing) {
@@ -709,16 +710,18 @@ export class CreateProjectComponent implements OnInit {
   }
   saveRow(rowIndex: number) {
     const rowData = this.tableData[rowIndex];
-    if (!rowData.Volume || rowData.Uom === null) {
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Volume and UOM are required for each row in Destination Location.'
-      });
-    } else {
-      rowData.editing = false;
-    }
+    rowData.editing = false;
+  //   if (!rowData.Volume || rowData.Uom === null) {
+  //     this.messageService.add({
+  //       key: 'errorToast',
+  //       severity: 'error',
+  //       summary: 'Error!',
+  //       detail: 'Volume and UOM are required for each row in Destination Location.'
+  //     });
+  //   } else {
+  //     rowData.editing = false;
+  //   }
+  // }
   }
   discardRow(rowIndex: any) {
     if (this.tableData[rowIndex] && (this.tableData[rowIndex].adding || this.tableData[rowIndex].editing)) {
