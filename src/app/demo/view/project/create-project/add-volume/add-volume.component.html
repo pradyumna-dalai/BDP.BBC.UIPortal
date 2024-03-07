@@ -210,7 +210,7 @@
                     </p-progressBar>
                     <div class="card_footer">
                         <div>
-                            <button type="submit" (click)="onRemoveClick()" pButton pRipple class="p-button-outlined mr-2 mb-2">
+                            <button type="submit" (click)="onRemoveClick()" [disabled]="!uploadFile" pButton pRipple class="p-button-outlined mr-2 mb-2">
                             Remove File
                         </button> 
                         </div>
@@ -218,7 +218,7 @@
                         <button type="submit" (click)="onSubmitUploadClick(this.projectIdbb)" pButton pRipple class="mr-2 mb-2">
                             Submit
                         </button>
-                        <button type="submit" (click)="onPopupCancelClick()"  pButton pRipple class="p-button-outlined mr-2 mb-2">Cancel</button>
+                        <button type="submit" (click)="onPopupCancelClick()" [disabled]="!uploadFile"  pButton pRipple class="p-button-outlined mr-2 mb-2">Cancel</button>
                         </div>
                     </div>
                     </div>
