@@ -42,6 +42,9 @@ visible: boolean = false;
   @Output() onClickContinuetoAddVolume: EventEmitter<any> = new EventEmitter();
   projectidVolume: any;
   draftSavedVolume: boolean = false;
+  fileName: string;
+  uploadInProgress: boolean = false;
+
   constructor(private sharedService: SharedServiceService,private projectService:ProjectsService, private messageService: MessageService){
     this.process = { lines: [] };
   }
@@ -68,7 +71,82 @@ showUploadDialog() {
       this.Add_Volume = res
     })
   }
-  //---------------------------------ADD VOLUME--------------------------------------------//
+ onRemoveClick(){
+  // this.showUploaderror = false;
+  // this.uploadError = "";
+  this.fileName = "";
+  this.uploadFile = null;
+  const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
+  if (fileInput) {
+    fileInput.value = '';
+  }
+}
+onPopupCancelClick(){
+  this.visible = false;
+    // this.showUploaderror = false;
+    // this.uploadError = "";
+    this.fileName = "";
+    this.uploadFile = null;
+    // Add the following line to reset the file input
+    const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = ''; // Clear the file input value
+    }
+}
+uploadFile: File | null = null;
+onUploadExcel(event: any){
+  const file: File = event.target.files[0];
+  if (file) {
+    this.fileName = file.name;
+    const formData = new FormData();
+    formData.append("file", file);
+    this.uploadFile = file;
+  }
+}
+onSubmitUploadClick(projId){
+  if (!this.uploadFile) {
+    // Handle case when no file is selected
+    return;
+  }
+
+  this.fileName = this.uploadFile.name;
+  const formData = new FormData();
+  formData.append("file", this.uploadFile);
+  this.uploadInProgress = true;
+  this.projectService.uploadAddVolumeExcel(formData, projId).subscribe(
+    (res: any) => {
+      this.projectId = res.data.projectId;
+      this.projectName = res.data.projectName;
+      this.volumeDetails = res.data.buildingBlocks;
+          if (res && res.data && res.data.buildingBlocks && res.data.buildingBlocks.length > 0) {
+            // this.volumeDetails = res.data.buildingBlocks;
+            this.buildingBlocks = res.data.buildingBlocks;
+            this.buildingBlockNames = this.buildingBlocks.map(block => block.buildingBlockName);
+          }
+      if(res.message == 'success'){
+        this.uploadInProgress = false;
+        this.messageService.add({
+          key: 'successToast',
+          severity: 'success',
+          summary: 'Success!',
+          detail: 'Excel Uploaded successfully.'
+        });
+      }
+      this.visible = false;
+      this.onPopupCancelClick();
+    },
+    (error) => {
+      this.messageService.add({
+        key: 'errorToast',
+        severity: 'error',
+        summary: 'Error!',
+        detail: 'Failed to upload excel file.'
+      });
+    
+      this.uploadInProgress = false;
+    }
+  );
+}
 showOriginSection() {
   this.showOriginVolume = true;
   this.showDestinationVolume = false;

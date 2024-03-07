@@ -124,7 +124,7 @@ addNewRow(index: number) {
     { field: 'Origin / Destination', header: 'Origin / Destination', sortingField: 'od', style: { 'text-align': 'center', width: '500px' } },
     { field: 'Process No.', header: 'Process No.', sortingField: 'pnum', style: { 'text-align': 'center', width: '500px' } },
     { field: 'Operations Steps', header: 'Operations Steps', sortingField: 'os', style: { 'text-align': 'center', width: '700px' } },
-    { field: 'Location', header: 'Location', sortingField: 'location', style: { 'text-align': 'center', width: '500px' } },
+    // { field: 'Location', header: 'Location', sortingField: 'location', style: { 'text-align': 'center', width: '500px' } },
     { field: 'UOM', header: 'UOM', sortingField: 'uom', style: { 'text-align': 'center', width: '500px' } },
     { field: 'Configuration', header: 'Configuration', sortingField: 'cn', style: { 'text-align': 'center', width: '300px' } },
        // ... add other static columns ...
