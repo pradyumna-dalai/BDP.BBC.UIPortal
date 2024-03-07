@@ -295,10 +295,10 @@ export class CreateBbComponent {
 
           this.standard_service = this.excelDataSheet2['Standard Service'];
           this.sow = this.excelDataSheet2['SOW'];
-          this.pre_requisite_info = this.excelDataSheet2['Pre-requsites information'];
+          this.pre_requisite_info = this.excelDataSheet2['Prerequisite Information'];
           this.combined_value = this.excelDataSheet2['Combined Value'];
           this.do_s = this.excelDataSheet2["Do's"];
-          this.don_s = this.excelDataSheet2["Dont's"];
+          this.don_s = this.excelDataSheet2["Don'ts"];
           this.configurables = this.excelDataSheet2['Configurable'];
 
           this.seervice_desc = this.excelDataSheet1['Service Description'];
@@ -404,7 +404,7 @@ export class CreateBbComponent {
           case 'Configurable':
             this.configurables_error = errorMessage;
             break;
-          case 'Pre-requsites information':
+          case 'Prerequisite Information':
             this.pre_requisite_info_error = errorMessage;
             break;
           case 'Service Description':
