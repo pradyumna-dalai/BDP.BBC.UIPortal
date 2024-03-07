@@ -18,14 +18,14 @@
     <p style="font-weight: 500;"></p>
     <p-accordion [activeIndex]="0">
         <p-accordionTab *ngFor="let block of costLineItemDetails; let i = index" [header]="block.buildingBlockName" [selected]="isExpanded">
-            <div *ngIf="block.originService.processes.length > 0 || block.destinationService.processes.length > 0">
+            <div *ngIf="block.originService?.processes?.length > 0 || block.destinationService?.processes?.length > 0">
                 <div class="activeToggel">
                     <button class="toggleButton" type="button" [style.border-radius]="originButtonBorderRadius" [style.background-color]="originButtonColor" [style.border]="originButtonBorder" (click)="showOriginSectionCLI()"> Origin Location</button>
                     <button class="toggleButton" type="button" [style.border-radius]="destinationButtonBorderRadius" [style.background-color]="destinationButtonColor" [style.border]="destinationButtonBorder" (click)="showDestinationSectionCLI()"> Destination Location</button>
                 </div>
-                <div style="margin-top:10px;" *ngIf="showOriginCLI && block.originService.processes.length > 0">
+                <div style="margin-top:10px;" *ngIf="showOriginCLI && block.originService?.processes.length > 0">
                     <p-accordion>
-                        <ng-container *ngFor="let process of block.originService.processes">
+                        <ng-container *ngFor="let process of block.originService?.processes">
                        
                             <p-accordionTab  [header]="process.processName" [selected]="isExpanded">
                                 <p-table [value]="process.lines" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
@@ -88,7 +88,7 @@
                         </ng-container>
                     </p-accordion>
                 </div>
-                <div style="margin-top:10px;" *ngIf="showDestinationCLI && block.destinationService.processes.length > 0">
+                <div style="margin-top:10px;" *ngIf="showDestinationCLI && block.destinationService?.processes.length > 0">
                     <p-accordion>
                         <ng-container *ngFor="let process of block.destinationService.processes">
                             
