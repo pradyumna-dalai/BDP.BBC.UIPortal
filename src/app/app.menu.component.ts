@@ -78,7 +78,7 @@ export class AppMenuComponent implements OnInit {
             case 'process configurable':
                 return 'pi pi-fw pi-cog';
             case 'cost - item':
-                    return 'pi pi-fw pi-desktop';
+                return 'pi pi-bitcoin';
             default:
                 return 'pi pi-fw pi-desktop';
         }
