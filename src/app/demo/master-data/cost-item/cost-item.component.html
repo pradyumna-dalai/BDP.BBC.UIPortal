@@ -59,7 +59,7 @@
                 </td>
                 <td style="text-align: center; word-wrap: break-word;">{{ costItem.name }}</td>
                 <td style="text-align: center; max-width: 200px; overflow: hidden;" [title]="costItem.description">
-                    <span *ngIf="costItem.description && costItem.description.length > 50">
+                    <span *ngIf="costItem.description && costItem.description.length > 40">
                         {{ (costItem.description.slice(0, 20) +'...' || '') }}
                     </span>
                     <span *ngIf="!costItem.description || (costItem.description && costItem.description.length <= 50)">
