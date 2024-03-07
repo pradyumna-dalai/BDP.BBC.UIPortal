@@ -48,12 +48,12 @@ export class CostItemComponent {
     
   }
   ngOnInit() {
-    this.getProdname();
-    this.fetchProductScope();
+    //this.getProdname();
+    this.fetchAllCostItemDetails();
     this.CostItemForm = this.fb.group({
       id: [''],
-      productid: ['', Validators.required],
-      productScope: ['', Validators.required],
+     // productid: ['', Validators.required],
+      costItem: ['', Validators.required],
       description: [''],
       status: ['inactive', Validators.required],
     });
@@ -81,65 +81,52 @@ export class CostItemComponent {
 
   // -----------------------------------create scope --------------------------------------//
 
-  createProductScope() {
+  createCostItem() {
     if (this.CostItemForm.valid) {
       this.processing = true;
       const body = {
         id: this.CostItemForm.get('id').value || '',
-        name: this.CostItemForm.value.productScope,
+        name: this.CostItemForm.value.costItem,
         description: this.CostItemForm.value.description,
         status: this.CostItemForm.value.status === 'active' ? true : false,
         isDeleted: false,
-        product: {
-          id: this.CostItemForm.value.productid
+      };
+  
+      const observer = {
+        next: (response: any) => {
+          console.log(response);
+          this.displayCreateCostItemDialog = false;
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: this.editMode ? 'Cost Item updated successfully!' : 'Cost Item added successfully!' });
+          if (!this.editMode) {
+            this.fetchAllCostItemDetails();
+          }
+          this.processing = false;
+        },
+        error: (error: any) => {
+          console.error(error);
+          if (error.status === 400 && error.error?.message === 'Fill required field(s)') {
+            const errorMessage = error.error.data?.join(', ') || 'Error in adding Cost Item';
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: errorMessage });
+          } else {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error in adding Cost Item' });
+          }
+          this.processing = false;
         }
       };
-
+  
       if (this.editMode) {
-        // Handle update logic
         this.modeTitle = 'Edit';
         body['id'] = this.selectedCostItem.id;
-        this.masterDataService.updateScopeDetails(body).subscribe(
-          (response) => {
-            console.log(response);
-            this.displayCreateCostItemDialog = false;
-            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Scope updated successfully!' });
-            this.editMode = false;
-            this.fetchProductScope();
-            this.processing = false; 
-          },
-          (error) => {
-            console.error(error);
-            this.processing = false; 
-          }
-        );
+        this.masterDataService.updateCostItemDetails(body).subscribe(observer);
       } else {
         this.modeTitle = 'Add';
-        this.masterDataService.addScopeDetails(body).subscribe(
-          (response) => {
-            console.log(response);
-            this.displayCreateCostItemDialog = false;
-            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Scope added successfully!' });
-            this.fetchProductScope();
-            this.processing = false;
-          },
-          
-          (error) => {
-            console.error(error);
-            if (error.status === 400 && error.error?.message === 'Fill required field(s)') {
-              const errorMessage = error.error.data?.join(', ') || 'Error in adding scope';
-              this.messageService.add({ severity: 'error', summary: 'Error', detail: errorMessage });
-            } else {
-              this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error in adding scope' });
-            }
-          }
-        );
+        this.masterDataService.saveCostItemDetails(body).subscribe(observer);
       }
     } else {
       this.messageService.add({ severity: 'error', summary: 'Validation Error', detail: 'Form is invalid!' });
     }
   }
-
+  
 
   //-----------------------fetch scope details-------------------------------------------//
   getSeverity(status: boolean): string {
@@ -149,21 +136,13 @@ export class CostItemComponent {
     return status === true || status === 'active' ? 'Active' : 'Inactive';
   }
 
-  fetchProductScope(keyword: string = ''): void {
-    const params = {
-      pageNo: isNaN(this.currentPage) ? 0 : this.currentPage - 1,
-      pageSize: isNaN(this.pageSize) ? 10 : this.pageSize,
-      sortBy: this.sortField,
-      sortDir: this.sortOrder,
-      keyword: keyword // Add the keyword parameter
-    };
-    this.masterDataService.getScopeDetails(params).subscribe((res: any) => {
+  fetchAllCostItemDetails(): void {
+    this.masterDataService.getAllCostItemDetails().subscribe((res: any) => {
       if (res?.message === 'success') {
-        this.costItemDetails = res.data.scope;
-      //  this.totalRecords = res?.data.totalElements;
-        console.log('fetch scope details:', this.totalRecords);
+        this.costItemDetails = res.data;
+        console.log('fetch cost Item  details:',  this.costItemDetails);
       } else {
-        console.error('Failed to fetch scope details:', res);
+        console.error('Failed to fetch cost Item details:', res);
       }
     });
   }
@@ -174,32 +153,34 @@ export class CostItemComponent {
  }
  
  // Set a new timeout to trigger the search after 500 milliseconds (adjust as needed)
- this.searchTimeout = setTimeout(() => {
-     this.fetchProductScope(keyword);
- }, 500);
+//  this.searchTimeout = setTimeout(() => {
+//      this.fetchProductScope(keyword);
+//  }, 500);
  }
 
-  onPageChange(event: any) {
-    this.currentPage = event.page + 1;
-    this.pageSize = event.rows;
-    this.fetchProductScope();
-  }
+  // onPageChange(event: any) {
+  //   this.currentPage = event.page + 1;
+  //   this.pageSize = event.rows;
+  //   this.fetchProductScope();
+  // }
 
-  onSort(event: any) {
-    const newSortField = event.field;
-    const newSortOrder = event.order === 1 ? 'asc' : 'desc'; 
-    if (newSortField !== this.sortField || newSortOrder !== this.sortOrder) {
-      this.sortField = newSortField;
-      this.sortOrder = newSortOrder;
-      this.currentPage = 1;
-      this.fetchProductScope();
-    }
-  }
+  // onSort(event: any) {
+  //   const newSortField = event.field;
+  //   const newSortOrder = event.order === 1 ? 'asc' : 'desc'; 
+  //   if (newSortField !== this.sortField || newSortOrder !== this.sortOrder) {
+  //     this.sortField = newSortField;
+  //     this.sortOrder = newSortOrder;
+  //     this.currentPage = 1;
+  //    // this.fetchProductScope();
+  //   }
+  // }
   
   clear(table: Table) {
     table.clear();
-    this.onSort(Event);
+   // this.onSort(Event);
   }
+
+
   //-------------------------------end---------------------------------------------------//
 
   //------------------------------UpdateScope--------------------------------------------//
@@ -212,8 +193,8 @@ export class CostItemComponent {
     this.modeTitle = 'Edit'; 
     if (this.selectedCostItem) {
       this.CostItemForm.patchValue({
-        productid: this.selectedCostItem.product.id,
-        productScope: this.selectedCostItem.name,
+       // productid: this.selectedCostItem.product.id,
+        costItem: this.selectedCostItem.name,
         description: this.selectedCostItem.description,
         status: this.selectedCostItem.status ? 'active' : 'inactive',
       });
