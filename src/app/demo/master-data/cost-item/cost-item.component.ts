@@ -16,22 +16,11 @@ import { MasterTableService } from 'src/app/services/master-table.service';
 export class CostItemComponent {
   loading: boolean = true;
   displayCreateCostItemDialog: boolean;
- // procuctCategoryOptions: any[];
-  //procuctNamesOptions: any[];
   CostItemForm: FormGroup;
   costItemDetails: any[] = [];
   editMode: boolean = false;
   selectedCostItem: any;
-  // Pagination properties
-  currentPage: number = 1;
-  pageSize: number = 10;
-  sortField: string = ''; // Initial sort field
-  sortOrder: string = 'asc'; // or initialize it based on your requirements
-  totalRecords: any = 10;
-  first: any = 0;
-  rows: any = 10;
   modeTitle: string = 'Add';
-  searchTimeout: any;
   processing: boolean = false;
 
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
@@ -41,18 +30,16 @@ export class CostItemComponent {
       { label: 'Master Data Management' },
       { label: 'Cost Item' }
     ]);
-   
+
 
   }
   ngAfterViewInit(): void {
-    
+
   }
   ngOnInit() {
-    //this.getProdname();
     this.fetchAllCostItemDetails();
     this.CostItemForm = this.fb.group({
       id: [''],
-     // productid: ['', Validators.required],
       costItem: ['', Validators.required],
       description: [''],
       status: ['inactive', Validators.required],
@@ -68,18 +55,7 @@ export class CostItemComponent {
     this.modeTitle = 'Add';
   }
 
-  getProdname() {
-    // this.procuctNamesOptions = [];
-    this.MasterTableservice.getProductName().subscribe((res: any) => {
-      if (res?.message == "success") {
-       // this.procuctNamesOptions = res?.data;
-      } else {
-    //    this.procuctNamesOptions = [];
-      }
-    })
-  }
-
-  // -----------------------------------create scope --------------------------------------//
+  // -----------------------------------create Cost  --------------------------------------//
 
   createCostItem() {
     if (this.CostItemForm.valid) {
@@ -91,15 +67,13 @@ export class CostItemComponent {
         status: this.CostItemForm.value.status === 'active' ? true : false,
         isDeleted: false,
       };
-  
+
       const observer = {
         next: (response: any) => {
           console.log(response);
           this.displayCreateCostItemDialog = false;
           this.messageService.add({ severity: 'success', summary: 'Success', detail: this.editMode ? 'Cost Item updated successfully!' : 'Cost Item added successfully!' });
-          if (!this.editMode) {
-            this.fetchAllCostItemDetails();
-          }
+          this.fetchAllCostItemDetails();
           this.processing = false;
         },
         error: (error: any) => {
@@ -113,11 +87,12 @@ export class CostItemComponent {
           this.processing = false;
         }
       };
-  
+
       if (this.editMode) {
         this.modeTitle = 'Edit';
         body['id'] = this.selectedCostItem.id;
         this.masterDataService.updateCostItemDetails(body).subscribe(observer);
+
       } else {
         this.modeTitle = 'Add';
         this.masterDataService.saveCostItemDetails(body).subscribe(observer);
@@ -126,9 +101,9 @@ export class CostItemComponent {
       this.messageService.add({ severity: 'error', summary: 'Validation Error', detail: 'Form is invalid!' });
     }
   }
-  
 
-  //-----------------------fetch scope details-------------------------------------------//
+
+  //-----------------------fetch Cost details-------------------------------------------//
   getSeverity(status: boolean): string {
     return status ? 'success' : 'danger';
   }
@@ -140,60 +115,30 @@ export class CostItemComponent {
     this.masterDataService.getAllCostItemDetails().subscribe((res: any) => {
       if (res?.message === 'success') {
         this.costItemDetails = res.data;
-        console.log('fetch cost Item  details:',  this.costItemDetails);
+        console.log('fetch cost Item  details:', this.costItemDetails);
       } else {
         console.error('Failed to fetch cost Item details:', res);
       }
     });
   }
-  onGlobalSearch(keyword: string): void {
-    // Clear any existing timeout
-    if (this.searchTimeout) {
-     clearTimeout(this.searchTimeout);
- }
- 
- // Set a new timeout to trigger the search after 500 milliseconds (adjust as needed)
-//  this.searchTimeout = setTimeout(() => {
-//      this.fetchProductScope(keyword);
-//  }, 500);
- }
 
-  // onPageChange(event: any) {
-  //   this.currentPage = event.page + 1;
-  //   this.pageSize = event.rows;
-  //   this.fetchProductScope();
-  // }
-
-  // onSort(event: any) {
-  //   const newSortField = event.field;
-  //   const newSortOrder = event.order === 1 ? 'asc' : 'desc'; 
-  //   if (newSortField !== this.sortField || newSortOrder !== this.sortOrder) {
-  //     this.sortField = newSortField;
-  //     this.sortOrder = newSortOrder;
-  //     this.currentPage = 1;
-  //    // this.fetchProductScope();
-  //   }
-  // }
-  
   clear(table: Table) {
     table.clear();
-   // this.onSort(Event);
   }
-
 
   //-------------------------------end---------------------------------------------------//
 
-  //------------------------------UpdateScope--------------------------------------------//
-  editScope(scope: any) {
-    this.selectedCostItem = scope;
-    this.updateProductScopeDetails(scope);
+  //------------------------------Update Cost Item--------------------------------------------//
+  editCost(costItem: any) {
+    this.selectedCostItem = costItem;
+    this.updateCostItemDetails(costItem);
   }
-  updateProductScopeDetails(scope: any) {
+
+  updateCostItemDetails(_costItem) {
     this.editMode = true;
-    this.modeTitle = 'Edit'; 
+    this.modeTitle = 'Edit';
     if (this.selectedCostItem) {
       this.CostItemForm.patchValue({
-       // productid: this.selectedCostItem.product.id,
         costItem: this.selectedCostItem.name,
         description: this.selectedCostItem.description,
         status: this.selectedCostItem.status ? 'active' : 'inactive',
@@ -201,7 +146,6 @@ export class CostItemComponent {
 
       this.displayCreateCostItemDialog = true;
     }
-
   }
 
   cancelUpdate() {
@@ -234,5 +178,5 @@ export class CostItemComponent {
     // });
   }
 
-  
+
 }
