@@ -127,7 +127,7 @@ getConfigurableName(configurableId: number): string {
 downloadCLISCExcel(event: Event,projectId) {
   event.preventDefault();
 
-  this.projectService.downloadAddVolumeExcel(projectId).subscribe((res: any) => {
+  this.projectService.downloadCLIExcel(projectId).subscribe((res: any) => {
     const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
 
     const link = document.createElement('a');
