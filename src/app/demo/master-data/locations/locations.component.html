@@ -162,10 +162,8 @@
                     <label>Status is Active?</label>
                     <div class="p-field-radiobutton" style="margin-left: 5px; margin-top: 15px;">
                         <div class="p-radio">
-                            <p-radioButton name="status" value="active" label="Active"
-                                formControlName="status"></p-radioButton>
-                            <p-radioButton name="status" value="inactive" label="Inactive" formControlName="status"
-                                style="margin-left: 25px;"></p-radioButton>
+                            <p-radioButton name="status" value="active" label="Active" formControlName="status"></p-radioButton>
+                            <p-radioButton name="status" value="inactive" label="Inactive" formControlName="status" class="radio-margin"></p-radioButton>
                         </div>
                     </div>
                     <div *ngIf="locationForm.get('status').hasError('required') && locationForm.get('status').touched"
