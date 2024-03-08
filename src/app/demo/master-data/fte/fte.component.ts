@@ -25,7 +25,7 @@ export class FteComponent {
   currentPage: number = 1;
   pageSize: number = 10;
   sortField: string = ''; // Initial sort field
-  sortOrder: string = 'asc'; // 1 for ascending, -1 for descending
+  sortOrder: any = 'asc'; // 1 for ascending, -1 for descending
   totalRecords: any = 10;
   first: any = 0;
   rows: any = 10;
@@ -123,9 +123,17 @@ export class FteComponent {
     }
   }
   clear(table: Table) {
-    table.reset();
-    this.onSort(Event);
+    table.reset(); 
+
+    this.sortField = '';
+    this.sortOrder = 1;
+  
     this.clearSearchInput();
+  
+    this.fetchLocationCountry();
+  
+    this.currentPage = 1;
+    this.pageSize = 10;
   }
 
   getSeverity(status: boolean): string {
