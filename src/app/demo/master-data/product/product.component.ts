@@ -107,20 +107,27 @@ export class ProductComponent {
     });
   }
   onGlobalSearch(keyword: string): void {
-    // Clear any existing timeout
+
     if (this.searchTimeout) {
      clearTimeout(this.searchTimeout);
  }
  
- // Set a new timeout to trigger the search after 500 milliseconds (adjust as needed)
  this.searchTimeout = setTimeout(() => {
      this.fetchAllProdcutDetails(keyword);
  }, 500);
  }
   clear(table: Table) {
-    table.reset();
-    this.onSort(Event);
-    this.clearSearchInput()
+    table.reset(); 
+
+    this.sortField = '';
+    this.sortOrder = 1;
+  
+    this.clearSearchInput();
+  
+    this.fetchAllProdcutDetails();
+  
+    this.currentPage = 1;
+    this.pageSize = 10;
 }
 clearSearchInput(): void {
   const searchInput = document.getElementById('gSearch') as HTMLInputElement;
