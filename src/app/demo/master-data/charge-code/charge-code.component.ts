@@ -121,10 +121,18 @@ this.searchTimeout = setTimeout(() => {
 }
 
 
-  clear(table: Table) {
-    table.reset();
-    this.onSort(Event);
-    this.clearSearchInput()
+clear(table: Table) {
+  table.reset(); 
+
+  this.sortField = '';
+  this.sortOrder = 1;
+
+  this.clearSearchInput();
+
+  this.fetchAllChargeCodeDetails();
+
+  this.currentPage = 1;
+  this.pageSize = 10;
 }
 clearSearchInput(): void {
   // Assuming you have a reference to the input element, you can clear its value
