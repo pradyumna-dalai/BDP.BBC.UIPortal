@@ -342,7 +342,7 @@
 
     <p-tabPanel header="Cost Line Item" [disabled]="!draftSavedVolume">
         <div *ngIf="projectidVolume !== null">
-          <app-cost-line-item #costLineItemComponent (continueClickedToCLI)="goToNextTab()" [projStatus]="projStatus" [projectidVolume]="projectidVolume"></app-cost-line-item>
+            <app-cost-line-item #costLineItemComponent (continueClickedToCLI)="goToNextTab()" [projStatus]="projStatus" [projectidVolume]="projectidVolume"></app-cost-line-item>
         </div>
     </p-tabPanel>
     <p-tabPanel header="Other Cost" [disabled]="!draftSavedCLI">

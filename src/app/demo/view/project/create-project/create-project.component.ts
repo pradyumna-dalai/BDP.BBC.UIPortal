@@ -15,6 +15,7 @@ import { ProjectCostComponent } from './project-cost/project-cost.component';
 import { ActivatedRoute } from '@angular/router';
 import { CreateBuildingBlockService } from 'src/app/services/create-buildingBlock/create-building-block.service';
 import { SharedServiceService } from 'src/app/services/project-serivce/shared-service.service';
+import { Subscription } from 'rxjs';
 
 interface UomData {
   id: number;
@@ -114,7 +115,7 @@ export class CreateProjectComponent implements OnInit {
   projectIDbb: number | null;
   projinfoID: number | null;
   projectidVolume: number | null;
-  draftSavedVolume: boolean; 
+  draftSavedVolume: boolean = false; 
   draftSavedCLI: boolean;
   projectIdCLI: number | null;
   draftSavedOC: boolean;
@@ -124,6 +125,8 @@ export class CreateProjectComponent implements OnInit {
   projStatus: any;
   projectDocument: any;
   scopeId: number;
+
+  subscription: Subscription;
 
   
   
@@ -195,9 +198,9 @@ export class CreateProjectComponent implements OnInit {
     this.sharedService.projectIDbb$.subscribe((projectIDbb: number | null) => {
       this.projectIDbb = projectIDbb;
     });
-    this.sharedService.draftSavedVolume$.subscribe((draftSavedVolume: boolean) => {
-      this.draftSavedVolume = draftSavedVolume;
-    });
+    this.subscription = this.sharedService.draftSavedVolume$.subscribe(value => {
+      this.draftSavedVolume = value;
+  });
     this.sharedService.projectidVolume$.subscribe((projectidVolume: number) => {
       this.projectidVolume = projectidVolume;
     });
@@ -273,6 +276,9 @@ export class CreateProjectComponent implements OnInit {
     }
     this.enterEditMode();
   }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+}
  
   patchDateRangeValue(newValue: any) {
     this.myForm.get('selectedDateRange').patchValue(newValue);
