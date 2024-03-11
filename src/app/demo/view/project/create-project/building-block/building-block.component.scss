@@ -27,20 +27,37 @@
 
 .text-green {
     color: rgb(45, 161, 64);
-    cursor: pointer;
 }
 
 .text-grey {
-    color: grey
+    color: grey;
+    pointer-events: none;
 }
 
-.text-red {
-    color: rgb(0, 110, 255);;
-    cursor: pointer;
+.text-blue {
+    color: rgb(0, 110, 255);
 }
 
 .bdp-step{
     display: flex;
     justify-content: space-between;
     flex-direction: column;
+}
+
+::ng-deep .p-accordion p-accordiontab:last-child .p-accordion-content
+{
+    padding: 0 !important;
+    border: 0 !important;
+}
+
+a{
+    cursor: pointer !important;
+    padding: 0.5rem 1rem !important;
+    width: -webkit-fill-available;
+}
+
+::ng-deep .p-listbox-item
+{
+    cursor: pointer;
+    padding: 0 !important;
 }

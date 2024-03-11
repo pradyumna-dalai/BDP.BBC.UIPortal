@@ -155,6 +155,7 @@ export class CreateProjectComponent implements OnInit {
       this.sharedService.draftSavedOC$.subscribe((draftSavedOC: boolean) => {
         this.draftSavedOC = draftSavedOC;
       });
+      // this.activeIndex = 1;//need to be deleted. This is for testing only;
       this.route.queryParams.subscribe(params => {
         this.projId = params.projId;
         if(this.projId != undefined){
@@ -1194,28 +1195,29 @@ populateForm(): void {
   });
   }
   onTabChange(event) {
+    console.log(event);
     // Check which tab is active
-    
-    if (event.index === 1) 
-    { 
-       this.buildingBlockComponent.ngOnInit();
-    }
-    if (event.index === 2) 
-    { 
-      this.addVolumeComponent.ngOnInit();
-    }
-    if (event.index === 3) 
-    { 
-      this.costLineItemComponent.ngOnInit();
-    }
-    if (event.index === 4) 
-    { 
-      this.otherCostComponent.ngOnInit();
-    }
-    if (event.index === 5) 
-    { 
-      this.projectCostComponent.ngOnInit();
-    }
+    this.activeIndex = event.index;
+    // if (event.index === 1) 
+    // { 
+    //    this.buildingBlockComponent.ngOnInit();
+    // }
+    // if (event.index === 2) 
+    // { 
+    //   this.addVolumeComponent.ngOnInit();
+    // }
+    // if (event.index === 3) 
+    // { 
+    //   this.costLineItemComponent.ngOnInit();
+    // }
+    // if (event.index === 4) 
+    // { 
+    //   this.otherCostComponent.ngOnInit();
+    // }
+    // if (event.index === 5) 
+    // { 
+    //   this.projectCostComponent.ngOnInit();
+    // }
     
   }
 
