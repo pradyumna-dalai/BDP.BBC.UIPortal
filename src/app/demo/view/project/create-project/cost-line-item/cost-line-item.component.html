@@ -10,7 +10,9 @@
             {{ isExpanded ? 'Collapse All' : 'Expand All' }}</button></div>
             <div style="padding: 5px;"><button pButton pRipple type="button" (click)="downloadCLISCExcel($event,projectidVolume)">Download</button></div>
             <div style="padding: 5px;">
-                <button pButton pRipple type="button" (click)="showUploadDialog()">Import Excel</button>
+                <button pButton pRipple type="button" class="p-button-outlined mr-2 mb-2" (click)="showUploadDialog()">
+                    
+                </button>
             </div>
         </div>
     </div>
@@ -18,14 +20,14 @@
     <p style="font-weight: 500;"></p>
     <p-accordion [activeIndex]="0">
         <p-accordionTab *ngFor="let block of costLineItemDetails; let i = index" [header]="block.buildingBlockName" [selected]="isExpanded">
-            <div *ngIf="block.originService.processes.length > 0 || block.destinationService.processes.length > 0">
+            <div *ngIf="block.originService?.processes?.length > 0 || block.destinationService?.processes?.length > 0">
                 <div class="activeToggel">
                     <button class="toggleButton" type="button" [style.border-radius]="originButtonBorderRadius" [style.background-color]="originButtonColor" [style.border]="originButtonBorder" (click)="showOriginSectionCLI()"> Origin Location</button>
                     <button class="toggleButton" type="button" [style.border-radius]="destinationButtonBorderRadius" [style.background-color]="destinationButtonColor" [style.border]="destinationButtonBorder" (click)="showDestinationSectionCLI()"> Destination Location</button>
                 </div>
-                <div style="margin-top:10px;" *ngIf="showOriginCLI && block.originService.processes.length > 0">
+                <div style="margin-top:10px;" *ngIf="showOriginCLI && block.originService?.processes.length > 0">
                     <p-accordion>
-                        <ng-container *ngFor="let process of block.originService.processes">
+                        <ng-container *ngFor="let process of block.originService?.processes">
                        
                             <p-accordionTab  [header]="process.processName" [selected]="isExpanded">
                                 <p-table [value]="process.lines" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
@@ -62,14 +64,14 @@
                                             <td style="text-align: center">{{ line.takt }}</td>
                                             <td style="text-align: center">
                                                 <ng-container *ngIf="!line.editing">{{ line.complexity }}</ng-container>
-                                                <input pInputText *ngIf="line.editing" type="number" [(ngModel)]="line.complexity">
+                                                <input pInputText *ngIf="line.editing" type="number" min="0" [(ngModel)]="line.complexity">
                                             </td>
                                             <td style="text-align: center">{{ line.taktConsidered }}</td>
                                             <td style="text-align: center">{{ line.totalCost }}</td>
                                             <td style="text-align: center">{{ line.totalHC }}</td>
                                             <td style="text-align: center">
                                                 <ng-container *ngIf="!line.editing">{{ line.fteProductivity }}</ng-container>
-                                                <input pInputText *ngIf="line.editing" type="number" [ngModel]="line.fteProductivity" (ngModelChange)="onFteProductivityChange($event)">
+                                                <input pInputText *ngIf="line.editing" type="number" min="0" [ngModel]="line.fteProductivity" (ngModelChange)="onFteProductivityChange($event)">
                                                 <div *ngIf="isFteProductivityExceedsMax" style="color: red;" class="text-danger">Value cannot exceed 100</div>
                                             </td>
                                             <td style="text-align: center">{{ line.fteCost }}</td>
@@ -88,7 +90,7 @@
                         </ng-container>
                     </p-accordion>
                 </div>
-                <div style="margin-top:10px;" *ngIf="showDestinationCLI && block.destinationService.processes.length > 0">
+                <div style="margin-top:10px;" *ngIf="showDestinationCLI && block.destinationService?.processes.length > 0">
                     <p-accordion>
                         <ng-container *ngFor="let process of block.destinationService.processes">
                             
@@ -127,13 +129,13 @@
                                             <td style="text-align: center">{{ line.takt }}</td>
                                             <td style="text-align: center">
                                                 <ng-container *ngIf="!line.editing">{{ line.complexity }}</ng-container>
-                                                <input pInputText *ngIf="line.editing" type="number" [(ngModel)]="line.complexity"></td>
+                                                <input pInputText *ngIf="line.editing" min="0" type="number" [(ngModel)]="line.complexity"></td>
                                             <td style="text-align: center">{{ line.taktConsidered }}</td>
                                             <td style="text-align: center">{{ line.totalCost }}</td>
                                             <td style="text-align: center">{{ line.totalHC }}</td>
                                             <td style="text-align: center">
                                                 <ng-container *ngIf="!line.editing">{{ line.fteProductivity }}</ng-container>
-                                                <input pInputText *ngIf="line.editing" type="number" [(ngModel)]="line.fteProductivity" max="100"></td>
+                                                <input pInputText *ngIf="line.editing" min="0" type="number" [(ngModel)]="line.fteProductivity" max="100"></td>
                                             <td style="text-align: center">{{ line.fteCost }}</td>
                                             <td style="text-align: center">{{ line.comment }}</td>
                                             </tr>
@@ -161,15 +163,15 @@
     </div>
 </div>
 
-<p-dialog header="Import Excel" [(visible)]="visible" [modal]="true"   [style]="{width: '50vw'}" >
+<p-dialog header="Upload" [(visible)]="visible" [modal]="true"   [style]="{width: '50vw'}" >
     <!-- <div class="page-under-construction">
         <img src="assets/layout/images/page-under-construction.jpg" alt="No Building Blocks Found">
     </div> -->
     <ng-template pTemplate="header">
         <div style="width: 100%;">
-            <h5 style="display: contents;">Import From Excel</h5>&nbsp;&nbsp;&nbsp;
+            <h5 style="display: contents;">Upload</h5>&nbsp;&nbsp;&nbsp;
             <h5 style="display: contents;">
-                <a  style="text-decoration: underline;cursor: pointer;">Download Sample File</a>
+                <!-- <a  style="text-decoration: underline;cursor: pointer;">Download Sample File</a> -->
               </h5>
         </div>
     </ng-template> 
@@ -181,7 +183,7 @@
             <div class="custom-container">
                 <h6><b>Instructions</b></h6>
                 <ul class="list">
-                <li>Maximum File Size: 2MB</li>
+                <li>Maximum File Size: 5MB</li>
                 <li>File Format: CSV,xlsx</li>
                 </ul>
                 <ol class="list" type="1">
@@ -217,24 +219,24 @@
                                 <i class="pi pi-upload" style="font-size: 30px;display: block;"></i>
                                 <div class="upload_name">Upload</div>
                             </label>
-                            <p style="text-align: center;"></p>
-                            <input type="file" id="fileUpload"  style="display: none;" accept=".xlsx, .csv">
+                            <p style="text-align: center;">{{fileName}}</p>
+                            <input type="file" id="fileUpload" (change)="onUploadExcel($event)"  style="display: none;" accept=".xlsx, .csv">
                         </div>
                         </div>
                     </div>
-                    <!-- <p-progressBar *ngIf="uploadInProgress" mode="indeterminate" [style]="{'height': '6px', 'marginBottom':'1rem'}">
-                    </p-progressBar> -->
+                    <p-progressBar *ngIf="uploadInProgress" mode="indeterminate" [style]="{'height': '6px', 'marginBottom':'1rem'}">
+                    </p-progressBar>
                     <div class="card_footer">
                         <div>
-                            <button type="submit" pButton pRipple class=" btn">
+                            <button type="submit" (click)="onRemoveClick()" [disabled]="!uploadFile" pButton pRipple class="p-button-outlined mr-2 mb-2">
                             Remove File
                         </button> 
                         </div>
                         <div class="uplodBtn_right">
-                        <button type="submit" pButton pRipple class=" btn">
+                        <button type="submit" (click)="onSubmitUploadClick(this.projectidVolume)" pButton pRipple class="mr-2 mb-2">
                             Submit
                         </button>
-                        <button type="submit"  pButton pRipple class=" btn">Cancel</button>
+                        <button type="submit" (click)="onPopupCancelClick()" [disabled]="!uploadFile" pButton pRipple class="p-button-outlined mr-2 mb-2">Cancel</button>
                         </div>
                     </div>
                     </div>

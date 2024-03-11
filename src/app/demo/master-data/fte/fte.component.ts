@@ -25,7 +25,7 @@ export class FteComponent {
   currentPage: number = 1;
   pageSize: number = 10;
   sortField: string = ''; // Initial sort field
-  sortOrder: string = 'asc'; // 1 for ascending, -1 for descending
+  sortOrder: any = 'asc'; // 1 for ascending, -1 for descending
   totalRecords: any = 10;
   first: any = 0;
   rows: any = 10;
@@ -71,18 +71,17 @@ export class FteComponent {
       region : ['',Validators.required],
       country : ['',Validators.required],
       location: ['',Validators.required],
-      fte_month: [ '',Validators.required,],
-      ftf_year : [''],
+      ftf_year : ['',Validators.required],
       Work_Time_Year: ['',Validators.required],
       status : ['']
     });
 
 
-    this.FteForm.get('fte_month').valueChanges.subscribe((value: any) => {
-      this.FteForm.patchValue({
-        ftf_year: value*13
-      });
-    });
+    // this.FteForm.get('fte_month').valueChanges.subscribe((value: any) => {
+    //   this.FteForm.patchValue({
+    //     ftf_year: value*13
+    //   });
+    // });
     this.FteForm.get('region').valueChanges.subscribe((value: any) => {
       this.regionId = value;
       if(value){
@@ -106,7 +105,7 @@ export class FteComponent {
   // }
   findLocationID(){
 
-      this.locationOptions.filter((res)=> res.country.id === this.countryID);
+      this.locationOptions?.filter((res)=> res.country.id === this.countryID);
 
   }
 
@@ -117,15 +116,28 @@ export class FteComponent {
       event.target.value = event.target.value.slice(0, 6);
     }
   }
+  limitTo9Digits(event: any) {
+    if (event.target.value.length > 6) {
+      event.target.value = event.target.value.slice(0, 9);
+    }
+  }
   limitTo7Digits(event: any){
     if (event.target.value.length > 7) {
       event.target.value = event.target.value.slice(0, 7);
     }
   }
   clear(table: Table) {
-    table.reset();
-    this.onSort(Event);
+    table.reset(); 
+
+    this.sortField = '';
+    this.sortOrder = 1;
+  
     this.clearSearchInput();
+  
+    this.fetchAllFteDetails();
+  
+    this.currentPage = 1;
+    this.pageSize = 10;
   }
 
   getSeverity(status: boolean): string {
@@ -142,7 +154,10 @@ export class FteComponent {
     });
     this.editMode = false;
     this.modeTitle = 'Add';
-    
+     this.regionOptions = [];
+     this.countryOptions = [];
+     this.locationOptions = [];
+     this.fetchLocationRegion();
   }
 
 /**Region get Data */
@@ -257,27 +272,31 @@ clearSearchInput(): void {
 
 fteRowData:any;
 editDisable:boolean = false;
-editFteRow(ftes: any){
-this.fteRowData = ftes;
-console.log("patch",this.fteRowData)
-  this.updateLocationDetails()
+
+editFteRow(fte: any) {
+  this.fteRowData = fte;
+  this.updateLocationDetails();
 }
 updateLocationDetails() {
   this.editMode = true;
   this.modeTitle = 'Edit';
-  if(this.countryOptions){
-    
-  }
+  
+  // Fetch location options based on the selected country ID
+  this.fetchLocation(this.fteRowData.country.id);
+  
+  // Set a timeout to ensure that the location options are loaded before setting the selected value
+  setTimeout(() => {
     this.FteForm.patchValue({
       region: this.fteRowData.region.id,
       country: this.fteRowData.country.id,
       location: this.fteRowData.location.id,
-      fte_month: this.fteRowData.monthlyCost,
+      // fte_month: this.fteRowData.monthlyCost,
       ftf_year: this.fteRowData.yearlyCost,
       Work_Time_Year: this.fteRowData.yearlyWorkingMin,
-      status: this.fteRowData.status ? 'active' : 'inactive',
+      status: this.fteRowData.status ? 'active' : 'inactive'
     });
     this.displayCreateFteDialog = true;
+  }, 500); // Adjust the timeout duration as needed
 }
 
 /**@Add_FTE_Data Form*/

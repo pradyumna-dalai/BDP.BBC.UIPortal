@@ -8,7 +8,7 @@
             </span>
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
-            <button type="button" pButton pRipple label="Export" pTooltip="Export in Excel File" class="p-button-outlined mr-2 mb-2" (click)="downloadExcel($event)"></button>
+            <button type="button" pButton pRipple label="Download" pTooltip="Download in Excel File" class="p-button-outlined mr-2 mb-2" (click)="downloadExcel($event)"></button>
             <button type="button" pButton pRipple label="Clear" (click)="clear(dt1)" class="p-button-outlined mr-2 mb-2"></button>
             <button type="button" icon="pi pi-plus" pButton pRipple label="Add" (click)="showDialog()" class="mr-2 mb-2"></button>
         </div>
@@ -21,7 +21,7 @@ scrollHeight="530px" scrollDirection="both"
         <ng-template pTemplate="header">
             <tr>
                 <th style="text-align: center;width: 50px" [frozen]="true" class="sticky-header">Actions</th>
-                <th style="text-align: center; width: 200px" pSortableColumn="status" [frozen]="true"
+                <th style="text-align: center; width: 100px" pSortableColumn="status" [frozen]="true"
                 class="sticky-header">Status<p-sortIcon field="status"></p-sortIcon>
                 </th>
                 <th style="text-align: center; width: 300px" pSortableColumn="name" [frozen]="true"
@@ -30,7 +30,7 @@ scrollHeight="530px" scrollDirection="both"
                     <p-columnFilter type="text" display="menu" field="name" pTooltip="Filter" tooltipPosition="right"
                                 class="column-filter icon-align"></p-columnFilter>
                 </th>
-                <th style="text-align: center; width: 200px"  [frozen]="true"
+                <th style="text-align: center; width: 300px"  [frozen]="true"
                     class="sticky-header">
                     Description
                 </th>
@@ -67,10 +67,9 @@ scrollHeight="530px" scrollDirection="both"
                 <td style="text-align: center; word-wrap: break-word;">
                     <span>{{item.name}}</span>
                 </td>
-                <td style="text-align: center; max-width: 200px; overflow: hidden;" [title]="item.description">
-                    <span *ngIf="item.description && item.description.length > 50">{{ item.description.slice(0, 20) + '...' }}</span>
-                    <span *ngIf="!item.description || (item.description && item.description.length <= 50)">{{ item.description }}</span>
-                </td>
+                <td style="text-align: center; max-width: 200px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;" [title]="item.description">
+                    {{ item.description }}
+                </td> 
                 <td style="text-align: center; word-wrap: break-word;">
                     <span>{{ item.createdBy }}</span>
                   </td>

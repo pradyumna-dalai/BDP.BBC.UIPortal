@@ -125,6 +125,8 @@ import { CostLineItemComponent } from './demo/view/project/create-project/cost-l
 import { OtherCostComponent } from './demo/view/project/create-project/other-cost/other-cost.component';
 import { ProjectCostComponent } from './demo/view/project/create-project/project-cost/project-cost.component';
 import { NgHttpLoaderModule } from 'ng-http-loader';
+import { CostItemComponent } from './demo/master-data/cost-item/cost-item.component';
+import { RevenueItemComponent } from './demo/master-data/revenue-item/revenue-item.component';
 
 
 
@@ -249,6 +251,8 @@ import { NgHttpLoaderModule } from 'ng-http-loader';
         CostLineItemComponent,
         OtherCostComponent,
         ProjectCostComponent,
+        CostItemComponent,
+        RevenueItemComponent,
 
     ],
     providers: [

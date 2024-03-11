@@ -9,7 +9,9 @@
             {{ isExpanded ? 'Collapse All' : 'Expand All' }}</button></div>
             <div style="padding: 5px;"><button pButton pRipple (click)="downloadAddVolumeSCExcel($event,projectIdbb)" type="button">Download</button></div>
             <div style="padding: 5px;">
-                <button pButton pRipple type="button" (click)="showUploadDialog()">Import Excel</button>
+                <button pButton pRipple type="button" class="p-button-outlined mr-2 mb-2" (click)="showUploadDialog()">
+                    
+                </button>
             </div>
         </div>
     </div>
@@ -60,7 +62,7 @@
                                                             <input pInputText type="number" 
                                                             [ngModel]="getLocationVolumeValue(line.locationVolume, location)"
                                                             (ngModelChange)="updateLocationVolume($event, location, line)"
-                                                            style="text-align: center;">
+                                                            style="text-align: center;" min="0">
                                                                 
                                                         </ng-container>
                                                     </ng-template>
@@ -121,7 +123,7 @@
                                                             <input pInputText type="number" 
                                                             [ngModel]="getLocationVolumeValue(line.locationVolume, location)"
                                                             (ngModelChange)="updateLocationVolume($event, location, line)"
-                                                            style="text-align: center;">
+                                                            style="text-align: center;" min="0">
                                                                 
                                                         </ng-container>
                                                     </ng-template>
@@ -165,7 +167,7 @@
         <div style="width: 100%;">
             <h5 style="display: contents;">Import From Excel</h5>&nbsp;&nbsp;&nbsp;
             <h5 style="display: contents;">
-                <a  style="text-decoration: underline;cursor: pointer;">Download Sample File</a>
+                <!-- <a  style="text-decoration: underline;cursor: pointer;">Download Sample File</a> -->
               </h5>
         </div>
     </ng-template>
@@ -177,7 +179,7 @@
             <div class="custom-container">
                 <h6><b>Instructions</b></h6>
                 <ul class="list">
-                <li>Maximum File Size: 2MB</li>
+                <li>Maximum File Size: 5MB</li>
                 <li>File Format: CSV,xlsx</li>
                 </ul>
                 <ol class="list" type="1">
@@ -201,24 +203,24 @@
                                 <i class="pi pi-upload" style="font-size: 30px;display: block;"></i>
                                 <div class="upload_name">Upload</div>
                             </label>
-                            <p style="text-align: center;"></p>
-                            <input type="file" id="fileUpload"  style="display: none;" accept=".xlsx, .csv">
+                            <p style="text-align: center;">{{fileName}}</p>
+                            <input type="file" id="fileUpload" (change)="onUploadExcel($event)"  style="display: none;" accept=".xlsx, .csv">
                         </div>
                         </div>
                     </div>
-                    <!-- <p-progressBar *ngIf="uploadInProgress" mode="indeterminate" [style]="{'height': '6px', 'marginBottom':'1rem'}">
-                    </p-progressBar> -->
+                    <p-progressBar *ngIf="uploadInProgress" mode="indeterminate" [style]="{'height': '6px', 'marginBottom':'1rem'}">
+                    </p-progressBar>
                     <div class="card_footer">
                         <div>
-                            <button type="submit" pButton pRipple class=" btn">
+                            <button type="submit" (click)="onRemoveClick()" [disabled]="!uploadFile" pButton pRipple class="p-button-outlined mr-2 mb-2">
                             Remove File
                         </button> 
                         </div>
                         <div class="uplodBtn_right">
-                        <button type="submit" pButton pRipple class=" btn">
+                        <button type="submit" (click)="onSubmitUploadClick(this.projectIdbb)" pButton pRipple class="mr-2 mb-2">
                             Submit
                         </button>
-                        <button type="submit"  pButton pRipple class=" btn">Cancel</button>
+                        <button type="submit" (click)="onPopupCancelClick()" [disabled]="!uploadFile"  pButton pRipple class="p-button-outlined mr-2 mb-2">Cancel</button>
                         </div>
                     </div>
                     </div>
