@@ -8,10 +8,10 @@
             </span>
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
-            <!-- <button type="button" pButton pRipple label="Download" class="p-button-outlined mr-2 mb-2" pTooltip="Download in Excel File"
-                (click)="downloadExcel($event)" tooltipPosition="top"></button> -->
+            <button type="button" pButton pRipple label="Download" class="p-button-outlined mr-2 mb-2" pTooltip="Download in Excel File"
+                (click)="downloadExcel($event)" tooltipPosition="top"></button>
             <button type="button" pButton pRipple label="Clear" (click)="clear(dt2)" class="p-button-outlined mr-2 mb-2"></button>
-            <button type="button" pButton pRipple label=" Add " (click)="showCreateCostItemDialoge()" icon="pi pi-plus"
+            <button type="button" pButton pRipple label=" Add " (click)="showCreateRevenueItemDialoge()" icon="pi pi-plus"
                 class="mr-2 mb-2"></button>
         </div>
     </div>
@@ -32,7 +32,7 @@
                     class="sticky-header">Status<p-sortIcon field="status"></p-sortIcon></th>
                 <th style="text-align: center; width: 200px" pSortableColumn="name" [frozen]="true"
                     class="sticky-header">
-                    <!-- Product Scope<p-sortIcon field="name"></p-sortIcon> -->Cost Item
+                    <!-- Product Scope<p-sortIcon field="name"></p-sortIcon> -->Revenue Item
                     <p-sortIcon field="name" class="sort-icon"></p-sortIcon>
                     <p-columnFilter type="text" display="menu" field="name" pTooltip="Filter" tooltipPosition="right"
                         class="column-filter icon-align"></p-columnFilter>
@@ -49,27 +49,27 @@
                     class="sticky-header">Updated At<p-sortIcon field="updatedDate"></p-sortIcon></th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-costItem>
+        <ng-template pTemplate="body" let-revenue>
             <tr>
                 <td style="text-align: center; word-wrap: break-word;">
-                    <span style="cursor: pointer;" (click)="editCost(costItem)"><i class="pi pi-pencil"></i></span>&nbsp;
+                    <span style="cursor: pointer;" (click)="editRevenue(revenue)"><i class="pi pi-pencil"></i></span>&nbsp;
                 </td>
                 <td style="text-align: center; word-wrap: break-word;">
-                    <p-tag [value]="getSeverityLabel(costItem.status)" [severity]="getSeverity(costItem.status)"></p-tag>
+                    <p-tag [value]="getSeverityLabel(revenue.status)" [severity]="getSeverity(revenue.status)"></p-tag>
                 </td>
-                <td style="text-align: center; word-wrap: break-word;">{{ costItem.name }}</td>
-                <td style="text-align: center; max-width: 200px; overflow: hidden;" [title]="costItem.description">
-                    <span *ngIf="costItem.description && costItem.description.length > 40">
-                        {{ (costItem.description.slice(0, 20) +'...' || '') }}
+                <td style="text-align: center; word-wrap: break-word;">{{ revenue.name }}</td>
+                <td style="text-align: center; max-width: 200px; overflow: hidden;" [title]="revenue.description">
+                    <span *ngIf="revenue.description && revenue.description.length > 40">
+                        {{ (revenue.description.slice(0, 20) +'...' || '') }}
                     </span>
-                    <span *ngIf="!costItem.description || (costItem.description && costItem.description.length <= 50)">
-                        {{ costItem.description || '' }}
+                    <span *ngIf="!revenue.description || (revenue.description && revenue.description.length <= 50)">
+                        {{ revenue.description || '' }}
                     </span>
                 </td>
-                <td style="text-align: center; word-wrap: break-word;">{{ costItem.createdBy }}</td>
-                <td style="text-align: center; word-wrap: break-word;">{{ costItem.createdDate | date:'dd MMM yyyy' }}</td>
-                <td style="text-align: center; word-wrap: break-word;">{{ costItem.updatedBy }}</td>
-                <td style="text-align: center; word-wrap: break-word;">{{ costItem.updatedDate | date:'dd MMM yyyy' }}</td>
+                <td style="text-align: center; word-wrap: break-word;">{{ revenue.createdBy }}</td>
+                <td style="text-align: center; word-wrap: break-word;">{{ revenue.createdDate | date:'dd MMM yyyy' }}</td>
+                <td style="text-align: center; word-wrap: break-word;">{{ revenue.updatedBy }}</td>
+                <td style="text-align: center; word-wrap: break-word;">{{ revenue.updatedDate | date:'dd MMM yyyy' }}</td>
             </tr>
         </ng-template>
         <ng-template pTemplate="emptymessage">
@@ -84,26 +84,26 @@
 </div>
 
 
-<p-dialog [(visible)]="displayCreateCostItemDialog" [style]="{width: '30vw',height: '35rem'}" [resizable]="false" [modal]="true"
+<p-dialog [(visible)]="displayCreateRevenueItemDialog" [style]="{width: '30vw',height: '35rem'}" [resizable]="false" [modal]="true"
     closable='true'>
     <ng-template pTemplate="header">
-        <h5 style="display: contents;">{{ modeTitle }}&nbsp;Cost Item</h5>
+        <h5 style="display: contents;">{{ modeTitle }}&nbsp;Revenue</h5>
         <!-- <hr> -->
     </ng-template>
     <hr class="alignhr">
     <!-- <div class="tr-divider"></div> -->
-    <form [formGroup]="CostItemForm">
+    <form [formGroup]="RevenueItemForm">
         <div class="p-grid p-field">
             <div class="formgrid grid">
                 <div class="field col-12">
-                    <label>Cost Item<span class="required">*</span></label>
+                    <label>Revenue Item<span class="required">*</span></label>
 
-                    <input id="costItem" type="text" placeholder="Cost Item"
+                    <input id="revenue" type="text" placeholder="Revenue Item"
                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
-                        formControlName="costItem" >
+                        formControlName="revenue" >
                     <div
-                        *ngIf="CostItemForm.get('costItem')?.hasError('required') && CostItemForm.get('costItem')?.touched" class="error-message">
-                        Cost Item is required.
+                        *ngIf="RevenueItemForm.get('revenue')?.hasError('required') && RevenueItemForm.get('revenue')?.touched" class="error-message">
+                        Revenue is required.
                     </div>
                 </div>
                 <div class="field col-12 ">
@@ -124,7 +124,7 @@
                                 style="margin-left: 25px;"></p-radioButton>
                         </div>
                     </div>
-                    <div *ngIf="CostItemForm.get('status').hasError('required') && CostItemForm.get('status').touched" class="error-message">
+                    <div *ngIf="RevenueItemForm.get('status').hasError('required') && RevenueItemForm.get('status').touched" class="error-message">
                         Status is required.
                     </div>
                 </div>
@@ -134,10 +134,10 @@
     </form>
     <!-- <hr> -->
     <ng-template pTemplate="footer">
-        <button pButton pRipple label="Cancel" (click)="displayCreateCostItemDialog = false"
+        <button pButton pRipple label="Cancel" (click)="displayCreateRevenueItemDialog = false"
             class="p-button-outlined mr-2 mb-2"></button>
-        <button pButton pRipple label="{{ editMode ? 'Update' : 'Add' }}" class="mr-2 mb-2" (click)="createCostItem()"
-            [disabled]="!CostItemForm.valid || processing"></button>
+        <button pButton pRipple label="{{ editMode ? 'Update' : 'Add' }}" class="mr-2 mb-2" (click)="createRevenueItem()"
+            [disabled]="!RevenueItemForm.valid || processing"></button>
     </ng-template>
 </p-dialog>
 <p-toast></p-toast>

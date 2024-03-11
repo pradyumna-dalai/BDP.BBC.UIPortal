@@ -14,11 +14,11 @@ import { MasterTableService } from 'src/app/services/master-table.service';
 })
 export class RevenueItemComponent {
   loading: boolean = true;
-  displayCreateCostItemDialog: boolean;
-  CostItemForm: FormGroup;
+  displayCreateRevenueItemDialog: boolean;
+  RevenueItemForm: FormGroup;
   revenueItemDetails: any[] = [];
   editMode: boolean = false;
-  selectedCostItem: any;
+  selectedRevenue: any;
   modeTitle: string = 'Add';
   processing: boolean = false;
 
@@ -37,17 +37,17 @@ export class RevenueItemComponent {
   }
   ngOnInit() {
     this.fetchAllRevenueDetails();
-    this.CostItemForm = this.fb.group({
+    this.RevenueItemForm = this.fb.group({
       id: [''],
-      costItem: ['', Validators.required],
+      revenue: ['', Validators.required],
       description: [''],
       status: ['inactive', Validators.required],
     });
   }
 
-  showCreateCostItemDialoge() {
-    this.displayCreateCostItemDialog = true;
-    this.CostItemForm.reset({
+  showCreateRevenueItemDialoge() {
+    this.displayCreateRevenueItemDialog = true;
+    this.RevenueItemForm.reset({
       status: 'inactive'
     });
     this.editMode = false;
@@ -56,32 +56,32 @@ export class RevenueItemComponent {
 
   // -----------------------------------create Cost  --------------------------------------//
 
-  createCostItem() {
-    if (this.CostItemForm.valid) {
+  createRevenueItem() {
+    if (this.RevenueItemForm.valid) {
       this.processing = true;
       const body = {
-        id: this.CostItemForm.get('id').value || '',
-        name: this.CostItemForm.value.costItem,
-        description: this.CostItemForm.value.description,
-        status: this.CostItemForm.value.status === 'active' ? true : false,
+        id: this.RevenueItemForm.get('id').value || '',
+        name: this.RevenueItemForm.value.revenue,
+        description: this.RevenueItemForm.value.description,
+        status: this.RevenueItemForm.value.status === 'active' ? true : false,
         isDeleted: false,
       };
 
       const observer = {
         next: (response: any) => {
           console.log(response);
-          this.displayCreateCostItemDialog = false;
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: this.editMode ? 'Cost Item updated successfully!' : 'Cost Item added successfully!' });
+          this.displayCreateRevenueItemDialog = false;
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: this.editMode ? 'Revenue updated successfully!' : 'Revenue added successfully!' });
           this.fetchAllRevenueDetails();
           this.processing = false;
         },
         error: (error: any) => {
           console.error(error);
           if (error.status === 400 && error.error?.message === 'Fill required field(s)') {
-            const errorMessage = error.error.data?.join(', ') || 'Error in adding Cost Item';
+            const errorMessage = error.error.data?.join(', ') || 'Error in adding Revenue';
             this.messageService.add({ severity: 'error', summary: 'Error', detail: errorMessage });
           } else {
-            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error in adding Cost Item' });
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error in adding Revenue' });
           }
           this.processing = false;
         }
@@ -89,12 +89,12 @@ export class RevenueItemComponent {
 
       if (this.editMode) {
         this.modeTitle = 'Edit';
-        body['id'] = this.selectedCostItem.id;
-        this.masterDataService.updateCostItemDetails(body).subscribe(observer);
+        body['id'] = this.selectedRevenue.id;
+        this.masterDataService.updateRevenueDetails(body).subscribe(observer);
 
       } else {
         this.modeTitle = 'Add';
-        this.masterDataService.saveCostItemDetails(body).subscribe(observer);
+        this.masterDataService.saveRevenueDetails(body).subscribe(observer);
       }
     } else {
       this.messageService.add({ severity: 'error', summary: 'Validation Error', detail: 'Form is invalid!' });
@@ -127,30 +127,30 @@ export class RevenueItemComponent {
 
   //-------------------------------end---------------------------------------------------//
 
-  //------------------------------Update Cost Item--------------------------------------------//
-  editCost(costItem: any) {
-    this.selectedCostItem = costItem;
-    this.updateCostItemDetails(costItem);
+  //------------------------------Update Revenue--------------------------------------------//
+  editRevenue(revenue: any) {
+    this.selectedRevenue = revenue;
+    this.updateRevenueDetails(revenue);
   }
 
-  updateCostItemDetails(_costItem) {
+  updateRevenueDetails(_revenue) {
     this.editMode = true;
     this.modeTitle = 'Edit';
-    if (this.selectedCostItem) {
-      this.CostItemForm.patchValue({
-        costItem: this.selectedCostItem.name,
-        description: this.selectedCostItem.description,
-        status: this.selectedCostItem.status ? 'active' : 'inactive',
+    if (this.selectedRevenue) {
+      this.RevenueItemForm.patchValue({
+        revenue: this.selectedRevenue.name,
+        description: this.selectedRevenue.description,
+        status: this.selectedRevenue.status ? 'active' : 'inactive',
       });
 
-      this.displayCreateCostItemDialog = true;
+      this.displayCreateRevenueItemDialog = true;
     }
   }
 
   cancelUpdate() {
     // Reset the form when the "Cancel" button is clicked
-    this.CostItemForm.reset();
-    this.displayCreateCostItemDialog = false;
+    this.RevenueItemForm.reset();
+    this.displayCreateRevenueItemDialog = false;
     this.editMode = false;
 
   }
