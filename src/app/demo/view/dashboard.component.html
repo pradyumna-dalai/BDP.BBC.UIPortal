@@ -21,16 +21,15 @@
                 <div class="col-12">
                     <p-tabView>
                         <p-tabPanel header="Building Blocks">
-                            <p-tree [value]="treeDataNew" [selectionMode]="'single'"
-                                (onNodeSelect)="onNodeSelect($event)">
+                            <p-tree [value]="treeDataNew" [selectionMode]="'single'" (onNodeSelect)="onNodeSelect($event)">
                                 <ng-template let-node pTemplate="default">
-                                    <span>
+                                    <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" [title]="node.label">
                                         <!-- Add icons for each child based on the item type -->
                                         <span *ngIf="node.data?.type === 1" class="fas fa-folder"></span>
                                         <span *ngIf="node.data?.type === 2" class="fa-regular fa-folder"></span>
                                         <span *ngIf="node.data?.type === 3" class="far fa-folder-open"></span>
                                         <span *ngIf="node.data?.type === 4" class="fas fa-boxes"></span>
-                                        {{ node.label }}
+                                        {{ getLabel(node) }}
                                     </span>
                                 </ng-template>
                             </p-tree>
@@ -50,18 +49,20 @@
                             <!-- <div style="margin-top: 115px;"> -->
                             <p-tree [value]="treeData" [selectionMode]="'single'" (onNodeSelect)="onNodeSelect($event)">
                                 <ng-template let-node pTemplate="default">
-                                    <span>
+                                    <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                                        [title]="node.label">
                                         <!-- Add icons for each child based on the item type -->
                                         <span *ngIf="node.data?.type === 1" class="fas fa-folder"></span>
                                         <span *ngIf="node.data?.type === 2" class="fa-regular fa-folder"></span>
                                         <span *ngIf="node.data?.type === 3" class="far fa-folder-open"></span>
                                         <span *ngIf="node.data?.type === 4" class="fas fa-boxes"></span>
-                                        {{ node.label }}
+                                        {{ getLabel(node) }}
                                     </span>
                                 </ng-template>
                             </p-tree>
                             <div *ngIf="loading" class="loader-overlay">
-                                <p-progressSpinner styleClass="w-4rem h-4rem" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s"></p-progressSpinner>
+                                <p-progressSpinner styleClass="w-4rem h-4rem" strokeWidth="8"
+                                    fill="var(--surface-ground)" animationDuration=".5s"></p-progressSpinner>
                             </div>
                             <!-- </div> -->
 
@@ -140,19 +141,22 @@
 
             <div class="p-fluid grid">
                 <div class="col-12 md:col-4">
-                    <button pButton pRipple type="button" (click)="onCardClick('scoping')" [ngStyle]="{'border': showScopingCrad ? '1px solid #1B74C5' : 'none'}"
+                    <button pButton pRipple type="button" (click)="onCardClick('scoping')"
+                        [ngStyle]="{'border': showScopingCrad ? '1px solid #1B74C5' : 'none'}"
                         class="p-button-outlined mr-2 mb-2 bbCard">
                         <i class="pi pi-arrows-alt icon-with-margin"></i>
                         Scoping Card
                     </button>
                 </div>
                 <div class="col-12 md:col-4">
-                    <button pButton pRipple type="button" (click)="onCardClick('operation')" [ngStyle]="{'border': showOperationCrad ? '1px solid #1B74C5' : 'none'}"
+                    <button pButton pRipple type="button" (click)="onCardClick('operation')"
+                        [ngStyle]="{'border': showOperationCrad ? '1px solid #1B74C5' : 'none'}"
                         class="p-button-outlined mr-2 mb-2 bbCard"> <i class="pi pi-cog icon-with-margin"></i>
                         Operation Card</button>
                 </div>
                 <div class="col-12 md:col-4">
-                    <button pButton pRipple type="button" (click)="onCardClick('commercial')" [ngStyle]="{'border': showCommercialCrad ? '1px solid #1B74C5' : 'none'}"
+                    <button pButton pRipple type="button" (click)="onCardClick('commercial')"
+                        [ngStyle]="{'border': showCommercialCrad ? '1px solid #1B74C5' : 'none'}"
                         class="p-button-outlined mr-2 mb-2 bbCard">
                         <i class="pi pi-money-bill icon-with-margin"></i>
                         Commercial Card</button>
@@ -168,7 +172,7 @@
                         <p-button (click)="isExpanded = !isExpanded" class="p-button-outlined"
                             label="{{ isExpanded ? 'Collapse All' : 'Expand All' }}"></p-button>
                     </div>
-                </div> 
+                </div>
                 <hr class="align">
                 <p-accordion [multiple]="true">
                     <p-accordionTab header="Service Description" [selected]="isExpanded">
@@ -207,7 +211,9 @@
                         <h5>Operation Card</h5>
                     </div>
                     <div class="col-6" style="display: flex;justify-content: flex-end;">
-                        <a style="text-decoration: underline;" [pTooltip]="'Download Uploaded Operation Card File'"  *ngIf="showDownload" [tooltipPosition]="'top'" (click)="downloadOperationCardExcel($event)">Download Excel</a>
+                        <a style="text-decoration: underline;" [pTooltip]="'Download Uploaded Operation Card File'"
+                            *ngIf="showDownload" [tooltipPosition]="'top'"
+                            (click)="downloadOperationCardExcel($event)">Download Excel</a>
                     </div>
                 </div>
                 <div *ngIf="excelDataOpration">
@@ -228,7 +234,7 @@
                     </div>
                 </div>
                 <br>
-                
+
                 <hr class="align">
             </div>
             <!-- commercial card details -->

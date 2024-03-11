@@ -219,4 +219,21 @@ export class MasterDataService {
   }
 
   //-----------------------------------end----------------------------------------//
+
+
+    //---------------------------------Revenue Item Management---------------------//
+
+    getAllRevenueDetails(){
+      return this.http.get<any>(url + settings.AppRoutes.Auth.getAllRevenue);
+    }
+  
+    saveRevenueDetails(body: any){
+      return this.http.post<any>(url + settings.AppRoutes.Auth.saveRevenue, body);
+    }
+  
+    updateRevenueDetails(body: any){
+      return this.http.put<any>(url + settings.AppRoutes.Auth.saveRevenue, body);
+    }
+  
+    //-----------------------------------end----------------------------------------//
 }
