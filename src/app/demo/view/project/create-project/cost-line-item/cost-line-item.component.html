@@ -10,7 +10,9 @@
             {{ isExpanded ? 'Collapse All' : 'Expand All' }}</button></div>
             <div style="padding: 5px;"><button pButton pRipple type="button" (click)="downloadCLISCExcel($event,projectidVolume)">Download</button></div>
             <div style="padding: 5px;">
-                <button pButton pRipple type="button" class="p-button-outlined mr-2 mb-2" (click)="showUploadDialog()">Upload Excel</button>
+                <button pButton pRipple type="button" class="p-button-outlined mr-2 mb-2" (click)="showUploadDialog()">
+                    
+                </button>
             </div>
         </div>
     </div>
@@ -161,7 +163,7 @@
     </div>
 </div>
 
-<p-dialog header="Upload Excel" [(visible)]="visible" [modal]="true"   [style]="{width: '50vw'}" >
+<p-dialog header="Upload" [(visible)]="visible" [modal]="true"   [style]="{width: '50vw'}" >
     <!-- <div class="page-under-construction">
         <img src="assets/layout/images/page-under-construction.jpg" alt="No Building Blocks Found">
     </div> -->
