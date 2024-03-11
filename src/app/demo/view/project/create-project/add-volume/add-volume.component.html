@@ -60,7 +60,7 @@
                                                             <input pInputText type="number" 
                                                             [ngModel]="getLocationVolumeValue(line.locationVolume, location)"
                                                             (ngModelChange)="updateLocationVolume($event, location, line)"
-                                                            style="text-align: center;">
+                                                            style="text-align: center;" min="0">
                                                                 
                                                         </ng-container>
                                                     </ng-template>
@@ -121,7 +121,7 @@
                                                             <input pInputText type="number" 
                                                             [ngModel]="getLocationVolumeValue(line.locationVolume, location)"
                                                             (ngModelChange)="updateLocationVolume($event, location, line)"
-                                                            style="text-align: center;">
+                                                            style="text-align: center;" min="0">
                                                                 
                                                         </ng-container>
                                                     </ng-template>

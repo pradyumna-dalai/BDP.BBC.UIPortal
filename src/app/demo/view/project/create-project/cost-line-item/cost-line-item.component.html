@@ -62,14 +62,14 @@
                                             <td style="text-align: center">{{ line.takt }}</td>
                                             <td style="text-align: center">
                                                 <ng-container *ngIf="!line.editing">{{ line.complexity }}</ng-container>
-                                                <input pInputText *ngIf="line.editing" type="number" [(ngModel)]="line.complexity">
+                                                <input pInputText *ngIf="line.editing" type="number" min="0" [(ngModel)]="line.complexity">
                                             </td>
                                             <td style="text-align: center">{{ line.taktConsidered }}</td>
                                             <td style="text-align: center">{{ line.totalCost }}</td>
                                             <td style="text-align: center">{{ line.totalHC }}</td>
                                             <td style="text-align: center">
                                                 <ng-container *ngIf="!line.editing">{{ line.fteProductivity }}</ng-container>
-                                                <input pInputText *ngIf="line.editing" type="number" [ngModel]="line.fteProductivity" (ngModelChange)="onFteProductivityChange($event)">
+                                                <input pInputText *ngIf="line.editing" type="number" min="0" [ngModel]="line.fteProductivity" (ngModelChange)="onFteProductivityChange($event)">
                                                 <div *ngIf="isFteProductivityExceedsMax" style="color: red;" class="text-danger">Value cannot exceed 100</div>
                                             </td>
                                             <td style="text-align: center">{{ line.fteCost }}</td>
@@ -127,13 +127,13 @@
                                             <td style="text-align: center">{{ line.takt }}</td>
                                             <td style="text-align: center">
                                                 <ng-container *ngIf="!line.editing">{{ line.complexity }}</ng-container>
-                                                <input pInputText *ngIf="line.editing" type="number" [(ngModel)]="line.complexity"></td>
+                                                <input pInputText *ngIf="line.editing" min="0" type="number" [(ngModel)]="line.complexity"></td>
                                             <td style="text-align: center">{{ line.taktConsidered }}</td>
                                             <td style="text-align: center">{{ line.totalCost }}</td>
                                             <td style="text-align: center">{{ line.totalHC }}</td>
                                             <td style="text-align: center">
                                                 <ng-container *ngIf="!line.editing">{{ line.fteProductivity }}</ng-container>
-                                                <input pInputText *ngIf="line.editing" type="number" [(ngModel)]="line.fteProductivity" max="100"></td>
+                                                <input pInputText *ngIf="line.editing" min="0" type="number" [(ngModel)]="line.fteProductivity" max="100"></td>
                                             <td style="text-align: center">{{ line.fteCost }}</td>
                                             <td style="text-align: center">{{ line.comment }}</td>
                                             </tr>

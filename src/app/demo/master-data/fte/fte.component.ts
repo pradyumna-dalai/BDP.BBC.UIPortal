@@ -71,18 +71,17 @@ export class FteComponent {
       region : ['',Validators.required],
       country : ['',Validators.required],
       location: ['',Validators.required],
-      fte_month: [ '',Validators.required,],
-      ftf_year : [''],
+      ftf_year : ['',Validators.required],
       Work_Time_Year: ['',Validators.required],
       status : ['']
     });
 
 
-    this.FteForm.get('fte_month').valueChanges.subscribe((value: any) => {
-      this.FteForm.patchValue({
-        ftf_year: value*13
-      });
-    });
+    // this.FteForm.get('fte_month').valueChanges.subscribe((value: any) => {
+    //   this.FteForm.patchValue({
+    //     ftf_year: value*13
+    //   });
+    // });
     this.FteForm.get('region').valueChanges.subscribe((value: any) => {
       this.regionId = value;
       if(value){
@@ -117,6 +116,11 @@ export class FteComponent {
       event.target.value = event.target.value.slice(0, 6);
     }
   }
+  limitTo9Digits(event: any) {
+    if (event.target.value.length > 6) {
+      event.target.value = event.target.value.slice(0, 9);
+    }
+  }
   limitTo7Digits(event: any){
     if (event.target.value.length > 7) {
       event.target.value = event.target.value.slice(0, 7);
@@ -130,7 +134,7 @@ export class FteComponent {
   
     this.clearSearchInput();
   
-    this.fetchLocationCountry();
+    this.fetchAllFteDetails();
   
     this.currentPage = 1;
     this.pageSize = 10;
@@ -286,7 +290,7 @@ updateLocationDetails() {
       region: this.fteRowData.region.id,
       country: this.fteRowData.country.id,
       location: this.fteRowData.location.id,
-      fte_month: this.fteRowData.monthlyCost,
+      // fte_month: this.fteRowData.monthlyCost,
       ftf_year: this.fteRowData.yearlyCost,
       Work_Time_Year: this.fteRowData.yearlyWorkingMin,
       status: this.fteRowData.status ? 'active' : 'inactive'
