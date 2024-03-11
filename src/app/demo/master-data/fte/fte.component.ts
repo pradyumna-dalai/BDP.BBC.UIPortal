@@ -134,7 +134,7 @@ export class FteComponent {
   
     this.clearSearchInput();
   
-    this.fetchLocationCountry();
+    this.fetchAllFteDetails();
   
     this.currentPage = 1;
     this.pageSize = 10;
