@@ -164,6 +164,18 @@ export namespace AppRoutes {
  
         //------End-----------------------//
 
-    }
+        //--------------------Cost Item Master Data Managememt---------------------------//
+
+        public static readonly getAllcostItem = "allcostItem"
+
+        public static readonly saveCostItem = "costItem"
+
+        //--------------------Revenue Item Master Data Managememt---------------------------//
+
+        public static readonly getAllRevenue = "revenue"
+
+        public static readonly saveRevenue = "revenue"
+
+}
 
 }

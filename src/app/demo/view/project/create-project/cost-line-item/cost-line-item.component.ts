@@ -165,7 +165,7 @@ onSubmitUploadClick(projId){
         key: 'errorToast',
         severity: 'error',
         summary: 'Error!',
-        detail: 'Failed to upload excel file.'
+        detail: 'Failed to upload file.'
       });
     
       this.uploadInProgress = false;

@@ -23,8 +23,8 @@ interface UomData {
 
 interface TableRow {
   city: string;
-  Volume: string;
-  Uom: null;
+ // Volume: string;
+  //Uom: null;
   editing: boolean;
   adding: boolean;
 }
@@ -414,7 +414,7 @@ export class CreateProjectComponent implements OnInit {
     let dateRangevalEndDate = this.dateRange.endDate;
 
     const originProjectLocationData = this.OtableData.map((row: TableRow) => ({
-      volume: row.Volume,
+     // volume: row.Volume,
       originDestination: 0,
       originDestinationCode: 0,
 
@@ -422,22 +422,22 @@ export class CreateProjectComponent implements OnInit {
         id: this.locationOptions.find(loc => loc.name === row.city)?.id,
         name: row.city
       },
-      uom: {
-        id: row.Uom
-      }
+      // uom: {
+      //   id: row.Uom
+      // }
     }));
 
     const destinationProjectLocationData = this.tableData.map((row: TableRow) => ({
-      volume: row.Volume,
+   //   volume: row.Volume,
       originDestination: 1,
       originDestinationCode: 1,
       location: {
         id: this.locationOptions.find(loc => loc.name === row.city)?.id,
         name: row.city
       },
-      uom: {
-        id: row.Uom
-      }
+      // uom: {
+      //   id: row.Uom
+      // }
     }));
 
 
@@ -593,13 +593,13 @@ export class CreateProjectComponent implements OnInit {
     const selectedLocationIds = event.value;
     if (selectedLocationIds && selectedLocationIds.length > 0) {
     
-      this.isActionButtonsVisible = true;
-      this.destinationLocations = this.locationOptions.filter(loc => !selectedLocationIds.includes(loc.id));
-    } else {
-      this.isActionButtonsVisible = false;
-      this.destinationLocations = [...this.locationOptions];
-    }
-
+   //   this.isActionButtonsVisible = true;
+   //   this.destinationLocations = this.locationOptions.filter(loc => selectedLocationIds.includes(loc.id));
+ //   } else {
+   //   this.isActionButtonsVisible = false;
+     // this.destinationLocations = [...this.locationOptions];
+    //}
+    this.originLocations = [...this.locationOptions];
     
     const selectedCitiesOrign = this.locationOptions
       .filter(loc => selectedLocationIds.includes(loc.id))
@@ -610,20 +610,20 @@ export class CreateProjectComponent implements OnInit {
       if (!existingCity) {
         this.OtableData.push({
           city: city.name,
-          Volume: '',
+          // Volume: '',
           editing: true,
           adding: false,
-          Uom: null
+          // Uom: null
         });
       }
     });
   }
-
+  }
   OrignaddRow(rowIndex: number) {
     const newRow = {
       city: this.OtableData[rowIndex].city,
-      Volume: '',
-      Uom: null,
+      // Volume: '',
+    //  Uom: null,
       editing: true,
       adding: true
     };
@@ -636,16 +636,17 @@ export class CreateProjectComponent implements OnInit {
   }
   OrignsaveRow(rowIndex: number) {
     const rowData = this.OtableData[rowIndex];
-    if (!rowData.Volume || rowData.Uom === null) {
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Volume and UOM are required for each row in Origin Location.'
-      });
-    } else {
-      rowData.editing = false;
-    }
+    rowData.editing = false;
+    // if (!rowData.Volume || rowData.Uom === null) {
+    //   this.messageService.add({
+    //     key: 'errorToast',
+    //     severity: 'error',
+    //     summary: 'Error!',
+    //     detail: 'Volume and UOM are required for each row in Origin Location.'
+    //   });
+    // } else {
+    //   rowData.editing = false;
+    // }
   }
   OrigndiscardRow(rowIndex: any) {
     if (this.OtableData[rowIndex].adding || this.OtableData[rowIndex].editing) {
@@ -669,11 +670,12 @@ export class CreateProjectComponent implements OnInit {
   onDestinationLocationChange(event: any) {
     let selectedLocationIds = event.value;
     if (selectedLocationIds && selectedLocationIds.length > 0) {
-      this.originLocations = this.locationOptions.filter(loc => !selectedLocationIds.includes(loc.id));
-    } else {
+   //   this.originLocations = this.locationOptions.filter(loc => selectedLocationIds.includes(loc.id));
+   // } else {
 
-      this.originLocations = [...this.locationOptions];
-    }
+    // this.originLocations = [...this.locationOptions];
+   // }
+   this.destinationLocations = [...this.locationOptions];
     const selectedCities = this.locationOptions
       .filter(loc => selectedLocationIds.includes(loc.id))
       .map(city => ({ name: city.name }));
@@ -683,20 +685,21 @@ export class CreateProjectComponent implements OnInit {
       if (!existingCity) {
         this.tableData.push({
           city: city.name,
-          Volume: '',
+       //   Volume: '',
           editing: true,
           adding: false,
-          Uom: null
+       //   Uom: null
         });
       }
     });
   }
+}
 
   addRow(rowIndex: number) {
     const newRow = {
       city: this.tableData[rowIndex].city,
-      Volume: '',
-      Uom: null,
+   //   Volume: '',
+   //   Uom: null,
       editing: true,
       adding: true
     };
@@ -709,16 +712,18 @@ export class CreateProjectComponent implements OnInit {
   }
   saveRow(rowIndex: number) {
     const rowData = this.tableData[rowIndex];
-    if (!rowData.Volume || rowData.Uom === null) {
-      this.messageService.add({
-        key: 'errorToast',
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'Volume and UOM are required for each row in Destination Location.'
-      });
-    } else {
-      rowData.editing = false;
-    }
+    rowData.editing = false;
+    // if (!rowData.Volume || rowData.Uom === null) {
+    //   this.messageService.add({
+    //     key: 'errorToast',
+    //     severity: 'error',
+    //     summary: 'Error!',
+    //     detail: 'Volume and UOM are required for each row in Destination Location.'
+    //   });
+    // } else {
+      
+      
+    // }
   }
   discardRow(rowIndex: any) {
     if (this.tableData[rowIndex] && (this.tableData[rowIndex].adding || this.tableData[rowIndex].editing)) {
@@ -735,12 +740,13 @@ export class CreateProjectComponent implements OnInit {
   deleteRow(rowIndex: number) {
     this.tableData.splice(rowIndex, 1);
   }
-  getUomName(uomId: number): string {
-    const selectedUom = this.uomOptions.find(uom => uom.id === uomId);
-    return selectedUom ? selectedUom.name : '';
-  }
+  // getUomName(uomId: number): string {
+  //   const selectedUom = this.uomOptions.find(uom => uom.id === uomId);
+  //   return selectedUom ? selectedUom.name : '';
+  // }
   //-----------------------------destination end----------------------------------//
 
+  
   //-----------------------------Artifact Upload------------------------------------//
   showDialogValue() {
     this.visibleValueBox = true;
@@ -885,16 +891,16 @@ export class CreateProjectComponent implements OnInit {
 
             this.OtableData = originLocations.map(location => ({
                 city: location.location.name,
-                Volume: location.volume,
-                Uom: location.uom.id,
+              //  Volume: location.volume,
+              //  Uom: location.uom.id,
                 editing: false, 
                 adding: false
             }));
 
             this.tableData = destinationLocations.map(location => ({
                 city: location.location.name,
-                Volume: location.volume,
-                Uom: location.uom.id,
+            //    Volume: location.volume,
+            //    Uom: location.uom.id,
                 editing: false,
                 adding: false
             }));

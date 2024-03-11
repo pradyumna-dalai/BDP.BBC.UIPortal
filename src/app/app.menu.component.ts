@@ -77,6 +77,10 @@ export class AppMenuComponent implements OnInit {
                 return 'pi pi-fw pi-users';
             case 'process configurable':
                 return 'pi pi-fw pi-cog';
+            case 'cost - item':
+                return 'pi pi-bitcoin';
+            case 'revenue - item':
+                return  'pi pi-dollar';
             default:
                 return 'pi pi-fw pi-desktop';
         }
@@ -111,6 +115,10 @@ export class AppMenuComponent implements OnInit {
                 return ['/fte'];
             case 'process configurable':
                 return ['/processConfig'];
+            case 'cost - item':
+                return ['/costItem'];
+            case 'revenue - item':
+                return ['/revenueItem'];
             default:
                 return ['/uikit'];
         }
