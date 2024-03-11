@@ -24,7 +24,7 @@
                             <p-tree [value]="treeDataNew" [selectionMode]="'single'"
                                 (onNodeSelect)="onNodeSelect($event)">
                                 <ng-template let-node pTemplate="default">
-                                    <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" [title]="node.label">
+                                    <span>
                                         <!-- Add icons for each child based on the item type -->
                                         <span *ngIf="node.data?.type === 1" class="fas fa-folder"></span>
                                         <span *ngIf="node.data?.type === 2" class="fa-regular fa-folder"></span>
@@ -50,13 +50,13 @@
                             <!-- <div style="margin-top: 115px;"> -->
                             <p-tree [value]="treeData" [selectionMode]="'single'" (onNodeSelect)="onNodeSelect($event)">
                                 <ng-template let-node pTemplate="default">
-                                    <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" [title]="node.label">
+                                    <span>
                                         <!-- Add icons for each child based on the item type -->
                                         <span *ngIf="node.data?.type === 1" class="fas fa-folder"></span>
                                         <span *ngIf="node.data?.type === 2" class="fa-regular fa-folder"></span>
                                         <span *ngIf="node.data?.type === 3" class="far fa-folder-open"></span>
                                         <span *ngIf="node.data?.type === 4" class="fas fa-boxes"></span>
-                                        {{ node.label.length > 25 ? (node.label | slice:0:20) + '...' : node.label }}
+                                        {{ node.label }}
                                     </span>
                                 </ng-template>
                             </p-tree>
