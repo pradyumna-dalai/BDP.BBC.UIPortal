@@ -5,6 +5,7 @@ import { CreateBuildingBlockService } from 'src/app/services/create-buildingBloc
 import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
 import { ChangeDetectorRef } from '@angular/core';
 import { SharedServiceService } from 'src/app/services/project-serivce/shared-service.service';
+import { MasterDataService } from 'src/app/services/master-dataserivce/master-data.service';
 interface CostItem {
   id: number;
   costItem: string;
@@ -25,13 +26,15 @@ export class OtherCostComponent {
   projectName: any;
   subscription: any;
   locationDropdownOptions: any[] = [];
+  costItemDropdownOptions: any[] = [];
   tableData: CostItem[] = [];
   editedRowIndex: number = -1;
   grandTotalCost: number = 0;
   @Output() continueClickedToProjectCost: EventEmitter<any> = new EventEmitter();
   @Input() projStatus: any | null;
   @Input() projectIdCLI: number | null;
-  constructor(private sharedService: SharedServiceService,private projectService: ProjectsService, private cd: ChangeDetectorRef, private messageService: MessageService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
+  constructor(private sharedService: SharedServiceService,private projectService: ProjectsService,private masterDataSerivce: MasterDataService,
+     private cd: ChangeDetectorRef, private messageService: MessageService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
 
   }
 
@@ -43,6 +46,7 @@ export class OtherCostComponent {
       // console.log('othercost', this.projectLocations);
       this.generateDropdownOptions();
       this.getAllProjectOtherCost();
+      this.getAllCostItem();
       
     });
     if(this.projectIdCLI != null || this.projectIdCLI != undefined)
@@ -254,6 +258,20 @@ export class OtherCostComponent {
     
   }
 
+//------------------------get all cost Item from Master Data-------------------//
 
+getAllCostItem(){
+  this.costItemDropdownOptions = [];
+    this.masterDataSerivce.getAllCostItemDetails().subscribe((res: any) => {
+      if (res?.message == "success") {
+        this.costItemDropdownOptions = res?.data.map((cost: any) => ({
+          id: cost.id,
+          name: cost.name
+        }));
+      } else {
+        this.costItemDropdownOptions = [];
+      }
+    })
+}
 
 }
