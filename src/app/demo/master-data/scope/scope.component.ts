@@ -26,7 +26,7 @@ export class ScopeComponent {
   currentPage: number = 1;
   pageSize: number = 10;
   sortField: string = ''; // Initial sort field
-  sortOrder: string = 'asc'; // or initialize it based on your requirements
+  sortOrder: any = 'asc'; // or initialize it based on your requirements
   totalRecords: any = 10;
   first: any = 0;
   rows: any = 10;
@@ -201,10 +201,24 @@ export class ScopeComponent {
   }
   
   clear(table: Table) {
-    table.clear();
-    this.onSort(Event);
+    table.reset(); 
+
+    this.sortField = '';
+    this.sortOrder = 1;
+  
+    this.clearSearchInput();
+  
+    this.fetchProductScope();
+  
+    this.currentPage = 1;
+    this.pageSize = 10;
   }
-  //-------------------------------end---------------------------------------------------//
+  clearSearchInput(): void {
+    const searchInput = document.getElementById('gSearch') as HTMLInputElement;
+    if (searchInput) {
+      searchInput.value = '';
+    }
+  }
 
   //------------------------------UpdateScope--------------------------------------------//
   editScope(scope: any) {

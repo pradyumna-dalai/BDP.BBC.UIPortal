@@ -39,6 +39,8 @@ private _isExpanded = false;
   projectIdCLI: any;
   draftSavedCLI: boolean = false;
   @Output() continueClickedToCLI: EventEmitter<any> = new EventEmitter();
+  fileName: string;
+  uploadInProgress: boolean = false;
 
 constructor(private sharedService: SharedServiceService,private projectService:ProjectsService, private messageService: MessageService){
 
@@ -94,8 +96,82 @@ public get isExpanded() {
 showUploadDialog() {
   this.visible = true;
 }
+onRemoveClick(){
+  // this.showUploaderror = false;
+  // this.uploadError = "";
+  this.fileName = "";
+  this.uploadFile = null;
+  const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
+  if (fileInput) {
+    fileInput.value = '';
+  }
+}
+onPopupCancelClick(){
+  this.visible = false;
+    // this.showUploaderror = false;
+    // this.uploadError = "";
+    this.fileName = "";
+    this.uploadFile = null;
+    // Add the following line to reset the file input
+    const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = ''; // Clear the file input value
+    }
+}
+uploadFile: File | null = null;
+onUploadExcel(event: any){
+  const file: File = event.target.files[0];
+  if (file) {
+    this.fileName = file.name;
+    const formData = new FormData();
+    formData.append("file", file);
+    this.uploadFile = file;
+  }
+}
+onSubmitUploadClick(projId){
+  if (!this.uploadFile) {
+    // Handle case when no file is selected
+    return;
+  }
 
-
+  this.fileName = this.uploadFile.name;
+  const formData = new FormData();
+  formData.append("file", this.uploadFile);
+  this.uploadInProgress = true;
+  this.projectService.uploadCLIExcel(formData, projId).subscribe(
+    (res: any) => {
+      if(res.message == 'success'){
+        this.costLineItemDetails = res.data.buildingBlocks;
+    
+        this.projectId = res.data.projectId;
+        this.projectName = res.data.projectName;
+        this.buildingBlockNames = this.costLineItemDetails.map(block => block.buildingBlockName);
+        if (res && res.data.buildingBlocks && res.data.buildingBlocks.length > 0) {
+          this.buildingBlocks = res.data.buildingBlocks;
+        }
+        this.uploadInProgress = false;
+        this.messageService.add({
+          key: 'successToast',
+          severity: 'success',
+          summary: 'Success!',
+          detail: 'Excel Uploaded successfully.'
+        });
+      }
+      this.visible = false;
+      this.onPopupCancelClick();
+    },
+    (error) => {
+      this.messageService.add({
+        key: 'errorToast',
+        severity: 'error',
+        summary: 'Error!',
+        detail: 'Failed to upload excel file.'
+      });
+    
+      this.uploadInProgress = false;
+    }
+  );
+}
 public set isExpanded(value: boolean) {
   this._isExpanded = value;
 }
@@ -127,7 +203,7 @@ getConfigurableName(configurableId: number): string {
 downloadCLISCExcel(event: Event,projectId) {
   event.preventDefault();
 
-  this.projectService.downloadAddVolumeExcel(projectId).subscribe((res: any) => {
+  this.projectService.downloadCLIExcel(projectId).subscribe((res: any) => {
     const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
 
     const link = document.createElement('a');

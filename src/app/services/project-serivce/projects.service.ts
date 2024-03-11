@@ -170,6 +170,14 @@ downloadAddVolumeExcel(projId: number) {
   return this.http.get(url +`project/`+ projId + `/` + settings.AppRoutes.Auth.exportAddVolume, { responseType: 'arraybuffer' as 'json' });
 }
 
+uploadAddVolumeExcel(formData: FormData,projId: number) {
+  return this.http.post(url +`project/`+ projId + `/` + settings.AppRoutes.Auth.importAddVolume, formData).pipe(
+    catchError((error: any) => {
+      return throwError(error);
+    })
+  );
+}
+
 /** end */
 
 /** cost line item **/
@@ -177,9 +185,6 @@ downloadAddVolumeExcel(projId: number) {
 getCostLineItemDetails(projId: number): Observable<any> {
 
    return this.http.get<any>(url +`project/`+ projId + `/` + settings.AppRoutes.Auth.getCostLineItemDetails);
-  // return this.http.get<any>(`https://private-anon-b809d898f7-psabdpbbcapiblueprint.apiary-mock.com/project/projId/cost-line-item`);
-
-  
 
 }
 
@@ -192,7 +197,6 @@ getCostLineItemDetailsReCalc(projId: number,body: any): Observable<any> {
 saveCostLineItemDetails(body: any) {
 
   return this.http.post<any>(url + settings.AppRoutes.Auth.saveCostLineItemDetails, body);
-  // return this.http.post<any>(`https://private-anon-b809d898f7-psabdpbbcapiblueprint.apiary-mock.com/project/cost-line-item`, body);
 
 }
 
@@ -200,6 +204,16 @@ downloadCLIExcel(projId: number) {
 
   return this.http.get(url +`project/`+ projId + `/` + settings.AppRoutes.Auth.exportCLI, { responseType: 'arraybuffer' as 'json' });
 }
+
+
+uploadCLIExcel(formData: FormData,projId: number) {
+  return this.http.post(url +`project/`+ projId + `/` + settings.AppRoutes.Auth.importCLI, formData).pipe(
+    catchError((error: any) => {
+      return throwError(error);
+    })
+  );
+}
+
 
 /** end */
 
