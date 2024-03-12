@@ -44,8 +44,12 @@
                     </td>
                     <td>
                         <span *ngIf="!cost.editing">{{ cost.costItem }}</span>
-                        <input *ngIf="cost.editing" pInputText type="text" [(ngModel)]="cost.costItem"
-                            placeholder="Enter Cost Item" required>
+                        <p-dropdown *ngIf="cost.editing" [options]="costItemDropdownOptions" [(ngModel)]="cost.id"
+                       optionValue="id" optionLabel="name"
+                        placeholder="Select Cost Item" [style]="{ 'width':'100%' }" [appendTo]="'body'"
+                        [filter]="true" [showClear]="true"></p-dropdown>
+                        <!-- <input *ngIf="cost.editing" pInputText type="text" [(ngModel)]="cost.costItem"
+                            placeholder="Enter Cost Item" required> -->
                     </td>
                     <td>
                         <span *ngIf="!cost.editing">{{ cost.location?.name }}</span>
