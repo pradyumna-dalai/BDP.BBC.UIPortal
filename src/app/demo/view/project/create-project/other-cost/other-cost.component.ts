@@ -5,6 +5,8 @@ import { CreateBuildingBlockService } from 'src/app/services/create-buildingBloc
 import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
 import { ChangeDetectorRef } from '@angular/core';
 import { SharedServiceService } from 'src/app/services/project-serivce/shared-service.service';
+import { Router, NavigationStart } from '@angular/router';
+
 interface CostItem {
   id: number;
   costItem: string;
@@ -31,8 +33,13 @@ export class OtherCostComponent {
   @Output() continueClickedToProjectCost: EventEmitter<any> = new EventEmitter();
   @Input() projStatus: any | null;
   @Input() projectIdCLI: number | null;
-  constructor(private sharedService: SharedServiceService,private projectService: ProjectsService, private cd: ChangeDetectorRef, private messageService: MessageService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
-
+  constructor(private router: Router,private sharedService: SharedServiceService,private projectService: ProjectsService, private cd: ChangeDetectorRef, private messageService: MessageService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        // Set setDraftSavedOtherCost to false when navigating away
+        this.sharedService.setDraftSavedOtherCost(false);
+      }
+    });
   }
 
   ngOnInit() {

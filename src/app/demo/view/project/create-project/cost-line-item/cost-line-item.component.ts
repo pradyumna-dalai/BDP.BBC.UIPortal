@@ -2,6 +2,7 @@ import { Component,Input,Output, EventEmitter } from '@angular/core';
 import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { SharedServiceService } from 'src/app/services/project-serivce/shared-service.service';
+import { Router, NavigationStart } from '@angular/router';
 
 
 @Component({
@@ -42,8 +43,13 @@ private _isExpanded = false;
   fileName: string;
   uploadInProgress: boolean = false;
 
-constructor(private sharedService: SharedServiceService,private projectService:ProjectsService, private messageService: MessageService){
-
+constructor(private router: Router,private sharedService: SharedServiceService,private projectService:ProjectsService, private messageService: MessageService){
+  this.router.events.subscribe(event => {
+    if (event instanceof NavigationStart) {
+      // Set setDraftSavedCLI to false when navigating away
+      this.sharedService.setDraftSavedCLI(false);
+    }
+  });
 }
 
 ngOnInit(){
