@@ -3,7 +3,7 @@
         <div class="col-6">
             <span class="p-input-icon-right">
                 <i class="pi pi-search"></i>
-                <input pInputText type="text" (input)="dt2.filterGlobal($event.target.value, 'contains')"
+                <input pInputText type="text" id="gSearch" (input)="dt2.filterGlobal($event.target.value, 'contains')"
                 placeholder="Search Keyword" />
             </span>
         </div>
@@ -14,7 +14,7 @@
             <button type="button" pButton pRipple label=" Add " (click)="showCreateCostItemDialoge()" icon="pi pi-plus"
                 class="mr-2 mb-2"></button>
         </div>
-    </div>
+    </div> 
     <p-table #dt2 [value]="costItemDetails" dataKey="id" responsiveLayout="scroll" scrollHeight="530px"
         scrollDirection="both"
         [paginator]="true"
@@ -121,7 +121,7 @@
                             <p-radioButton name="status" value="active" label="Active"
                                 formControlName="status"></p-radioButton>
                             <p-radioButton name="status" value="inactive" label="Inactive" formControlName="status"
-                                style="margin-left: 25px;"></p-radioButton>
+                            class="radio-margin"></p-radioButton>
                         </div>
                     </div>
                     <div *ngIf="CostItemForm.get('status').hasError('required') && CostItemForm.get('status').touched" class="error-message">
