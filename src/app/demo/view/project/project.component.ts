@@ -98,8 +98,8 @@ export class ProjectComponent {
         this.updateTable =res?.map((item: any) => {
           const opportunityManagers = item.projectInformation?.opportunityManager?.map(manager => manager?.name).join(', ');
           //console.log('opp',opportunityManagers);
-          const formattedStartDate = this.datePipe.transform(item.projectInformation?.startDate, 'dd-MM-yyyy');
-          const formattedEndDate = this.datePipe.transform(item.projectInformation?.endDate, 'dd-MM-yyyy');
+          const formattedStartDate = this.datePipe.transform(item.projectInformation?.startDate, 'd MMM yyyy');
+          const formattedEndDate = this.datePipe.transform(item.projectInformation?.endDate, 'd MMM yyyy');
           return {
             companyname: item.projectInformation?.company?.name,
             id: item?.id,
@@ -113,7 +113,6 @@ export class ProjectComponent {
           };
         });
         if (res.length >0) {
-          console.log("dataUpdate",res);
           this.proejctdetails = this.updateTable;
 
         } else {
@@ -287,7 +286,6 @@ onCancel(){
           };
         });
         this.totalRecords = res?.data.totalElements;
-        //console.log('fbggf', this.proejctdetails);
       } else {
         this.proejctdetails = [];
         this.totalRecords = 0;
@@ -336,12 +334,12 @@ onCancel(){
           }
         },
         (error) => {
-          console.error('Download error', error);
+          // console.error('Download error', error);
           this.messageService.add({ key: 'error', severity: 'error', summary: 'Error', detail: 'File download failed!' });
         }
       );
     } else {
-      console.warn('Please select a date range before exporting.');
+      // console.warn('Please select a date range before exporting.');
     }
   }
   
