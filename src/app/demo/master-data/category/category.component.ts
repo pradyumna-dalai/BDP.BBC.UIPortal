@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
+import { MomentService } from 'src/app/FormateDate/moment.service';
 import { AppBreadcrumbService } from 'src/app/app.breadcrumb.service';
 import { MasterDataService } from 'src/app/services/master-dataserivce/master-data.service';
 import { MasterTableService } from 'src/app/services/master-table.service';
@@ -35,7 +36,7 @@ export class CategoryComponent {
   searchTimeout: number;
   processing: boolean = false;
 
-  constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService, public MasterTableservice: MasterTableService,
+  constructor(private momentService: MomentService,private breadcrumbService: AppBreadcrumbService, private messageService: MessageService, public MasterTableservice: MasterTableService,
     private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService, private fb: FormBuilder,) {
     this.breadcrumbService.setItems([
       { label: 'Master Data Management' },
