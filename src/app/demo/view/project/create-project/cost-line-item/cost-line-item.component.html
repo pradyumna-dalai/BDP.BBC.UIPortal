@@ -43,7 +43,7 @@
                                             <th style="text-align: center;width:7%">Takt Considered</th>
                                             <th style="text-align: center;width:7%">Total Cost</th>
                                             <th style="text-align: center;width:7%">Total HC</th>
-                                            <th style="text-align: center;width:7%">FTE Productivity(%)</th>
+                                            <!-- <th style="text-align: center;width:7%">FTE Productivity(%)</th> -->
                                             <th style="text-align: center;width:7%">FTE Cost</th>
                                             <th style="text-align: center;width:7%">Comment</th>
                                         </tr>
@@ -69,11 +69,11 @@
                                             <td style="text-align: center">{{ line.taktConsidered }}</td>
                                             <td style="text-align: center">{{ line.totalCost }}</td>
                                             <td style="text-align: center">{{ line.totalHC }}</td>
-                                            <td style="text-align: center">
+                                            <!-- <td style="text-align: center">
                                                 <ng-container *ngIf="!line.editing">{{ line.fteProductivity }}</ng-container>
                                                 <input pInputText *ngIf="line.editing" type="number" min="0" [ngModel]="line.fteProductivity" (ngModelChange)="onFteProductivityChange($event)">
                                                 <div *ngIf="isFteProductivityExceedsMax" style="color: red;" class="text-danger">Value cannot exceed 100</div>
-                                            </td>
+                                            </td> -->
                                             <td style="text-align: center">{{ line.fteCost }}</td>
                                             <td style="text-align: center">{{ line.comment }}</td>
                                             
@@ -108,7 +108,7 @@
                                                 <th style="text-align: center;width:7%">Takt Considered</th>
                                                 <th style="text-align: center;width:7%">Total Cost</th>
                                                 <th style="text-align: center;width:7%">Total HC</th>
-                                                <th style="text-align: center;width:7%">FTE Prodcutivity(%)</th>
+                                                <!-- <th style="text-align: center;width:7%">FTE Prodcutivity(%)</th> -->
                                                 <th style="text-align: center;width:7%">FTE Cost</th>
                                                 <th style="text-align: center;width:7%">Comment</th>
                                             </tr>
@@ -133,9 +133,9 @@
                                             <td style="text-align: center">{{ line.taktConsidered }}</td>
                                             <td style="text-align: center">{{ line.totalCost }}</td>
                                             <td style="text-align: center">{{ line.totalHC }}</td>
-                                            <td style="text-align: center">
+                                            <!-- <td style="text-align: center">
                                                 <ng-container *ngIf="!line.editing">{{ line.fteProductivity }}</ng-container>
-                                                <input pInputText *ngIf="line.editing" min="0" type="number" [(ngModel)]="line.fteProductivity" max="100"></td>
+                                                <input pInputText *ngIf="line.editing" min="0" type="number" [(ngModel)]="line.fteProductivity" max="100"></td> -->
                                             <td style="text-align: center">{{ line.fteCost }}</td>
                                             <td style="text-align: center">{{ line.comment }}</td>
                                             </tr>
