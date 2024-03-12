@@ -59,20 +59,18 @@ export class SearchFilterComponent {
   }
 
   onClearFilterClick() {
-    console.log("Clearing filters...");
     this.statusOptions = null;
     this.projectSuggestions = null;
     this.managerOptions = null;
     this.opportunityManagers = null;
-    console.log("Filters cleared.");
     this.projectStageOptions = null;
     this.opportunity_manager = '';
     // this.fetchProjectStatus();
-    this.fetchProjectStage();
+     this.fetchProjectStage();
     this.fetchOpportunityManagers();
-    this.fetchProjectbyCompany();
-    this.OnStageSelectProjectstatus(event);
-    this.fetchOpprNameOnCompanySelect(event);
+     this.fetchProjectbyCompany();
+    // this.OnStageSelectProjectstatus(event);
+    // this.fetchOpprNameOnCompanySelect(event);
     this.rangeDates = null
     this.newSearchfilter = null;
     this.project_name = null;
@@ -145,7 +143,6 @@ export class SearchFilterComponent {
 
   fetchProjectName(){
     this.filterService.getProjectDropdown().subscribe((res)=>{
-      console.log("ProjectDropdown",res);
       if (res?.message === "success") {
         this.projectName = res?.data.map((project: any) => ({
           label: project.projectName,
@@ -160,7 +157,6 @@ export class SearchFilterComponent {
   managerId: any;
   fecthOppManager() {
     let managerId = this.opportunityManagers.map((ele) => ele.value);
-    console.log("id", managerId)
   }
   oppourtunity_name: any;
   opportunity_manager: any;
@@ -183,8 +179,12 @@ export class SearchFilterComponent {
       "opportunityManager": {
         "id": this.opportunity_manager
       },
-      "startDate": this.formatDate(this.rangeDates[0]),
-      "endDate": this.formatDate(this.rangeDates[1]),
+      "startDate": null,
+      "endDate": null,
+    }
+    if (this.rangeDates && this.rangeDates.length === 2) {
+      payload.startDate = this.formatDate(this.rangeDates[0]);
+      payload.endDate = this.formatDate(this.rangeDates[1]);
     }
     if (payload.projectStatus.id === 'Invalid Date') {
       payload.projectStatus = null;
@@ -205,7 +205,6 @@ export class SearchFilterComponent {
     if (payload.projectName === undefined ||  payload.projectName === '') {
       payload.projectName = null;
     }
-    console.log("payload", payload)
     this.projectService.advanceSearchFilter(payload).subscribe(
       (response) => {
         
@@ -228,7 +227,7 @@ export class SearchFilterComponent {
         }
       },
       (error) => {
-        console.error('Error:', error);
+        // console.error('Error:', error);
        
       }
     );
