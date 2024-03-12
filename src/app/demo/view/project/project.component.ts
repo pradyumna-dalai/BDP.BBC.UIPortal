@@ -12,6 +12,7 @@ import { CalendarModule } from 'primeng/calendar';
 import dayjs from 'dayjs';
 import { HttpResponse } from '@angular/common/http';
 import { finalize } from 'rxjs';
+import { MomentService } from 'src/app/FormateDate/moment.service';
 @Component({
   selector: 'app-project',
   templateUrl: './project.component.html',
@@ -68,7 +69,7 @@ export class ProjectComponent {
   formatDate(date: Date): string {
     return dayjs(date).format('YYYY-MM-DD');
   }
-  constructor(private projectService:ProjectsService,private datePipe: DatePipe, private breadcrumbService: AppBreadcrumbService, private messageService: MessageService, private confirmationService: ConfirmationService, private router: Router, private projectsService: ProjectsService) {
+  constructor(private momentService: MomentService,private projectService:ProjectsService,private datePipe: DatePipe, private breadcrumbService: AppBreadcrumbService, private messageService: MessageService, private confirmationService: ConfirmationService, private router: Router, private projectsService: ProjectsService) {
     this.breadcrumbService.setItems([
       { label: 'Project' }
     ]);
@@ -98,8 +99,10 @@ export class ProjectComponent {
         this.updateTable =res?.map((item: any) => {
           const opportunityManagers = item.projectInformation?.opportunityManager?.map(manager => manager?.name).join(', ');
           //console.log('opp',opportunityManagers);
-          const formattedStartDate = this.datePipe.transform(item.projectInformation?.startDate, 'd MMM yyyy');
-          const formattedEndDate = this.datePipe.transform(item.projectInformation?.endDate, 'd MMM yyyy');
+          const formattedStartDate = this.momentService.getFullDate(item.projectInformation?.startDate);
+          const formattedEndDate = this.momentService.getFullDate(item.projectInformation?.endDate);
+
+          
           return {
             companyname: item.projectInformation?.company?.name,
             id: item?.id,
@@ -113,6 +116,7 @@ export class ProjectComponent {
           };
         });
         if (res.length >0) {
+          console.log("dataUpdate",res);
           this.proejctdetails = this.updateTable;
 
         } else {
@@ -271,8 +275,10 @@ onCancel(){
         this.proejctdetails = res?.data.projects.map((item: any) => {
           const opportunityManagers = item.projectInformation?.opportunityManager?.map(manager => manager?.name).join(', ');
           //console.log('opp',opportunityManagers);
-          const formattedStartDate = this.datePipe.transform(item.projectInformation?.startDate, 'd MMM yyyy');
-          const formattedEndDate = this.datePipe.transform(item.projectInformation?.endDate, 'd MMM yyyy');
+          
+
+          const formattedStartDate = this.momentService.getFullDate(item.projectInformation?.startDate);
+          const formattedEndDate = this.momentService.getFullDate(item.projectInformation?.endDate);
           return {
             companyname: item.projectInformation?.company?.name,
             id: item?.id,
@@ -286,6 +292,7 @@ onCancel(){
           };
         });
         this.totalRecords = res?.data.totalElements;
+        //console.log('fbggf', this.proejctdetails);
       } else {
         this.proejctdetails = [];
         this.totalRecords = 0;
@@ -334,12 +341,12 @@ onCancel(){
           }
         },
         (error) => {
-          // console.error('Download error', error);
+          console.error('Download error', error);
           this.messageService.add({ key: 'error', severity: 'error', summary: 'Error', detail: 'File download failed!' });
         }
       );
     } else {
-      // console.warn('Please select a date range before exporting.');
+      console.warn('Please select a date range before exporting.');
     }
   }
   
