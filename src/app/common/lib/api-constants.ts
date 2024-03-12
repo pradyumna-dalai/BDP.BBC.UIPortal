@@ -176,6 +176,8 @@ export namespace AppRoutes {
 
         public static readonly saveRevenue = "revenue"
 
+        public static readonly downloadRevenue = "download-revenue"
+
 }
 
 }
