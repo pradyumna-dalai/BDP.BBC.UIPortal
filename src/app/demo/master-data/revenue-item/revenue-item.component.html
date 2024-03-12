@@ -3,7 +3,7 @@
         <div class="col-6">
             <span class="p-input-icon-right">
                 <i class="pi pi-search"></i>
-                <input pInputText type="text" (input)="dt2.filterGlobal($event.target.value, 'contains')"
+                <input pInputText type="text" id="gSearch" (input)="dt2.filterGlobal($event.target.value, 'contains')"
                 placeholder="Search Keyword" />
             </span>
         </div>
@@ -121,7 +121,7 @@
                             <p-radioButton name="status" value="active" label="Active"
                                 formControlName="status"></p-radioButton>
                             <p-radioButton name="status" value="inactive" label="Inactive" formControlName="status"
-                                style="margin-left: 25px;"></p-radioButton>
+                            class="radio-margin"></p-radioButton>
                         </div>
                     </div>
                     <div *ngIf="RevenueItemForm.get('status').hasError('required') && RevenueItemForm.get('status').touched" class="error-message">

@@ -69,14 +69,12 @@ export class RevenueItemComponent {
 
       const observer = {
         next: (response: any) => {
-          console.log(response);
           this.displayCreateRevenueItemDialog = false;
           this.messageService.add({ severity: 'success', summary: 'Success', detail: this.editMode ? 'Revenue updated successfully!' : 'Revenue added successfully!' });
           this.fetchAllRevenueDetails();
           this.processing = false;
         },
         error: (error: any) => {
-          console.error(error);
           if (error.status === 400 && error.error?.message === 'Fill required field(s)') {
             const errorMessage = error.error.data?.join(', ') || 'Error in adding Revenue';
             this.messageService.add({ severity: 'error', summary: 'Error', detail: errorMessage });
@@ -114,18 +112,24 @@ export class RevenueItemComponent {
     this.masterDataService.getAllRevenueDetails().subscribe((res: any) => {
       if (res?.message === 'success') {
         this.revenueItemDetails = res.data;
-        console.log('fetch cost Item  details:', this.revenueItemDetails);
       } else {
-        console.error('Failed to fetch cost Item details:', res);
+        // console.error('Failed to fetch cost Item details:', res);
       }
     });
   }
 
   clear(table: Table) {
     table.clear();
+    this.clearSearchInput();
+    this.fetchAllRevenueDetails();
   }
 
-  //-------------------------------end---------------------------------------------------//
+  clearSearchInput(): void {
+    const searchInput = document.getElementById('gSearch') as HTMLInputElement;
+    if (searchInput) {
+      searchInput.value = '';
+    }
+  }
 
   //------------------------------Update Revenue--------------------------------------------//
   editRevenue(revenue: any) {
