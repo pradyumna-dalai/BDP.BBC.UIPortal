@@ -70,14 +70,12 @@ export class CostItemComponent {
 
       const observer = {
         next: (response: any) => {
-          console.log(response);
           this.displayCreateCostItemDialog = false;
           this.messageService.add({ severity: 'success', summary: 'Success', detail: this.editMode ? 'Cost Item updated successfully!' : 'Cost Item added successfully!' });
           this.fetchAllCostItemDetails();
           this.processing = false;
         },
         error: (error: any) => {
-          console.error(error);
           if (error.status === 400 && error.error?.message === 'Fill required field(s)') {
             const errorMessage = error.error.data?.join(', ') || 'Error in adding Cost Item';
             this.messageService.add({ severity: 'error', summary: 'Error', detail: errorMessage });
@@ -115,18 +113,23 @@ export class CostItemComponent {
     this.masterDataService.getAllCostItemDetails().subscribe((res: any) => {
       if (res?.message === 'success') {
         this.costItemDetails = res.data;
-        console.log('fetch cost Item  details:', this.costItemDetails);
       } else {
-        console.error('Failed to fetch cost Item details:', res);
+        // console.error('Failed to fetch cost Item details:', res);
       }
     });
   }
 
   clear(table: Table) {
     table.clear();
+    this.clearSearchInput();
+    this.fetchAllCostItemDetails();
   }
-
-  //-------------------------------end---------------------------------------------------//
+  clearSearchInput(): void {
+    const searchInput = document.getElementById('gSearch') as HTMLInputElement;
+    if (searchInput) {
+      searchInput.value = '';
+    }
+  }
 
   //------------------------------Update Cost Item--------------------------------------------//
   editCost(costItem: any) {
