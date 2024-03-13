@@ -71,9 +71,9 @@
                 <td style="text-align: center; word-wrap: break-word;">{{fte.yearlyCost | currency: 'USD'}}</td>
                 <td style="text-align: center; word-wrap: break-word;">{{fte.yearlyWorkingMin }}</td>
                 <td style="text-align: center; word-wrap: break-word;">{{fte.createdBy }}</td>
-                <td style="text-align: center; word-wrap: break-word;">{{ fte.createdDate | date:'dd MMM yyyy' }}</td>
+                <td style="text-align: center; word-wrap: break-word;">{{  momentService.getFullDate(fte.createdDate) }}</td>
                 <td style="text-align: center; word-wrap: break-word;">{{ fte.updatedBy }}</td>
-                <td style="text-align: center; word-wrap: break-word;">{{ fte.updatedDate | date:'dd MMM yyyy'}}</td>
+                <td style="text-align: center; word-wrap: break-word;">{{  momentService.getFullDate(fte.updatedDate) }}</td>
             </tr>
         </ng-template>Updated By
         <ng-template pTemplate="emptymessage">
