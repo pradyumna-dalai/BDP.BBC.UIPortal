@@ -163,7 +163,7 @@ export class OtherCostComponent {
       projectName: this.projectName,
       grandTotalCost: 927000.00,
       otherCosts: this.tableData.map(costItem => ({
-        id: null,
+        id: costItem.id,
         costItem: {
           id: costItem.costItem.costItemId,
           name: costItem.costItem.name
@@ -204,7 +204,7 @@ export class OtherCostComponent {
         const otherCosts = response?.data?.otherCosts;
         if (Array.isArray(otherCosts)) {
           this.tableData = otherCosts.map((item: any, index: number) => ({
-            id: index + 1,
+            id:item.id,
             costItem: {
               costItemId: item.costItem.id,
               name: item.costItem.name
