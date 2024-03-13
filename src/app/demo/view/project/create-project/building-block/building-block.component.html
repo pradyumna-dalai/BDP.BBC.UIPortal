@@ -39,8 +39,11 @@
 
                                 <p-listbox [options]="buildingBlock?.processes">
                                     <ng-template let-process pTemplate="item">
-                                        <a [routerLink]=""
-                                            (click)="processActiveStatus==0?return:onProcessClick(buildingBlock?.buildingBlockId, process?.processId)"
+                                        <a *ngIf="processActiveStatus==0"
+                                        [ngClass]="{'text-grey':process?.processActiveStatus==0, 'text-blue':process?.processActiveStatus==1, 'text-green':process?.processActiveStatus==2}">
+                                        <span class="processNumber">{{process.processNumber}}&nbsp;)&nbsp;&nbsp;</span>{{ process.processName }}
+                                    </a>
+                                        <a *ngIf="processActiveStatus!=0" (click)="onProcessClick(buildingBlock?.buildingBlockId, process?.processId)"
                                             [ngClass]="{'text-grey':process?.processActiveStatus==0, 'text-blue':process?.processActiveStatus==1, 'text-green':process?.processActiveStatus==2}">
                                             <span class="processNumber">{{process.processNumber}}&nbsp;)&nbsp;&nbsp;</span>{{ process.processName }}
                                         </a>

@@ -126,7 +126,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
    * @param data 
    * @returns 
    */
-  private transformDataForTreeNodeView(data: any[], parentData: any = null): TreeNode[] {
+  private transformDataForTreeNodeView(data: any[], parentData: any = null):TreeNode[] {
     return data?.map((item) => {
       return {
         label: item.name || item.configurableName || item.locationName,
@@ -146,6 +146,10 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   private async loadProjectBuildingBlock() {
 
     this.projectBuldingBlock = null;
+    this.originConfigurations=[];
+    this.destinationConfigurations=[];
+    this.selectedOriginConfigurations=[];
+    this.selectedDestinationConfigurations=[];
     await lastValueFrom(this.projectService.getProjectBuildingBlocks(this.projectID)).then((res) => {
       this.projectBuldingBlock = res?.data;
       this.projectBuldingBlock?.buildingBlocks?.forEach((bb) => {
@@ -280,7 +284,6 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
     lastValueFrom(this.projectService.getProcessStepByBlockId(buildingBlockId)).then((res) => {
       // Loop through each process to get a unique process steps and configurations available for it.
       if (res?.status === 200) {
-        res.data = this.filterProcessesByProcessNumber(res?.data);
         newBuildingBlock = new BuildingBlock();
 
         newBuildingBlock.buildingBlockId = buildingBlockId;
@@ -380,9 +383,42 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
 
   filterProcessesByProcessNumber(processes:Process[])
   {
-    return processes?.filter((p,index,self)=>{
+    var uniqueProcesses = processes?.filter((p,index,self)=>{
       return index == self.findIndex(prs=>prs.processNumber==p.processNumber);
+    });
+    uniqueProcesses?.forEach(up=>{
+      var destinationConfigurations:Configuration[] = new Array<Configuration>();
+      var originConfiguration:Configuration[] = new Array<Configuration>();
+      processes?.filter(p=>p.processNumber == up.processNumber).forEach(f=>{
+        f.destinationService?.configurations?.forEach(c=>{
+          if(!destinationConfigurations?.some(dc=>dc.configurableId==c.configurableId))
+          {
+            destinationConfigurations.push(c);
+          }
+          
+        });
+
+        f.originService?.configurations?.forEach(c=>{
+          if(!originConfiguration?.some(oc=>oc.configurableId==c.configurableId))
+          {
+            originConfiguration.push(c);
+          }
+          
+        });
+      });
+      if(up?.destinationService?.configurations!=undefined && up?.destinationService?.configurations!=null)
+      {
+      up.destinationService.configurations = destinationConfigurations;
+      }
+      if(up?.originService?.configurations!=undefined && up?.originService?.configurations!=null)
+      {
+      up.originService.configurations = originConfiguration;
+      }
     })
+    return uniqueProcesses;
+    // return processes?.filter((p,index,self)=>{
+    //   return index == self.findIndex(prs=>prs.processNumber==p.processNumber);
+    // })
   }
 
 
@@ -442,7 +478,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
    * @param buildingBlockId : Internal Id for the selected building block
    * @param processId : Internal Id for the selected building block.
    */
-  public onProcessClick(buildingBlockId: number, processId: number) {
+  public async onProcessClick(buildingBlockId: number, processId: number) {
 
     // Find the exact process steps using building bloc id and process id.
     var selectedProcess = this.projectBuldingBlock.buildingBlocks.find(b => b.buildingBlockId === buildingBlockId)
@@ -467,7 +503,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       // Loop through each configurations loctaions to see if all the loctaions 
       // which are there in projects are inherited to the configuration locations or not. 
       // If not then add those loactions to the configurations locations list.
-      this.projectDestinationLocations?.forEach(pdl => {
+      await this.projectDestinationLocations?.forEach(pdl => {
         // Ensure the location is in the this.selectedBuildingBlockProcess.destinationService
         // If present mark the isSelected to true.
         // Else add the location to the list with isSelected to false.        
@@ -495,7 +531,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       // Loop through each configurations loctaions to see if all the loctaions 
       // which are there in projects are inherited to the configuration locations or not. 
       // If not then add those loactions to the configurations locations list.
-      this.projectOriginLocations?.forEach(pol => {
+      await this.projectOriginLocations?.forEach(pol => {
         // Ensure the location is in the this.selectedBuildingBlockProcess.destinationService
         // If present mark the isSelected to true.
         // Else add the location to the list with isSelected to false.
@@ -520,7 +556,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       );
 
       // Transforming Origin Configurations data into Tree Node structure
-      this.selectedOriginConfigurations = [];
+      this.originConfigurations = [];
       this.originConfigurations = this.transformDataForTreeNodeView(this.selectedBuildingBlockProcess?.originService?.configurations);
 
       // Getting Selected Origin Locations for specific configuration as Tree Node Structure
