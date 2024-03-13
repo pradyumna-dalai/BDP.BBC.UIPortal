@@ -31,33 +31,72 @@
 
 .text-grey {
     color: grey;
-    pointer-events: none;
+    cursor: not-allowed;
 }
 
 .text-blue {
     color: rgb(0, 110, 255);
 }
 
-.bdp-step{
+.bdp-step {
     display: flex;
     justify-content: space-between;
     flex-direction: column;
 }
 
-::ng-deep .p-accordion p-accordiontab:last-child .p-accordion-content
-{
+::ng-deep .p-accordion p-accordiontab:last-child .p-accordion-content {
     padding: 0 !important;
     border: 0 !important;
 }
 
-a{
-    cursor: pointer !important;
+// a{
+//     cursor: pointer !important;
+//     padding: 0.5rem 1rem !important;
+//     width: -webkit-fill-available;
+// }
+
+// ::ng-deep .p-listbox-item
+// {
+//     cursor: pointer;
+//     padding: 0 !important;
+// }
+.divider {
+    border-bottom: 1px solid #666666;
+    opacity: 40%;
+    margin-bottom: 20px
+}
+
+:host ::ng-deep .p-listbox-item {
     padding: 0.5rem 1rem !important;
     width: -webkit-fill-available;
 }
 
-::ng-deep .p-listbox-item
+:host ::ng-deep .p-card .p-card-subtitle {
+    font-size: 14px;
+    font-weight: 400;
+    color: #1D2125 !important;
+}
+
+:host ::ng-deep .p-selectbutton.p-buttonset.p-component {
+    padding: 4px 12px 4px 12px;
+    background: #2D74FF;
+    border-radius: 4px;
+}
+
+:host ::ng-deep .p-selectbutton .p-button {
+    background: #5963f9;
+    border: 1px solid #5963f9;
+    color: #ffffff;
+    transition: none;
+}
+
+:host ::ng-deep .p-selectbutton .p-button.p-highlight {
+    background: #ffffff;
+    border-color: #5963f9;
+    color: #000000;
+}
+.processNumber
 {
-    cursor: pointer;
-    padding: 0 !important;
+    font-weight: bold;
+    color: #000000;
 }

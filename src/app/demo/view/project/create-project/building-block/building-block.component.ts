@@ -49,12 +49,12 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   selectedOriginConfigurations: TreeNode[] = [];
   destinationConfigurations: TreeNode[] = [];
   selectedDestinationConfigurations: TreeNode[] = [];
-  isOriginConfigurationVisible: boolean = true;
+  isOriginConfigurationVisible: boolean = false;
   isDestinationConfigurationVisible: boolean = false;
 
   //Holds the option value for Configuration Toggle Button
   configurationOptions: any[] = [
-    { name: 'Origin Location', value: 1},
+    { name: 'Origin Location', value: 1 },
     { name: 'Destination Location', value: 2 }
   ];
 
@@ -67,21 +67,21 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    this.onPageLoad();
+    await this.onPageLoad();
   }
 
   // This mentod is responsible for Page Load activities.
-  private onPageLoad(): void {
-    this.loadProjectLocations();
-    this.loadAllAvailableBuildingBlock();
-    this.loadProjectBuildingBlock();
+  private async onPageLoad() {
+    await this.loadProjectLocations();
+    await this.loadAllAvailableBuildingBlock();
+    await this.loadProjectBuildingBlock();
   }
 
   /**
    * This method will load all locations for origin and destination defined in the project.
    */
-  private loadProjectLocations(): void {
-    lastValueFrom(this.projectService.getProjectDetails(this.projectID)).then((res) => {
+  private async loadProjectLocations() {
+    await lastValueFrom(this.projectService.getProjectDetails(this.projectID)).then((res) => {
 
 
       this.projStatus = res?.data?.projectStatus?.id;
@@ -115,16 +115,10 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
     // Call the API to get the Building Block Information and then calling the method to convert it into Tree view structure
     await lastValueFrom(this.buildingBlockService.getExplorerData(2)).then((res) => {
       this.buildingBlocks = this.transformDataForTreeNodeView(res.data);
-      console.log(this.buildingBlocks);
     })
       .catch((err) => {
         console.error('Error loading tree data:', err);
       });
-  }
-
-
-  onProcessClick1(event: any) {
-    console.log(event);
   }
 
   /**
@@ -132,11 +126,11 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
    * @param data 
    * @returns 
    */
-  private transformDataForTreeNodeView(data: any[]): TreeNode[] {
+  private transformDataForTreeNodeView(data: any[], parentData: any = null): TreeNode[] {
     return data?.map((item) => {
       return {
         label: item.name || item.configurableName || item.locationName,
-        data: item,
+        data: parentData ?? item,
         id: item.configurableId || item.locationId,
         children: this.transformDataForTreeNodeView(item?.child || item?.locations || []),
       };
@@ -149,14 +143,16 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   /**
    * Load the Building blocks selected for the Project
    */
-  private loadProjectBuildingBlock() {
+  private async loadProjectBuildingBlock() {
 
     this.projectBuldingBlock = null;
-    lastValueFrom(this.projectService.getProjectBuildingBlocks(this.projectID)).then((res) => {
+    await lastValueFrom(this.projectService.getProjectBuildingBlocks(this.projectID)).then((res) => {
       this.projectBuldingBlock = res?.data;
       this.projectBuldingBlock?.buildingBlocks?.forEach((bb) => {
-        bb.processes.forEach(p => {
 
+        //Filter out processes which same process number
+        bb.processes = this.filterProcessesByProcessNumber(bb.processes);
+        bb.processes.forEach(p => {
           // Loop through each configurations loctaions to see if all the loctaions 
           // which are there in projects are inherited to the configuration locations or not. 
           // If not then add those loactions to the configurations locations list.
@@ -185,38 +181,63 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
           }
           );
 
+          // Loop through each configurations loctaions to see if all the loctaions 
+          // which are there in projects are inherited to the configuration locations or not. 
+          // If not then add those loactions to the configurations locations list.
+          this.projectDestinationLocations?.forEach(pol => {
+            // Ensure the location is in the this.selectedBuildingBlockProcess.destinationService
+            // If present mark the isSelected to true.
+            // Else add the location to the list with isSelected to false.
+            p?.destinationService?.configurations?.forEach(c => {
+              if (c?.locations == null || c?.locations == undefined) {
+                c.locations = [];
+              }
+              var locationIndex = c?.locations?.findIndex(l => l.locationId === pol.locationId);
+              if (locationIndex != null && locationIndex != undefined && locationIndex != -1) {
+                c.locations[locationIndex].isSelected = true;
+              }
+              else {
+                c.locations.push(<Location>{
+                  locationId: pol.locationId,
+                  locationName: pol.locationName,
+                  isSelected: false
+                });
+              }
+            }
+            )
+
+          }
+          );
+
           if (p.destinationService != undefined && p.destinationService != null && p.destinationService?.configurations?.length > 0) {
             p.destinationService.configurations = p?.destinationService?.configurations?.filter(f => f.configurableId != undefined || f.configurableId != null);
           }
           if (p.originService != undefined && p.originService != null && p.originService?.configurations?.length > 0) {
             p.originService.configurations = p?.originService?.configurations?.filter(f => f.configurableId != undefined || f.configurableId != null);
           }
-
-          debugger;
+          /**
+           * Set Process Active Staus
+           */
           // If any process does not have any configuration or any location assigned to that specific configuration
-          if ((p?.destinationService == undefined || p?.destinationService == null || p?.destinationService?.configurations?.length < 1) && 
-          (p?.originService == undefined || p?.originService == null || p?.originService?.configurations?.length < 1)) {
+          if ((p?.destinationService == undefined || p?.destinationService == null || p?.destinationService?.configurations?.length < 1) &&
+            (p?.originService == undefined || p?.originService == null || p?.originService?.configurations?.length < 1)) {
             p.processActiveStatus = 0;
           }
-
-          if((p?.destinationService?.configurations?.length > 0 && p?.destinationService?.configurations?.some(s=>s?.locations?.some(l=>l?.isSelected))) || 
-          (p?.originService?.configurations?.length > 0 && p?.originService?.configurations?.some(s=>s?.locations?.some(l=>l?.isSelected))))
-          {
+          if ((p?.destinationService?.configurations?.length > 0 && p?.destinationService?.configurations?.some(s => s?.locations?.some(l => l?.isSelected))) ||
+            (p?.originService?.configurations?.length > 0 && p?.originService?.configurations?.some(s => s?.locations?.some(l => l?.isSelected)))) {
             p.processActiveStatus = 2;
           }
-          if((p?.destinationService?.configurations?.length < 0 && p?.destinationService?.configurations?.some(s=>s?.locations?.some(l=>!l?.isSelected))) || 
-          (p?.originService?.configurations?.length < 0 && p?.originService?.configurations?.some(s=>s?.locations?.some(l=>!l?.isSelected))))
-          {
+          if ((p?.destinationService?.configurations?.length < 0 && p?.destinationService?.configurations?.some(s => s?.locations?.some(l => !l?.isSelected))) ||
+            (p?.originService?.configurations?.length < 0 && p?.originService?.configurations?.some(s => s?.locations?.some(l => !l?.isSelected)))) {
             p.processActiveStatus = 1;
           }
         })
       })
 
       //Sort process steps order by process number ascending
-      if(this.projectBuldingBlock?.buildingBlocks?.length > 0)
-      {
-        this.projectBuldingBlock?.buildingBlocks?.forEach(bb=>{
-          bb.processes.sort((a,b)=>a.processNumber - b.processNumber)
+      if (this.projectBuldingBlock?.buildingBlocks?.length > 0) {
+        this.projectBuldingBlock?.buildingBlocks?.forEach(bb => {
+          bb.processes.sort((a, b) => a.processNumber - b.processNumber)
         })
       }
     })
@@ -230,8 +251,9 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
    */
   private removeBuidlingBlockFromProject(buildingBlockId: Number): void {
 
-    this.projectBuldingBlock.buildingBlocks = this.projectBuldingBlock?.buildingBlocks?.filter(bb=>bb.buildingBlockId!=buildingBlockId);
-
+    this.projectBuldingBlock.buildingBlocks = this.projectBuldingBlock?.buildingBlocks?.filter(bb => bb.buildingBlockId != buildingBlockId);
+    this.isOriginConfigurationVisible = false;
+    this.isDestinationConfigurationVisible = false;
   }
 
 
@@ -258,6 +280,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
     lastValueFrom(this.projectService.getProcessStepByBlockId(buildingBlockId)).then((res) => {
       // Loop through each process to get a unique process steps and configurations available for it.
       if (res?.status === 200) {
+        res.data = this.filterProcessesByProcessNumber(res?.data);
         newBuildingBlock = new BuildingBlock();
 
         newBuildingBlock.buildingBlockId = buildingBlockId;
@@ -270,10 +293,10 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
           // Initialize the New Proecss Object to add in the Building block
           var newProcess = new Process();
           newProcess.originService = new OriginDestinationService();
-          newProcess.originService.configurations = [];
+          newProcess.originService.configurations = new Array<Configuration>();
 
           newProcess.destinationService = new OriginDestinationService();
-          newProcess.destinationService.configurations = [];
+          newProcess.destinationService.configurations = new Array<Configuration>();
 
           var newConfiguration = new Configuration();
           newConfiguration.configurableId = p?.configurableId;
@@ -289,10 +312,10 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
 
             //0 : OriginService, 1: Destination Service, 2: Both Origin and Destination Service
             if (p?.originDestinationCode == 0 || p?.originDestinationCode == 2) {
-              newProcess.originService.configurations.push(newConfiguration);
+              newProcess.originService.configurations.push(JSON.parse(JSON.stringify(newConfiguration)));
             }
-            else if (p?.originDestinationCode == 1 || p?.originDestinationCode == 2) {
-              newProcess.destinationService.configurations.push(newConfiguration);
+            if (p?.originDestinationCode == 1 || p?.originDestinationCode == 2) {
+              newProcess.destinationService.configurations.push(JSON.parse(JSON.stringify(newConfiguration)));
             }
 
 
@@ -304,10 +327,10 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
             newProcess.processNumber = p.processNumber;
 
             if (p?.originDestinationCode == 0 || p?.originDestinationCode == 2) {
-              newProcess.originService.configurations.push(newConfiguration);
+              newProcess.originService.configurations.push(JSON.parse(JSON.stringify(newConfiguration)));
             }
-            else if (p?.originDestinationCode == 1 || p?.originDestinationCode == 2) {
-              newProcess.destinationService.configurations.push(newConfiguration);
+            if (p?.originDestinationCode == 1 || p?.originDestinationCode == 2) {
+              newProcess.destinationService.configurations.push(JSON.parse(JSON.stringify(newConfiguration)));
             }
 
 
@@ -318,24 +341,23 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
               newProcess.originService.configurations = newProcess.originService?.configurations?.filter(f => f.configurableId != undefined || f.configurableId != null);
             }
 
-            debugger;
-            
+            /**
+             * Set Process Active Status
+             */
             // If any process does not have any configuration or any location assigned to that specific configuration
-          if ((newProcess?.destinationService == undefined || newProcess?.destinationService == null || newProcess?.destinationService?.configurations?.length < 1) && 
-          (newProcess?.originService == undefined || newProcess?.originService == null || newProcess?.originService?.configurations?.length < 1)) {
-            newProcess.processActiveStatus = 0;
-          }
+            if ((newProcess?.destinationService == undefined || newProcess?.destinationService == null || newProcess?.destinationService?.configurations?.length < 1) &&
+              (newProcess?.originService == undefined || newProcess?.originService == null || newProcess?.originService?.configurations?.length < 1)) {
+              newProcess.processActiveStatus = 0;
+            }
 
-          if((newProcess?.destinationService?.configurations?.length > 0 && newProcess?.destinationService?.configurations?.some(s=>s?.locations?.some(l=>l?.isSelected))) || 
-          (newProcess?.originService?.configurations?.length > 0 && newProcess?.originService?.configurations?.some(s=>s?.locations?.some(l=>l?.isSelected))))
-          {
-            newProcess.processActiveStatus = 2;
-          }
-          if((newProcess?.destinationService?.configurations?.length < 0 && newProcess?.destinationService?.configurations?.some(s=>s?.locations?.some(l=>!l?.isSelected))) || 
-          (newProcess?.originService?.configurations?.length < 0 && newProcess?.originService?.configurations?.some(s=>s?.locations?.some(l=>!l?.isSelected))))
-          {
-            newProcess.processActiveStatus = 1;
-          }
+            if ((newProcess?.destinationService?.configurations?.length > 0 && newProcess?.destinationService?.configurations?.some(s => s?.locations?.some(l => l?.isSelected))) ||
+              (newProcess?.originService?.configurations?.length > 0 && newProcess?.originService?.configurations?.some(s => s?.locations?.some(l => l?.isSelected)))) {
+              newProcess.processActiveStatus = 2;
+            }
+            if ((newProcess?.destinationService?.configurations?.length < 0 && newProcess?.destinationService?.configurations?.some(s => s?.locations?.some(l => !l?.isSelected))) ||
+              (newProcess?.originService?.configurations?.length < 0 && newProcess?.originService?.configurations?.some(s => s?.locations?.some(l => !l?.isSelected)))) {
+              newProcess.processActiveStatus = 1;
+            }
 
             newBuildingBlock.processes.push(newProcess);
           }
@@ -347,8 +369,6 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
           this.projectBuldingBlock.buildingBlocks.push(newBuildingBlock);
         }
       }
-      console.log(this.projectBuldingBlock);
-
     })
       .catch((err) => {
 
@@ -358,6 +378,12 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   }
   // #endregion
 
+  filterProcessesByProcessNumber(processes:Process[])
+  {
+    return processes?.filter((p,index,self)=>{
+      return index == self.findIndex(prs=>prs.processNumber==p.processNumber);
+    })
+  }
 
 
   // #region Save Building Block
@@ -375,10 +401,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
           pr.destinationService.configurations = pr?.destinationService?.configurations?.filter(f => f?.locations?.length > 0);
         });
         // If there are no configuration for destination
-        pr.destinationService = pr?.destinationService?.configurations?.length < 1? null:pr?.destinationService;
-
-
-
+        pr.destinationService = pr?.destinationService?.configurations?.length < 1 ? null : pr?.destinationService;
 
 
         pr?.originService?.configurations?.forEach(c => {
@@ -389,14 +412,18 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
         });
 
         // If there are no configuration for origin
-        pr.originService = pr?.originService?.configurations?.length < 1? null:pr?.originService;        
+        pr.originService = pr?.originService?.configurations?.length < 1 ? null : pr?.originService;
       });
-      bb.processes = bb?.processes.filter(prf=>(prf?.destinationService!=undefined && prf?.destinationService!=null) || (prf?.originService!=undefined && prf?.originService!=null));
+      bb.processes = bb?.processes.filter(prf => (prf?.destinationService != undefined && prf?.destinationService != null) || (prf?.originService != undefined && prf?.originService != null));
     });
 
 
     lastValueFrom(this.projectService.saveProjectBuildingBlock(this.projectBuldingBlock)).then((res) => {
       this.loadProjectBuildingBlock();
+      this.selectedOriginConfigurations = [];
+      this.selectedDestinationConfigurations = [];
+      this.isOriginConfigurationVisible = false;
+    this.isDestinationConfigurationVisible = false;
       this.messageService.add({
         key: 'successToast',
         severity: 'success',
@@ -416,6 +443,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
    * @param processId : Internal Id for the selected building block.
    */
   public onProcessClick(buildingBlockId: number, processId: number) {
+
     // Find the exact process steps using building bloc id and process id.
     var selectedProcess = this.projectBuldingBlock.buildingBlocks.find(b => b.buildingBlockId === buildingBlockId)
       .processes.find(p => p.processId === processId);
@@ -442,21 +470,17 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       this.projectDestinationLocations?.forEach(pdl => {
         // Ensure the location is in the this.selectedBuildingBlockProcess.destinationService
         // If present mark the isSelected to true.
-        // Else add the location to the list with isSelected to false.
-        this.selectedBuildingBlockProcess?.destinationService?.configurations?.forEach(c => {
-          if (c?.locations == null || c?.locations == undefined) {
-            c.locations = [];
+        // Else add the location to the list with isSelected to false.        
+        this.selectedBuildingBlockProcess?.destinationService?.configurations?.forEach(dsConfig => {
+          if (dsConfig?.locations == null || dsConfig?.locations == undefined) {
+            dsConfig.locations = [];
           }
-          var locationIndex = c?.locations?.findIndex(l => l.locationId === pdl.locationId)
+          var locationIndex = dsConfig?.locations?.findIndex(l => l.locationId === pdl.locationId)
           if (locationIndex != null && locationIndex != undefined && locationIndex != -1) {
-            c.locations[locationIndex].isSelected = true;
+            // c.locations[locationIndex].isSelected = true;
           }
           else {
-            //  var newLocation = new Location();
-            //  newLocation.locationId = pdl.locationId;
-            //  newLocation.locationName = pdl.locationName;
-            //  newLocation.isSelected = false;
-            c.locations.push(<Location>{
+            dsConfig.locations.push(<Location>{
               locationId: pdl.locationId,
               locationName: pdl.locationName,
               isSelected: false
@@ -475,16 +499,15 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
         // Ensure the location is in the this.selectedBuildingBlockProcess.destinationService
         // If present mark the isSelected to true.
         // Else add the location to the list with isSelected to false.
-        this.selectedBuildingBlockProcess?.originService?.configurations?.forEach(c => {
-          if (c?.locations == null || c?.locations == undefined) {
-            c.locations = [];
+        this.selectedBuildingBlockProcess?.originService?.configurations?.forEach(osConfig => {
+          if (osConfig?.locations == null || osConfig?.locations == undefined) {
+            osConfig.locations = [];
           }
-          var locationIndex = c?.locations?.findIndex(l => l.locationId === pol.locationId);
+          var locationIndex = osConfig?.locations?.findIndex(l => l.locationId === pol.locationId);
           if (locationIndex != null && locationIndex != undefined && locationIndex != -1) {
-            // c.locations[locationIndex].isSelected = true;
           }
           else {
-            c.locations.push(<Location>{
+            osConfig.locations.push(<Location>{
               locationId: pol.locationId,
               locationName: pol.locationName,
               isSelected: false
@@ -497,6 +520,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       );
 
       // Transforming Origin Configurations data into Tree Node structure
+      this.selectedOriginConfigurations = [];
       this.originConfigurations = this.transformDataForTreeNodeView(this.selectedBuildingBlockProcess?.originService?.configurations);
 
       // Getting Selected Origin Locations for specific configuration as Tree Node Structure
@@ -510,14 +534,14 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       });
 
       // Transforming Destination Configurations data into Tree Node structure
+      this.destinationConfigurations=[];
       this.destinationConfigurations = this.transformDataForTreeNodeView(this.selectedBuildingBlockProcess?.destinationService?.configurations);
 
       // Getting Selected Destination Locations for specific configuration as Tree Node Structure
-      this.selectedDestinationConfigurations = [];
-      this.destinationConfigurations?.forEach(oc => {
-        oc?.children?.forEach(occ => {
-          if (occ?.data?.isSelected) {
-            this.selectedDestinationConfigurations.push(occ);
+      this.destinationConfigurations?.forEach(dc => {
+        dc?.children?.forEach(dcc => {
+          if (dcc?.data?.isSelected) {
+            this.selectedDestinationConfigurations.push(dcc);
           }
         })
       });
@@ -528,7 +552,6 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   }
 
   public toggleConfiguration(event) {
-    console.log(event);
     switch (event?.value) {
       case 1:
         this.isOriginConfigurationVisible = true;
@@ -543,27 +566,33 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onLocationSelection(configurationLocation: any) {
-    console.log(this.projectBuldingBlock);
-    // console.log(configurationLocation);
-
+  /**
+   * This method helps to select the location checkbox and change the value in existing location object.
+   */
+  public onOriginLocationSelection(configurationLocation: any) {
+    var configuration:Configuration = configurationLocation?.node?.data;
+    if(configuration!=undefined && configuration!=null && configuration?.locations!=undefined && configuration?.locations!=null)
+    {
+      configuration?.locations?.forEach(f=>f.isSelected =!f?.isSelected);
+    }
+    else
+    {
     var selectedLocation: Location = configurationLocation?.node?.data;
     selectedLocation.isSelected = !selectedLocation.isSelected;
+    }
+  }
 
-    // var selectedConfigurationLocation:Configuration = configurationLocation?.node?.parent?.data;
-
-    // this.projectBuldingBlock.buildingBlocks.forEach(bb=>{
-    //   bb.processes.forEach(p=>{
-    //     var configurationIndex = p.originService.configurations.findIndex(f=>f.configurableId==selectedConfigurationLocation.configurableId);
-    //     if(configurationIndex != -1)
-    //     {
-    //       p.originService.configurations[configurationIndex]=selectedConfigurationLocation;
-    //     }
-    //   })
-    // });
-
-    console.log(this.projectBuldingBlock);
-
+  public onDestinationLocationSelection(configurationLocation: any) {
+    var configuration:Configuration = configurationLocation?.node?.data;
+    if(configuration!=undefined && configuration!=null && configuration?.locations!=undefined && configuration?.locations!=null)
+    {
+      configuration?.locations?.forEach(f=>f.isSelected =!f?.isSelected);
+    }
+    else
+    {
+    var selectedLocation: Location = configurationLocation?.node?.data;
+    selectedLocation.isSelected = !selectedLocation.isSelected;
+    }
   }
 
   ngOnDestroy(): void {

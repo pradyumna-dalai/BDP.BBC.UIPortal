@@ -1,143 +1,86 @@
 <div>
     <div class="grid p-fluid">
-        <div class="col-12 md:col-4">
-            <div class="card" style="min-height: 669px">
-                <div class="grid" style="margin-top: 4px">
-                    <div class="col-12">
-                        <h5 id="heading">Building Blocks</h5>
-                    </div>
-                    <div class="col-12">
-                        <p-tree [value]="buildingBlocks" [filter]="true" filterPlaceholder="Search Building Blocks"
-                            filterMode="strict" [draggableNodes]="true" [droppableNodes]="true">
-                            <ng-template let-buildingBlock pTemplate="default">
-                                <span [draggable]="buildingBlock.data?.type === 4"
-                                    (dragstart)="onBuildingBlockAddition(buildingBlock?.data?.id, buildingBlock?.data?.name)">
-                                    <span
-                                        [ngClass]="{'fas fa-folder':buildingBlock.data?.type === 1,'fa-regular fa-folder':buildingBlock.data?.type === 2,'far fa-folder-open':buildingBlock.data?.type === 3,'fas fa-boxes':buildingBlock.data?.type === 4}"></span>
-                                    {{ buildingBlock.label }}
-                                </span>
-                            </ng-template>
-                        </p-tree>
-                    </div>
-                </div>
-            </div>
+        <div class="col">
+            <p-card header="Building Blocks">
+                <div class="divider"></div>
+                <p-tree [value]="buildingBlocks" [filter]="true" filterPlaceholder="Search Building Blocks"
+                    filterMode="strict" [draggableNodes]="true" [droppableNodes]="true">
+                    <ng-template let-buildingBlock pTemplate="default">
+                        <span [draggable]="buildingBlock.data?.type === 4"
+                            (dragstart)="onBuildingBlockAddition(buildingBlock?.data?.id, buildingBlock?.data?.name)">
+                            <span
+                                [ngClass]="{'fas fa-folder':buildingBlock.data?.type === 1,'fa-regular fa-folder':buildingBlock.data?.type === 2,'far fa-folder-open':buildingBlock.data?.type === 3,'fas fa-boxes':buildingBlock.data?.type === 4}"></span>
+                            {{ buildingBlock.label }}
+                        </span>
+                    </ng-template>
+                </p-tree>
+            </p-card>
         </div>
-        <div class="col-12 md:col-4">
-            <div class="card" style="min-height: 669px">
-                <div class="col-12">
-                    <div class="grid">
-                        <div class="col-8">
-                            <h5>Selected Building Blocks</h5>
-                        </div>
-                        <!-- <div class="col-4" style="display: flex; justify-content: flex-end">
-                            <p-button (click)="isExpanded = !isExpanded" class="p-button-outlined" label="{{
-                                    isExpanded ? 'Collapse All' : 'Expand All'
-                                }}"></p-button>
-                        </div> -->
-                    </div>
-                    <hr style="
-                            margin-top: 1px;
-                            margin-bottom: 22px;
-                            color: gray;
-                            background-color: #d9d2d2;
-                            height: 1px;
-                            border: none;
-                        " />
-                    <div *ngFor="let buildingBlock of projectBuldingBlock?.buildingBlocks">
-                        <p-accordion [activeIndex]="isExpanded ? 0 : -1">
-                            <p-accordionTab [selected]="isExpanded">
-                                <ng-template pTemplate="header">
-                                    <div class="blue-header">
-                                        {{ buildingBlock.buildingBlockName }}
-                                    </div>
-                                    <button pButton pRipple type="button" pTooltip="Remove Dragged Building Block."
-                                        tooltipPosition="top" pButtonIconOnly icon="pi pi-trash" styleClass="trash-icon"
-                                        (click)="removeBuidlingBlockFromProject(buildingBlock?.buildingBlockId)" style="
-                                            font-size: 3.5em;
-                                            margin-left: auto;
-                                        " class="p-button-rounded p-button-text p-button-danger"></button>
-                                </ng-template>
-                                <div class="bdp-step">
-
-                                    <p-listbox [options]="buildingBlock?.processes">
-                                        <ng-template let-process pTemplate="item">
-                                            <a [routerLink]="" (click)="onProcessClick(buildingBlock?.buildingBlockId, process?.processId)"
-                                                [ngClass]="{'text-grey':process?.processActiveStatus==0, 'text-blue':process?.processActiveStatus==1, 'text-green':process?.processActiveStatus==2}">
-                                                <label
-                                                    style="font-weight: bold;color: #1d2125;padding-left: 1px;">{{process.processNumber}}&nbsp;)&nbsp;&nbsp;</label>
-                                                <label>{{ process.processName }}</label>
-                                            </a>
-                                            <!-- <p-button [link]="true" class="button-link"
-                                                (click)="onProcessClick(buildingBlock?.buildingBlockId, process?.processId)">
-                                                <label
-                                                    style="font-weight: bold;color: #1d2125;padding-left: 1px;">{{process.processNumber}}&nbsp;)&nbsp;&nbsp;</label>
-                                                <div>{{ process.processName }}</div>
-                                            </p-button> -->
-                                            <!-- <div class="flex align-items-center gap-2">
-
-                                            </div> -->
-                                        </ng-template>
-                                    </p-listbox>
-                                    <!-- <li *ngFor="let process of buildingBlock?.processes">
-                                        <div style="display: inline-flex;padding-top: 14px;">
-                                            <div style="font-weight: bold;color: #1d2125;padding-left: 1px;">{{
-                                                process.processNumber }}&nbsp;)&nbsp;&nbsp;</div>
-                                            <div>{{ process.processName }}</div>
-                                        </div>
-                                        <br>
-                                    </li> -->
+        <div class="col">
+            <p-card header="Selected Building Blocks">
+                <div class="divider"></div>
 
 
-
+                <div *ngFor="let buildingBlock of projectBuldingBlock?.buildingBlocks">
+                    <p-accordion [activeIndex]="isExpanded ? 0 : -1">
+                        <p-accordionTab [selected]="isExpanded">
+                            <ng-template pTemplate="header">
+                                <div class="blue-header">
+                                    {{ buildingBlock.buildingBlockName }}
                                 </div>
-                            </p-accordionTab>
-                        </p-accordion>
-                    </div>
+                                <button pButton pRipple type="button" pTooltip="Remove Dragged Building Block."
+                                    tooltipPosition="top" pButtonIconOnly icon="pi pi-trash" styleClass="trash-icon"
+                                    (click)="removeBuidlingBlockFromProject(buildingBlock?.buildingBlockId)" style="
+                                        font-size: 3.5em;
+                                        margin-left: auto;
+                                    " class="p-button-rounded p-button-text p-button-danger"></button>
+                            </ng-template>
+                            <div class="bdp-step">
+
+                                <p-listbox [options]="buildingBlock?.processes">
+                                    <ng-template let-process pTemplate="item">
+                                        <a [routerLink]=""
+                                            (click)="processActiveStatus==0?return:onProcessClick(buildingBlock?.buildingBlockId, process?.processId)"
+                                            [ngClass]="{'text-grey':process?.processActiveStatus==0, 'text-blue':process?.processActiveStatus==1, 'text-green':process?.processActiveStatus==2}">
+                                            <span class="processNumber">{{process.processNumber}}&nbsp;)&nbsp;&nbsp;</span>{{ process.processName }}
+                                        </a>
+                                    </ng-template>
+                                </p-listbox>
+                            </div>
+                        </p-accordionTab>
+                    </p-accordion>
                 </div>
-            </div>
+            </p-card>
         </div>
-        <div class="col-12 md:col-4">
-            <div class="card" style="min-height: 669px">
-                <div class="col-12">
-                    <h5 id="heading">Location Configuration</h5>
-                    <hr style="
-                            margin-top: 1px;
-                            margin-bottom: 22px;
-                            color: gray;
-                            background-color: #d9d2d2;
-                            height: 1px;
-                            border: none;
-                        " />
-                </div>
-                <h6>
-                    Selected Step: {{ selectedBuildingBlockProcess?.processName }}
-                </h6>
-                <div class="card flex justify-content-center">
-                    <p-selectButton [options]="configurationOptions" optionLabel="name" optionValue="value" [ngModel]="isOriginConfigurationVisible?1:2"
-                        (onChange)="toggleConfiguration($event)" optionDisabled="isDisabled"></p-selectButton>
-                </div>
-                <br />
+        <div class="col" *ngIf="isOriginConfigurationVisible || isDestinationConfigurationVisible">
+            <p-card header="Location Configuration" [subheader]="selectedBuildingBlockProcess?.processName">
+                <div class="divider"></div>
+                <p-selectButton [options]="configurationOptions" optionLabel="name" optionValue="value"
+                        [ngModel]="isOriginConfigurationVisible?1:2" (onChange)="toggleConfiguration($event)"
+                        optionDisabled="isDisabled"></p-selectButton>
                 <div>
                     <p-tree *ngIf="isOriginConfigurationVisible" [value]="originConfigurations" selectionMode="checkbox"
                         class="w-full md:w-30rem" [(selection)]="selectedOriginConfigurations"
-                        [propagateSelectionUp]="false" (onNodeSelect)="onLocationSelection($event)"
-                        (onNodeUnselect)="onLocationSelection($event)">
+                        [propagateSelectionUp]="true" [propagateSelectionDown]="true"
+                        (onNodeSelect)="onOriginLocationSelection($event)"
+                        (onNodeUnselect)="onOriginLocationSelection($event)">
                         <ng-template let-configuration pTemplate="default">
                             <span>{{ configuration.label }}</span>
                         </ng-template>
                     </p-tree>
 
                     <p-tree *ngIf="isDestinationConfigurationVisible" [value]="destinationConfigurations"
-                        selectionMode="checkbox" class="w-full md:w-30rem" [propagateSelectionUp]="false">
+                        selectionMode="checkbox" class="w-full md:w-30rem"
+                        [(selection)]="selectedDestinationConfigurations" [propagateSelectionUp]="true"
+                        [propagateSelectionDown]="true" (onNodeSelect)="onDestinationLocationSelection($event)"
+                        (onNodeUnselect)="onDestinationLocationSelection($event)">
                         <ng-template let-configuration pTemplate="default">
                             <span>{{ configuration.label }}</span>
                         </ng-template>
                     </p-tree>
                 </div>
-            </div>
-        </div>
-
-        <p-toast key="successToast"></p-toast>
+            </p-card>
+        </div>        
     </div>
     <div class="col-12" style="display: flex;justify-content: flex-end;">
         <button pButton pRipple type="button" *ngIf="projStatus !=3 && projStatus !=4" label="Save As Draft"
@@ -147,3 +90,5 @@
     </div>
     <p style="font-weight: 500"></p>
 </div>
+
+<p-toast key="successToast"></p-toast>
