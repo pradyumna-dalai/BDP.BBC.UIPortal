@@ -25,7 +25,7 @@ showOriginCLI: boolean = true;
 showDestinationCLI:boolean = false;
 
 visible:boolean = false;
-private _isExpanded = false;
+private _isExpanded = true;
   costLineItemDetails: any;
   buildingBlockNames: any;
   originProcesses: any[] = [];

@@ -26,7 +26,7 @@ destinationButtonBorderRadius: string = '5px';
 showOriginCLI: boolean = true;
 showDestinationCLI:boolean = false;
 
-private _isExpanded = false;
+private _isExpanded = true;
 visible: boolean = false;
   volumeDetails: any[]= [];
   dynamicColumns: any[] = [];
