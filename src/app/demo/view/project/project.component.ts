@@ -6,8 +6,6 @@ import { ProjectsService } from 'src/app/services/project-serivce/projects.servi
 import { DatePipe } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { CalendarModule } from 'primeng/calendar';
-
-
 //import moment from "moment";
 import dayjs from 'dayjs';
 import { HttpResponse } from '@angular/common/http';
@@ -281,9 +279,14 @@ onCancel(){
           const formattedEndDate = this.momentService.getFullDate(item.projectInformation?.endDate);
           return {
             companyname: item.projectInformation?.company?.name,
+            customerCode: item.projectInformation?.customerCode,
+            industryVertical: item.projectInformation?.industryVertical?.name,
+
+            region: item.projectInformation?.region?.name,
             id: item?.id,
             projectName: item.projectInformation?.projectName,
             opportunityName: item.projectInformation?.opportunityName?.name,
+            opportunityID: item.projectInformation?.opportunityName?.id,
             projectStage: item.projectInformation?.projectStage?.name,
             projectStatus: item.projectInformation?.projectStatus?.name,
             opportunitymanager: opportunityManagers,
