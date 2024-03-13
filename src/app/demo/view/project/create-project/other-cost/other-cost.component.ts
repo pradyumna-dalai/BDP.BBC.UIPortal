@@ -9,7 +9,10 @@ import { MasterDataService } from 'src/app/services/master-dataserivce/master-da
 import { NavigationStart, Router } from '@angular/router';
 interface CostItem {
   id: number;
-  costItem: any;
+  costItem: {
+    costItemId: null,
+    name: ''
+  }
   location: any;
   totalCost: number;
   originDestination: string;
@@ -44,7 +47,7 @@ export class OtherCostComponent {
   }
 
   ngOnInit() {
-    
+
     this.getAllProjectOtherCost();
     this.getAllCostItem();
     if (this.projectIdCLI != null || this.projectIdCLI != undefined) {
@@ -65,7 +68,10 @@ export class OtherCostComponent {
   addRow() {
     const newCostItem: CostItem = {
       id: this.tableData.length + 1,
-      costItem: null,
+      costItem: {
+        costItemId: null,
+        name: ''
+      },
       location: null,
       totalCost: 0,
       originDestination: '',
@@ -91,7 +97,11 @@ export class OtherCostComponent {
         summary: 'Error!',
         detail: 'Please fill all required fields before saving.'
       });
-      return; // Stop further execution
+      return;
+    }
+    const selectedCostItem = this.costItemDropdownOptions.find(option => option.id === editedItem.costItem.costItemId);
+    if (selectedCostItem) {
+      editedItem.costItem.name = selectedCostItem.name;
     }
     this.tableData[row].editing = false;
     this.calculateGrandTotalCost();
@@ -104,29 +114,29 @@ export class OtherCostComponent {
   updateOriginDestination(cost: CostItem) {
     const selectedLocation = this.locationDropdownOptions.find(option => option.id === cost.id);
     if (selectedLocation) {
-        if (selectedLocation.originDestinationCode === 2) {
-            cost.originDestination = 'Orign/Destination';
-        } else {
-            cost.originDestination = selectedLocation.originDestinationCode === 0 ? 'Origin' : 'Destination';
-        }
-        cost.location = selectedLocation;
+      if (selectedLocation.originDestinationCode === 2) {
+        cost.originDestination = 'Orign/Destination';
+      } else {
+        cost.originDestination = selectedLocation.originDestinationCode === 0 ? 'Origin' : 'Destination';
+      }
+      cost.location = selectedLocation;
     }
-}
+  }
 
 
   getOriginDestination(cost: CostItem): string {
     if (cost.location && cost.location.originDestinationCode !== undefined) {
-        const originDestinationCode = cost.location.originDestinationCode;
-        if (originDestinationCode === 0) {
-            return 'Origin';
-        } else if (originDestinationCode === 1) {
-            return 'Destination';
-        } else if (originDestinationCode === 2) {
-            return 'Orign/Destination';
-        }
+      const originDestinationCode = cost.location.originDestinationCode;
+      if (originDestinationCode === 0) {
+        return 'Origin';
+      } else if (originDestinationCode === 1) {
+        return 'Destination';
+      } else if (originDestinationCode === 2) {
+        return 'Orign/Destination';
+      }
     }
     return '';
-}
+  }
 
 
   onRowDelete(row: number) {
@@ -149,12 +159,15 @@ export class OtherCostComponent {
 
     this.calculateGrandTotalCost();
     const body = {
-      projectId: this.projectId,
+      projectId: this.projectIdCLI,
       projectName: this.projectName,
       grandTotalCost: 927000.00,
       otherCosts: this.tableData.map(costItem => ({
-        costItemId: null,
-        costItemName: costItem.costItem,
+        id: null,
+        costItem: {
+          id: costItem.costItem.costItemId,
+          name: costItem.costItem.name
+        },
         locationId: costItem.location.id,
         locationName: costItem.location.name,
         totalCost: costItem.totalCost,
@@ -195,7 +208,10 @@ export class OtherCostComponent {
           if (Array.isArray(otherCosts)) {
             this.tableData = otherCosts.map((item: any, index: number) => ({
               id: index + 1,
-              costItem: item.costItemName,
+              costItem: {
+                costItemId: item.id,
+                name: item.name
+              },
               location: {
                 id: item.locationId,
                 name: item.locationName,
@@ -230,7 +246,11 @@ export class OtherCostComponent {
         if (Array.isArray(otherCosts)) {
           this.tableData = otherCosts.map((item: any, index: number) => ({
             id: index + 1,
-            costItem: item.costItemName,
+            costItem: {
+              costItemId: item.id,
+              name: item.name
+            },
+            //  costItemId:item.costItemId,
             location: {
               id: item.locationId,
               name: item.locationName,
@@ -279,14 +299,14 @@ export class OtherCostComponent {
     this.projectService.getAllOtherCostLocation(projId).subscribe({
       next: (response: any) => {
         if (response?.message == "success") {
-        this.locationDropdownOptions = response.data?.map(location => ({
-          id: location.locationId,
-          name: location.locationName,
-          originDestinationCode: location.originDestinationCode
-        }));
-      } else {
-        this.locationDropdownOptions = [];
-      }
+          this.locationDropdownOptions = response.data?.map(location => ({
+            id: location.locationId,
+            name: location.locationName,
+            originDestinationCode: location.originDestinationCode
+          }));
+        } else {
+          this.locationDropdownOptions = [];
+        }
         console.log('loc', this.locationDropdownOptions);
       }
     });
