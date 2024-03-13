@@ -5,6 +5,8 @@ import { Subscription } from 'rxjs';
 import { CreateBuildingBlockService } from 'src/app/services/create-buildingBlock/create-building-block.service';
 import { AppMainComponent } from 'src/app/app.main.component';
 import { SharedServiceService } from 'src/app/services/project-serivce/shared-service.service';
+import { Router, NavigationStart } from '@angular/router';
+
 interface SelectedConfiguration {
   configurableId: string;
   configurableName: string;
@@ -67,7 +69,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   @Input() projinfoID: number | null;
   @Input() projStatus: any | null;
 
-  constructor(private sharedService: SharedServiceService, private projectService: ProjectsService, private messageService: MessageService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
+  constructor(private router: Router,private sharedService: SharedServiceService, private projectService: ProjectsService, private messageService: MessageService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
     //  console.log(' :',this.getSavedBlocksDD);
     if(this.projinfoID==null){
     this.projectService.draftData$.subscribe(data => {
@@ -77,6 +79,12 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
      // this.getAllProjectBuildingBlock(this.projectId);
     });
   }
+  // Set setDraftSavedBB to false when navigating away
+  this.router.events.subscribe(event => {
+    if (event instanceof NavigationStart) {
+      this.sharedService.setDraftSavedBB(false);
+    }
+  });
   }
 
   ngOnInit() {
