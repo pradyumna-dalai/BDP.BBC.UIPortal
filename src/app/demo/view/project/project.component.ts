@@ -6,8 +6,6 @@ import { ProjectsService } from 'src/app/services/project-serivce/projects.servi
 import { DatePipe } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { CalendarModule } from 'primeng/calendar';
-
-
 //import moment from "moment";
 import dayjs from 'dayjs';
 import { HttpResponse } from '@angular/common/http';
@@ -25,7 +23,7 @@ export class ProjectComponent {
   data: any = {};
   rowDisabledState: { [key: string]: boolean } = {};
   proejctdetails = [];
-  updateTable=[]
+  updateTable = []
   startDate: string;
   endDate: string;
   displayDateRangeDialog = false;
@@ -38,10 +36,10 @@ export class ProjectComponent {
   endDateString: string;
   startDateString: string;
   // Pagination properties
- currentPage: number = 1;
- pageSize: number = 10;
- sortField: string = ''; // Initial sort field
- sortOrder: number = 1; // 1 for ascending, -1 for descending
+  currentPage: number = 1;
+  pageSize: number = 10;
+  sortField: string = ''; // Initial sort field
+  sortOrder: number = 1; // 1 for ascending, -1 for descending
 
   totalRecords: any = 10;
   first: any = 0;
@@ -52,7 +50,7 @@ export class ProjectComponent {
   selectedProjectName: string = '';
   dateRangeCopy: any;
   selected: any;
- 
+
 
   predefinedDateRanges: SelectItem[] = [
     { label: 'Last 1 Year', value: 'last1Year' },
@@ -69,18 +67,18 @@ export class ProjectComponent {
   formatDate(date: Date): string {
     return dayjs(date).format('YYYY-MM-DD');
   }
-  constructor(private momentService: MomentService,private projectService:ProjectsService,private datePipe: DatePipe, private breadcrumbService: AppBreadcrumbService, private messageService: MessageService, private confirmationService: ConfirmationService, private router: Router, private projectsService: ProjectsService) {
+  constructor(private momentService: MomentService, private projectService: ProjectsService, private datePipe: DatePipe, private breadcrumbService: AppBreadcrumbService, private messageService: MessageService, private confirmationService: ConfirmationService, private router: Router, private projectsService: ProjectsService) {
     this.breadcrumbService.setItems([
       { label: 'Project' }
     ]);
   }
 
-  
+
   ngOnInit() {
-    
+
     this.fetchAllProjectDetails();
     this.selectedPredefinedDateRange = this.predefinedDateRanges[0];
-    this.projectsService.data$.subscribe((res)=> {
+    this.projectsService.data$.subscribe((res) => {
       if (res && res.length) {
         this.getDataFromFilter();
       }
@@ -89,20 +87,20 @@ export class ProjectComponent {
     this.selectedPredefinedDateRange = { label: 'Custom', value: 'custom' };
 
   }
-  isloader:boolean= false;
-  getDataFromFilter(){
+  isloader: boolean = false;
+  getDataFromFilter() {
     this.isloader = true
     this.projectsService.data$.pipe(
-      finalize(()=> this.isloader = false)
-    ).subscribe((res:any)=>{
-      if(Array.isArray(res)){
-        this.updateTable =res?.map((item: any) => {
+      finalize(() => this.isloader = false)
+    ).subscribe((res: any) => {
+      if (Array.isArray(res)) {
+        this.updateTable = res?.map((item: any) => {
           const opportunityManagers = item.projectInformation?.opportunityManager?.map(manager => manager?.name).join(', ');
           //console.log('opp',opportunityManagers);
           const formattedStartDate = this.momentService.getFullDate(item.projectInformation?.startDate);
           const formattedEndDate = this.momentService.getFullDate(item.projectInformation?.endDate);
 
-          
+
           return {
             companyname: item.projectInformation?.company?.name,
             id: item?.id,
@@ -115,16 +113,16 @@ export class ProjectComponent {
             endDate: formattedEndDate,
           };
         });
-        if (res.length >0) {
-          console.log("dataUpdate",res);
+        if (res.length > 0) {
+          console.log("dataUpdate", res);
           this.proejctdetails = this.updateTable;
 
         } else {
           this.fetchAllProjectDetails();
         }
       }
-      
-  })
+
+    })
   }
 
 
@@ -156,60 +154,60 @@ export class ProjectComponent {
       header: this.confirmationHeader,
     });
   }
-  showCopyDialog(item: any) { 
-  this.selectedProjectName = item.projectName+"_copy"; 
-  this.selectedProjectId = item.id;
-  this.visible = true;
-}
-onCopySubmit(){
-if(this.selectedProjectName == ""){
-  this.messageService.add({
-    key: 'errorToast',
-    severity: 'error',
-    summary: 'Error!',
-    detail: 'Project name can not be blank'
-  });
-}else if(this.formatDate(this.selected.startDate) == "Invalid Date" || this.formatDate(this.selected.endDate) == "Invalid Date"){
-  this.messageService.add({
-    key: 'errorToast',
-    severity: 'error',
-    summary: 'Error!',
-    detail: 'Date Range can not be blank'
-  });
-}
-else{
- const body= {
-    projectId: this.selectedProjectId,
-    projectName: this.selectedProjectName,
-    projectStartDate: this.formatDate(this.selected.startDate),
-    projectEndDate: this.formatDate(this.selected.endDate)
+  showCopyDialog(item: any) {
+    this.selectedProjectName = item.projectName + "_copy";
+    this.selectedProjectId = item.id;
+    this.visible = true;
   }
-  this.projectService.copyProject(body).subscribe((res: any) => {
-   if(res?.message == 'success'){
-    this.messageService.add({
-      key: 'successToast',
-      severity: 'success',
-      summary: 'Success!',
-      detail: 'Project copied successfully.'
-    });
-    var projectId = res?.data;
-    this.router.navigate(['/create-project'], { queryParams: { projId: projectId } });
-   }else{
-    this.messageService.add({
-      key: 'errorToast',
-      severity: 'error',
-      summary: 'Error!',
-      detail: 'Failed to copy Project.'
-    });
-   }
-  });
-}
-}
-onCancel(){
-  this.visible = false;
-}
+  onCopySubmit() {
+    if (this.selectedProjectName == "") {
+      this.messageService.add({
+        key: 'errorToast',
+        severity: 'error',
+        summary: 'Error!',
+        detail: 'Project name can not be blank'
+      });
+    } else if (this.formatDate(this.selected.startDate) == "Invalid Date" || this.formatDate(this.selected.endDate) == "Invalid Date") {
+      this.messageService.add({
+        key: 'errorToast',
+        severity: 'error',
+        summary: 'Error!',
+        detail: 'Date Range can not be blank'
+      });
+    }
+    else {
+      const body = {
+        projectId: this.selectedProjectId,
+        projectName: this.selectedProjectName,
+        projectStartDate: this.formatDate(this.selected.startDate),
+        projectEndDate: this.formatDate(this.selected.endDate)
+      }
+      this.projectService.copyProject(body).subscribe((res: any) => {
+        if (res?.message == 'success') {
+          this.messageService.add({
+            key: 'successToast',
+            severity: 'success',
+            summary: 'Success!',
+            detail: 'Project copied successfully.'
+          });
+          var projectId = res?.data;
+          this.router.navigate(['/create-project'], { queryParams: { projId: projectId } });
+        } else {
+          this.messageService.add({
+            key: 'errorToast',
+            severity: 'error',
+            summary: 'Error!',
+            detail: 'Failed to copy Project.'
+          });
+        }
+      });
+    }
+  }
+  onCancel() {
+    this.visible = false;
+  }
 
-  deleteProject(itemId){
+  deleteProject(itemId) {
     this.projectsService.deleteProject(itemId).subscribe((res: any) => {
       if (res?.message == "success") {
         this.messageService.add({
@@ -269,21 +267,35 @@ onCancel(){
       pageSize: isNaN(this.pageSize) ? 10 : this.pageSize,
       sortBy: this.sortField,
       sortDir: this.sortOrder
-  };
+    };
     this.projectsService.getAllProjectDetails(params).subscribe((res: any) => {
       if (res?.message == "success") {
         this.proejctdetails = res?.data.projects.map((item: any) => {
           const opportunityManagers = item.projectInformation?.opportunityManager?.map(manager => manager?.name).join(', ');
           //console.log('opp',opportunityManagers);
-          
 
+          // Determine origin and destination locations
+          const originLocation = item.projectLocation
+            .filter((loc: any) => loc.originDestinationCode === 0)
+            .map((loc: any) => loc.location.name)
+            .join(', ');
+          const destinationLocation = item.projectLocation
+            .filter((loc: any) => loc.originDestinationCode === 1)
+            .map((loc: any) => loc.location.name)
+            .join(', ');
           const formattedStartDate = this.momentService.getFullDate(item.projectInformation?.startDate);
           const formattedEndDate = this.momentService.getFullDate(item.projectInformation?.endDate);
           return {
             companyname: item.projectInformation?.company?.name,
+            customerCode: item.projectInformation?.customerCode,
+            industryVertical: item.projectInformation?.industryVertical?.name,
+            originLocation: originLocation,
+            destinationLocation: destinationLocation,
+            region: item.projectInformation?.region?.name,
             id: item?.id,
             projectName: item.projectInformation?.projectName,
             opportunityName: item.projectInformation?.opportunityName?.name,
+            opportunityID: item.projectInformation?.opportunityName?.id,
             projectStage: item.projectInformation?.projectStage?.name,
             projectStatus: item.projectInformation?.projectStatus?.name,
             opportunitymanager: opportunityManagers,
@@ -299,29 +311,29 @@ onCancel(){
       }
     });
   }
-   
+
   onPageChange(event: any) {
     this.currentPage = event.page + 1;
     this.pageSize = event.rows;
     this.fetchAllProjectDetails();
   }
   onSort(event: any) {
-  
+
     this.newSortField = event.field;
     this.newSortOrder = (event.order === 1) ? 'asc' : 'desc';
-  
+
     if (this.newSortField !== this.sortField || this.newSortOrder !== this.sortOrder) {
       this.sortField = this.newSortField;
       this.sortOrder = this.newSortOrder;
       this.currentPage = 1;
       this.fetchAllProjectDetails();
     }
-   
+
   }
   exportData() {
     this.startDateString = this.selectedStartDate.toISOString();
     this.endDateString = this.selectedEndDate.toISOString();
-  
+
     if (this.selectedStartDate && this.selectedEndDate) {
       this.projectsService.downloadProjectData(this.startDateString, this.endDateString).subscribe(
         (response: HttpResponse<Blob>) => {
@@ -349,7 +361,7 @@ onCancel(){
       console.warn('Please select a date range before exporting.');
     }
   }
-  
+
 
   showDateRangeDialog() {
     this.selectedPredefinedDateRange = this.predefinedDateRanges[0]; // Set default to 'Last 1 Year'
@@ -376,6 +388,6 @@ onCancel(){
     }
   }
 
- 
+
 
 }
