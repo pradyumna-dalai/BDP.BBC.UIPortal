@@ -1,0 +1,77 @@
+
+:host ::ng-deep .p-paginator {
+    justify-content: flex-end;
+  }
+  
+  .sticky-header {
+    position: sticky;
+    top: 0;
+    background-color: #f8f9fa;
+    z-index: 100;
+  }
+  
+  
+  
+  .tag-success,
+  .tag-danger {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+  .success-statusR {
+    color: green;  
+  }
+  
+  .danger-statusR {
+    color: red;    
+  }
+  ::ng-deep .p-dialog {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  .custom-dialog {
+    width: 50vw;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+  }
+  .alignhr{
+    margin-top: 0px;
+    
+  }
+  
+  
+  .header-container {
+    display: flex;
+    align-items: center;
+    height: 100%; /* Set a fixed height for the container */
+  }
+  
+  .icon-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .header-text {
+    flex-grow: 1; 
+  }
+  
+  
+  .sort-icon,
+  .column-filter {
+    height: 100%; 
+    margin: 0; 
+  }
+  .icon-align{
+    position: relative;top: 3px;
+  }
+  
+  .required {
+    color: red;
+    margin-left: 5px; 
+  }
+  .error-message {
+    color: red;
+  }
+  textarea.no-resize {
+    resize: none !important;
+  }
+  .radio-margin {
+    margin-left: 25px;
+  }

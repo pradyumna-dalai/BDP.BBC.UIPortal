@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
+import { MomentService } from 'src/app/FormateDate/moment.service';
 import { AppBreadcrumbService } from 'src/app/app.breadcrumb.service';
 import { MasterDataService } from 'src/app/services/master-dataserivce/master-data.service';
 import { MasterTableService } from 'src/app/services/master-table.service';
@@ -26,7 +27,7 @@ export class ScopeComponent {
   currentPage: number = 1;
   pageSize: number = 10;
   sortField: string = ''; // Initial sort field
-  sortOrder: string = 'asc'; // or initialize it based on your requirements
+  sortOrder: any = 'asc'; // or initialize it based on your requirements
   totalRecords: any = 10;
   first: any = 0;
   rows: any = 10;
@@ -35,7 +36,7 @@ export class ScopeComponent {
   processing: boolean = false;
 
 
-  constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
+  constructor(private momentService: MomentService,private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
     private confirmationService: ConfirmationService, private router: Router, public MasterTableservice: MasterTableService,
     private fb: FormBuilder, private masterDataService: MasterDataService) {
     this.breadcrumbService.setItems([
@@ -201,10 +202,24 @@ export class ScopeComponent {
   }
   
   clear(table: Table) {
-    table.clear();
-    this.onSort(Event);
+    table.reset(); 
+
+    this.sortField = '';
+    this.sortOrder = 1;
+  
+    this.clearSearchInput();
+  
+    this.fetchProductScope();
+  
+    this.currentPage = 1;
+    this.pageSize = 10;
   }
-  //-------------------------------end---------------------------------------------------//
+  clearSearchInput(): void {
+    const searchInput = document.getElementById('gSearch') as HTMLInputElement;
+    if (searchInput) {
+      searchInput.value = '';
+    }
+  }
 
   //------------------------------UpdateScope--------------------------------------------//
   editScope(scope: any) {

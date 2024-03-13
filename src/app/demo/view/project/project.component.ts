@@ -12,6 +12,7 @@ import { CalendarModule } from 'primeng/calendar';
 import dayjs from 'dayjs';
 import { HttpResponse } from '@angular/common/http';
 import { finalize } from 'rxjs';
+import { MomentService } from 'src/app/FormateDate/moment.service';
 @Component({
   selector: 'app-project',
   templateUrl: './project.component.html',
@@ -68,7 +69,7 @@ export class ProjectComponent {
   formatDate(date: Date): string {
     return dayjs(date).format('YYYY-MM-DD');
   }
-  constructor(private projectService:ProjectsService,private datePipe: DatePipe, private breadcrumbService: AppBreadcrumbService, private messageService: MessageService, private confirmationService: ConfirmationService, private router: Router, private projectsService: ProjectsService) {
+  constructor(private momentService: MomentService,private projectService:ProjectsService,private datePipe: DatePipe, private breadcrumbService: AppBreadcrumbService, private messageService: MessageService, private confirmationService: ConfirmationService, private router: Router, private projectsService: ProjectsService) {
     this.breadcrumbService.setItems([
       { label: 'Project' }
     ]);
@@ -85,7 +86,8 @@ export class ProjectComponent {
       }
     })
     this.getDataFromFilter()
-    
+    this.selectedPredefinedDateRange = { label: 'Custom', value: 'custom' };
+
   }
   isloader:boolean= false;
   getDataFromFilter(){
@@ -97,8 +99,10 @@ export class ProjectComponent {
         this.updateTable =res?.map((item: any) => {
           const opportunityManagers = item.projectInformation?.opportunityManager?.map(manager => manager?.name).join(', ');
           //console.log('opp',opportunityManagers);
-          const formattedStartDate = this.datePipe.transform(item.projectInformation?.startDate, 'dd-MM-yyyy');
-          const formattedEndDate = this.datePipe.transform(item.projectInformation?.endDate, 'dd-MM-yyyy');
+          const formattedStartDate = this.momentService.getFullDate(item.projectInformation?.startDate);
+          const formattedEndDate = this.momentService.getFullDate(item.projectInformation?.endDate);
+
+          
           return {
             companyname: item.projectInformation?.company?.name,
             id: item?.id,
@@ -271,8 +275,10 @@ onCancel(){
         this.proejctdetails = res?.data.projects.map((item: any) => {
           const opportunityManagers = item.projectInformation?.opportunityManager?.map(manager => manager?.name).join(', ');
           //console.log('opp',opportunityManagers);
-          const formattedStartDate = this.datePipe.transform(item.projectInformation?.startDate, 'd MMM yyyy');
-          const formattedEndDate = this.datePipe.transform(item.projectInformation?.endDate, 'd MMM yyyy');
+          
+
+          const formattedStartDate = this.momentService.getFullDate(item.projectInformation?.startDate);
+          const formattedEndDate = this.momentService.getFullDate(item.projectInformation?.endDate);
           return {
             companyname: item.projectInformation?.company?.name,
             id: item?.id,
@@ -315,34 +321,23 @@ onCancel(){
   exportData() {
     this.startDateString = this.selectedStartDate.toISOString();
     this.endDateString = this.selectedEndDate.toISOString();
-
+  
     if (this.selectedStartDate && this.selectedEndDate) {
       this.projectsService.downloadProjectData(this.startDateString, this.endDateString).subscribe(
         (response: HttpResponse<Blob>) => {
-          // Check if the response content type is 'application/json'
-          const contentType = response.headers.get('Content-Type');
-          if (contentType && contentType.indexOf('application/json') !== -1) {
-            // The server returned an error message in JSON format
-            const reader = new FileReader();
-            reader.onloadend = () => {
-              const errorResponse = JSON.parse(reader.result as string);
-              console.error('Download error:', errorResponse);
-              this.messageService.add({ severity: 'error', summary: 'Error', detail: 'File download failed!' });
-            };
-            reader.readAsText(response.body);
-          } else {
-            // The server provided the correct Excel file
-            const blob = new Blob([response.body], { type: response.body.type });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'BBC_Project_List.xlsx';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            window.URL.revokeObjectURL(url);
-
+          // Handle response
+          if (response) {
+            // Handle successful download
+            // Reset selection to "Custom"
+            this.selectedPredefinedDateRange = { label: 'Custom', value: 'custom' };
+            this.selectedStartDate = null;
+            this.selectedEndDate = null;
+            this.showDateRangeSelection = false;
+            // Display success message
             this.messageService.add({ key: 'successToast', severity: 'success', summary: 'Success', detail: 'File downloaded successfully!' });
+          } else {
+            // Handle error
+            this.messageService.add({ key: 'error', severity: 'error', summary: 'Error', detail: 'File download failed!' });
           }
         },
         (error) => {
@@ -350,14 +345,11 @@ onCancel(){
           this.messageService.add({ key: 'error', severity: 'error', summary: 'Error', detail: 'File download failed!' });
         }
       );
-      this.selectedStartDate = null;
-      this.selectedEndDate = null;
-      this.showDateRangeSelection = false;
     } else {
       console.warn('Please select a date range before exporting.');
     }
   }
-
+  
 
   showDateRangeDialog() {
     this.selectedPredefinedDateRange = this.predefinedDateRanges[0]; // Set default to 'Last 1 Year'

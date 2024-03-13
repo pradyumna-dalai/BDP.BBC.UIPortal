@@ -21,7 +21,7 @@ selectionMode="single" dataKey="id" styleClass="p-datatable-gridlines" responsiv
             <tr>
                 
                 <th style="text-align: center;width: 50px" [frozen]="true" class="sticky-header">Actions</th>
-                <th style="text-align: center; width: 200px" pSortableColumn="status" [frozen]="true"
+                <th style="text-align: center; width: 50px" pSortableColumn="status" [frozen]="true"
                     class="sticky-header">Status<p-sortIcon field="status"></p-sortIcon>
                 </th>
                 <th style="text-align: center; width: 300px" pSortableColumn="name" [frozen]="true"
@@ -30,7 +30,7 @@ selectionMode="single" dataKey="id" styleClass="p-datatable-gridlines" responsiv
                     <p-columnFilter type="text" display="menu" field="name" pTooltip="Filter" tooltipPosition="right"
                                 class="column-filter icon-align"></p-columnFilter>
                 </th>
-                <th style="text-align: center; width: 200px"  [frozen]="true"
+                <th style="text-align: center; width: 300px"  [frozen]="true"
                     class="sticky-header">
                     Description
                 </th>
@@ -66,21 +66,20 @@ selectionMode="single" dataKey="id" styleClass="p-datatable-gridlines" responsiv
                 <td style="text-align: center; word-wrap: break-word;">
                     <span>{{item.name}}</span>
                 </td>
-                <td style="text-align: center; max-width: 200px; overflow: hidden;" [title]="item.description">
-                    <span *ngIf="item.description && item.description.length > 50">{{ item.description.slice(0, 20) + '...' }}</span>
-                    <span *ngIf="!item.description || (item.description && item.description.length <= 50)">{{ item.description }}</span>
-                </td>
+                <td style="text-align: center; max-width: 200px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;" [title]="item.description">
+                    {{ item.description }}
+                </td> 
                 <td style="text-align: center; word-wrap: break-word;">
                     <span>{{item.createdBy}}</span>
                 </td>
                 <td style="text-align: center; word-wrap: break-word;">
-                    <span>{{item.createdDate | date:'dd MMM yyyy'}}</span>
+                    <span>{{ momentService.getFullDate(item.createdDate) }}</span>
                 </td>
                 <td style="text-align: center; word-wrap: break-word;">
                     <span>{{item.updatedBy}}</span>
                 </td>
                 <td style="text-align: center; word-wrap: break-word;">
-                    <span>{{item.updatedDate | date:'dd MMM yyyy'}}</span>
+                    <span>{{ momentService.getFullDate(item.updatedDate) }}</span>
                 </td>
               
             </tr>

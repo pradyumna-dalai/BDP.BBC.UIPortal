@@ -193,6 +193,21 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
             this.selectedNode = null;
         }
     }
+    getLabel(node: any): string {
+        const label = node.label;
+        if (node.data?.type === 4  && window.innerWidth < 1600) {
+          return label.length > 18 ? (label.slice(0, 18) + '...') : label;
+        }
+        else if(node.data?.type === 3  && window.innerWidth < 1600){
+            return label.length > 18 ? (label.slice(0, 18) + '...') : label;
+        }
+        else if(node.data?.type === 2  && window.innerWidth < 1600){
+            return label.length > 18 ? (label.slice(0, 18) + '...') : label;
+        }
+         else {
+          return label;
+        }
+      }
     onDraftItemClick(): void {
         if (this.selectedNode) {
             this.itemId = this.selectedNode.data.id;

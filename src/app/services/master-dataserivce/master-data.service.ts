@@ -187,6 +187,8 @@ export class MasterDataService {
   addFteDetails(body:any){
     return this.http.post<any>(url + settings.AppRoutes.Auth.fte,body);
   }
+
+  //------------------------------ Process Configuration ------------------------//
   processConfigGetImportExcelData(params: any): Observable<any> {
     let httpParams = new HttpParams();
     Object.keys(params).forEach((key) => {
@@ -199,7 +201,44 @@ export class MasterDataService {
   }
 
   saveProcess(body: any){
-
     return this.http.post<any>(url + settings.AppRoutes.Auth.saveProcessConfigurable, body);
   }
+
+  //---------------------------------Cost Item Management---------------------//
+
+  getAllCostItemDetails(){
+    return this.http.get<any>(url + settings.AppRoutes.Auth.getAllcostItem);
+  }
+
+  saveCostItemDetails(body: any){
+    return this.http.post<any>(url + settings.AppRoutes.Auth.saveCostItem, body);
+  }
+
+  updateCostItemDetails(body: any){
+    return this.http.put<any>(url + settings.AppRoutes.Auth.saveCostItem, body);
+  }
+
+  //-----------------------------------end----------------------------------------//
+
+
+    //---------------------------------Revenue Item Management---------------------//
+
+    getAllRevenueDetails(){
+      return this.http.get<any>(url + settings.AppRoutes.Auth.getAllRevenue);
+    }
+  
+    saveRevenueDetails(body: any){
+      return this.http.post<any>(url + settings.AppRoutes.Auth.saveRevenue, body);
+    }
+  
+    updateRevenueDetails(body: any){
+      return this.http.put<any>(url + settings.AppRoutes.Auth.saveRevenue, body);
+    }
+  
+
+    downloadRevenueDetails(){
+      return this.http.get(`${url}${settings.AppRoutes.Auth.downloadRevenue}`, { responseType: 'arraybuffer' as 'json' });
+    }
+  
+    //-----------------------------------end----------------------------------------//
 }

@@ -7,6 +7,7 @@ import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Table } from 'primeng/table';
+import { MomentService } from 'src/app/FormateDate/moment.service';
 @Component({
   selector: 'app-fte',
   templateUrl: './fte.component.html',
@@ -25,7 +26,7 @@ export class FteComponent {
   currentPage: number = 1;
   pageSize: number = 10;
   sortField: string = ''; // Initial sort field
-  sortOrder: string = 'asc'; // 1 for ascending, -1 for descending
+  sortOrder: any = 'asc'; // 1 for ascending, -1 for descending
   totalRecords: any = 10;
   first: any = 0;
   rows: any = 10;
@@ -34,7 +35,7 @@ export class FteComponent {
   isSearchClear:boolean =false;
   regionId:any;
   countryID:any;
-  constructor(private breadcrumbService: AppBreadcrumbService,
+  constructor(private momentService: MomentService,private breadcrumbService: AppBreadcrumbService,
     private messageService: MessageService, 
     private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService, private masterTableService: MasterTableService,private fb: FormBuilder,) {
     this.breadcrumbService.setItems([
@@ -71,18 +72,17 @@ export class FteComponent {
       region : ['',Validators.required],
       country : ['',Validators.required],
       location: ['',Validators.required],
-      fte_month: [ '',Validators.required,],
-      ftf_year : [''],
+      ftf_year : ['',Validators.required],
       Work_Time_Year: ['',Validators.required],
       status : ['']
     });
 
 
-    this.FteForm.get('fte_month').valueChanges.subscribe((value: any) => {
-      this.FteForm.patchValue({
-        ftf_year: value*13
-      });
-    });
+    // this.FteForm.get('fte_month').valueChanges.subscribe((value: any) => {
+    //   this.FteForm.patchValue({
+    //     ftf_year: value*13
+    //   });
+    // });
     this.FteForm.get('region').valueChanges.subscribe((value: any) => {
       this.regionId = value;
       if(value){
@@ -117,15 +117,28 @@ export class FteComponent {
       event.target.value = event.target.value.slice(0, 6);
     }
   }
+  limitTo9Digits(event: any) {
+    if (event.target.value.length > 6) {
+      event.target.value = event.target.value.slice(0, 9);
+    }
+  }
   limitTo7Digits(event: any){
     if (event.target.value.length > 7) {
       event.target.value = event.target.value.slice(0, 7);
     }
   }
   clear(table: Table) {
-    table.reset();
-    this.onSort(Event);
+    table.reset(); 
+
+    this.sortField = '';
+    this.sortOrder = 1;
+  
     this.clearSearchInput();
+  
+    this.fetchAllFteDetails();
+  
+    this.currentPage = 1;
+    this.pageSize = 10;
   }
 
   getSeverity(status: boolean): string {
@@ -278,7 +291,7 @@ updateLocationDetails() {
       region: this.fteRowData.region.id,
       country: this.fteRowData.country.id,
       location: this.fteRowData.location.id,
-      fte_month: this.fteRowData.monthlyCost,
+      // fte_month: this.fteRowData.monthlyCost,
       ftf_year: this.fteRowData.yearlyCost,
       Work_Time_Year: this.fteRowData.yearlyWorkingMin,
       status: this.fteRowData.status ? 'active' : 'inactive'

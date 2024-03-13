@@ -15,9 +15,8 @@ import { ProductComponent } from './demo/master-data/product/product.component';
 import { UOMComponent } from './demo/master-data/uom/uom.component';
 import { FteComponent } from './demo/master-data/fte/fte.component';
 import { ProcessConfigComponent } from './demo/master-data/process-config/process-config.component';
-
-
-
+import { CostItemComponent } from './demo/master-data/cost-item/cost-item.component';
+import { RevenueItemComponent } from './demo/master-data/revenue-item/revenue-item.component';
 
 
 @NgModule({
@@ -56,7 +55,9 @@ import { ProcessConfigComponent } from './demo/master-data/process-config/proces
                     { path: 'charge-code', component: ChargeCodeComponent },
                     { path: 'uom', component: UOMComponent },
                     { path: 'fte', component: FteComponent },
-                    { path: 'processConfig', component: ProcessConfigComponent }
+                    { path: 'processConfig', component: ProcessConfigComponent },
+                    { path: 'costItem', component: CostItemComponent },
+                    { path: 'revenueItem', component: RevenueItemComponent },
                 ]
             },
             { path: 'notfound', component: AppNotfoundComponent },

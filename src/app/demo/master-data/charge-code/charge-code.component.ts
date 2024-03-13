@@ -5,6 +5,7 @@ import { AppBreadcrumbService } from 'src/app/app.breadcrumb.service';
 import { MasterDataService } from 'src/app/services/master-dataserivce/master-data.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Table } from 'primeng/table';
+import { MomentService } from 'src/app/FormateDate/moment.service';
 
 
 @Component({
@@ -37,7 +38,7 @@ export class ChargeCodeComponent {
   searchTimeout: any;
 
 
-  constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,private fb: FormBuilder,
+  constructor(private momentService: MomentService,private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,private fb: FormBuilder,
      private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService) {
     this.breadcrumbService.setItems([
       { label: 'Master Data Management' },
@@ -121,10 +122,18 @@ this.searchTimeout = setTimeout(() => {
 }
 
 
-  clear(table: Table) {
-    table.reset();
-    this.onSort(Event);
-    this.clearSearchInput()
+clear(table: Table) {
+  table.reset(); 
+
+  this.sortField = '';
+  this.sortOrder = 1;
+
+  this.clearSearchInput();
+
+  this.fetchAllChargeCodeDetails();
+
+  this.currentPage = 1;
+  this.pageSize = 10;
 }
 clearSearchInput(): void {
   // Assuming you have a reference to the input element, you can clear its value

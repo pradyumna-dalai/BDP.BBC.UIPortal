@@ -39,7 +39,7 @@
                     <p-columnFilter type="text" display="menu" field="location.name" pTooltip="Filter" tooltipPosition="right"
                     class="column-filter icon-align"></p-columnFilter>
                 </th>
-                <th pSortableColumn="monthlyCost" style="text-align: center;width:20%" class="sticky-header">FTE/Month(USD) <p-sortIcon field="monthlyCost"></p-sortIcon></th>
+                <!-- <th pSortableColumn="monthlyCost" style="text-align: center;width:20%" class="sticky-header">FTE/Month(USD) <p-sortIcon field="monthlyCost"></p-sortIcon></th> -->
                 <th pSortableColumn="yearlyCost" style="text-align: center;width:20%" class="sticky-header">FTE/Year(USD)<p-sortIcon field="yearlyCost"></p-sortIcon></th>
                 <th pSortableColumn="yearlyWorkingMin" style="text-align: center;width:30%" class="sticky-header">Working Time/Year (min)<p-sortIcon field="yearlyWorkingMin"></p-sortIcon></th>
               
@@ -67,13 +67,13 @@
                 <td style="text-align: center; word-wrap: break-word;">{{fte.country.name}} <span [ngClass]="'flag-icon flag-icon-'+fte.country.code.toLowerCase()"></span></td>
 
                 <td style="text-align: center; word-wrap: break-word;">{{fte.location.name}}</td>
-                <td style="text-align: center; word-wrap: break-word;">{{fte.monthlyCost | currency: 'USD'}}</td>
+                <!-- <td style="text-align: center; word-wrap: break-word;">{{fte.monthlyCost | currency: 'USD'}}</td> -->
                 <td style="text-align: center; word-wrap: break-word;">{{fte.yearlyCost | currency: 'USD'}}</td>
                 <td style="text-align: center; word-wrap: break-word;">{{fte.yearlyWorkingMin }}</td>
                 <td style="text-align: center; word-wrap: break-word;">{{fte.createdBy }}</td>
-                <td style="text-align: center; word-wrap: break-word;">{{ fte.createdDate | date:'dd MMM yyyy' }}</td>
+                <td style="text-align: center; word-wrap: break-word;">{{  momentService.getFullDate(fte.createdDate) }}</td>
                 <td style="text-align: center; word-wrap: break-word;">{{ fte.updatedBy }}</td>
-                <td style="text-align: center; word-wrap: break-word;">{{ fte.updatedDate | date:'dd MMM yyyy'}}</td>
+                <td style="text-align: center; word-wrap: break-word;">{{  momentService.getFullDate(fte.updatedDate) }}</td>
             </tr>
         </ng-template>Updated By
         <ng-template pTemplate="emptymessage">
@@ -130,7 +130,7 @@
                     Location is required.
                 </div>
             </div>
-            <div class="field col-12 md:col-6">
+            <!-- <div class="field col-12 md:col-6">
                 <label>FTE/Month (USD)<span class="required">*</span></label>
                 <input id="name" type="number"  placeholder="FTE/Month" formControlName="fte_month"  (input)="limitTo7Digits($event)"
                     class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
@@ -139,11 +139,15 @@
                     FTE/Month is required.
                 </div>
 
-            </div>
+            </div> -->
             <div class="field col-12 md:col-6">
                 <label>FTE/Year (USD)<span class="required">*</span></label>
-                <input id="name" type="number"  placeholder="FTE/Year " [readonly]="true"  formControlName="ftf_year" 
+                <input id="name" type="number" (input)="limitTo9Digits($event)"  placeholder="FTE/Year " formControlName="ftf_year" 
                     class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                    <div *ngIf="FteForm.get('ftf_year')?.hasError('required') && FteForm.get('ftf_year')?.touched"
+                    class="error-message">
+                    FTE/Year is required.
+                </div>
             </div>
             <div class="field col-12 md:col-6">
                 <label>Working Time/Year(min)<span class="required">*</span></label>

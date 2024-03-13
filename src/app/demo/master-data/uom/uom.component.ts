@@ -5,6 +5,7 @@ import { AppBreadcrumbService } from 'src/app/app.breadcrumb.service';
 import { MasterDataService } from 'src/app/services/master-dataserivce/master-data.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Table } from 'primeng/table';
+import { MomentService } from 'src/app/FormateDate/moment.service';
 
 
 
@@ -34,7 +35,7 @@ export class UOMComponent implements AfterViewInit{
   newSortOrder: any;
   searchTimeout: any;
  
-  constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
+  constructor(private momentService: MomentService,private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
     private fb: FormBuilder, private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService) {
     this.breadcrumbService.setItems([
       { label: 'Master Data Management' },
@@ -123,15 +124,22 @@ export class UOMComponent implements AfterViewInit{
      clearTimeout(this.searchTimeout);
  }
  
- // Set a new timeout to trigger the search after 500 milliseconds (adjust as needed)
  this.searchTimeout = setTimeout(() => {
      this.fetchAllUOMDetails(keyword);
  }, 500);
  }
   clear(table: Table) {
-    table.reset();
-    this.onSort(Event);
-    this.clearSearchInput()
+    table.reset(); 
+
+    this.sortField = '';
+    this.sortOrder = 1;
+  
+    this.clearSearchInput();
+  
+    this.fetchAllUOMDetails();
+  
+    this.currentPage = 1;
+    this.pageSize = 10;
 }
 clearSearchInput(): void {
   const searchInput = document.getElementById('gSearch') as HTMLInputElement;

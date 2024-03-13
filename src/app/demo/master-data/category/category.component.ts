@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
+import { MomentService } from 'src/app/FormateDate/moment.service';
 import { AppBreadcrumbService } from 'src/app/app.breadcrumb.service';
 import { MasterDataService } from 'src/app/services/master-dataserivce/master-data.service';
 import { MasterTableService } from 'src/app/services/master-table.service';
@@ -27,7 +28,7 @@ export class CategoryComponent {
   currentPage: number = 1;
   pageSize: number = 10;
   sortField: string = ''; // Initial sort field
-  sortOrder: string = 'asc'; // 1 for ascending, -1 for descending
+  sortOrder: any = 'asc'; // 1 for ascending, -1 for descending
   totalRecords: any = 10;
   first: any = 0;
   rows: any = 10;
@@ -35,7 +36,7 @@ export class CategoryComponent {
   searchTimeout: number;
   processing: boolean = false;
 
-  constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService, public MasterTableservice: MasterTableService,
+  constructor(private momentService: MomentService,private breadcrumbService: AppBreadcrumbService, private messageService: MessageService, public MasterTableservice: MasterTableService,
     private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService, private fb: FormBuilder,) {
     this.breadcrumbService.setItems([
       { label: 'Master Data Management' },
@@ -68,8 +69,11 @@ export class CategoryComponent {
     this.CategoryForm.reset({
       status: 'inactive'
     });
+    this.procuctScopesOptions = [];
+    this.procuctNamesOptions = [];
     this.editMode = false;
     this.modeTitle = 'Add';
+    this.getProdname();
   }
 
   // ---------------get product data------------------------//
@@ -236,9 +240,17 @@ export class CategoryComponent {
     }
   }
   clear(table: Table) {
-    table.clear();
-    this.onSort(Event);
-    this.clearSearchInput()
+    table.reset(); 
+
+  this.sortField = '';
+  this.sortOrder = 1;
+
+  this.clearSearchInput();
+
+  this.fetchProductCategory();
+
+  this.currentPage = 1;
+  this.pageSize = 10;
   }
   clearSearchInput(): void {
     const searchInput = document.getElementById('gSearch') as HTMLInputElement;
