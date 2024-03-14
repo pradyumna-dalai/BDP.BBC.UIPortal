@@ -89,12 +89,19 @@ data: any[] = []; // Add your data array here
     }
   }
 }
-isEditableColumn(columnField: string): boolean {
-  // List the columns that should not be editable
-  const nonEditableColumns = ['Product Name', 'Product Scope', 'Product Category','Building Block Name'];
+// isEditableColumn(columnField: string): boolean {
+//   // List the columns that should not be editable
+//   const nonEditableColumns = ['Product Name', 'Product Scope', 'Product Category','Building Block Name'];
 
-  // Check if the current column is in the non-editable list
-  return !nonEditableColumns.includes(columnField);
+//   // Check if the current column is in the non-editable list
+//   return !nonEditableColumns.includes(columnField);
+// }
+isEditableColumn(columnField: string): boolean {
+  // Check if the current column is after the 'Configuration' column
+  const isAfterConfiguration = this.columns.findIndex(col => col.field === columnField) > this.columns.findIndex(col => col.field === 'Configuration');
+
+  // Allow editing only for columns after 'Configuration'
+  return isAfterConfiguration;
 }
 cancelAllEdits() {
   // Revert changes to the original data for all rows
