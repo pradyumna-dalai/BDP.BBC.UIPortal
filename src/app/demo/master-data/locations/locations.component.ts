@@ -33,7 +33,7 @@ export class LocationsComponent {
   pageSize: number = 10;
   sortField: string = ''; // Initial sort field
   sortOrder: any = 'asc'; // 1 for ascending, -1 for descending
-  totalRecords: any = 10;
+  // totalRecords: any = 10;
   first: any = 0;
   rows: any = 10;
   modeTitle: string = 'Add';
@@ -111,7 +111,7 @@ findRegionId(event){
     this.masterDataService.getAllLocationDetails(params).subscribe((res: any) => {
       if (res?.message === 'success') {
         this.locationdetails = res.data.location;
-        this.totalRecords = res?.data.totalElements;
+        // this.totalRecords = res?.data.totalElements;
       } else {
       // error
       }
@@ -263,7 +263,7 @@ findRegionId(event){
           (response) => {
             this.displayCreateLocationDialog = false;
             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Location added successfully!' });
-            this.totalRecords += 1;
+            // this.totalRecords += 1;
             this.fetchAllLocationDetails();
             this.processing = false; 
           },
