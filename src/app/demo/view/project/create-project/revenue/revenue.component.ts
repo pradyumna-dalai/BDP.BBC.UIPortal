@@ -28,7 +28,7 @@ export class RevenueComponent {
   projectName: any;
   subscription: any;
   locationDropdownOptions: any[] = [];
-  costItemDropdownOptions: any[] = [];
+  revenueItemDropDownOptions: any[] = [];
   tableData: CostItem[] = [];
   editedRowIndex: number = -1;
   grandTotalCost: number = 0;
@@ -97,7 +97,7 @@ export class RevenueComponent {
       });
       return;
     }
-    const selectedCostItem = this.costItemDropdownOptions.find(option => option.id === editedItem.costItem.costItemId);
+    const selectedCostItem = this.revenueItemDropDownOptions.find(option => option.id === editedItem.costItem.costItemId);
     if (selectedCostItem) {
       editedItem.costItem.name = selectedCostItem.name;
     }
@@ -172,7 +172,7 @@ export class RevenueComponent {
         originDestinationCode: costItem.location.originDestinationCode
       }))
     };
-    this.projectService.saveProjectOtherCost(body).subscribe({
+    this.projectService.saveProjectRevenue(body).subscribe({
       next: (response: any) => {
         this.sharedService.setProjectIdOtherCost(response?.data?.projectId);
         this.sharedService.setDraftSavedOtherCost(true);
@@ -197,7 +197,7 @@ export class RevenueComponent {
 
   //------------------------Get Project Other Cost------------------------------//
   getAllProjectOtherCostEdit(projId) {
-    this.projectService.getAllOtherCost(projId).subscribe({
+    this.projectService.getAllProjectRevenue(projId).subscribe({
       next: (response: any) => {
         const otherCosts = response?.data?.otherCosts;
         if (Array.isArray(otherCosts)) {
@@ -234,18 +234,18 @@ export class RevenueComponent {
 
   }
 
-  //------------------------get all cost Item from Master Data-------------------//
+  //------------------------get all Revenue Item from Master Data-------------------//
 
   getAllCostItem() {
-    this.costItemDropdownOptions = [];
-    this.masterDataSerivce.getAllCostItemDetails().subscribe((res: any) => {
+    this.revenueItemDropDownOptions = [];
+    this.masterDataSerivce.getAllRevenueDetails().subscribe((res: any) => {
       if (res?.message == "success") {
-        this.costItemDropdownOptions = res?.data.map((cost: any) => ({
-          id: cost.id,
-          name: cost.name
+        this.revenueItemDropDownOptions = res?.data.map((item: any) => ({
+          id: item.id,
+          name: item.name
         }));
       } else {
-        this.costItemDropdownOptions = [];
+        this.revenueItemDropDownOptions = [];
       }
     })
   }

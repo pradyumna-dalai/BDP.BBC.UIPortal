@@ -44,7 +44,7 @@
                     </td>
                     <td>
                         <span *ngIf="!cost.editing">{{ cost.costItem?.name}}</span>
-                        <p-dropdown *ngIf="cost.editing" [options]="costItemDropdownOptions" [(ngModel)]="cost.costItem.costItemId"
+                        <p-dropdown *ngIf="cost.editing" [options]="revenueItemDropDownOptions" [(ngModel)]="cost.costItem.costItemId"
                        optionValue="id" optionLabel="name"
                         placeholder="Select Cost Item" [style]="{ 'width':'100%' }" [appendTo]="'body'"
                         [filter]="true" [showClear]="true"></p-dropdown>
