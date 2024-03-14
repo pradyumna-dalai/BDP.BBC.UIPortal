@@ -3,7 +3,7 @@
         <div class="col-6">
             <span class="p-input-icon-right">
                 <i class="pi pi-search"></i>
-                <input pInputText type="text" id="gSearch" (input)="onGlobalSearch($event.target.value)"
+                <input pInputText type="text" id="gSearch" (input)="dt2.filterGlobal($event.target.value, 'contains')"
                     placeholder="Search Keyword" />
             </span>
         </div>
@@ -22,7 +22,7 @@
         [showCurrentPageReport]="true"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
         [rowsPerPageOptions]="[10, 25, 50]"
-        [globalFilterFields]="['name', 'locationCode', 'country.name','region','description', 'status','createdBy','updatedBy','updatedDate','createdDate']"
+        [globalFilterFields]="['name', 'locationCode', 'country','region.name','description', 'status','createdBy','updatedBy','updatedDate','createdDate']"
         selectionMode="single" styleClass="p-datatable-gridlines" [resizableColumns]="true"   >
 
         <ng-template pTemplate="header">
@@ -73,8 +73,8 @@
                 <td style="text-align: center; word-wrap: break-word;">
                     <p-tag [value]="getSeverityLabel(item.status)" [severity]="getSeverity(item.status)"></p-tag>
                 </td>
-                <td style="text-align: center; word-wrap: break-word;">{{ item.region.name }}</td>
-                <td style="text-align: center; word-wrap: break-word;">{{ item.country.name }}</td>
+                <td style="text-align: center; word-wrap: break-word;">{{ item.region?.name }}</td>
+                <td style="text-align: center; word-wrap: break-word;">{{ item.country?.name }}</td>
                 <td style="text-align: center; word-wrap: break-word;">{{ item.name }}</td>
                 <td style="text-align: center; word-wrap: break-word;">{{ item.locationCode }}</td>
                 <td style="text-align: center; max-width: 200px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;" [title]="item.description">

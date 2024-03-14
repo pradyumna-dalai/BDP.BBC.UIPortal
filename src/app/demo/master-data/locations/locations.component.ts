@@ -101,16 +101,10 @@ findRegionId(event){
   //--------------------------fetch location-------------------------------//
 
   fetchAllLocationDetails(keyword: string = ''): void{
-    const params = {
-      pageNo: isNaN(this.currentPage) ? 0 : this.currentPage - 1,
-      pageSize: isNaN(this.pageSize) ? 10 : this.pageSize,
-      sortBy: this.sortField,
-      sortDir: this.sortOrder,
-      keyword: keyword // Add the keyword parameter
-    };
-    this.masterDataService.getAllLocationDetails(params).subscribe((res: any) => {
+   
+    this.masterDataService.getAllLocationDetails().subscribe((res: any) => {
       if (res?.message === 'success') {
-        this.locationdetails = res.data.location;
+        this.locationdetails = res.data;
         // this.totalRecords = res?.data.totalElements;
       } else {
       // error
@@ -147,7 +141,7 @@ findRegionId(event){
     }
   }
   clear(table: Table) {
-    table.reset(); 
+    table.clear(); 
 
     this.sortField = '';
     this.sortOrder = 1;
@@ -156,8 +150,7 @@ findRegionId(event){
   
     this.fetchAllLocationDetails();
   
-    this.currentPage = 1;
-    this.pageSize = 10;
+    
   }
 
   clearSearchInput(): void {
