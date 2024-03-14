@@ -235,5 +235,10 @@ export class MasterDataService {
       return this.http.put<any>(url + settings.AppRoutes.Auth.saveRevenue, body);
     }
   
+
+    downloadRevenueDetails(){
+      return this.http.get(`${url}${settings.AppRoutes.Auth.downloadRevenue}`, { responseType: 'arraybuffer' as 'json' });
+    }
+  
     //-----------------------------------end----------------------------------------//
 }
