@@ -1249,26 +1249,26 @@ populateForm(): void {
   onTabChange(event) {
     // Check which tab is active
     this.activeIndex = event.index;
-    // if (event.index === 1) 
-    // { 
-    //    this.buildingBlockComponent.ngOnInit();
-    // }
-    // if (event.index === 2) 
-    // { 
-    //   this.addVolumeComponent.ngOnInit();
-    // }
-    // if (event.index === 3) 
-    // { 
-    //   this.costLineItemComponent.ngOnInit();
-    // }
-    // if (event.index === 4) 
-    // { 
-    //   this.otherCostComponent.ngOnInit();
-    // }
-    // if (event.index === 5) 
-    // { 
-    //   this.projectCostComponent.ngOnInit();
-    // }
+    if (event.index === 1) 
+    { 
+       this.buildingBlockComponent.ngOnInit();
+    }
+    if (event.index === 2) 
+    { 
+      this.addVolumeComponent.ngOnInit();
+    }
+    if (event.index === 3) 
+    { 
+      this.costLineItemComponent.ngOnInit();
+    }
+    if (event.index === 4) 
+    { 
+      this.otherCostComponent.ngOnInit();
+    }
+    if (event.index === 5) 
+    { 
+      this.projectCostComponent.ngOnInit();
+    }
     
   }
 
