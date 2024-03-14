@@ -1127,6 +1127,11 @@ onScopeSelectbyid(body) {
                         this.fileNameOC = "";
                         this.selectedFile = null;
                         this.showSuccessMessage('File uploaded successfully!');
+
+                        const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+                        if (fileInput) {
+                          fileInput.value = '';
+                        }
                     } else {
                         // Handle other responses if needed
                     }

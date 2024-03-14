@@ -7,6 +7,7 @@ import { AppMainComponent } from 'src/app/app.main.component';
 import { SharedServiceService } from 'src/app/services/project-serivce/shared-service.service';
 import { ProjectBuildingBlocksLocation, SelectedBuildingBlockProcess } from 'src/app/common/model/project-building-blocks-location';
 import { BuildingBlock, Configuration, LocationIdName, OriginDestinationService, Process, Location } from 'src/app/common/model/project-building-block';
+import { Router, NavigationStart } from '@angular/router';
 
 interface SelectedConfiguration {
   configurableId: string;
@@ -62,8 +63,13 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
 
 
 
-  constructor(private sharedService: SharedServiceService, private projectService: ProjectsService, private messageService: MessageService, private appMain: AppMainComponent, private buildingBlockService: CreateBuildingBlockService) {
-
+  constructor(private router: Router,private sharedService: SharedServiceService, private projectService: ProjectsService, private messageService: MessageService, private appMain: AppMainComponent, private buildingBlockService: CreateBuildingBlockService) {
+  // Set setDraftSavedBB to false when navigating away
+  this.router.events.subscribe(event => {
+    if (event instanceof NavigationStart) {
+      this.sharedService.setDraftSavedBB(false);
+    }
+  });
   }
 
   async ngOnInit() {
@@ -459,6 +465,8 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       this.selectedDestinationConfigurations = [];
       this.isOriginConfigurationVisible = false;
     this.isDestinationConfigurationVisible = false;
+    this.sharedService.setDraftSavedBB(true);
+    this.sharedService.setProjectIDbb(res?.data?.projectId);
       this.messageService.add({
         key: 'successToast',
         severity: 'success',
