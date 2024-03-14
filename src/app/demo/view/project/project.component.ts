@@ -331,36 +331,42 @@ export class ProjectComponent {
 
   }
   exportData() {
-    this.startDateString = this.selectedStartDate.toISOString();
-    this.endDateString = this.selectedEndDate.toISOString();
-
     if (this.selectedStartDate && this.selectedEndDate) {
+      this.startDateString = this.formatDate(this.selectedStartDate);
+      this.endDateString = this.formatDate(this.selectedEndDate);
+  
       this.projectsService.downloadProjectData(this.startDateString, this.endDateString).subscribe(
         (response: HttpResponse<Blob>) => {
-          // Handle response
-          if (response) {
-            // Handle successful download
-            // Reset selection to "Custom"
-            this.selectedPredefinedDateRange = { label: 'Custom', value: 'custom' };
-            this.selectedStartDate = null;
-            this.selectedEndDate = null;
-            this.showDateRangeSelection = false;
-            // Display success message
+          if (response && response.body) {
+            const blob = new Blob([response.body], { type: 'application/octet-stream' });
+            const url = window.URL.createObjectURL(blob);
+  
+            // Create a temporary link element
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'project_data.xlsx'; // Change the file name if needed
+            document.body.appendChild(link);
+            link.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(link);
             this.messageService.add({ key: 'successToast', severity: 'success', summary: 'Success', detail: 'File downloaded successfully!' });
           } else {
-            // Handle error
-            this.messageService.add({ key: 'error', severity: 'error', summary: 'Error', detail: 'File download failed!' });
+            // Handle error if response or response body is empty
+            this.messageService.add({ key: 'error', severity: 'error', summary: 'Error', detail: 'No data received for download!' });
           }
         },
         (error) => {
+          // Handle download error
           console.error('Download error', error);
           this.messageService.add({ key: 'error', severity: 'error', summary: 'Error', detail: 'File download failed!' });
         }
       );
     } else {
+      // If start date or end date is not selected
       console.warn('Please select a date range before exporting.');
     }
   }
+  
 
 
   showDateRangeDialog() {
