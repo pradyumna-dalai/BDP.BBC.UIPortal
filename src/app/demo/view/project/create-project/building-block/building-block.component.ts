@@ -406,13 +406,15 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
           
         });
       });
-      if(up?.destinationService?.configurations!=undefined && up?.destinationService?.configurations!=null)
+      if(destinationConfigurations.length > 0)
       {
-      up.destinationService.configurations = destinationConfigurations;
+        up.destinationService = new OriginDestinationService();
+        up.destinationService.configurations = destinationConfigurations;
       }
-      if(up?.originService?.configurations!=undefined && up?.originService?.configurations!=null)
+      if(originConfiguration.length > 0)
       {
-      up.originService.configurations = originConfiguration;
+        up.originService = new OriginDestinationService();
+        up.originService.configurations = originConfiguration;
       }
     })
     return uniqueProcesses;
