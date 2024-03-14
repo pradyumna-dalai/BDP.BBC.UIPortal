@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
+import { MomentService } from 'src/app/FormateDate/moment.service';
 import { AppBreadcrumbService } from 'src/app/app.breadcrumb.service';
 import { MasterDataService } from 'src/app/services/master-dataserivce/master-data.service';
 import { MasterTableService } from 'src/app/services/master-table.service';
@@ -23,7 +24,7 @@ export class CostItemComponent {
   modeTitle: string = 'Add';
   processing: boolean = false;
 
-  constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
+  constructor(private momentService: MomentService,private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
     private confirmationService: ConfirmationService, private router: Router, public MasterTableservice: MasterTableService,
     private fb: FormBuilder, private masterDataService: MasterDataService) {
     this.breadcrumbService.setItems([
@@ -70,14 +71,12 @@ export class CostItemComponent {
 
       const observer = {
         next: (response: any) => {
-          console.log(response);
           this.displayCreateCostItemDialog = false;
           this.messageService.add({ severity: 'success', summary: 'Success', detail: this.editMode ? 'Cost Item updated successfully!' : 'Cost Item added successfully!' });
           this.fetchAllCostItemDetails();
           this.processing = false;
         },
         error: (error: any) => {
-          console.error(error);
           if (error.status === 400 && error.error?.message === 'Fill required field(s)') {
             const errorMessage = error.error.data?.join(', ') || 'Error in adding Cost Item';
             this.messageService.add({ severity: 'error', summary: 'Error', detail: errorMessage });
@@ -115,18 +114,23 @@ export class CostItemComponent {
     this.masterDataService.getAllCostItemDetails().subscribe((res: any) => {
       if (res?.message === 'success') {
         this.costItemDetails = res.data;
-        console.log('fetch cost Item  details:', this.costItemDetails);
       } else {
-        console.error('Failed to fetch cost Item details:', res);
+        // console.error('Failed to fetch cost Item details:', res);
       }
     });
   }
 
   clear(table: Table) {
     table.clear();
+    this.clearSearchInput();
+    this.fetchAllCostItemDetails();
   }
-
-  //-------------------------------end---------------------------------------------------//
+  clearSearchInput(): void {
+    const searchInput = document.getElementById('gSearch') as HTMLInputElement;
+    if (searchInput) {
+      searchInput.value = '';
+    }
+  }
 
   //------------------------------Update Cost Item--------------------------------------------//
   editCost(costItem: any) {

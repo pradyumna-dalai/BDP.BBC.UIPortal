@@ -7,6 +7,7 @@ import { MasterDataService } from 'src/app/services/master-dataserivce/master-da
 import { MasterTableService } from 'src/app/services/master-table.service';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
+import { MomentService } from 'src/app/FormateDate/moment.service';
 
 @Component({
   selector: 'app-locations',
@@ -40,7 +41,7 @@ export class LocationsComponent {
   processing: boolean = false;
   regionId:any;
 
-  constructor(private breadcrumbService: AppBreadcrumbService,
+  constructor(private momentService: MomentService,private breadcrumbService: AppBreadcrumbService,
     private messageService: MessageService, private fb: FormBuilder,
     private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService, private masterTableService: MasterTableService) {
     this.breadcrumbService.setItems([

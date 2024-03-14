@@ -11,14 +11,14 @@
             <div style="padding: 5px;"><button pButton pRipple type="button" (click)="downloadCLISCExcel($event,projectidVolume)">Download</button></div>
             <div style="padding: 5px;">
                 <button pButton pRipple type="button" class="p-button-outlined mr-2 mb-2" (click)="showUploadDialog()">
-                    
+                    Upload
                 </button>
             </div>
         </div>
     </div>
     <hr style="margin-top: 1px;margin-bottom: 22px;color: gray;background-color: #d9d2d2;height: 1px;border: none;">
     <p style="font-weight: 500;"></p>
-    <p-accordion [activeIndex]="0">
+    <p-accordion>
         <p-accordionTab *ngFor="let block of costLineItemDetails; let i = index" [header]="block.buildingBlockName" [selected]="isExpanded">
             <div *ngIf="block.originService?.processes?.length > 0 || block.destinationService?.processes?.length > 0">
                 <div class="activeToggel">
@@ -43,7 +43,7 @@
                                             <th style="text-align: center;width:7%">Takt Considered</th>
                                             <th style="text-align: center;width:7%">Total Cost</th>
                                             <th style="text-align: center;width:7%">Total HC</th>
-                                            <th style="text-align: center;width:7%">FTE Productivity(%)</th>
+                                            <!-- <th style="text-align: center;width:7%">FTE Productivity(%)</th> -->
                                             <th style="text-align: center;width:7%">FTE Cost</th>
                                             <th style="text-align: center;width:7%">Comment</th>
                                         </tr>
@@ -69,13 +69,16 @@
                                             <td style="text-align: center">{{ line.taktConsidered }}</td>
                                             <td style="text-align: center">{{ line.totalCost }}</td>
                                             <td style="text-align: center">{{ line.totalHC }}</td>
-                                            <td style="text-align: center">
+                                            <!-- <td style="text-align: center">
                                                 <ng-container *ngIf="!line.editing">{{ line.fteProductivity }}</ng-container>
                                                 <input pInputText *ngIf="line.editing" type="number" min="0" [ngModel]="line.fteProductivity" (ngModelChange)="onFteProductivityChange($event)">
                                                 <div *ngIf="isFteProductivityExceedsMax" style="color: red;" class="text-danger">Value cannot exceed 100</div>
-                                            </td>
+                                            </td> -->
                                             <td style="text-align: center">{{ line.fteCost }}</td>
-                                            <td style="text-align: center">{{ line.comment }}</td>
+                                            <td style="text-align: center">
+                                                <ng-container *ngIf="!line.editing">{{ line.comment }}</ng-container>
+                                                <input *ngIf="line.editing" pInputText type="text" [(ngModel)]="line.comment" (keydown.enter)="onRowEditSave(line)" (keydown.escape)="onRowEditCancel(line)">
+                                            </td>
                                             
                                         </tr>
                                     </ng-template>
@@ -108,7 +111,7 @@
                                                 <th style="text-align: center;width:7%">Takt Considered</th>
                                                 <th style="text-align: center;width:7%">Total Cost</th>
                                                 <th style="text-align: center;width:7%">Total HC</th>
-                                                <th style="text-align: center;width:7%">FTE Prodcutivity(%)</th>
+                                                <!-- <th style="text-align: center;width:7%">FTE Prodcutivity(%)</th> -->
                                                 <th style="text-align: center;width:7%">FTE Cost</th>
                                                 <th style="text-align: center;width:7%">Comment</th>
                                             </tr>
@@ -133,9 +136,9 @@
                                             <td style="text-align: center">{{ line.taktConsidered }}</td>
                                             <td style="text-align: center">{{ line.totalCost }}</td>
                                             <td style="text-align: center">{{ line.totalHC }}</td>
-                                            <td style="text-align: center">
+                                            <!-- <td style="text-align: center">
                                                 <ng-container *ngIf="!line.editing">{{ line.fteProductivity }}</ng-container>
-                                                <input pInputText *ngIf="line.editing" min="0" type="number" [(ngModel)]="line.fteProductivity" max="100"></td>
+                                                <input pInputText *ngIf="line.editing" min="0" type="number" [(ngModel)]="line.fteProductivity" max="100"></td> -->
                                             <td style="text-align: center">{{ line.fteCost }}</td>
                                             <td style="text-align: center">{{ line.comment }}</td>
                                             </tr>

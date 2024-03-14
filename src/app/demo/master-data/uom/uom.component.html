@@ -74,14 +74,14 @@ selectionMode="single" dataKey="id" styleClass="p-datatable-gridlines" responsiv
                     <span>{{ item.createdBy }}</span>
                   </td>
                   <td style="text-align: center; word-wrap: break-word;">
-                    <span>{{ item.createdDate | date:'dd MMM yyyy' }}</span>
+                    <span>{{ momentService.getFullDate(item.createdDate) }}</span>
                 </td>
                 <td style="text-align: center; word-wrap: break-word;">
                     <span>{{item.updatedBy}}</span>
                 </td>
                
                 <td style="text-align: center; word-wrap: break-word;">
-                    <span>{{ item.updatedDate | date:'dd MMM yyyy' }}</span>
+                    <span>{{ momentService.getFullDate(item.updatedDate) }}</span>
                 </td>
                
             </tr>

@@ -5,6 +5,7 @@ import { AppBreadcrumbService } from 'src/app/app.breadcrumb.service';
 import { MasterDataService } from 'src/app/services/master-dataserivce/master-data.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Table } from 'primeng/table';
+import { MomentService } from 'src/app/FormateDate/moment.service';
 
 
 
@@ -34,7 +35,7 @@ export class UOMComponent implements AfterViewInit{
   newSortOrder: any;
   searchTimeout: any;
  
-  constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
+  constructor(private momentService: MomentService,private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
     private fb: FormBuilder, private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService) {
     this.breadcrumbService.setItems([
       { label: 'Master Data Management' },
