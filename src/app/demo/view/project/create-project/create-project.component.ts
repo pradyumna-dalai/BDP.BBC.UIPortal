@@ -399,6 +399,44 @@ export class CreateProjectComponent implements OnInit {
   }
   //----------------------Save Project as Draft-----------------------//
   SaveAsDraftProjects() {
+    let originError = false;
+    let destinationError = false;
+
+    // Check if origin location checkbox is checked but no locations are selected
+    if (this.enableOriginLocation && this.selectedCitiesOrign.length === 0) {
+        originError = true;
+    }
+
+    // Check if destination location checkbox is checked but no locations are selected
+    if (this.enableDestinationLocation && this.selectedCities.length === 0) {
+        destinationError = true;
+    }
+
+    // Display error messages for origin and destination errors
+    if (originError && destinationError) {
+        this.messageService.add({
+            key: 'errorToast',
+            severity: 'error',
+            summary: 'Error!',
+            detail: 'Please select at least one location for both origin and destination.'
+        });
+    } else if (originError) {
+        this.messageService.add({
+            key: 'errorToast',
+            severity: 'error',
+            summary: 'Error!',
+            detail: 'Please select at least one location for origin.'
+        });
+    } else if (destinationError) {
+        this.messageService.add({
+            key: 'errorToast',
+            severity: 'error',
+            summary: 'Error!',
+            detail: 'Please select at least one location for destination.'
+        });
+    } else {
+        
+    
     var om = this.myForm.get('opportunityManger').value;
     if (om == "" || om == undefined || om == null) {
       var opportunityMangers = []
@@ -542,7 +580,7 @@ export class CreateProjectComponent implements OnInit {
         }
       }
     );
-
+    }
   }
 
   //-----------------------------location Information-----------------------------//
