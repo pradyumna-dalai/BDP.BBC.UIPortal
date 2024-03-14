@@ -3,7 +3,7 @@
         <div class="col-6">
             <span class="p-input-icon-right">
                 <i class="pi pi-search"></i>
-                <input pInputText type="text" id="gSearch" (input)="onGlobalSearch($event.target.value)"
+                <input pInputText type="text" id="gSearch" (input)="dt1.filterGlobal($event.target.value, 'contains')"
                 placeholder="Search Keyword" />
             </span>
         </div>
@@ -16,7 +16,13 @@
 <p-table #dt1 [showCurrentPageReport]="true" [value]="productdetails"
 selectionMode="single" dataKey="id" styleClass="p-datatable-gridlines" responsiveLayout="scroll"
 scrollHeight="530px" scrollDirection="both"
-  [globalFilterFields]="['name', 'description','status','createdBy','updatedBy','createdDate','updatedDate']"   (onSort)="onSort($event)">
+scrollDirection="both"
+[paginator]="true"
+[rows]="10"
+[showCurrentPageReport]="true"
+currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+[rowsPerPageOptions]="[10, 25, 50]"
+[globalFilterFields]="['name','description', 'status','createdBy','updatedBy','updatedDate','createdDate']">
 
         <ng-template pTemplate="header">
             <tr>
@@ -92,9 +98,9 @@ scrollHeight="530px" scrollDirection="both"
             </tr>
         </ng-template>
     </p-table>
-    <p-paginator (onPageChange)="onPageChange($event)" [rows]="10" [totalRecords]="totalRecords"
+    <!-- <p-paginator (onPageChange)="onPageChange($event)" [rows]="10" [totalRecords]="totalRecords"
                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" (onSort)="onSort($event)"></p-paginator>
+                [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" (onSort)="onSort($event)"></p-paginator> -->
 </div>
 <p-dialog header="Charge Code" [(visible)]="visibleDialog" [style]="{width: '30vw',height: '35rem'}"  [modal]="true"  >
     <ng-template pTemplate="header">

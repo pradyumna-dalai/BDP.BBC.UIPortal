@@ -22,17 +22,7 @@ export class UOMComponent implements AfterViewInit{
   editMode: boolean = false;
   modeTitle: string = 'Add';
 
-   // Pagination properties
-   currentPage: number = 1;
-   pageSize: number = 10;
-   sortField: string = ''; // Initial sort field
-   sortOrder: number = 1; // 1 for ascending, -1 for descending
- 
-    totalRecords: any = 10;
-    first: any = 0;
-    rows: any = 10;
-  newSortField: any;
-  newSortOrder: any;
+
   searchTimeout: any;
  
   constructor(private momentService: MomentService,private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
@@ -87,34 +77,16 @@ export class UOMComponent implements AfterViewInit{
     this.editMode= false;
   }
   fetchAllUOMDetails(keyword: string = ''): void {
-    const params = {
-      pageNo: isNaN(this.currentPage) ? 0 : this.currentPage - 1,
-      pageSize: isNaN(this.pageSize) ? 10 : this.pageSize,
-      sortBy: this.sortField,
-      sortDir: this.sortOrder,
-      keyword: keyword // Add the keyword parameter
-    };
   
-    this.masterDataService.getAllUom(params).subscribe((res: any) => {
+  
+    this.masterDataService.getAllUom().subscribe((res: any) => {
       if (res?.message == "success") {
         // Update uomtdetails and totalRecords accordingly
-        this.uomtdetails = res.data.uom.map((item: any) => {
-          return {
-            id: item.id,
-            name: item.name,
-            description: item.description,
-            status: item.status,
-            createdBy: item.createdBy,
-            updatedBy: item.updatedBy,
-            createdDate: item.createdDate,
-            updatedDate: item.updatedDate,
-          };
-        });
-
-        this.totalRecords = res?.data.totalElements;
+        this.uomtdetails = res.data
+        
       } else {
         this.uomtdetails = [];
-        this.totalRecords = 0;
+  
       }
     });
   }
@@ -129,17 +101,11 @@ export class UOMComponent implements AfterViewInit{
  }, 500);
  }
   clear(table: Table) {
-    table.reset(); 
-
-    this.sortField = '';
-    this.sortOrder = 1;
+    table.clear(); 
   
     this.clearSearchInput();
   
     this.fetchAllUOMDetails();
-  
-    this.currentPage = 1;
-    this.pageSize = 10;
 }
 clearSearchInput(): void {
   const searchInput = document.getElementById('gSearch') as HTMLInputElement;
@@ -147,29 +113,8 @@ clearSearchInput(): void {
     searchInput.value = '';
   }
 }
-  onPageChange(event: any) {
-    this.currentPage = event.page + 1;
-    this.pageSize = event.rows;
-    this.fetchAllUOMDetails();
-  }
-  // Handle sorting event
-  onSort(event: any) {
-  
-    this.newSortField = event.field;
-    this.newSortOrder = (event.order === 1) ? 'asc' : 'desc';
-  
-    if (this.newSortField !== this.sortField || this.newSortOrder !== this.sortOrder) {
-      if(this.newSortField == undefined){
-        this.sortField = "";
-      }else{
-        this.sortField = this.newSortField;
-      }
-      
-      this.sortOrder = this.newSortOrder;
-      this.currentPage = 1;
-      this.fetchAllUOMDetails();
-    }
-  }
+ 
+
 
   editUOM(editId) {
     

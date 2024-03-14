@@ -24,14 +24,6 @@ export class CategoryComponent {
   selectedCategory: any;
   procuctScopesOptions: any;
   product_name: any;
-  // Pagination properties
-  currentPage: number = 1;
-  pageSize: number = 10;
-  sortField: string = ''; // Initial sort field
-  sortOrder: any = 'asc'; // 1 for ascending, -1 for descending
-  totalRecords: any = 10;
-  first: any = 0;
-  rows: any = 10;
   modeTitle: string = 'Add';
   searchTimeout: number;
   processing: boolean = false;
@@ -159,7 +151,6 @@ export class CategoryComponent {
             //   console.log(response);
             this.displayCreateCategoryDialog = false;
             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Category added successfully!' });
-            this.totalRecords += 1;
             this.fetchProductCategory();
             this.processing = false;
           },
@@ -189,17 +180,10 @@ export class CategoryComponent {
 
 
   fetchProductCategory(keyword: string = ''): void {
-    const params = {
-      pageNo: isNaN(this.currentPage) ? 0 : this.currentPage - 1,
-      pageSize: isNaN(this.pageSize) ? 10 : this.pageSize,
-      sortBy: this.sortField,
-      sortDir: this.sortOrder,
-      keyword: keyword // Add the keyword parameter
-    };
-    this.masterDataService.getCategoryDetails(params).subscribe((res: any) => {
+   
+    this.masterDataService.getCategoryDetails().subscribe((res: any) => {
       if (res?.message === 'success') {
-        this.categoryDetails = res.data.category;
-        this.totalRecords = res?.data.totalElements;
+        this.categoryDetails = res.data;
         //  console.log('fetch Category details:', this.categoryDetails);
       } else {
         console.error('Failed to fetch Category details:', res);
@@ -218,39 +202,14 @@ export class CategoryComponent {
  }, 500);
  }
 
-  onPageChange(event: any) {
-    this.currentPage = event.page + 1;
-    this.pageSize = event.rows;
-    this.fetchProductCategory();
-  }
- 
-  onSort(event: any) {
-    const newSortField = event.field;
-    const newSortOrder = event.order === 1 ? 'asc' : 'desc'; 
-  
-    if (newSortField !== this.sortField || newSortOrder !== this.sortOrder) {
-      if(newSortField == undefined){
-        this.sortField = "";
-      }else{
-        this.sortField = newSortField;
-      }
-      this.sortOrder = newSortOrder;
-      this.currentPage = 1;
-      this.fetchProductCategory();
-    }
-  }
-  clear(table: Table) {
-    table.reset(); 
 
-  this.sortField = '';
-  this.sortOrder = 1;
+  clear(table: Table) {
+    table.clear(); 
 
   this.clearSearchInput();
 
   this.fetchProductCategory();
 
-  this.currentPage = 1;
-  this.pageSize = 10;
   }
   clearSearchInput(): void {
     const searchInput = document.getElementById('gSearch') as HTMLInputElement;

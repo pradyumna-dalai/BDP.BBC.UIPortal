@@ -15,14 +15,9 @@ export class MasterDataService {
   addChargecode(body: any){
     return this.http.post<any>(url + settings.AppRoutes.Auth.chargecode, body);
   }
-  getAllChargecode(params: any): Observable<any>{
-    let httpParams = new HttpParams();
-    Object.keys(params).forEach((key) => {
-      if (params[key] !== null && params[key] !== undefined) {
-        httpParams = httpParams.append(key, params[key]);
-      }
-    });
-    return this.http.get<any>(url + settings.AppRoutes.Auth.chargecode,{ params: httpParams});
+  getAllChargecode(): Observable<any>{
+    
+    return this.http.get<any>(url + settings.AppRoutes.Auth.chargecode);
   }
   editChargecode(body: any){
     return this.http.put<any>(url + settings.AppRoutes.Auth.chargecode, body);
@@ -35,14 +30,9 @@ export class MasterDataService {
    addProdcut(body: any){
     return this.http.post<any>(url + settings.AppRoutes.Auth.product, body);
   }
-  getAllProdcut(params: any): Observable<any>{
-    let httpParams = new HttpParams();
-    Object.keys(params).forEach((key) => {
-      if (params[key] !== null && params[key] !== undefined) {
-        httpParams = httpParams.append(key, params[key]);
-      }
-    });
-    return this.http.get<any>(url + settings.AppRoutes.Auth.product,{ params: httpParams});
+  getAllProdcut(): Observable<any>{
+   
+    return this.http.get<any>(url + settings.AppRoutes.Auth.product);
   }
   editProduct(body: any){
     return this.http.put<any>(url + settings.AppRoutes.Auth.product, body);
@@ -55,18 +45,12 @@ export class MasterDataService {
   addUom(body: any){
     return this.http.post<any>(url + settings.AppRoutes.Auth.uom, body);
   }
-  getAllUom(params: any): Observable<any> {
-    // Convert params to HttpParams
-    let queryParams = new HttpParams();
-    if (params) {
-      Object.keys(params).forEach((key) => {
-        queryParams = queryParams.append(key, params[key]);
-      });
-    }
+  getAllUom(): Observable<any> {
+  
 
     // Append params to the URL
     const apiUrl = url + settings.AppRoutes.Auth.uom;
-    return this.http.get<any>(apiUrl, { params: queryParams });
+    return this.http.get<any>(apiUrl);
   }
   editUom(body: any){
     return this.http.put<any>(url + settings.AppRoutes.Auth.uom, body);
@@ -88,14 +72,9 @@ export class MasterDataService {
     const payload = { id: locationId, isDeleted: true };
     return this.http.delete<any>(url + settings.AppRoutes.Auth.location,{ body: payload });
   }
-  getAllLocationDetails(params: any): Observable<any> {
-    let httpParams = new HttpParams();
-    Object.keys(params).forEach((key) => {
-      if (params[key] !== null && params[key] !== undefined) {
-        httpParams = httpParams.append(key, params[key]);
-      }
-    });
-    return this.http.get<any>(url + settings.AppRoutes.Auth.location,{ params: httpParams});
+  getAllLocationDetails(): Observable<any> {
+    return this.http.get<any>(url + settings.AppRoutes.Auth.location);
+    // return this.http.get<any>(url + settings.AppRoutes.Auth.location,{ params: httpParams});
   }
 
   downloadLocationDetails(){
@@ -107,14 +86,9 @@ export class MasterDataService {
     return this.http.post<any>(url + settings.AppRoutes.Auth.scope, body);
   }
 
-  getScopeDetails(params: any): Observable<any> {
-    let httpParams = new HttpParams();
-    Object.keys(params).forEach((key) => {
-      if (params[key] !== null && params[key] !== undefined) {
-        httpParams = httpParams.append(key, params[key]);
-      }
-    });
-    return this.http.get<any>(url + settings.AppRoutes.Auth.scope,{ params: httpParams});
+  getScopeDetails(): Observable<any> {
+   
+    return this.http.get<any>(url + settings.AppRoutes.Auth.scope);
   }
 
   updateScopeDetails(body: any){
@@ -126,14 +100,9 @@ export class MasterDataService {
   }
 
   //----------------------Prduct Category------------------------------//
-  getCategoryDetails(params: any): Observable<any> {
-    let httpParams = new HttpParams();
-    Object.keys(params).forEach((key) => {
-      if (params[key] !== null && params[key] !== undefined) {
-        httpParams = httpParams.append(key, params[key]);
-      }
-    });
-    return this.http.get<any>(url + settings.AppRoutes.Auth.category,{ params: httpParams});
+  getCategoryDetails(): Observable<any> {
+  
+    return this.http.get<any>(url + settings.AppRoutes.Auth.category);
   }
 
   addCateogoryDetails(body: any) {
@@ -166,14 +135,9 @@ export class MasterDataService {
   }
 
   /**Get FTE Details Api */
-  getAllFteDetails(params: any): Observable<any> {
-    let httpParams = new HttpParams();
-    Object.keys(params).forEach((key) => {
-      if (params[key] !== null && params[key] !== undefined) {
-        httpParams = httpParams.append(key, params[key]);
-      }
-    });
-    return this.http.get<any>(url + settings.AppRoutes.Auth.fte,{ params: httpParams});
+  getAllFteDetails(): Observable<any> {
+   
+    return this.http.get<any>(url + settings.AppRoutes.Auth.fte);
   }
 
   downloadFteDetails(){
