@@ -144,7 +144,7 @@
             </div> -->
             <div class="field col-12 md:col-6">
                 <label>FTE/Year (USD)<span class="required">*</span></label>
-                <input id="name" type="number" (input)="limitTo9Digits($event)"  placeholder="FTE/Year " formControlName="ftf_year" 
+                <input id="name" type="text" (input)="limitTo9Digits($event)"  placeholder="FTE/Year " formControlName="ftf_year" 
                     class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
                     <div *ngIf="FteForm.get('ftf_year')?.hasError('required') && FteForm.get('ftf_year')?.touched"
                     class="error-message">
