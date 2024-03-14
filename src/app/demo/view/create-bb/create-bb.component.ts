@@ -135,6 +135,7 @@ export class CreateBbComponent {
     this.getModeOfTransport();
     const id = this.route.snapshot.paramMap.get('id');
     if (id !== null && id !== undefined) {
+      this.blockId=id;
       this.breadcrumbService.setItems([
         {
           label: 'Building Blocks',
