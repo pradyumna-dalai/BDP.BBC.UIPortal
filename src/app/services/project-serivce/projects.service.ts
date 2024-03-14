@@ -245,5 +245,11 @@ getAllOtherCostLocation(projectId:number){
   return this.http.get<any>(`${url}${settings.AppRoutes.Auth.project}/${projectId}/${settings.AppRoutes.Auth.getOtherCostLocation}`);
 }
 
+ //--------------------------------Sow-----------------------------------------//
+
+ getSOWInformations(projectId:number){
+  return this.http.get<any>(`${url}${settings.AppRoutes.Auth.getSowInformation}/${projectId}`);    
+ }
+
 }
 
