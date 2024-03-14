@@ -28,6 +28,7 @@ visible: boolean = false;
   newSortField: any;
   newSortOrder: any;
   searchTimeout: any;
+  originalRowData: any[] = [];
 
 
  
@@ -70,25 +71,15 @@ data: any[] = []; // Add your data array here
   // Toggle edit mode
   this.editModes[index] = !this.editModes[index];
 
-  // If edit mode is toggled on, fetch UOM and Configuration options
   if (this.editModes[index]) {
-    const rowData = this.data[index];
-    this.getUom();
-    this.getConfigurable();
-    
-    // Select UOM option if present in rowData
-    const uomOption = this.uomOptions.find(option => option.name === rowData['UOM']);
-    if (uomOption) {
-      rowData['UOM'] = uomOption;
-    }
-    
-    // Select Configuration option if present in rowData
-    const configOption = this.configOptions.find(option => option.name === rowData['Configuration']);
-    if (configOption) {
-      rowData['Configuration'] = configOption;
-    }
+      // If edit mode is toggled on, store a copy of the original row data
+      this.originalRowData[index] = { ...this.data[index] };
+  } else {
+      // If edit mode is toggled off, reset the edited values to their original values
+      this.data[index] = { ...this.originalRowData[index] };
   }
 }
+
 // isEditableColumn(columnField: string): boolean {
 //   // List the columns that should not be editable
 //   const nonEditableColumns = ['Product Name', 'Product Scope', 'Product Category','Building Block Name'];
@@ -189,6 +180,23 @@ saveProcess(rowData: any){
  
       this.MasterDataservice.saveProcess(body).subscribe(
           (res) => {
+            if(res.message == 'success'){
+              this.messageService.add({
+                key: 'successToast',
+                severity: 'success',
+                summary: 'Success!',
+                detail: 'Row Updated Successfully'
+            });
+          
+            }
+            else{
+              this.messageService.add({
+                key: 'errorToast',
+                severity: 'error',
+                summary: 'Error!',
+                detail: 'Failed To Update Row'
+              });
+            }
             this.processConfigGetImportExcelData();
           },
          
