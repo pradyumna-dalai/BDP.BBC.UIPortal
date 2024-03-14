@@ -155,7 +155,6 @@ export class CreateProjectComponent implements OnInit {
       this.sharedService.draftSavedOC$.subscribe((draftSavedOC: boolean) => {
         this.draftSavedOC = draftSavedOC;
       });
-      // this.activeIndex = 1;//need to be deleted. This is for testing only;
       this.route.queryParams.subscribe(params => {
         this.projId = params.projId;
         if(this.projId != undefined){
@@ -482,7 +481,6 @@ export class CreateProjectComponent implements OnInit {
 
     this.projectService.saveAsDraftProject(body).subscribe(
       (res) => {
-        debugger;
         //-------------for shareing data----//
         this.projectService.setDraftData(res);
         this.projinfoID = res?.data?.id;
@@ -1211,7 +1209,6 @@ populateForm(): void {
   });
   }
   onTabChange(event) {
-    console.log(event);
     // Check which tab is active
     this.activeIndex = event.index;
     // if (event.index === 1) 
