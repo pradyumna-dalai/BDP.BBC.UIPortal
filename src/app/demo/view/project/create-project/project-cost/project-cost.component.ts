@@ -30,13 +30,13 @@ export class ProjectCostComponent {
   }
 
   ngOnInit() {
-    this.projectService.draftData$.subscribe(data => {
-      this.projectId = data?.data?.id;
-      if(this.projectId != null || this.projectId != undefined){
-      this.fetchProjectInfomation(this.projectId);
-      this.fetchAllProjectBuildingBlock(this.projectId);
-      }
-    });
+    // this.projectService.draftData$.subscribe(data => {
+    //   this.projectId = data?.data?.id;
+    //   if(this.projectId != null || this.projectId != undefined){
+    //   this.fetchProjectInfomation(this.projectId);
+    //   this.fetchAllProjectBuildingBlock(this.projectId);
+    //   }
+    // });
     if(this.projectIdOC != null || this.projectIdOC != undefined){
       this.fetchProjectInfomation(this.projectIdOC);
       this.fetchAllProjectBuildingBlock(this.projectIdOC);
@@ -66,8 +66,8 @@ export class ProjectCostComponent {
     this.destinationButtonBorderRadius = '5px';
   }
   //---------------------------------------------------get Project Info---------------------------------------------//
-  fetchProjectInfomation(projectId): void {
-    this.projectService.getProjectDetails(projectId).subscribe((res: any) => {
+  fetchProjectInfomation(projectIdOC): void {
+    this.projectService.getProjectDetails(projectIdOC).subscribe((res: any) => {
       if (res?.message === 'success') {
         this.projectInfo = res.data.projectInformation;
         console.log('InfoOf Project',this.projectInfo);
@@ -86,9 +86,9 @@ export class ProjectCostComponent {
 }
 
 //---------------------------------------------get Buidling Block Info--------------------------------------------//
-fetchAllProjectBuildingBlock(projectId: any) {
-  if (this.projectId != null) {
-    this.projectService.getProjectBuildingBlocks(projectId).subscribe({
+fetchAllProjectBuildingBlock(projectIdOC: any) {
+  if (this.projectIdOC != null) {
+    this.projectService.getSOWInformations(projectIdOC).subscribe({
       next: (response: any) => {
         this.getSavedBlockslist = response.data;
        // console.log("Table BB", this.getSavedBlockslist)

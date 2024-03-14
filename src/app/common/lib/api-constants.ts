@@ -182,6 +182,9 @@ export namespace AppRoutes {
 
         public static readonly downloadRevenue = "download-revenue"
 
+        //--------------------SOW ------------------------------//
+
+        public static readonly getSowInformation = "project-block-sow";
 }
 
 }
