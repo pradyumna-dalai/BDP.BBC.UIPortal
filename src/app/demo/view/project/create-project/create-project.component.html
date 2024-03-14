@@ -351,6 +351,13 @@
             <app-other-cost #otherCostComponent (continueClickedToProjectCost)="goToNextTab()" [projStatus]="projStatus" [projectIdCLI]="projectIdCLI"></app-other-cost>
         </div>
     </p-tabPanel>
+
+    <p-tabPanel header="Revenue " [disabled]="!draftSavedCLI">
+        <div *ngIf="projectIdCLI !== null">
+            <app-revenue #revenueComponent (continueClickedToRevenue)="goToNextTab()" [projStatus]="projStatus" [projectIdCLI]="projectIdCLI"></app-revenue>
+        </div>
+    </p-tabPanel>
+
     <p-tabPanel header="Project Output" [disabled]="!draftSavedOC">
         <div *ngIf="projectIdOC !== null">
             <app-project-cost #projectCostComponent [projectIdOC]="projectIdOC"></app-project-cost>

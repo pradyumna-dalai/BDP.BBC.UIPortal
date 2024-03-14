@@ -15,6 +15,7 @@ import { ProjectCostComponent } from './project-cost/project-cost.component';
 import { ActivatedRoute } from '@angular/router';
 import { CreateBuildingBlockService } from 'src/app/services/create-buildingBlock/create-building-block.service';
 import { SharedServiceService } from 'src/app/services/project-serivce/shared-service.service';
+import { RevenueComponent } from './revenue/revenue.component';
 
 interface UomData {
   id: number;
@@ -44,6 +45,7 @@ export class CreateProjectComponent implements OnInit {
   @ViewChild('buildingBlockComponent', { static: false }) buildingBlockComponent: BuildingBlockComponent; 
   @ViewChild('otherCostComponent', { static: false }) otherCostComponent: OtherCostComponent;
   @ViewChild('projectCostComponent', { static: false }) projectCostComponent: ProjectCostComponent;
+  @ViewChild('revenueComponent', { static: false }) revenueComponent: RevenueComponent;
   projId: number;
   date: Date | undefined;
   activeIndex: number = 0;
@@ -1266,6 +1268,10 @@ populateForm(): void {
       this.otherCostComponent.ngOnInit();
     }
     if (event.index === 5) 
+    { 
+      this.revenueComponent.ngOnInit();
+    }
+    if (event.index === 6) 
     { 
       this.projectCostComponent.ngOnInit();
     }
