@@ -165,21 +165,21 @@ export class CostItemComponent {
   downloadExcel(event: Event) {
     event.preventDefault();
 
-    // this.masterDataService.downloadScopeDetails().subscribe((res: any) => {
-    //   const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-    //   const link = document.createElement('a');
-    //   link.href = window.URL.createObjectURL(blob);
-    //   link.download = 'CostItemDetails.xlsx';
-    //   document.body.appendChild(link);
-    //   link.click();
-    //   document.body.removeChild(link);
-    //   this.messageService.add({
-    //     key: 'successToast',
-    //     severity: 'success',
-    //     summary: 'Success!',
-    //     detail: 'Excel File Downloaded successfully.'
-    //   });
-    // });
+    this.masterDataService.downloadCostDetails().subscribe((res: any) => {
+      const blob = new Blob([res], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = 'CostItemDetails.xlsx';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      this.messageService.add({
+        key: 'successToast',
+        severity: 'success',
+        summary: 'Success!',
+        detail: 'Excel File Downloaded successfully.'
+      });
+    });
   }
 
 
