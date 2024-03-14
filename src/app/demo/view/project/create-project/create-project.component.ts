@@ -519,20 +519,12 @@ export class CreateProjectComponent implements OnInit {
 
         if (error.status === 400) {
           // console.log('Bad Request Error:', error);
-          if (error.error.data == 'Project name exist') {
+          if (error.error.data[0] == 'Project name exist') {
             this.messageService.add({
               key: 'errorToast',
               severity: 'error',
               summary: 'Error!',
               detail: 'Project Name already exists.'
-            });
-          }
-          if (error.error.data == 'select location') {
-            this.messageService.add({
-              key: 'errorToast',
-              severity: 'error',
-              summary: 'Error!',
-              detail: 'Please Select Location to Create Project.'
             });
           }
         } else {

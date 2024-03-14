@@ -74,14 +74,14 @@ scrollHeight="530px" scrollDirection="both"
                     <span>{{ item.createdBy }}</span>
                   </td>
                   <td style="text-align: center; word-wrap: break-word;">
-                    <span>{{ momentService.getFullDate(item.createdDate) }}</span>
+                    <span>{{ item.createdDate | date:'dd MMM yyyy' }}</span>
                 </td>
                 <td style="text-align: center; word-wrap: break-word;">
                     <span>{{item.updatedBy}}</span>
                 </td>
                
                 <td style="text-align: center; word-wrap: break-word;">
-                    <span>{{  momentService.getFullDate(item.updatedDate) }}</span>
+                    <span>{{ item.updatedDate | date:'dd MMM yyyy' }}</span>
                 </td>
                
             </tr>

@@ -2,7 +2,6 @@ import { Component, OnInit,Input,Output, EventEmitter } from '@angular/core';
 import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { SharedServiceService } from 'src/app/services/project-serivce/shared-service.service';
-import { Router, NavigationStart } from '@angular/router';
 
 @Component({
   selector: 'app-add-volume',
@@ -14,6 +13,7 @@ export class AddVolumeComponent implements OnInit {
   @Output() continueClickedToCLI: EventEmitter<any> = new EventEmitter<any>();
 Add_Volume:any;
 
+///add voulume & CLI///
 editedValues: { [locationName: string]: number } = {};
 showOriginVolume: boolean = true;
 showDestinationVolume: boolean = false;
@@ -25,8 +25,8 @@ originButtonBorderRadius: string = '5px';
 destinationButtonBorderRadius: string = '5px';
 showOriginCLI: boolean = true;
 showDestinationCLI:boolean = false;
-
-private _isExpanded = true;
+//end//
+private _isExpanded = false;
 visible: boolean = false;
   volumeDetails: any[]= [];
   dynamicColumns: any[] = [];
@@ -45,15 +45,8 @@ visible: boolean = false;
   fileName: string;
   uploadInProgress: boolean = false;
 
-  constructor(private router: Router,private sharedService: SharedServiceService,private projectService:ProjectsService, private messageService: MessageService){
+  constructor(private sharedService: SharedServiceService,private projectService:ProjectsService, private messageService: MessageService){
     this.process = { lines: [] };
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationStart) {
-        // Set draftSavedVolume to false when navigating away
-        this.sharedService.setDraftSavedVolume(false);
-      }
-    });
-  
   }
 
   ngOnInit(){
@@ -79,6 +72,8 @@ showUploadDialog() {
     })
   }
  onRemoveClick(){
+  // this.showUploaderror = false;
+  // this.uploadError = "";
   this.fileName = "";
   this.uploadFile = null;
   const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
@@ -88,11 +83,14 @@ showUploadDialog() {
 }
 onPopupCancelClick(){
   this.visible = false;
+    // this.showUploaderror = false;
+    // this.uploadError = "";
     this.fileName = "";
     this.uploadFile = null;
+    // Add the following line to reset the file input
     const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
     if (fileInput) {
-      fileInput.value = '';
+      fileInput.value = ''; // Clear the file input value
     }
 }
 uploadFile: File | null = null;
@@ -199,6 +197,7 @@ getVolumeDetails(projectId) {
     this.projectName = res.data.projectName;
     this.volumeDetails = res.data.buildingBlocks;
         if (res && res.data && res.data.buildingBlocks && res.data.buildingBlocks.length > 0) {
+          // this.volumeDetails = res.data.buildingBlocks;
           this.buildingBlocks = res.data.buildingBlocks;
           this.buildingBlockNames = this.buildingBlocks.map(block => block.buildingBlockName);
         }
@@ -253,7 +252,7 @@ getLocationVolumes(locationVolume: any[], locationName: string): string | number
   const location = locationVolume.find(loc => loc.locationName === locationName);
   return location ? location.volume : 'NA';
 }
-
+// Add these methods to your component class
 getLocationVolumeValue(locationVolume: any[], locationName: string): string | number {
   const location = locationVolume.find(loc => loc.locationName === locationName);
   return location ? location.volume : 'NA';
@@ -276,14 +275,13 @@ getConfigurableName(configurableId: number): string {
       case 3:
           return 'Others';
       default:
-          return ''; 
+          return ''; // You might want to handle other cases appropriately
   }
 }
 
 
 toggleEditMode(line: any) {
   line.editing = true; // Set editing mode to true for the specific row
-  line.originalLocationVolume = JSON.parse(JSON.stringify(line.locationVolume));
 }
 
 onRowEditSave(line: any) {
@@ -301,32 +299,22 @@ onRowEditSave(line: any) {
 }
 
 onRowEditCancel(line: any, ri: number) {
+  // Cancel editing
   // Reset any changes made to the row
-  if (line.originalLocationVolume) {
-    // Restore the original values
-    line.locationVolume = JSON.parse(JSON.stringify(line.originalLocationVolume));
-  }
   line.editing = false; // Exit editing mode
 }
 toggleEditModeDL(line: any) {
   line.editing = true; // Set editing mode to true for the specific row
-   // Store the original values before editing
-   line.originalLocationVolume = JSON.parse(JSON.stringify(line.locationVolume));
 }
 
 onRowEditSaveDL(line: any) {
   // Save the edited data
   line.editing = false; // Exit editing mode
-
-  
 }
 
 onRowEditCancelDL(line: any, ri: number) {
+  // Cancel editing
   // Reset any changes made to the row
-  if (line.originalLocationVolume) {
-    // Restore the original values
-    line.locationVolume = JSON.parse(JSON.stringify(line.originalLocationVolume));
-  }
   line.editing = false; // Exit editing mode
 }
 

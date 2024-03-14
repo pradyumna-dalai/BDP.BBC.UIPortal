@@ -2,7 +2,6 @@ import { Component,Input,Output, EventEmitter } from '@angular/core';
 import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { SharedServiceService } from 'src/app/services/project-serivce/shared-service.service';
-import { Router, NavigationStart } from '@angular/router';
 
 
 @Component({
@@ -13,6 +12,7 @@ import { Router, NavigationStart } from '@angular/router';
 export class CostLineItemComponent {
   editing:boolean
 
+  ///add voulume & CLI///
 showOriginVolume: boolean = true;
 showDestinationVolume: boolean = false;
 originButtonColor: string = 'white';
@@ -23,9 +23,9 @@ originButtonBorderRadius: string = '5px';
 destinationButtonBorderRadius: string = '5px';
 showOriginCLI: boolean = true;
 showDestinationCLI:boolean = false;
-
+//end//
 visible:boolean = false;
-private _isExpanded = true;
+private _isExpanded = false;
   costLineItemDetails: any;
   buildingBlockNames: any;
   originProcesses: any[] = [];
@@ -41,15 +41,9 @@ private _isExpanded = true;
   @Output() continueClickedToCLI: EventEmitter<any> = new EventEmitter();
   fileName: string;
   uploadInProgress: boolean = false;
-  originalLineData: any;
 
-constructor(private router: Router,private sharedService: SharedServiceService,private projectService:ProjectsService, private messageService: MessageService){
-  this.router.events.subscribe(event => {
-    if (event instanceof NavigationStart) {
-      // Set setDraftSavedCLI to false when navigating away
-      this.sharedService.setDraftSavedCLI(false);
-    }
-  });
+constructor(private sharedService: SharedServiceService,private projectService:ProjectsService, private messageService: MessageService){
+
 }
 
 ngOnInit(){
@@ -103,6 +97,8 @@ showUploadDialog() {
   this.visible = true;
 }
 onRemoveClick(){
+  // this.showUploaderror = false;
+  // this.uploadError = "";
   this.fileName = "";
   this.uploadFile = null;
   const fileInput = document.getElementById('fileUpload') as HTMLInputElement;
@@ -112,6 +108,8 @@ onRemoveClick(){
 }
 onPopupCancelClick(){
   this.visible = false;
+    // this.showUploaderror = false;
+    // this.uploadError = "";
     this.fileName = "";
     this.uploadFile = null;
     // Add the following line to reset the file input
@@ -285,9 +283,7 @@ goToNextTab(){
 
 }
 onRowEditInit(line: any) {
-  line.editing = true;
-  // Keep a copy of the original data
-  this.originalLineData = { ...line };
+  line.editing = true; // Set editing mode to true for the specific row
 }
 
 onRowEditSave(line: any) {
@@ -297,24 +293,23 @@ onRowEditSave(line: any) {
 }
 
 onRowEditCancel(line: any, ri: number) {
-  // Restore the original data
-  Object.assign(line, this.originalLineData);
-  line.editing = false;
+  // Cancel editing
+  // Reset any changes made to the row
+  line.editing = false; // Exit editing mode
 }
 onRowEditInitDL(line: any) {
-  line.editing = true;
-  // Keep a copy of the original data
-  this.originalLineData = { ...line };
+  line.editing = true; // Set editing mode to true for the specific row
 }
+
 onRowEditSaveDL(line: any) {
   // Save the edited data
   line.editing = false; // Exit editing mode
 }
 
 onRowEditCancelDL(line: any, ri: number) {
-  // Restore the original data
-  Object.assign(line, this.originalLineData);
-  line.editing = false;
+  // Cancel editing
+  // Reset any changes made to the row
+  line.editing = false; // Exit editing mode
 }
 
 }

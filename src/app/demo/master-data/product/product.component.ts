@@ -6,7 +6,6 @@ import { MasterDataService } from 'src/app/services/master-dataserivce/master-da
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 import { Table } from 'primeng/table';
-import { MomentService } from 'src/app/FormateDate/moment.service';
 
 @Component({
   selector: 'app-product',
@@ -35,7 +34,7 @@ export class ProductComponent {
   newSortOrder: any;
   searchTimeout: number;
 
-  constructor(private momentService: MomentService,private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
+  constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
     private fb: FormBuilder, private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService) {
     this.breadcrumbService.setItems([
       { label: 'Master Data Management' },

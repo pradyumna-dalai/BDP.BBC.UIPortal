@@ -3,7 +3,7 @@
         <div class="col-6">
             <span class="p-input-icon-right">
                 <i class="pi pi-search"></i>
-                <input pInputText type="text" id="gSearch" (input)="dt2.filterGlobal($event.target.value, 'contains')"
+                <input pInputText type="text" (input)="dt2.filterGlobal($event.target.value, 'contains')"
                 placeholder="Search Keyword" />
             </span>
         </div>
@@ -58,14 +58,18 @@
                     <p-tag [value]="getSeverityLabel(revenue.status)" [severity]="getSeverity(revenue.status)"></p-tag>
                 </td>
                 <td style="text-align: center; word-wrap: break-word;">{{ revenue.name }}</td>
-                <td style="text-align: center; max-width: 200px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;" [title]="revenue.description">
-                    {{ revenue.description }}
-                </td> 
-                
+                <td style="text-align: center; max-width: 200px; overflow: hidden;" [title]="revenue.description">
+                    <span *ngIf="revenue.description && revenue.description.length > 40">
+                        {{ (revenue.description.slice(0, 20) +'...' || '') }}
+                    </span>
+                    <span *ngIf="!revenue.description || (revenue.description && revenue.description.length <= 50)">
+                        {{ revenue.description || '' }}
+                    </span>
+                </td>
                 <td style="text-align: center; word-wrap: break-word;">{{ revenue.createdBy }}</td>
-                <td style="text-align: center; word-wrap: break-word;">{{ momentService.getFullDate(revenue.createdDate) }}</td>
+                <td style="text-align: center; word-wrap: break-word;">{{ revenue.createdDate | date:'dd MMM yyyy' }}</td>
                 <td style="text-align: center; word-wrap: break-word;">{{ revenue.updatedBy }}</td>
-                <td style="text-align: center; word-wrap: break-word;">{{ momentService.getFullDate(revenue.updatedDate) }}</td>
+                <td style="text-align: center; word-wrap: break-word;">{{ revenue.updatedDate | date:'dd MMM yyyy' }}</td>
             </tr>
         </ng-template>
         <ng-template pTemplate="emptymessage">
@@ -117,7 +121,7 @@
                             <p-radioButton name="status" value="active" label="Active"
                                 formControlName="status"></p-radioButton>
                             <p-radioButton name="status" value="inactive" label="Inactive" formControlName="status"
-                            class="radio-margin"></p-radioButton>
+                                style="margin-left: 25px;"></p-radioButton>
                         </div>
                     </div>
                     <div *ngIf="RevenueItemForm.get('status').hasError('required') && RevenueItemForm.get('status').touched" class="error-message">

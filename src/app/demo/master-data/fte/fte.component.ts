@@ -7,7 +7,6 @@ import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Table } from 'primeng/table';
-import { MomentService } from 'src/app/FormateDate/moment.service';
 @Component({
   selector: 'app-fte',
   templateUrl: './fte.component.html',
@@ -35,7 +34,7 @@ export class FteComponent {
   isSearchClear:boolean =false;
   regionId:any;
   countryID:any;
-  constructor(private momentService: MomentService,private breadcrumbService: AppBreadcrumbService,
+  constructor(private breadcrumbService: AppBreadcrumbService,
     private messageService: MessageService, 
     private confirmationService: ConfirmationService, private router: Router, private masterDataService: MasterDataService, private masterTableService: MasterTableService,private fb: FormBuilder,) {
     this.breadcrumbService.setItems([

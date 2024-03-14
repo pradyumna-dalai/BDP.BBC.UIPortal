@@ -19,7 +19,7 @@ export class MomentService {
   }
 
   getFullDate(date) {
-    return moment(date, 'YYYY-MM-DD HH:mm:ss').format('MM-DD-YYYY HH:mm:ss');
+    return moment(date, 'YYYY-MM-DD HH:mm').format('DD MMM YYYY HH:mm')
   }
 
   getFullDBDate(date) {
@@ -47,5 +47,4 @@ export class MomentService {
   getDateforTable(date) {
     return date ? moment(date, 'YYYY-MM-DD HH:mm').format('MMMM DD YYYY') : "";
   }
-  
 }

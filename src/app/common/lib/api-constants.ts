@@ -135,15 +135,11 @@ export namespace AppRoutes {
 
        public static readonly ProjectBuildingBlock = "project-block-location";
 
-
-       //-----------------------------Project Other Cost----------------//
        public static readonly otherCost = "project/other-cost";
 
+        
        public static readonly project = "project";
-
        public static readonly otherCosts = "other-cost";
-
-       public static readonly getOtherCostLocation = "project-info-location";
        //------add volume(Project)-----------------------//
        
        public static readonly getAddVoulmeDetails  = "volume"
@@ -179,8 +175,6 @@ export namespace AppRoutes {
         public static readonly getAllRevenue = "revenue"
 
         public static readonly saveRevenue = "revenue"
-
-        public static readonly downloadRevenue = "download-revenue"
 
 }
 
