@@ -17,7 +17,7 @@
     </div>
     <p-table #dt2 [value]="locationdetails" dataKey="id" responsiveLayout="scroll" scrollHeight="530px"
         scrollDirection="both"
-        [globalFilterFields]="['name', 'locationCode', 'country.name','region','description', 'status','createdBy','updatedBy','updatedDate','createdDate']"
+        [globalFilterFields]="['name', 'locationCode', 'country.name','region.name','description', 'status','createdBy','updatedBy','updatedDate','createdDate']"
         selectionMode="single" styleClass="p-datatable-gridlines" [resizableColumns]="true"  (onPage)="onPageChange($event)" (onSort)="onSort($event)">
 
         <ng-template pTemplate="header">
