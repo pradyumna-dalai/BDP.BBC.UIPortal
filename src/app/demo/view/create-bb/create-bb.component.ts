@@ -983,7 +983,7 @@ onScopeSelectbyid(body) {
           key: 'successToast',
           severity: 'success',
           summary: 'Success!',
-          detail: 'New Building block is saved successfully.'
+          detail: 'Building block is saved successfully.'
         });
         setTimeout(() => {
           this.router.navigateByUrl('/building-block');
@@ -1123,7 +1123,7 @@ onScopeSelectbyid(body) {
 
             this.createBuildingBlockservice.operationCardUploadExcel(this.selectedFile, scopeId, entityId).subscribe(
                 (res: any) => {
-                    if (res?.message === 'Excel Upload Successfully') {
+                    if (res?.message === 'success') {
                         this.fileNameOC = "";
                         this.selectedFile = null;
                         this.showSuccessMessage('File uploaded successfully!');
