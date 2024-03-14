@@ -1,6 +1,6 @@
 {
     "/api": {
-      "target": "54.86.49.91:5000",
+      "target": "http://localhost:8080",
       "secure": false
     }
   }
