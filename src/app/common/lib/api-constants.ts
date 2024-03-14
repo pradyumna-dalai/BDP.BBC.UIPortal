@@ -176,17 +176,20 @@ export namespace AppRoutes {
 
         public static readonly downloadCost = "download-costitem"
 
-        //--------------------Revenue Item Master Data Managememt---------------------------//
+        //--------------------Revenue Item Master Data Managememt-- and ---Project Revenue Tab-------------------------//
 
-        public static readonly getAllRevenue = "revenue"
-
-        public static readonly saveRevenue = "revenue"
+        public static readonly Revenue = "revenue"
 
         public static readonly downloadRevenue = "download-revenue"
 
         //--------------------SOW ------------------------------//
 
         public static readonly getSowInformation = "project-block-sow";
+
+        
+   
+   
+
 }
 
 }

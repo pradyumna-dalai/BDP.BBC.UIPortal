@@ -191,15 +191,15 @@ export class MasterDataService {
     //---------------------------------Revenue Item Management---------------------//
 
     getAllRevenueDetails(){
-      return this.http.get<any>(url + settings.AppRoutes.Auth.getAllRevenue);
+      return this.http.get<any>(url + settings.AppRoutes.Auth.Revenue);
     }
   
     saveRevenueDetails(body: any){
-      return this.http.post<any>(url + settings.AppRoutes.Auth.saveRevenue, body);
+      return this.http.post<any>(url + settings.AppRoutes.Auth.Revenue, body);
     }
   
     updateRevenueDetails(body: any){
-      return this.http.put<any>(url + settings.AppRoutes.Auth.saveRevenue, body);
+      return this.http.put<any>(url + settings.AppRoutes.Auth.Revenue, body);
     }
   
 
