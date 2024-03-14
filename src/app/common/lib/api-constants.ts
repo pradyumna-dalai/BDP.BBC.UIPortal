@@ -174,7 +174,7 @@ export namespace AppRoutes {
 
         public static readonly saveCostItem = "costItem"
 
-        public static readonly downloadCost = "download-costItem"
+        public static readonly downloadCost = "download-costitem"
 
         //--------------------Revenue Item Master Data Managememt---------------------------//
 
