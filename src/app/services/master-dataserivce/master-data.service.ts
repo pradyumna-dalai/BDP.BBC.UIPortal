@@ -218,6 +218,9 @@ export class MasterDataService {
     return this.http.put<any>(url + settings.AppRoutes.Auth.saveCostItem, body);
   }
 
+  downloadCostDetails(){
+    return this.http.get(`${url}${settings.AppRoutes.Auth.downloadCost}`, { responseType: 'arraybuffer' as 'json' });
+  }
   //-----------------------------------end----------------------------------------//
 
 
