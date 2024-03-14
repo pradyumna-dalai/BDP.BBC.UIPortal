@@ -308,7 +308,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
 
           // Check if the Process doesn't have the Process number in it.
           var processIndex = newBuildingBlock.processes?.findIndex(np => np.processNumber === p.processNumber);
-          // newProcess = newBuildingBlock.processes?.find(f=>f.processId===p.processNumber);
+          
           // If blockIndex is not -1, it means the building block was found within the project
           if (processIndex !== -1) {
             newProcess = newBuildingBlock.processes[processIndex];
@@ -416,9 +416,6 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
       }
     })
     return uniqueProcesses;
-    // return processes?.filter((p,index,self)=>{
-    //   return index == self.findIndex(prs=>prs.processNumber==p.processNumber);
-    // })
   }
 
 
@@ -513,7 +510,6 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
           }
           var locationIndex = dsConfig?.locations?.findIndex(l => l.locationId === pdl.locationId)
           if (locationIndex != null && locationIndex != undefined && locationIndex != -1) {
-            // c.locations[locationIndex].isSelected = true;
           }
           else {
             dsConfig.locations.push(<Location>{
