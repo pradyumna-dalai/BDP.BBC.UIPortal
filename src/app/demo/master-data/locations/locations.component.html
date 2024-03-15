@@ -31,10 +31,10 @@
                 <th style="text-align: center; width: 200px;min-width: 5rem !important;" pSortableColumn="status" [frozen]="true"
                     class="sticky-header">
                     Status<p-sortIcon field="status"></p-sortIcon></th>
-                <th style="text-align: center; width: 200px;min-width: 14rem !important;" pSortableColumn="region" [frozen]="true"
+                <th style="text-align: center; width: 200px;min-width: 14rem !important;" pSortableColumn="region.name" [frozen]="true"
                     class="sticky-header">Region
-                    <p-sortIcon field="region" class="sort-icon"></p-sortIcon>
-                    <p-columnFilter type="text" display="menu" field="region.name" pTooltip="Filter" tooltipPosition="right"
+                    <p-sortIcon field="region.name" class="sort-icon"></p-sortIcon>
+                    <p-columnFilter style="padding-left: 2px;" type="text" display="menu" field="region.name" pTooltip="Filter" tooltipPosition="right"
                         class="column-filter icon-align"></p-columnFilter>
                 </th>
                 <th style="text-align: center; width: 200px;min-width: 14rem !important;" pSortableColumn="country.name" [frozen]="true"
