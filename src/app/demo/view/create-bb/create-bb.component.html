@@ -628,7 +628,7 @@
                     </div>
                     <div class="box">
                         <div class="card-body">
-                            <div class="container">
+                            <div class="containers">
 
                                 <label for="fileUpload" class="custom-file-input">
                                     <i class="pi pi-upload" style="font-size: 30px;display: block;"></i>
@@ -651,12 +651,12 @@
                             </button> 
                         </div>
                         <div class="uplodBtn_right">
+                            <button type="submit" (click)="onPopupCancelSCClick()" pButton pRipple
+                                class="p-button-outlined mr-2 mb-2">Cancel</button>
                             <button type="submit" pButton pRipple class="mr-2 mb-2" [disabled]="!uploadFilesc"
                                 (click)="makeScopingCardApiServiceCall()">
                                 Submit
                             </button>
-                            <button type="submit" (click)="onPopupCancelSCClick()" pButton pRipple
-                                class="p-button-outlined mr-2 mb-2">Cancel</button>
                         </div>
                     </div>
                 </div>
@@ -711,7 +711,7 @@
                     </div>
                     <div class="box">
                         <div class="card-body">
-                            <div class="container">
+                            <div class="containers">
 
                                 <label for="fileUpload" class="custom-file-input">
                                     <i class="pi pi-upload" style="font-size: 30px;display: block;"></i>
@@ -734,12 +734,13 @@
                             </button>
                         </div>
                         <div class="uplodBtn_right">
+                            <button type="submit" (click)="onPopupCancelCClick()" pButton pRipple
+                            class="p-button-outlined mr-2 mb-2">Cancel</button>
                             <button type="submit" pButton pRipple class="mr-2 mb-2" [disabled]="!uploadFilecc"
                                 (click)="makeCommercialCardApiServiceCall()">
                                 Submit
                             </button>
-                            <button type="submit" (click)="onPopupCancelCClick()" pButton pRipple
-                            class="p-button-outlined mr-2 mb-2">Cancel</button>
+                            
                         </div>
                     </div>
                 </div>
@@ -806,12 +807,13 @@
                             </button>
                         </div>
                         <div class="uplodBtn_right">
+                            <button type="submit" (click)="onOperarationCancelClick()" pButton pRipple
+                            class="p-button-outlined mr-2 mb-2">Cancel</button>
                             <button type="submit" pButton pRipple class="mr-2 mb-2" [disabled]="!selectedFile"
                                 (click)="onUploadClick($event)">
                                 Submit
                             </button>
-                            <button type="submit" (click)="onOperarationCancelClick()" pButton pRipple
-                            class="p-button-outlined mr-2 mb-2">Cancel</button>
+                            
                         </div>
                     </div>
                 </div>
