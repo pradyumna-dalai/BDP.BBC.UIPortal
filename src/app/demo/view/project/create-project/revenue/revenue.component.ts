@@ -47,10 +47,10 @@ export class RevenueComponent {
   ngOnInit() {
 
    // this.getAllProjectOtherCost();
-    this.getAllCostItem();
+    this.getAllRevenueItem();
     if (this.projectIdCLI != null || this.projectIdCLI != undefined) {
-      this.getAllProjectOtherCostEdit(this.projectIdCLI);
-      this.getAllOtherCostLocations(this.projectIdCLI);
+      this.getAllProjectRevenueEdit(this.projectIdCLI);
+      this.getAllLocations(this.projectIdCLI);
     }
     this.projStatus = this.projStatus;
   }
@@ -143,7 +143,7 @@ export class RevenueComponent {
   }
 
   //-----------------------------------Save Project Other Cost------------------//
-  saveProjectsOtherCostItem() {
+  saveProjectsRevenueItem() {
     const invalidItem = this.tableData.find(item => !item.costItem || item.totalCost === null || item.totalCost === undefined);
     if (invalidItem) {
       this.messageService.add({
@@ -160,7 +160,7 @@ export class RevenueComponent {
       projectId: this.projectIdCLI,
       projectName: this.projectName,
       grandTotalCost: 927000.00,
-      otherCosts: this.tableData.map(costItem => ({
+      revenue: this.tableData.map(costItem => ({
         id: costItem.id,
         costItem: {
           id: costItem.costItem.costItemId,
@@ -180,23 +180,23 @@ export class RevenueComponent {
           key: 'successToast',
           severity: 'success',
           summary: 'Success!',
-          detail: 'Project Other Cost Saved successfully.'
+          detail: 'Project Revenue Saved successfully.'
         });
 
       },
       error: (error) => {
-        this.messageService.add({
-          key: 'errorToast',
-          severity: 'error',
-          summary: 'Error!',
-          detail: 'Failed to Save Project Other Cost.'
-        });
+        // this.messageService.add({
+        //   key: 'errorToast',
+        //   severity: 'error',
+        //   summary: 'Error!',
+        //   detail: 'Failed to Save Project Revenue.'
+        // });
       }
     });
   }
 
   //------------------------Get Project Other Cost------------------------------//
-  getAllProjectOtherCostEdit(projId) {
+  getAllProjectRevenueEdit(projId) {
     this.projectService.getAllProjectRevenue(projId).subscribe({
       next: (response: any) => {
         const otherCosts = response?.data?.otherCosts;
@@ -227,7 +227,7 @@ export class RevenueComponent {
         //   key: 'errorToast',
         //   severity: 'error',
         //   summary: 'Error!',
-        //   detail: 'Failed to fetch Project Other Cost.'
+        //   detail: 'Failed to fetch Project Revenue.'
         // });
       }
     });
@@ -236,7 +236,7 @@ export class RevenueComponent {
 
   //------------------------get all Revenue Item from Master Data-------------------//
 
-  getAllCostItem() {
+  getAllRevenueItem() {
     this.revenueItemDropDownOptions = [];
     this.masterDataSerivce.getAllRevenueDetails().subscribe((res: any) => {
       if (res?.message == "success") {
@@ -250,8 +250,8 @@ export class RevenueComponent {
     })
   }
 
-  //--------------------get all  other cost location -----------------------------//
-  getAllOtherCostLocations(projId) {
+  //--------------------get all Project location -----------------------------//
+  getAllLocations(projId) {
     this.projectService.getAllOtherCostLocation(projId).subscribe({
       next: (response: any) => {
         if (response?.message == "success") {

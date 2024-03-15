@@ -46,7 +46,7 @@
                         <span *ngIf="!cost.editing">{{ cost.costItem?.name}}</span>
                         <p-dropdown *ngIf="cost.editing" [options]="revenueItemDropDownOptions" [(ngModel)]="cost.costItem.costItemId"
                        optionValue="id" optionLabel="name"
-                        placeholder="Select Cost Item" [style]="{ 'width':'100%' }" [appendTo]="'body'"
+                        placeholder="Select Revenue Item" [style]="{ 'width':'100%' }" [appendTo]="'body'"
                         [filter]="true" [showClear]="true"></p-dropdown>
                         <!-- <input *ngIf="cost.editing" pInputText type="text" [(ngModel)]="cost.costItem"
                             placeholder="Enter Cost Item" required> -->
@@ -69,8 +69,16 @@
                     </td>
 
                 </tr>
-
-            </ng-template>
+            </ng-template >
+            <ng-template >
+            <tr>
+                <td><strong> Total </strong></td>
+                <td></td>
+                <td></td>
+                <td><strong>{{ grandTotalCost | currency }}</strong></td>
+                <td></td>
+            </tr>
+        </ng-template>
             <ng-template pTemplate="emptymessage">
                 <tr>
                     <td style="text-align: center;" colspan="5">No Data found.</td>
@@ -79,7 +87,7 @@
         </p-table>
     </div>
     <div class="col-12" style="display: flex;justify-content: flex-end;">
-        <button pButton pRipple type="button" *ngIf="projStatus !='Closed Won' && projStatus !='Close Lost'" label="Save As Draft" (click)="saveProjectsOtherCostItem()"
+        <button pButton pRipple type="button" *ngIf="projStatus !='Closed Won' && projStatus !='Close Lost'" label="Save As Draft" (click)="saveProjectsRevenueItem()"
             class="p-button-outlined mr-2 mb-2"></button>
             <button type="submit" pButton pRipple label="Submit" [disabled]="true" class="mr-2 mb-2"></button>
         <!-- <button type="submit" pButton pRipple label="Continue" (click)="onClickContinue()" class="mr-2 mb-2"></button> -->
