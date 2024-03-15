@@ -818,9 +818,19 @@ export class CreateBbComponent {
         },
         (error) => {
             if (error && error.status === 400) {
-                const errorMessage = error.error?.message;
+              //  const errorMessage = error.error?.message;
                 const data = error.error?.data;
-                // Handle errors...
+                if (data && data.length > 0) {
+                  this.formattedErrors = data.join('\n');
+                }
+                if (data && data.includes('Block name exist')) {
+                  this.messageService.add({
+                    key: 'errorToast',
+                    severity: 'error',
+                    summary: 'Error!',
+                    detail: 'Building block name already exists.'
+                  });
+                }
             }
         }
     );
