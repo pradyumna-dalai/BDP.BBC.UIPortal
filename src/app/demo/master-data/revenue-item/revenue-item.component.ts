@@ -77,7 +77,7 @@ export class RevenueItemComponent {
         },
         error: (error: any) => {
           if (error.status === 400 && error.error?.message === 'Fill required field(s)') {
-            const errorMessage = error.error.data?.join(', ') || 'Error in adding Revenue';
+            const errorMessage = error.error.data;
             this.messageService.add({ severity: 'error', summary: 'Error', detail: errorMessage });
           } else {
             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error in adding Revenue' });
