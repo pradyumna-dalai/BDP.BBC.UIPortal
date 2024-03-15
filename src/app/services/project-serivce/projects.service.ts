@@ -253,12 +253,12 @@ getAllOtherCostLocation(projectId:number){
   //----------------------------------Project Revenue tab-----------------//
 
   saveProjectRevenue(body:any): Observable<any> {
-    return this.http.post<any>(url + settings.AppRoutes.Auth.Revenue, body);
+    return this.http.post<any>(url + settings.AppRoutes.Auth.ProjectRevenue, body);
   }
   
   
   getAllProjectRevenue(projectId:number){
-    return this.http.get<any>(`${url}${settings.AppRoutes.Auth.project}/${projectId}/${settings.AppRoutes.Auth.Revenue}`);
+    return this.http.get<any>(`${url}${settings.AppRoutes.Auth.project}/${projectId}/${settings.AppRoutes.Auth.ProjectRevenue}`);
   }
  
 

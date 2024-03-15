@@ -180,6 +180,8 @@ export namespace AppRoutes {
 
         public static readonly Revenue = "revenue"
 
+        public static readonly ProjectRevenue = "project/revenue"
+        
         public static readonly downloadRevenue = "download-revenue"
 
         //--------------------SOW ------------------------------//

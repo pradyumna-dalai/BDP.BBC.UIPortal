@@ -8,7 +8,7 @@ import { ProjectsService } from 'src/app/services/project-serivce/projects.servi
 import { SharedServiceService } from 'src/app/services/project-serivce/shared-service.service';
 interface CostItem {
   id: number;
-  costItem: {
+  revenueItem: {
     costItemId: null,
     name: ''
   }
@@ -66,7 +66,7 @@ export class RevenueComponent {
   addRow() {
     const newCostItem: CostItem = {
       id: this.tableData.length + 1,
-      costItem: {
+      revenueItem: {
         costItemId: null,
         name: ''
       },
@@ -88,7 +88,7 @@ export class RevenueComponent {
 
   onRowEditSave(row: number) {
     const editedItem = this.tableData[row];
-    if (!editedItem.costItem || editedItem.totalCost === null || editedItem.totalCost === undefined) {
+    if (!editedItem.revenueItem || editedItem.totalCost === null || editedItem.totalCost === undefined) {
       this.messageService.add({
         key: 'errorToast',
         severity: 'error',
@@ -97,9 +97,9 @@ export class RevenueComponent {
       });
       return;
     }
-    const selectedCostItem = this.revenueItemDropDownOptions.find(option => option.id === editedItem.costItem.costItemId);
+    const selectedCostItem = this.revenueItemDropDownOptions.find(option => option.id === editedItem.revenueItem.costItemId);
     if (selectedCostItem) {
-      editedItem.costItem.name = selectedCostItem.name;
+      editedItem.revenueItem.name = selectedCostItem.name;
     }
     this.tableData[row].editing = false;
     this.calculateGrandTotalCost();
@@ -144,7 +144,7 @@ export class RevenueComponent {
 
   //-----------------------------------Save Project Other Cost------------------//
   saveProjectsRevenueItem() {
-    const invalidItem = this.tableData.find(item => !item.costItem || item.totalCost === null || item.totalCost === undefined);
+    const invalidItem = this.tableData.find(item => !item.revenueItem || item.totalCost === null || item.totalCost === undefined);
     if (invalidItem) {
       this.messageService.add({
         key: 'errorToast',
@@ -159,17 +159,17 @@ export class RevenueComponent {
     const body = {
       projectId: this.projectIdCLI,
       projectName: this.projectName,
-      grandTotalCost: 927000.00,
-      revenue: this.tableData.map(costItem => ({
-        id: costItem.id,
-        costItem: {
-          id: costItem.costItem.costItemId,
-          name: costItem.costItem.name
+      totalRevenue:   1,
+      revenues: this.tableData.map(revenueItem => ({
+        id: revenueItem.id,
+        revenueItem: {
+          id: revenueItem.revenueItem.costItemId,
+          name: revenueItem.revenueItem.name
         },
-        locationId: costItem.location.id,
-        locationName: costItem.location.name,
-        totalCost: costItem.totalCost,
-        originDestinationCode: costItem.location.originDestinationCode
+        locationId: revenueItem.location.id,
+        locationName: revenueItem.location.name,
+        revenueAmount: this.calculateGrandTotalCost(),
+        originDestinationCode: revenueItem.location.originDestinationCode
       }))
     };
     this.projectService.saveProjectRevenue(body).subscribe({
@@ -199,13 +199,13 @@ export class RevenueComponent {
   getAllProjectRevenueEdit(projId) {
     this.projectService.getAllProjectRevenue(projId).subscribe({
       next: (response: any) => {
-        const otherCosts = response?.data?.otherCosts;
+        const otherCosts = response?.data?.revenues;
         if (Array.isArray(otherCosts)) {
           this.tableData = otherCosts.map((item: any, index: number) => ({
             id:item.id,
-            costItem: {
-              costItemId: item.costItem.id,
-              name: item.costItem.name
+            revenueItem: {
+              costItemId: item.revenueItem.id,
+              name: item.revenueItem.name
             },
             location: {
               id: item.locationId,

@@ -4,10 +4,6 @@
             <h5 style="margin: 0;">Revenue</h5>
         </div>
         <div class="md:col-6" style="display: flex; padding: 0px !important; justify-content: flex-end;">
-            <div class="mr-2 mb-2">
-                <h5 style="margin: 0;padding-top: 8px;padding-right: 30px;">Total : {{ grandTotalCost |
-                    currency }}</h5>
-            </div>
             <div>
                 <button type="submit" (click)="addRow()" pButton pRipple label=" Add " class="mr-2 mb-2"></button>
             </div>
@@ -43,11 +39,11 @@
                         </div>
                     </td>
                     <td>
-                        <span *ngIf="!cost.editing">{{ cost.costItem?.name}}</span>
-                        <p-dropdown *ngIf="cost.editing" [options]="revenueItemDropDownOptions" [(ngModel)]="cost.costItem.costItemId"
-                       optionValue="id" optionLabel="name"
-                        placeholder="Select Revenue Item" [style]="{ 'width':'100%' }" [appendTo]="'body'"
-                        [filter]="true" [showClear]="true"></p-dropdown>
+                        <span *ngIf="!cost.editing">{{ cost.revenueItem?.name}}</span>
+                        <p-dropdown *ngIf="cost.editing" [options]="revenueItemDropDownOptions"
+                            [(ngModel)]="cost.revenueItem.costItemId" optionValue="id" optionLabel="name"
+                            placeholder="Select Revenue Item" [style]="{ 'width':'100%' }" [appendTo]="'body'"
+                            [filter]="true" [showClear]="true"></p-dropdown>
                         <!-- <input *ngIf="cost.editing" pInputText type="text" [(ngModel)]="cost.costItem"
                             placeholder="Enter Cost Item" required> -->
                     </td>
@@ -69,16 +65,16 @@
                     </td>
 
                 </tr>
-            </ng-template >
-            <ng-template >
-            <tr>
-                <td><strong> Total </strong></td>
-                <td></td>
-                <td></td>
-                <td><strong>{{ grandTotalCost | currency }}</strong></td>
-                <td></td>
-            </tr>
-        </ng-template>
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <tr>
+                    <td><strong> Total </strong></td>
+                    <td></td>
+                    <td></td>
+                    <td><strong>{{ grandTotalCost | currency }}</strong></td>
+                    <td></td>
+                </tr>
+            </ng-template>
             <ng-template pTemplate="emptymessage">
                 <tr>
                     <td style="text-align: center;" colspan="5">No Data found.</td>
@@ -87,9 +83,9 @@
         </p-table>
     </div>
     <div class="col-12" style="display: flex;justify-content: flex-end;">
-        <button pButton pRipple type="button" *ngIf="projStatus !='Closed Won' && projStatus !='Close Lost'" label="Save As Draft" (click)="saveProjectsRevenueItem()"
-            class="p-button-outlined mr-2 mb-2"></button>
-            <button type="submit" pButton pRipple label="Submit" [disabled]="true" class="mr-2 mb-2"></button>
+        <button pButton pRipple type="button" *ngIf="projStatus !='Closed Won' && projStatus !='Close Lost'"
+            label="Save As Draft" (click)="saveProjectsRevenueItem()" class="p-button-outlined mr-2 mb-2"></button>
+        <button type="submit" pButton pRipple label="Submit" [disabled]="true" class="mr-2 mb-2"></button>
         <!-- <button type="submit" pButton pRipple label="Continue" (click)="onClickContinue()" class="mr-2 mb-2"></button> -->
     </div>
     <p-toast key="successToast"></p-toast>
