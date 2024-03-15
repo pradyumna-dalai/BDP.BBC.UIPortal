@@ -23,13 +23,6 @@ export class FteComponent {
   locationOptions:any;
   Ftedetails:any;
   editMode: boolean = false;
-  currentPage: number = 1;
-  pageSize: number = 10;
-  sortField: string = ''; // Initial sort field
-  sortOrder: any = 'asc'; // 1 for ascending, -1 for descending
-  totalRecords: any = 10;
-  first: any = 0;
-  rows: any = 10;
   modeTitle: string = 'Add';
   searchTimeout: number;
   isSearchClear:boolean =false;
@@ -128,17 +121,12 @@ export class FteComponent {
     }
   }
   clear(table: Table) {
-    table.reset(); 
+    table.clear(); 
 
-    this.sortField = '';
-    this.sortOrder = 1;
-  
     this.clearSearchInput();
   
     this.fetchAllFteDetails();
-  
-    this.currentPage = 1;
-    this.pageSize = 10;
+
   }
 
   getSeverity(status: boolean): string {
@@ -221,17 +209,10 @@ fetchLocation(countryId: any) {
 /**getFTE Details */
 
 fetchAllFteDetails(keyword: string = '') {
-  const params = {
-    pageNo: isNaN(this.currentPage) ? 0 : this.currentPage - 1,
-    pageSize: isNaN(this.pageSize) ? 10 : this.pageSize,
-    sortBy: this.sortField,
-    sortDir: this.sortOrder,
-    keyword: keyword
-  };
-  this.masterDataService.getAllFteDetails(params).subscribe((res: any) => {
+ 
+  this.masterDataService.getAllFteDetails().subscribe((res: any) => {
     if (res?.message === 'success') {
-      this.Ftedetails = res.data.fte;
-      this.totalRecords = res?.data.totalElements;
+      this.Ftedetails = res.data;
     } else {
       // console.error('Failed to fetch Fte details:', res);
     }
@@ -343,7 +324,6 @@ updateLocationDetails() {
         (response) => {
           this.displayCreateFteDialog = false;
           this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Fte added successfully!' });
-          this.totalRecords += 1;
           this.fetchAllFteDetails();
         },
         (error) => {
@@ -367,23 +347,7 @@ updateLocationDetails() {
     this.displayCreateFteDialog = false;
   }
 
-  onPageChange(event: any) {
-    this.currentPage = event.page + 1;
-    this.pageSize = event.rows;
-    this.fetchAllFteDetails();
-  }
-
-  onSort(event: any) {
-    const newSortField = event.field;
-    const newSortOrder = event.order === 1 ? 'asc' : 'desc';
-
-    if (newSortField !== this.sortField || newSortOrder !== this.sortOrder) {
-      this.sortField = newSortField;
-      this.sortOrder = newSortOrder;
-      this.currentPage = 1;
-      this.fetchAllFteDetails();
-    }
-  }
+ 
   downloadExcel(event: Event) {
     event.preventDefault();
 

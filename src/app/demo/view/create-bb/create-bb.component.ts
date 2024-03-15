@@ -135,6 +135,7 @@ export class CreateBbComponent {
     this.getModeOfTransport();
     const id = this.route.snapshot.paramMap.get('id');
     if (id !== null && id !== undefined) {
+      this.blockId=id;
       this.breadcrumbService.setItems([
         {
           label: 'Building Blocks',
@@ -983,7 +984,7 @@ onScopeSelectbyid(body) {
           key: 'successToast',
           severity: 'success',
           summary: 'Success!',
-          detail: 'New Building block is saved successfully.'
+          detail: 'Building block is saved successfully.'
         });
         setTimeout(() => {
           this.router.navigateByUrl('/building-block');
@@ -1123,10 +1124,15 @@ onScopeSelectbyid(body) {
 
             this.createBuildingBlockservice.operationCardUploadExcel(this.selectedFile, scopeId, entityId).subscribe(
                 (res: any) => {
-                    if (res?.message === 'Excel Upload Successfully') {
+                    if (res?.message === 'success') {
                         this.fileNameOC = "";
                         this.selectedFile = null;
                         this.showSuccessMessage('File uploaded successfully!');
+
+                        const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+                        if (fileInput) {
+                          fileInput.value = '';
+                        }
                     } else {
                         // Handle other responses if needed
                     }

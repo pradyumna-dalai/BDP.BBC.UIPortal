@@ -33,7 +33,7 @@ export class LocationsComponent {
   pageSize: number = 10;
   sortField: string = ''; // Initial sort field
   sortOrder: any = 'asc'; // 1 for ascending, -1 for descending
-  totalRecords: any = 10;
+  // totalRecords: any = 10;
   first: any = 0;
   rows: any = 10;
   modeTitle: string = 'Add';
@@ -101,17 +101,11 @@ findRegionId(event){
   //--------------------------fetch location-------------------------------//
 
   fetchAllLocationDetails(keyword: string = ''): void{
-    const params = {
-      pageNo: isNaN(this.currentPage) ? 0 : this.currentPage - 1,
-      pageSize: isNaN(this.pageSize) ? 10 : this.pageSize,
-      sortBy: this.sortField,
-      sortDir: this.sortOrder,
-      keyword: keyword // Add the keyword parameter
-    };
-    this.masterDataService.getAllLocationDetails(params).subscribe((res: any) => {
+   
+    this.masterDataService.getAllLocationDetails().subscribe((res: any) => {
       if (res?.message === 'success') {
-        this.locationdetails = res.data.location;
-        this.totalRecords = res?.data.totalElements;
+        this.locationdetails = res.data;
+        // this.totalRecords = res?.data.totalElements;
       } else {
       // error
       }
@@ -147,7 +141,7 @@ findRegionId(event){
     }
   }
   clear(table: Table) {
-    table.reset(); 
+    table.clear(); 
 
     this.sortField = '';
     this.sortOrder = 1;
@@ -156,8 +150,7 @@ findRegionId(event){
   
     this.fetchAllLocationDetails();
   
-    this.currentPage = 1;
-    this.pageSize = 10;
+    
   }
 
   clearSearchInput(): void {
@@ -263,7 +256,7 @@ findRegionId(event){
           (response) => {
             this.displayCreateLocationDialog = false;
             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Location added successfully!' });
-            this.totalRecords += 1;
+            // this.totalRecords += 1;
             this.fetchAllLocationDetails();
             this.processing = false; 
           },

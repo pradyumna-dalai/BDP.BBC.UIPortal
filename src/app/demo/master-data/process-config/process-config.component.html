@@ -31,7 +31,7 @@
                     [class.mr-2]="editModes[i]" (click)="editModes[i] ? saveProcess(rowData) : editProcess()" [icon]="'pi pi-' + (editModes[i] ? 'check' : 'pencil')"></button>
                 </span>&nbsp;
                 <span style="cursor: pointer; display: inline-block;">
-                <button pButton pRipple type="button" class="p-button-rounded p-button-text" icon="pi pi-{{ editModes[i] ? 'times' : 'plus' }}" *ngIf="!editModes[i]" (click)="addNewRow(i)"></button>
+                <!-- <button pButton pRipple type="button" class="p-button-rounded p-button-text" icon="pi pi-{{ editModes[i] ? 'times' : 'plus' }}" *ngIf="!editModes[i]" (click)="addNewRow(i)"></button> -->
                 <button pButton pRipple type="button"  icon="pi pi-times" *ngIf="editModes[i]"    class="p-button-rounded p-button-text p-button-danger" (click)="toggleEditMode(i)"></button>
                 </span>
             </td>
@@ -170,3 +170,5 @@
 
     </div>
 </p-dialog>
+<p-toast key="successToast" position="top-right"></p-toast>
+<p-toast key="errorToast" position="top-right"></p-toast>

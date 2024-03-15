@@ -521,6 +521,7 @@ export class CreateProjectComponent implements OnInit {
       (res) => {
         //-------------for shareing data----//
         this.projectService.setDraftData(res);
+        this.projinfoID = res?.data?.id;
         this.projInfo= res.data.projectInformation.id;
         //--------------------end-------------//
         const savedProjectId = res.data.id;
@@ -1247,10 +1248,10 @@ populateForm(): void {
   }
   onTabChange(event) {
     // Check which tab is active
-    
+    this.activeIndex = event.index;
     if (event.index === 1) 
     { 
-       this.buildingBlockComponent.ngOnInit();
+      //  this.buildingBlockComponent.ngOnInit();
     }
     if (event.index === 2) 
     { 

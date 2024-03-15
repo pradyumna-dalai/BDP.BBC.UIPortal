@@ -4,7 +4,7 @@
             <span class="p-input-icon-right">
                 <i class="pi pi-search"></i>
                 <input pInputText type="text" 
-                    placeholder="Search Keyword" id="yourInputId" (input)="onGlobalSearch($event.target.value)"/>
+                    placeholder="Search Keyword" id="yourInputId" (input)="dt2.filterGlobal($event.target.value, 'contains')"/>
             </span>
         </div>
         <div class="col-6" style="display: flex;justify-content: flex-end;">
@@ -19,7 +19,12 @@
 
     <p-table #dt2 [value]="Ftedetails"  dataKey="id" responsiveLayout="scroll" scrollHeight="530px" styleClass="p-datatable-gridlines" [resizableColumns]="true"
     scrollDirection="both" 
-    [globalFilterFields]="['status', 'region.name', 'country.name.','location.name','createdBy','updatedBy','updatedDate','createdDate']" (onPage)="onPageChange($event)" (onSort)="onSort($event)" >
+    [paginator]="true"
+    [rows]="10"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [globalFilterFields]="['status', 'region.name', 'country.name','location.name','createdBy','updatedBy','updatedDate','createdDate']" >
         <ng-template pTemplate="header">
             <tr>
             
@@ -82,9 +87,6 @@
             </tr>
         </ng-template>
     </p-table>
-    <p-paginator (onPageChange)="onPageChange($event)" [rows]="10" [totalRecords]="totalRecords"
-    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true"
-    [rowsPerPageOptions]="[10,25,50]" ></p-paginator>
 </div>
 
 <p-dialog header="Header" [(visible)]="displayCreateFteDialog" [modal]="true" [style]="{ width: '50rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
@@ -142,7 +144,7 @@
             </div> -->
             <div class="field col-12 md:col-6">
                 <label>FTE/Year (USD)<span class="required">*</span></label>
-                <input id="name" type="number" (input)="limitTo9Digits($event)"  placeholder="FTE/Year " formControlName="ftf_year" 
+                <input id="name" type="text" (input)="limitTo9Digits($event)"  placeholder="FTE/Year " formControlName="ftf_year" 
                     class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
                     <div *ngIf="FteForm.get('ftf_year')?.hasError('required') && FteForm.get('ftf_year')?.touched"
                     class="error-message">

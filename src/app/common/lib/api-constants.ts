@@ -174,6 +174,8 @@ export namespace AppRoutes {
 
         public static readonly saveCostItem = "costItem"
 
+        public static readonly downloadCost = "download-costitem"
+
         //--------------------Revenue Item Master Data Managememt---------------------------//
 
         public static readonly getAllRevenue = "revenue"
@@ -182,6 +184,9 @@ export namespace AppRoutes {
 
         public static readonly downloadRevenue = "download-revenue"
 
+        //--------------------SOW ------------------------------//
+
+        public static readonly getSowInformation = "project-block-sow";
 }
 
 }
