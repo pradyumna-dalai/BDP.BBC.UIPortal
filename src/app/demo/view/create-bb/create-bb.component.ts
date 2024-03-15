@@ -496,9 +496,14 @@ export class CreateBbComponent {
 
   showDialogScopingCard() {
     this.visibleSC = true;
+    this.showUploaderror = false;
+    this.onCancelClickSC();
+
   }
   showDialogCommercialCard() {
     this.visibleCC = true;
+    this.showUploaderror = false;
+    this.onCancelClickCC();
   }
   confirm() {
     this.confirmationService.confirm({
@@ -1065,6 +1070,9 @@ onScopeSelectbyid(body) {
   }
   showDialogOperationCard() {
     this.visibleOperationBox = true;
+    this.showUploaderror = false;
+    this.onRemoveOperationClick();
+
   }
 
   onOperarationCancelClick() {
