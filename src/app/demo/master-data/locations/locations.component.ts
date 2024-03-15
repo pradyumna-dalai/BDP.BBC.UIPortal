@@ -248,6 +248,12 @@ findRegionId(event){
           },
           (error) => {
             this.processing = false; 
+            if (error.status === 400 && error.error?.message === 'Fill required field(s)') {
+              const errorMessage = error.error.data?.join(', ') || 'Error in adding location';
+              this.messageService.add({ severity: 'error', summary: 'Error', detail: errorMessage });
+            } else {
+              this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error in adding location' });
+            }
           }
         );
       } else {

@@ -98,7 +98,6 @@ export class ScopeComponent {
         body['id'] = this.selectedScope.id;
         this.masterDataService.updateScopeDetails(body).subscribe(
           (response) => {
-            console.log(response);
             this.displayCreateScopeDialog = false;
             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Scope updated successfully!' });
             this.editMode = false;
@@ -114,7 +113,6 @@ export class ScopeComponent {
         this.modeTitle = 'Add';
         this.masterDataService.addScopeDetails(body).subscribe(
           (response) => {
-            console.log(response);
             this.displayCreateScopeDialog = false;
             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Scope added successfully!' });
             this.fetchProductScope();
