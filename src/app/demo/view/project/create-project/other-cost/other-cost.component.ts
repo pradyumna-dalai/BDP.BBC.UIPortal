@@ -168,8 +168,8 @@ export class OtherCostComponent {
           id: costItem.costItem.costItemId,
           name: costItem.costItem.name
         },
-        locationId: costItem.location.id,
-        locationName: costItem.location.name,
+        locationId: costItem.location.id || '',
+        locationName: costItem.location.name  || '',
         totalCost: costItem.totalCost,
         originDestinationCode: costItem.location.originDestinationCode
       }))

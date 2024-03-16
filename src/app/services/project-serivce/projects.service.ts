@@ -258,7 +258,7 @@ getAllOtherCostLocation(projectId:number){
   
   
   getAllProjectRevenue(projectId:number){
-    return this.http.get<any>(`${url}${settings.AppRoutes.Auth.project}/${projectId}/${settings.AppRoutes.Auth.ProjectRevenue}`);
+    return this.http.get<any>(`${url}${settings.AppRoutes.Auth.project}/${projectId}/${settings.AppRoutes.Auth.Revenue}`);
   }
  
 

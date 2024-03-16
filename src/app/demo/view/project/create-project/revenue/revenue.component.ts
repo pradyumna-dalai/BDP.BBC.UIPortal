@@ -166,9 +166,9 @@ export class RevenueComponent {
           id: revenueItem.revenueItem.costItemId,
           name: revenueItem.revenueItem.name
         },
-        locationId: revenueItem.location.id,
-        locationName: revenueItem.location.name,
-        revenueAmount: this.calculateGrandTotalCost(),
+        locationId: revenueItem.location.id|| '',
+        locationName: revenueItem.location.name|| '',
+        revenueAmount: revenueItem.totalCost,
         originDestinationCode: revenueItem.location.originDestinationCode
       }))
     };
@@ -185,12 +185,12 @@ export class RevenueComponent {
 
       },
       error: (error) => {
-        // this.messageService.add({
-        //   key: 'errorToast',
-        //   severity: 'error',
-        //   summary: 'Error!',
-        //   detail: 'Failed to Save Project Revenue.'
-        // });
+        this.messageService.add({
+          key: 'errorToast',
+          severity: 'error',
+          summary: 'Error!',
+          detail: 'Failed to Save Project Revenue.'
+        });
       }
     });
   }
@@ -208,11 +208,11 @@ export class RevenueComponent {
               name: item.revenueItem.name
             },
             location: {
-              id: item.locationId,
-              name: item.locationName,
+              id: item?.locationId,
+              name: item?.locationName,
               originDestinationCode: item.originDestinationCode
             },
-            totalCost: item.totalCost,
+            totalCost: item.revenueAmount,
             originDestination: item.originDestinationCode === 0 ? 'Origin' : item.originDestinationCode === 1 ? 'Destination' : 'Origin/Destination',
             editing: false
           }));
