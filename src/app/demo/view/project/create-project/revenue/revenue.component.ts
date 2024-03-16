@@ -166,10 +166,10 @@ export class RevenueComponent {
           id: revenueItem.revenueItem.costItemId,
           name: revenueItem.revenueItem.name
         },
-        locationId: revenueItem.location.id|| '',
-        locationName: revenueItem.location.name|| '',
+        locationId: revenueItem?.location?.id|| '',
+        locationName: revenueItem?.location?.name|| '',
         revenueAmount: revenueItem.totalCost,
-        originDestinationCode: revenueItem.location.originDestinationCode
+        originDestinationCode: revenueItem?.location?.originDestinationCode|| ''
       }))
     };
     this.projectService.saveProjectRevenue(body).subscribe({
@@ -210,7 +210,7 @@ export class RevenueComponent {
             location: {
               id: item?.locationId,
               name: item?.locationName,
-              originDestinationCode: item.originDestinationCode
+              originDestinationCode: item?.originDestinationCode
             },
             totalCost: item.revenueAmount,
             originDestination: item.originDestinationCode === 0 ? 'Origin' : item.originDestinationCode === 1 ? 'Destination' : 'Origin/Destination',
