@@ -168,10 +168,10 @@ export class OtherCostComponent {
           id: costItem.costItem.costItemId,
           name: costItem.costItem.name
         },
-        locationId: costItem.location.id || '',
-        locationName: costItem.location.name  || '',
+        locationId: costItem?.location?.id || '',
+        locationName: costItem?.location?.name  || '',
         totalCost: costItem.totalCost,
-        originDestinationCode: costItem.location.originDestinationCode
+        originDestinationCode: costItem?.location?.originDestinationCode || ''
       }))
     };
     this.projectService.saveProjectOtherCost(body).subscribe({
@@ -210,9 +210,9 @@ export class OtherCostComponent {
               name: item.costItem.name
             },
             location: {
-              id: item.locationId,
-              name: item.locationName,
-              originDestinationCode: item.originDestinationCode
+              id: item?.locationId,
+              name: item?.locationName,
+              originDestinationCode: item?.originDestinationCode
             },
             totalCost: item.totalCost,
             originDestination: item.originDestinationCode === 0 ? 'Origin' : item.originDestinationCode === 1 ? 'Destination' : 'Origin/Destination',
