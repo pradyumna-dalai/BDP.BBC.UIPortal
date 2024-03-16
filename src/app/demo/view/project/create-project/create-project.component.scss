@@ -151,3 +151,11 @@ padding: 0 !important;
 .p-calendar .p-datepicker {
   min-width: 0% !important;
 }
+
+.p-dropdown-disabled {
+  opacity: 0.5; /* Reduce opacity to make it appear faded */
+  pointer-events: none; /* Disable pointer events to prevent interaction */
+  cursor: not-allowed; /* Change cursor to 'not allowed' */
+  background-color: #f0f0f0; /* Change background color to indicate disabled state */
+  color: #999; /* Change text color to indicate disabled state */
+}

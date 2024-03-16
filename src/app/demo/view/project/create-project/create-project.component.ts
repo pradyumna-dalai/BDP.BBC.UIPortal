@@ -53,7 +53,9 @@ export class CreateProjectComponent implements OnInit {
   projectStatusOptions = [];
   regionOptions = [];
   IVOptions = [];
-  projectStageOptions = [];
+  projectStageOptions: any[] = [];
+  projectStageDisabled: boolean = true; 
+  projectStatusDisabled: boolean = true; 
   opportunityManagerOptions = [];
   companyOptions: any[] = [];
   opportunityNameOptions: any[] = [];
@@ -223,15 +225,13 @@ export class CreateProjectComponent implements OnInit {
       industryVertical: [''],
       region: [''],
       projectName: ['', Validators.required],
-      projectStage: [''],
+      projectStage: ['', Validators.required], // Make projectStage required
       projectStatus: [''],
       opportunityManger: [''],
       selectedDateRange: [''],
       designNotes: ['', [Validators.maxLength(1000)]],
       impleNotes: ['', [Validators.maxLength(1000)]]
-
-
-    });
+  });
     this.fetchActiveUom();
     this.getRegion();
     this.getCompany();
@@ -357,27 +357,48 @@ export class CreateProjectComponent implements OnInit {
   }
   // ---------------get Project Stage------------------------//
   getProjectStage() {
-    this.projectStageOptions = [];
     this.MasterTableservice.getProjectStage().subscribe((res: any) => {
-      if (res?.message == "success") {
-        this.projectStageOptions = res?.data;
-      } else {
-        this.projectStageOptions = [];
-      }
-    })
-  }
-  // ---------------get project status------------------------//
-  OnStageSelectProjectstatus(event) {
-    // this.projectStatusOptions = [];
+        if (res?.message == "success") {
+            this.projectStageOptions = res?.data;
+
+            // Find the "Tender" option and set it as default if not already selected
+            const tenderOption = this.projectStageOptions.find(option => option.name === 'Tender');
+            if (tenderOption) {
+                const tenderId = tenderOption.id;
+                if (!this.myForm.get('projectStage').value) {
+                    this.myForm.get('projectStage').patchValue(tenderId);
+                    // Trigger the event to fetch project status options for the selected project stage
+                    this.OnStageSelectProjectstatus({ value: tenderId });
+                }
+                this.projectStageDisabled = true;
+            }
+        } else {
+            this.projectStageOptions = [];
+        }
+    });
+}
+
+// Fetch project status options based on selected project stage
+OnStageSelectProjectstatus(event) {
     const selectedStageId = event.value;
     this.MasterTableservice.getProjectStatus(selectedStageId).subscribe((res: any) => {
-      if (res?.message == "success") {
-        this.projectStatusOptions = res?.data;
-      } else {
-        this.projectStatusOptions = [];
-      }
-    })
-  }
+        if (res?.message == "success") {
+            this.projectStatusOptions = res?.data;
+
+            // Find the "Solution Draft" option and set it as default if not already selected
+            const solutionDraftOption = this.projectStatusOptions.find(option => option.name === 'Solution Draft');
+            if (solutionDraftOption) {
+                const solutionDraftId = solutionDraftOption.id;
+                if (!this.myForm.get('projectStatus').value) {
+                    this.myForm.get('projectStatus').patchValue(solutionDraftId);
+                }
+                this.projectStatusDisabled = true;
+            }
+        } else {
+            this.projectStatusOptions = [];
+        }
+    });
+}
   // ---------------get Opportunity Manager------------------------//
   getOpportunityManger() {
     this.projectStageOptions = [];
