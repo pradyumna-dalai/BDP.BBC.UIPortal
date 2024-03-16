@@ -61,19 +61,29 @@
                         </div>
                     </div>
                     <hr style="margin-top: 1px;margin-bottom: 22px;color: gray;background-color: #d9d2d2;height: 1px;border: none;">
-                    <div>
+                    <!-- <div>
                         <h5 style="margin-top: 12px;">Project Scope</h5>
+                    </div> -->
+                    <div style="display: flex;">
+                        <div class="md:col-6" style="padding: 0px !important">
+                            <h5 style="margin: 0;">Project Scope</h5>
+                        </div>
+                        <div class="md:col-6" style="display: flex; padding: 0px !important;
+                        justify-content: flex-end;">
+                          <div style="padding: 5px;"><button pButton pRipple type="button" (click)="isExpanded = !isExpanded">
+                            {{ isExpanded ? 'Collapse All' : 'Expand All' }}</button></div>                    
+                        </div>
                     </div>
                     <div>
                         <p-accordion>
-                            <p-accordionTab *ngFor="let block of getSavedBlockslist?.buildingBlocks">
+                            <p-accordionTab *ngFor="let block of getSavedBlockslist?.buildingBlocks" [selected]="isExpanded">
                                 <p-header>Service: {{ block.buildingBlockName }}</p-header>
                                 <div *ngIf="block?.serviceDescription"  style="display: flex;align-items: baseline">
                                     <b style="display: inline;">Service Description:</b>
     <p style="display: inline; margin-left: 5px;" [innerHTML]="block.serviceDescription">{{ block.serviceDescription }}</p>
                                 </div>
                                 <br>
-                                <p-table *ngIf="block.processes && block.processes.length > 0" [value]="getSavedBlockslist?.buildingBlocks" dataKey="buildingBlockId" editMode="row"
+                                <p-table *ngIf="block.processes && block.processes.length > 0"[value]="block.processes" dataKey="processId" editMode="row"
                                     [tableStyle]="{'min-width': '50rem'}">
                                     <ng-template pTemplate="header">
                                         <tr>
@@ -84,7 +94,7 @@
                                             <th style="width:5%">Remarks</th>
                                         </tr>
                                     </ng-template>
-                                    <ng-template pTemplate="body" let-block>
+                                    <ng-template pTemplate="body" let-process>
                                         <ng-container *ngFor="let process of block?.processes; let i = index">
                                             <tr>
                                                 <!-- <td *ngIf="i === 0" [attr.rowspan]="block.processes.length">{{block?.buildingBlockName}}</td>
