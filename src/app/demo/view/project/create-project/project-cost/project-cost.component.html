@@ -1,4 +1,4 @@
-<div *ngIf="projectInfo!=null">
+<div>
 
     <div style="display: flex;">
         <div class="md:col-6" style="padding: 0px !important">
@@ -11,193 +11,187 @@
         </div>
     </div>
     <hr style="margin-top: 1px;margin-bottom: 22px;color: gray;background-color: #d9d2d2;height: 1px;border: none;">
-    <div id="pdf-content">
-        <div class="activeToggel">
-            <div style="margin-left: 12px;">
-                <button class="toggleButton" type="button" [style.border-radius]="originButtonBorderRadius"
-                    [style.background-color]="originButtonColor" [style.border]="originButtonBorder"
-                    (click)="shoSOWSection()">SOW</button>
-                <button class="toggleButton" type="button" [style.border-radius]="destinationButtonBorderRadius"
-                    [style.background-color]="destinationButtonColor" [style.border]="destinationButtonBorder"
-                    (click)="showplStatement()">P & L Statement</button>
-            </div>
-        </div>
-        <div>
-            <h5 style="margin-top: 12px;">Project Information</h5>
-        </div>
-        <div class="p-fluid grid">
-            <div class="col-12 md:col-4">
-                <label><b>Company Name</b></label><br>
-                <label>{{projectInfo?.company?.name}}</label>
-            </div>
-            <div class="col-12 md:col-4">
-                <label><b>Company Code</b></label><br>
-                <label>{{projectInfo?.customerCode}}</label>
-            </div>
-            <div class="col-12 md:col-4">
-                <label><b>Industry Vertical</b></label><br>
-                <label>{{projectInfo?.industryVertical?.name}}</label>
-            </div>
-            <div class="col-12 md:col-4">
-                <label><b>Region</b></label><br>
-                <label>{{projectInfo?.region?.name}}</label>
-            </div>
-            <div class="col-12 md:col-4">
-                <label><b>Opportunity Name</b></label><br>
-                <label>{{projectInfo?.opportunityName?.name}}
-                </label>
-            </div>
-            <div class="col-12 md:col-4">
-                <label><b>Opportunity Manager</b></label><br>
-                <label>{{ getOpportunityManagerNames(projectInfo?.opportunityManager) }}</label>
-            </div>
-            <div class="col-12 md:col-4">
-                <label><b>Project Stage</b></label><br>
-                <label>{{projectInfo?.projectStage?.name}}
-                </label>
-            </div>
-            <div class="col-12 md:col-4">
-                <label><b>Project Status</b></label><br>
-                <label>{{projectInfo?.projectStatus?.name}}
-                </label>
-            </div>
-            <div class="col-12 md:col-4">
-                <label><b>Start Date</b></label><br>
-                <label>{{projectInfo?.startDate | date:'dd MMM yyyy'}}
-                </label>
-            </div>
-        </div>
-        <hr style="margin-top: 1px;margin-bottom: 22px;color: gray;background-color: #d9d2d2;height: 1px;border: none;">
-        <div>
-            <h5 style="margin-top: 12px;">Project Scope</h5>
-        </div>
-        <!-- <div class="p-fluid grid">
-            <div class="col-12 md:col-4">
-                <label><b>Mode Of Transport:</b></label>&nbsp;
-                <label>Ocean & Air</label>
-            </div>
-        </div> -->
-        <div>
-            <p-table [value]="getSavedBlockslist?.buildingBlocks" dataKey="buildingBlockId" editMode="row"
-                [tableStyle]="{'min-width': '50rem'}">
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th style="width:15%">Service</th>
-                        <th style="width:20%">Service Description</th>
-                        <th style="width:20%">Service Steps</th>
-                        <th style="width:15%">Configuration</th>
-                        <th style="width:15%">Location</th>
-                        <th style="width:10%">Origin/Destination</th>
-                        <th style="width:5%">Remarks</th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-block>
-                    <ng-container *ngFor="let process of block?.processes; let i = index">
-                        <tr>
-                            <td *ngIf="i === 0" [attr.rowspan]="block.processes.length">{{block?.buildingBlockName}}</td>
-                            <td *ngIf="i === 0" [attr.rowspan]="block.processes.length"
-                                [innerHTML]="block.serviceDescription"></td>
-                            <td>{{process.processNumber}}. {{process.processName}}</td>
-                            <td>
-                                <ng-container *ngIf="process?.originService || process?.destinationService">
-                                    <ng-container *ngIf="process?.originService">
-                                        <ng-container *ngFor="let config of process?.originService?.configurations">
-                                            <ng-container *ngFor="let location of config?.locations">
-                        <tr>
-                            <td>{{config?.configurableName}}</td>
-                        </tr>
-                    </ng-container>
-                    </ng-container>
-                    </ng-container>
-                    <ng-container *ngIf="process?.destinationService">
-                        <ng-container *ngFor="let config of process?.destinationService?.configurations">
-                            <ng-container *ngFor="let location of config?.locations">
-                                <tr>
-                                    <td>{{config?.configurableName}}</td>
-                                </tr>
-                            </ng-container>
-                        </ng-container>
-                    </ng-container>
-                    </ng-container>
-                    </td>
-                    <td>
-                        <ng-container *ngIf="process?.originService || process?.destinationService">
-                            <ng-container *ngIf="process?.originService">
-                                <ng-container *ngFor="let config of process?.originService?.configurations">
-                                    <ng-container *ngFor="let location of config.locations">
+        <p-tabView>
+            <p-tabPanel header="Sow">
+                <div id="pdf-content">
+                <div *ngIf="projectInfo!=null">
+                    <div>
+                        <h5 style="margin-top: 12px;">Project Information</h5>
+                    </div>
+                    <div class="p-fluid grid">
+                        <div class="col-12 md:col-4">
+                            <label><b>Company Name</b></label><br>
+                            <label>{{projectInfo?.company?.name}}</label>
+                        </div>
+                        <div class="col-12 md:col-4">
+                            <label><b>Company Code</b></label><br>
+                            <label>{{projectInfo?.customerCode}}</label>
+                        </div>
+                        <div class="col-12 md:col-4">
+                            <label><b>Industry Vertical</b></label><br>
+                            <label>{{projectInfo?.industryVertical?.name}}</label>
+                        </div>
+                        <div class="col-12 md:col-4">
+                            <label><b>Region</b></label><br>
+                            <label>{{projectInfo?.region?.name}}</label>
+                        </div>
+                        <div class="col-12 md:col-4">
+                            <label><b>Opportunity Name</b></label><br>
+                            <label>{{projectInfo?.opportunityName?.name}}
+                            </label>
+                        </div>
+                        <div class="col-12 md:col-4">
+                            <label><b>Opportunity Manager</b></label><br>
+                            <label>{{ getOpportunityManagerNames(projectInfo?.opportunityManager) }}</label>
+                        </div>
+                        <div class="col-12 md:col-4">
+                            <label><b>Project Stage</b></label><br>
+                            <label>{{projectInfo?.projectStage?.name}}
+                            </label>
+                        </div>
+                        <div class="col-12 md:col-4">
+                            <label><b>Project Status</b></label><br>
+                            <label>{{projectInfo?.projectStatus?.name}}
+                            </label>
+                        </div>
+                        <div class="col-12 md:col-4">
+                            <label><b>Start Date</b></label><br>
+                            <label>{{projectInfo?.startDate | date:'dd MMM yyyy'}}
+                            </label>
+                        </div>
+                    </div>
+                    <hr style="margin-top: 1px;margin-bottom: 22px;color: gray;background-color: #d9d2d2;height: 1px;border: none;">
+                    <!-- <div>
+                        <h5 style="margin-top: 12px;">Project Scope</h5>
+                    </div> -->
+                    <div style="display: flex;">
+                        <div class="md:col-6" style="padding: 0px !important">
+                            <h5 style="margin: 0;">Project Scope</h5>
+                        </div>
+                        <div class="md:col-6" style="display: flex; padding: 0px !important;
+                        justify-content: flex-end;">
+                          <div style="padding: 5px;"><button pButton pRipple type="button" (click)="isExpanded = !isExpanded">
+                            {{ isExpanded ? 'Collapse All' : 'Expand All' }}</button></div>                    
+                        </div>
+                    </div>
+                    <div>
+                        <p-accordion>
+                            <p-accordionTab *ngFor="let block of getSavedBlockslist?.buildingBlocks" [selected]="isExpanded">
+                                <p-header>Service: {{ block.buildingBlockName }}</p-header>
+                                <div *ngIf="block?.serviceDescription"  style="display: flex;align-items: baseline">
+                                    <b style="display: inline;">Service Description:</b>
+    <p style="display: inline; margin-left: 5px;" [innerHTML]="block.serviceDescription">{{ block.serviceDescription }}</p>
+                                </div>
+                                <br>
+                                <p-table *ngIf="block.processes && block.processes.length > 0"[value]="block.processes" dataKey="processId" editMode="row"
+                                    [tableStyle]="{'min-width': '50rem'}">
+                                    <ng-template pTemplate="header">
                                         <tr>
-                                            <td>{{location?.locationName}}</td>
+                                            <th style="width:20%">Service Steps</th>
+                                            <th style="width:15%">Configuration</th>
+                                            <th style="width:15%">Location</th>
+                                            <th style="width:10%">Origin/Destination</th>
+                                            <th style="width:5%">Remarks</th>
                                         </tr>
-                                    </ng-container>
-                                </ng-container>
-                            </ng-container>
-                            <ng-container *ngIf="process?.destinationService">
-                                <ng-container *ngFor="let config of process?.destinationService?.configurations">
-                                    <ng-container *ngFor="let location of config.locations">
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-process>
+                                        <ng-container *ngFor="let process of block?.processes; let i = index">
+                                            <tr>
+                                                <!-- <td *ngIf="i === 0" [attr.rowspan]="block.processes.length">{{block?.buildingBlockName}}</td>
+                                                <td *ngIf="i === 0" [attr.rowspan]="block.processes.length"
+                                                    [innerHTML]="block.serviceDescription"></td> -->
+                                                <td>{{process.processNumber}}. {{process.processName}}</td>
+                                                <td>
+                                                    <ng-container *ngIf="process?.originService || process?.destinationService">
+                                                        <ng-container *ngIf="process?.originService">
+                                                            <ng-container *ngFor="let config of process?.originService?.configurations">
+                                                                <ng-container *ngFor="let location of config?.locations">
+                                            <tr>
+                                                <td>{{config?.configurableName}}</td>
+                                            </tr>
+                                        </ng-container>
+                                        </ng-container>
+                                        </ng-container>
+                                        <ng-container *ngIf="process?.destinationService">
+                                            <ng-container *ngFor="let config of process?.destinationService?.configurations">
+                                                <ng-container *ngFor="let location of config?.locations">
+                                                    <tr>
+                                                        <td>{{config?.configurableName}}</td>
+                                                    </tr>
+                                                </ng-container>
+                                            </ng-container>
+                                        </ng-container>
+                                        </ng-container>
+                                        </td>
+                                        <td>
+                                            <ng-container *ngIf="process?.originService || process?.destinationService">
+                                                <ng-container *ngIf="process?.originService">
+                                                    <ng-container *ngFor="let config of process?.originService?.configurations">
+                                                        <ng-container *ngFor="let location of config.locations">
+                                                            <tr>
+                                                                <td>{{location?.locationName}}</td>
+                                                            </tr>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                </ng-container>
+                                                <ng-container *ngIf="process?.destinationService">
+                                                    <ng-container *ngFor="let config of process?.destinationService?.configurations">
+                                                        <ng-container *ngFor="let location of config.locations">
+                                                            <tr>
+                                                                <td>{{location?.locationName}}</td>
+                                                            </tr>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </ng-container>
+                                        </td>
+                                        <td>
+                                            <ng-container *ngIf="process?.originService">
+                                                <ng-container *ngFor="let config of process?.originService?.configurations">
+                                                    <ng-container *ngFor="let location of config.locations">
+                                                        <tr>
+                                                            <td>Origin</td>
+                                                        </tr>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </ng-container>
+                                            <ng-container *ngIf="process?.destinationService">
+                                                <ng-container *ngFor="let config of process?.destinationService?.configurations">
+                                                    <ng-container *ngFor="let location of config.locations">
+                                                        <tr>
+                                                            <td>Destination</td>
+                                                        </tr>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </ng-container>
+                                        </td>
+                                        <td>NA</td>
+                                        </tr>
+                                        </ng-container>
+                                    </ng-template>
+                                    <ng-template pTemplate="emptymessage">
                                         <tr>
-                                            <td>{{location?.locationName}}</td>
+                                            <td style="text-align: center;" colspan="7">No Data found.</td>
                                         </tr>
-                                    </ng-container>
-                                </ng-container>
-                            </ng-container>
-                        </ng-container>
-                    </td>
-                    <td>
-                        <ng-container *ngIf="process?.originService">
-                            <ng-container *ngFor="let config of process?.originService?.configurations">
-                                <ng-container *ngFor="let location of config.locations">
-                                    <tr>
-                                        <td>Origin</td>
-                                    </tr>
-                                </ng-container>
-                            </ng-container>
-                        </ng-container>
-                        <ng-container *ngIf="process?.destinationService">
-                            <ng-container *ngFor="let config of process?.destinationService?.configurations">
-                                <ng-container *ngFor="let location of config.locations">
-                                    <tr>
-                                        <td>Destination</td>
-                                    </tr>
-                                </ng-container>
-                            </ng-container>
-                        </ng-container>
-                    </td>
-                    <td>NA</td>
-                    </tr>
-                    </ng-container>
-                </ng-template>
-                <ng-template pTemplate="emptymessage">
-                    <tr>
-                        <td style="text-align: center;" colspan="7">No Data found.</td>
-                    </tr>
-                </ng-template>
-            </p-table>
+                                    </ng-template>
+                                </p-table>
+                            </p-accordionTab>
+                        </p-accordion>
 
-
-
-        </div>
-
-        <hr style="margin-top: 1px;margin-bottom: 22px;color: gray;background-color: #d9d2d2;height: 1px;border: none;">
-        <div class="p-fluid grid">
-            <div class="col-12">
-                <label><b>Implementation Notes</b></label><br>
-                <span>
-                    {{projectInfo?.implementationNote}}
-                </span>
-            </div>
-            <div class="col-12">
-                <label><b>Design Notes</b></label><br>
-                <span>
-                    {{projectInfo?.designNote}}
-                </span>
-            </div>
-        </div>
-    </div>
-    <div class="col-12" style="display: flex;justify-content: flex-end;">
-        <!-- <button pButton pRipple type="button" label="Download As Pdf" (click)="downloadAsPdf()"
-            class="p-button-outlined mr-2 mb-2"></button> -->
-        <button type="submit" pButton pRipple label="Submit" (click)="goToNextTab()" class="mr-2 mb-2"></button>
-    </div>
-
-
+                    </div>
+                    <hr style="margin-top: 1px;margin-bottom: 22px;color: gray;background-color: #d9d2d2;height: 1px;border: none;">
+                </div>
+                </div>
+                <div class="col-12" style="display: flex;justify-content: flex-end;">
+                    <button type="submit" pButton pRipple label="Submit" (click)="goToNextTab()" class="mr-2 mb-2"></button>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel header="P & L Statement">
+                <p>
+                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim
+                    ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
+                </p>
+            </p-tabPanel>
+        </p-tabView>
+       
 </div>
