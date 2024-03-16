@@ -97,9 +97,6 @@
                                     <ng-template pTemplate="body" let-process>
                                         <ng-container *ngFor="let process of block?.processes; let i = index">
                                             <tr>
-                                                <!-- <td *ngIf="i === 0" [attr.rowspan]="block.processes.length">{{block?.buildingBlockName}}</td>
-                                                <td *ngIf="i === 0" [attr.rowspan]="block.processes.length"
-                                                    [innerHTML]="block.serviceDescription"></td> -->
                                                 <td>{{process.processNumber}}. {{process.processName}}</td>
                                                 <td>
                                                     <ng-container *ngIf="process?.originService || process?.destinationService">
