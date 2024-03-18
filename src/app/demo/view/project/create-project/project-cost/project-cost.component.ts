@@ -25,6 +25,7 @@ export class ProjectCostComponent {
   getSavedBlocksDetails: any;
   getSavedBlockslist: any;
   @Input() projectIdOC: number | null;
+  private _isExpanded = false;
 
   constructor(private projectService: ProjectsService, private messageService: MessageService, private appMain: AppMainComponent) {
 
@@ -44,7 +45,13 @@ export class ProjectCostComponent {
     }
 
   }
+  public get isExpanded() {
+    return this._isExpanded;
+}
 
+public set isExpanded(value: boolean) {
+    this._isExpanded = value;
+}
   shoSOWSection() {
     this.showOriginVolume = true;
     this.showDestinationVolume = false;
@@ -119,23 +126,41 @@ fetchAllProjectBuildingBlock(projectIdOC: any) {
   // }
 
   downloadAsPdf() {
+    
     const element = document.getElementById('pdf-content');
     const opt = {
-      margin: 0.1,
-      filename: 'BBC_SOW.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+        margin: 0.1,
+        filename: 'BBC_SOW.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
     };
+
+    // Set the expanded property of all accordion tabs to true
+    const accordionTabs = element.querySelectorAll('p-accordionTab');
+    accordionTabs.forEach(tab => {
+        tab.setAttribute('selected', 'true');
+    });
+
+    // Hide "Expand All" and "Collapse All" buttons only during PDF generation
+    const buttons = element.querySelectorAll('button[pButton]');
+    buttons.forEach(button => {
+        (button as HTMLElement).style.display = 'none';
+    });
 
     // Prepend the HTML content with image and logo
     const headerImage = '<img src="assets/layout/images/sowheaderLog.jpg" style="width:100%;height: 140px;">';
-    const logoImage = '<img src="assets/layout/images/PSABDPLOGO.png" style="width:20%;>'; 
+    const logoImage = '<img src="assets/layout/images/PSABDPLOGO.png" style="width:20%;float:right">'; 
     const htmlContent = headerImage + logoImage + element.innerHTML;
+
+    // Convert HTML to PDF
     html2pdf().from(htmlContent).set(opt).save();
-  }
 
-
+    // Restore buttons visibility after conversion
+    buttons.forEach(button => {
+        (button as HTMLElement).style.display = 'block';
+    });
+}
   // downloadAsPdf() {
   //   const element = document.getElementById('pdf-content');
   //   const opt = {
