@@ -116,7 +116,8 @@
         <span>{{item.industryVertical}}</span>
       </td>
       <td style="text-align: center; word-wrap: break-word;">
-        <span>{{item.opportunityID}}</span>
+        <span><a [routerLink]="['/create-project']" [queryParams]="{ projId: item.id }">{{item.opportunityID}}</a></span>
+        <!-- <span>{{item.opportunityID}}</span> -->
       </td>
       <td style="text-align: center; word-wrap: break-word;">
         <span>{{item.opportunityName}}</span>
@@ -125,7 +126,9 @@
         <span>{{item.region}}</span>
       </td>
       <td style="text-align: center; word-wrap: break-word;">
-        <span><a [routerLink]="['/create-project']" [queryParams]="{ projId: item.id }">{{item.projectName}}</a></span>
+        <!-- <span><a [routerLink]="['/create-project']" [queryParams]="{ projId: item.id }"> -->
+          {{item.projectName}}
+        <!-- </a></span> -->
       </td>
       <td style="text-align: center; word-wrap: break-word;">
         <span>{{item.projectStage}}</span>
