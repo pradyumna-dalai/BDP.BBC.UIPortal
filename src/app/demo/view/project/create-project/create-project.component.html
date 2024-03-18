@@ -140,7 +140,7 @@
 
                     
                     <p-multiSelect placeholder="Select Origin Location" optionLabel="name" optionValue="id"
-                        display="chip" [showClear]="true" [options]="originLocations" [disabled]="!enableOriginLocation"
+                       [showClear]="true" [options]="originLocations" [disabled]="!enableOriginLocation"
                         (onChange)="onOriginLocationChange($event)" [(ngModel)]="selectedCitiesOrign"
                         [ngModelOptions]="{standalone: true}">
                     </p-multiSelect>
@@ -155,20 +155,14 @@
                         <label for="nyz" style="padding-left: 6px;">Destination Location</label>
                     </div>
                     <p-multiSelect placeholder="Select Destination Location" optionLabel="name" optionValue="id"
-                        display="chip" [showClear]="true" [options]="destinationLocations" [(ngModel)]="selectedCities"
+                      [showClear]="true" [options]="destinationLocations" [(ngModel)]="selectedCities"
                         [ngModelOptions]="{standalone: true}" [disabled]="!enableDestinationLocation"
                         (onChange)="onDestinationLocationChange($event)"
                         >
                     </p-multiSelect>
                 </div>
             </div>
-            <!-- "enableOriginLocationTab ? 0 : (enableDestinationLocationTab ? 1 : -1)" -->
-
-            <p-accordion [activeIndex]="0">
-                <p-accordionTab header="Selected Location Volume and UOM"
-                    *ngIf="enableOriginLocation || enableDestinationLocation">
-
-                    <div class="card">
+             <div class="card">
                         <p-tabView>
                             <p-tabPanel header="Origin Location">
 
@@ -177,23 +171,12 @@
                                         <tr>
                                             <th style="width:20%">Action</th>
                                             <th style="width:20%">Location</th>
-                                            <!-- <th style="width:20%">Volume</th>
-                                            <th style="width:20%">UOM</th> -->
-
                                         </tr>
                                     </ng-template>
                                     <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
                                         <tr>
                                             <td>
                                                 <div>
-                                                    <!-- <button pButton pRipple type="button"
-                                                        (click)="OrignaddRow(rowIndex)" *ngIf="!rowData.editing"
-                                                        icon="pi pi-plus"
-                                                        class="p-button-rounded p-button-text"></button> -->
-                                                    <!-- <button pButton pRipple type="button"
-                                                        (click)="OrigneditRow(rowIndex)" *ngIf="!rowData.editing"
-                                                        pInitEditableRow icon="pi pi-pencil"
-                                                        class="p-button-rounded p-button-text"></button> -->
                                                     <button pButton pRipple type="button" pSaveEditableRow
                                                         icon="pi pi-check" (click)="OrignsaveRow(rowIndex)"
                                                         *ngIf="rowData.editing"
@@ -205,32 +188,12 @@
                                                     <button pButton pRipple type="button" icon="pi pi-trash"
                                                         (click)="OrigndeleteRow(rowIndex)" *ngIf="!rowData.editing"
                                                         class="p-button-rounded p-button-text p-button-danger"></button>
-
                                                 </div>
                                             </td>
-                                         <td class="chip">
-                                                {{ rowData.city }}
+                                         <td>
+                                            <div class="chip">{{ rowData.city }} <span class="closebtn" onclick="this.parentElement.style.display='none'">&times;</span></div>
                                             </td>
-                                           <!--     <td>
-                                                <span *ngIf="!rowData.editing">{{ rowData.Volume }}</span>
-                                                <input [(ngModel)]="rowData.Volume" *ngIf="rowData.editing"
-                                                    [ngModelOptions]="{standalone: true}" pInputText type="number"
-                                                    placeholder="Enter Volume" [min]="0" required>
-                                            </td>
-
-                                            <td *ngIf="rowData.editing">
-                                                <p-dropdown [(ngModel)]="rowData.Uom"
-                                                    [ngModelOptions]="{standalone: true}" [options]="uomOptions"
-                                                    optionLabel="name" optionValue="id" [appendTo]="'body'"
-                                                    placeholder="Select UOM" [style]="{'width':'100%'}"
-                                                    required></p-dropdown>
-                                            </td>
-                                            <td *ngIf="!rowData.editing">
-                                                {{ getUomName(rowData.Uom) }}
-                                            </td> -->
-
-
-                                        </tr>
+                                         </tr>
                                     </ng-template>
                                 </p-table>
 
@@ -242,21 +205,13 @@
                                         <tr>
                                             <th style="width:20%">Action</th>
                                             <th style="width:20%">Location</th>
-                                            <!-- <th style="width:20%">Volume</th>
-                                            <th style="width:20%">UOM</th> -->
-
-                                        </tr>
+                                    </tr>
                                     </ng-template>
                                     <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
                                         <tr>
                                             <td>
                                                 <div>
-                                                    <!-- <button pButton pRipple type="button" (click)="addRow(rowIndex)"
-                                                        *ngIf="!rowData.editing" icon="pi pi-plus"
-                                                        class="p-button-rounded p-button-text"></button>
-                                                    <button pButton pRipple type="button" (click)="editRow(rowIndex)"
-                                                        *ngIf="!rowData.editing" pInitEditableRow icon="pi pi-pencil"
-                                                        class="p-button-rounded p-button-text"></button> -->
+                                            
                                                     <button pButton pRipple type="button" pSaveEditableRow
                                                         icon="pi pi-check" (click)="saveRow(rowIndex)"
                                                         *ngIf="rowData.editing"
@@ -271,36 +226,17 @@
 
                                                 </div>
                                             </td>
-                                           <td class="chip">
-                                                {{ rowData.city }}
+                                           <td >
+                                            <div class="chip">{{ rowData.city }} <span class="closebtn" onclick="this.parentElement.style.display='none'">&times;</span></div>
+                                             
                                             </td>
-                                           <!--   <td>
-                                                <span *ngIf="!rowData.editing">{{ rowData.Volume }}</span>
-                                                <input [(ngModel)]="rowData.Volume" *ngIf="rowData.editing"
-                                                    [ngModelOptions]="{standalone: true}" pInputText type="number"
-                                                    placeholder="Enter Volume" [min]="0" required>
-                                            </td>
-
-                                            <td *ngIf="rowData.editing">
-                                                <p-dropdown [(ngModel)]="rowData.Uom"
-                                                    [ngModelOptions]="{standalone: true}" [options]="uomOptions"
-                                                    optionLabel="name" optionValue="id" [appendTo]="'body'"
-                                                    placeholder="Select UOM" [style]="{'width':'100%'}"
-                                                    required></p-dropdown>
-                                            </td>
-                                            <td *ngIf="!rowData.editing">
-                                                {{ getUomName(rowData.Uom) }}
-                                            </td> -->
-
-
-                                        </tr>
+                                          </tr>
                                     </ng-template>
                                 </p-table>
                             </p-tabPanel>
                         </p-tabView>
-                    </div>
-                </p-accordionTab>
-            </p-accordion>
+             </div>
+             
 
             <h6><b>Documents</b></h6>
             <p>Upload the following documents: File Size < 5 mb,Format Excel, Word, PDF, PPT, JPEG & PNG</p>
