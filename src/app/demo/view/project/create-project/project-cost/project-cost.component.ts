@@ -3,6 +3,7 @@ import * as html2pdf from 'html2pdf.js';
 import { MessageService } from 'primeng/api';
 import { AppMainComponent } from 'src/app/app.main.component';
 import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
+import * as jsPDF from 'jspdf';
 @Component({
   selector: 'app-project-cost',
   templateUrl: './project-cost.component.html',
@@ -105,19 +106,70 @@ fetchAllProjectBuildingBlock(projectIdOC: any) {
 
 
 //------------------------------------------------Download Pdf--------------------------------------------------//
+  // downloadAsPdf() {
+  //   const element = document.getElementById('pdf-content');
+  //   const opt = {
+  //     margin: 1,
+  //     filename: 'BBC_SOW.pdf',
+  //     image: { type: 'jpeg', quality: 0.98 },
+  //     html2canvas: { scale: 2 },
+  //     jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+  //   };
+  //   html2pdf().from(element).set(opt).save();
+  // }
+
   downloadAsPdf() {
     const element = document.getElementById('pdf-content');
     const opt = {
-      margin: 1,
+      margin: 0.1,
       filename: 'BBC_SOW.pdf',
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: { scale: 2 },
-      jsPDF: { unit: 'in', format: 'a3', orientation: 'portrait' }
+      jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
     };
-    html2pdf().from(element).set(opt).save();
+
+    // Prepend the HTML content with image and logo
+    const headerImage = '<img src="assets/layout/images/sowheaderLog.jpg" style="width:100%;height: 140px;">';
+    const logoImage = '<img src="assets/layout/images/PSABDPLOGO.png" style="width:20%;>'; 
+    const htmlContent = headerImage + logoImage + element.innerHTML;
+    html2pdf().from(htmlContent).set(opt).save();
   }
 
 
+  // downloadAsPdf() {
+  //   const element = document.getElementById('pdf-content');
+  //   const opt = {
+  //     margin: 0.1,
+  //     filename: 'BBC_SOW.pdf',
+  //     image: { type: 'jpeg', quality: 0.98 },
+  //     html2canvas: { scale: 2 },
+  //     jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+  //   };
+  
+  //   // Prepend the HTML content with image and logo
+  //   const headerImage = '<img src="assets/layout/images/sowheaderLog.jpg" style="width:100%;height: 140px;">';
+  //   const logoImage = '<img src="assets/layout/images/PSABDPLOGO.png" style="width:20%;">'; 
+  //   const htmlContent = headerImage + logoImage + element.innerHTML;
+  
+  //   // Wrap the HTML content in a div with a fixed height
+  //   const wrapper = document.createElement('div');
+  //   wrapper.style.height = '100vh';
+  //   wrapper.style.overflow = 'auto';
+  //   wrapper.innerHTML = htmlContent;
+  
+  //   // Set a fixed height for the table rows and cells
+  //   const rows = wrapper.querySelectorAll('tr');
+  //   rows.forEach((row: HTMLElement) => {
+  //     row.style.height = 'auto';
+  //     const cells = row.querySelectorAll('td, th');
+  //     cells.forEach((cell: HTMLElement) => {
+  //       cell.style.height = 'auto';
+  //       cell.style.overflow = 'hidden';
+  //     });
+  //   });
+  
+  //   html2pdf().from(wrapper).set(opt).save();
+  // }
   goToNextTab() {
   }
 }

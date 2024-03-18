@@ -250,6 +250,17 @@ getAllOtherCostLocation(projectId:number){
  getSOWInformations(projectId:number){
   return this.http.get<any>(`${url}${settings.AppRoutes.Auth.getSowInformation}/${projectId}`);    
  }
+  //----------------------------------Project Revenue tab-----------------//
+
+  saveProjectRevenue(body:any): Observable<any> {
+    return this.http.post<any>(url + settings.AppRoutes.Auth.ProjectRevenue, body);
+  }
+  
+  
+  getAllProjectRevenue(projectId:number){
+    return this.http.get<any>(`${url}${settings.AppRoutes.Auth.project}/${projectId}/${settings.AppRoutes.Auth.Revenue}`);
+  }
+ 
 
 }
 

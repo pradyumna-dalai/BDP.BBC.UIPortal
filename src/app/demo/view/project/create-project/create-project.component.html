@@ -48,15 +48,14 @@
                 </div>
                 <div class="field col-12 md:col-3">
                     <div class="p-d-block"><label>Project Stage<span class="requiredField">*</span></label></div>
-                    <p-dropdown [options]="projectStageOptions" formControlName="projectStage"
-                        (onChange)="OnStageSelectProjectstatus($event)" placeholder="Select Project Stage"
-                        optionLabel="name" optionValue="id" [filter]="true" filterBy="name"></p-dropdown>
+                    <p-dropdown [options]="projectStageOptions" formControlName="projectStage" placeholder="Select Project Stage"
+                        optionLabel="name" optionValue="id" [filter]="true" filterBy="name" [ngClass]="{'p-dropdown-disabled': projectStageDisabled}"></p-dropdown>
                 </div>
                 <div class="field col-12 md:col-3">
                     <div class="p-d-block"><label>Project Status<span class="requiredField">*</span></label></div>
                     <p-dropdown [options]="projectStatusOptions" formControlName="projectStatus"
                         placeholder="Select Project Status" optionLabel="name" optionValue="id" [filter]="true"
-                        filterBy="name"></p-dropdown>
+                        filterBy="name" [ngClass]="{'p-dropdown-disabled': projectStatusDisabled}"></p-dropdown>
                 </div>
                 <div class="field col-12 md:col-6">
                     <div class="p-d-block"><label>Opportunity Manager<span class="requiredField">*</span></label></div>
@@ -351,6 +350,13 @@
             <app-other-cost #otherCostComponent (continueClickedToProjectCost)="goToNextTab()" [projStatus]="projStatus" [projectIdCLI]="projectIdCLI"></app-other-cost>
         </div>
     </p-tabPanel>
+
+    <p-tabPanel header="Revenue " [disabled]="!draftSavedCLI">
+        <div *ngIf="projectIdCLI !== null">
+            <app-revenue #revenueComponent (continueClickedToRevenue)="goToNextTab()" [projStatus]="projStatus" [projectIdCLI]="projectIdCLI"></app-revenue>
+        </div>
+    </p-tabPanel>
+
     <p-tabPanel header="Project Output" [disabled]="!draftSavedOC">
         <div *ngIf="projectIdOC !== null">
             <app-project-cost #projectCostComponent [projectIdOC]="projectIdOC"></app-project-cost>
@@ -542,11 +548,12 @@
                             </button>
                         </div>
                         <div class="uplodBtn_right">
+                            <button type="submit" (click)="onOthersCancelClick()" pButton pRipple
+                                class="p-button-outlined mr-2 mb-2">Cancel</button>
                             <button type="submit" pButton pRipple class="mr-2 mb-2" (click)="onUploadOtherClick()">
                                 Submit
                             </button>
-                            <button type="submit" (click)="onOthersCancelClick()" pButton pRipple
-                                class="p-button-outlined mr-2 mb-2">Cancel</button>
+                            
                         </div>
                     </div>
                 </div>

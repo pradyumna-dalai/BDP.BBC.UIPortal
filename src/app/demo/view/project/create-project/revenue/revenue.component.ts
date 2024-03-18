@@ -1,15 +1,14 @@
-import { Component, Output, EventEmitter, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import { NavigationStart, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AppMainComponent } from 'src/app/app.main.component';
 import { CreateBuildingBlockService } from 'src/app/services/create-buildingBlock/create-building-block.service';
-import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
-import { ChangeDetectorRef } from '@angular/core';
-import { SharedServiceService } from 'src/app/services/project-serivce/shared-service.service';
 import { MasterDataService } from 'src/app/services/master-dataserivce/master-data.service';
-import { NavigationStart, Router } from '@angular/router';
+import { ProjectsService } from 'src/app/services/project-serivce/projects.service';
+import { SharedServiceService } from 'src/app/services/project-serivce/shared-service.service';
 interface CostItem {
   id: number;
-  costItem: {
+  revenueItem: {
     costItemId: null,
     name: ''
   }
@@ -19,18 +18,17 @@ interface CostItem {
   editing: boolean;
 }
 @Component({
-  selector: 'app-other-cost',
-  templateUrl: './other-cost.component.html',
-  styleUrls: ['./other-cost.component.scss']
+  selector: 'app-revenue',
+  templateUrl: './revenue.component.html',
+  styleUrls: ['./revenue.component.scss']
 })
-
-export class OtherCostComponent {
+export class RevenueComponent {
   projectLocations: any;
   projectId: any;
   projectName: any;
   subscription: any;
   locationDropdownOptions: any[] = [];
-  costItemDropdownOptions: any[] = [];
+  revenueItemDropDownOptions: any[] = [];
   tableData: CostItem[] = [];
   editedRowIndex: number = -1;
   grandTotalCost: number = 0;
@@ -49,10 +47,10 @@ export class OtherCostComponent {
   ngOnInit() {
 
    // this.getAllProjectOtherCost();
-    this.getAllCostItem();
+    this.getAllRevenueItem();
     if (this.projectIdCLI != null || this.projectIdCLI != undefined) {
-      this.getAllProjectOtherCostEdit(this.projectIdCLI);
-      this.getAllOtherCostLocations(this.projectIdCLI);
+      this.getAllProjectRevenueEdit(this.projectIdCLI);
+      this.getAllLocations(this.projectIdCLI);
     }
     this.projStatus = this.projStatus;
   }
@@ -68,7 +66,7 @@ export class OtherCostComponent {
   addRow() {
     const newCostItem: CostItem = {
       id: this.tableData.length + 1,
-      costItem: {
+      revenueItem: {
         costItemId: null,
         name: ''
       },
@@ -90,7 +88,7 @@ export class OtherCostComponent {
 
   onRowEditSave(row: number) {
     const editedItem = this.tableData[row];
-    if (!editedItem.costItem || editedItem.totalCost === null || editedItem.totalCost === undefined) {
+    if (!editedItem.revenueItem || editedItem.totalCost === null || editedItem.totalCost === undefined) {
       this.messageService.add({
         key: 'errorToast',
         severity: 'error',
@@ -99,9 +97,9 @@ export class OtherCostComponent {
       });
       return;
     }
-    const selectedCostItem = this.costItemDropdownOptions.find(option => option.id === editedItem.costItem.costItemId);
+    const selectedCostItem = this.revenueItemDropDownOptions.find(option => option.id === editedItem.revenueItem.costItemId);
     if (selectedCostItem) {
-      editedItem.costItem.name = selectedCostItem.name;
+      editedItem.revenueItem.name = selectedCostItem.name;
     }
     this.tableData[row].editing = false;
     this.calculateGrandTotalCost();
@@ -145,8 +143,8 @@ export class OtherCostComponent {
   }
 
   //-----------------------------------Save Project Other Cost------------------//
-  saveProjectsOtherCostItem() {
-    const invalidItem = this.tableData.find(item => !item.costItem || item.totalCost === null || item.totalCost === undefined);
+  saveProjectsRevenueItem() {
+    const invalidItem = this.tableData.find(item => !item.revenueItem || item.totalCost === null || item.totalCost === undefined);
     if (invalidItem) {
       this.messageService.add({
         key: 'errorToast',
@@ -161,20 +159,20 @@ export class OtherCostComponent {
     const body = {
       projectId: this.projectIdCLI,
       projectName: this.projectName,
-      grandTotalCost: 927000.00,
-      otherCosts: this.tableData.map(costItem => ({
-        id: costItem.id,
-        costItem: {
-          id: costItem.costItem.costItemId,
-          name: costItem.costItem.name
+      totalRevenue:   1,
+      revenues: this.tableData.map(revenueItem => ({
+        id: revenueItem.id,
+        revenueItem: {
+          id: revenueItem.revenueItem.costItemId,
+          name: revenueItem.revenueItem.name
         },
-        locationId: costItem?.location?.id || '',
-        locationName: costItem?.location?.name  || '',
-        totalCost: costItem.totalCost,
-        originDestinationCode: costItem?.location?.originDestinationCode || ''
+        locationId: revenueItem?.location?.id|| '',
+        locationName: revenueItem?.location?.name|| '',
+        revenueAmount: revenueItem.totalCost,
+        originDestinationCode: revenueItem?.location?.originDestinationCode|| ''
       }))
     };
-    this.projectService.saveProjectOtherCost(body).subscribe({
+    this.projectService.saveProjectRevenue(body).subscribe({
       next: (response: any) => {
         this.sharedService.setProjectIdOtherCost(response?.data?.projectId);
         this.sharedService.setDraftSavedOtherCost(true);
@@ -182,7 +180,7 @@ export class OtherCostComponent {
           key: 'successToast',
           severity: 'success',
           summary: 'Success!',
-          detail: 'Project Other Cost Saved successfully.'
+          detail: 'Project Revenue Saved successfully.'
         });
 
       },
@@ -191,30 +189,30 @@ export class OtherCostComponent {
           key: 'errorToast',
           severity: 'error',
           summary: 'Error!',
-          detail: 'Failed to Save Project Other Cost.'
+          detail: 'Failed to Save Project Revenue.'
         });
       }
     });
   }
 
   //------------------------Get Project Other Cost------------------------------//
-  getAllProjectOtherCostEdit(projId) {
-    this.projectService.getAllOtherCost(projId).subscribe({
+  getAllProjectRevenueEdit(projId) {
+    this.projectService.getAllProjectRevenue(projId).subscribe({
       next: (response: any) => {
-        const otherCosts = response?.data?.otherCosts;
+        const otherCosts = response?.data?.revenues;
         if (Array.isArray(otherCosts)) {
           this.tableData = otherCosts.map((item: any, index: number) => ({
             id:item.id,
-            costItem: {
-              costItemId: item.costItem.id,
-              name: item.costItem.name
+            revenueItem: {
+              costItemId: item.revenueItem.id,
+              name: item.revenueItem.name
             },
             location: {
               id: item?.locationId,
               name: item?.locationName,
               originDestinationCode: item?.originDestinationCode
             },
-            totalCost: item.totalCost,
+            totalCost: item.revenueAmount,
             originDestination: item.originDestinationCode === 0 ? 'Origin' : item.originDestinationCode === 1 ? 'Destination' : 'Origin/Destination',
             editing: false
           }));
@@ -229,31 +227,31 @@ export class OtherCostComponent {
         //   key: 'errorToast',
         //   severity: 'error',
         //   summary: 'Error!',
-        //   detail: 'Failed to fetch Project Other Cost.'
+        //   detail: 'Failed to fetch Project Revenue.'
         // });
       }
     });
 
   }
 
-  //------------------------get all cost Item from Master Data-------------------//
+  //------------------------get all Revenue Item from Master Data-------------------//
 
-  getAllCostItem() {
-    this.costItemDropdownOptions = [];
-    this.masterDataSerivce.getAllCostItemDetails().subscribe((res: any) => {
+  getAllRevenueItem() {
+    this.revenueItemDropDownOptions = [];
+    this.masterDataSerivce.getAllRevenueDetails().subscribe((res: any) => {
       if (res?.message == "success") {
-        this.costItemDropdownOptions = res?.data.map((cost: any) => ({
-          id: cost.id,
-          name: cost.name
+        this.revenueItemDropDownOptions = res?.data.map((item: any) => ({
+          id: item.id,
+          name: item.name
         }));
       } else {
-        this.costItemDropdownOptions = [];
+        this.revenueItemDropDownOptions = [];
       }
     })
   }
 
-  //--------------------get all  other cost location -----------------------------//
-  getAllOtherCostLocations(projId) {
+  //--------------------get all Project location -----------------------------//
+  getAllLocations(projId) {
     this.projectService.getAllOtherCostLocation(projId).subscribe({
       next: (response: any) => {
         if (response?.message == "success") {
@@ -270,3 +268,4 @@ export class OtherCostComponent {
   }
 
 }
+

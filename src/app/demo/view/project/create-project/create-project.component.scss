@@ -59,24 +59,31 @@
 .excel-table th {
   background-color: #f2f2f2;
 }
-.box{
-  border: 1px solid #a6d5fa;;
-  padding: 0;
-  border-style: dashed;
+.box {
+  padding: 12px;
+  background-color: #f3f9ff;
   height: 150px;
+  border-radius: 8px;
+}
 
+.container {
+border: 3px dashed #c7e5ff;
+height: 126px;
+padding: 6px;
+padding-left: 15px;
+border-radius: 5px;
 }
 .btn{
 display: flex;
 justify-content: space-between;
 margin:2px
 }
-.container{
-padding: 6px;
-padding-left: 15px;
+// .container{
+// padding: 6px;
+// padding-left: 15px;
 
-height: 60px;
-}
+// height: 60px;
+// }
 
 input[type="file"] {
 display: none;
@@ -93,7 +100,7 @@ display: inline-block;
 height: 33px;
 margin-right: 8px;
 margin-left: 46%;
-margin-top: 6%;
+margin-top: 3%;
 }
 .card_footer{
 margin-top: 11px;
@@ -143,4 +150,12 @@ padding: 0 !important;
 }
 .p-calendar .p-datepicker {
   min-width: 0% !important;
+}
+
+.p-dropdown-disabled {
+  opacity: 0.5; /* Reduce opacity to make it appear faded */
+  pointer-events: none; /* Disable pointer events to prevent interaction */
+  cursor: not-allowed; /* Change cursor to 'not allowed' */
+  background-color: #f0f0f0; /* Change background color to indicate disabled state */
+  color: #999; /* Change text color to indicate disabled state */
 }
