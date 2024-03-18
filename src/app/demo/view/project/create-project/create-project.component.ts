@@ -128,6 +128,9 @@ export class CreateProjectComponent implements OnInit {
   projStatus: any;
   projectDocument: any;
   scopeId: number;
+  minStartDate: Date;
+  maxStartDate: Date;
+  disabledStartDates: Date[];
 
   
   
@@ -220,27 +223,33 @@ export class CreateProjectComponent implements OnInit {
     this.myForm = this.fb.group({
       // Define your form controls here
       companyName: [''],
-      customerCode: [''],
-      opportunityName: [''],
+      companyCode: [''],
+      companyId:[''],
       industryVertical: [''],
+      OpportunityId:[''],
+      opportunityName: [''],
       region: [''],
-      projectName: ['', Validators.required],
+    //  projectName: ['', Validators.required],
       projectStage: ['', Validators.required], // Make projectStage required
       projectStatus: [''],
-      opportunityManger: [''],
-      selectedDateRange: [''],
+      opportunityManager: [''],
+      scopeAssumption:[''],
+      startDate: [new Date(), Validators.required],
+      endDate:[''],
+      //selectedDateRange: [''],
       designNotes: ['', [Validators.maxLength(1000)]],
       impleNotes: ['', [Validators.maxLength(1000)]]
   });
-    this.fetchActiveUom();
+  this.minStartDate = new Date();
+  this.maxStartDate = new Date();
+  this.disabledStartDates = this.getDisabledDates();
+    //this.fetchActiveUom();
     this.getRegion();
     this.getCompany();
     this.getProjectStage();
-    this.getOpportunityManger();
+   // this.getOpportunityManger();
     this.fetchActiveLocation();
     
-
-   
     //get projid
     
     this.route.queryParams.subscribe(params => {
@@ -275,10 +284,21 @@ export class CreateProjectComponent implements OnInit {
     }
     this.enterEditMode();
   }
- 
-  patchDateRangeValue(newValue: any) {
-    this.myForm.get('selectedDateRange').patchValue(newValue);
+  getDisabledDates(): Date[] {
+    // Disable all dates except the current date and time
+    const currentDate = new Date();
+    const disabledDates = [];
+    for (let i = 1; i <= 31; i++) {
+      const tempDate = new Date();
+      tempDate.setDate(currentDate.getDate() + i);
+      disabledDates.push(tempDate);
+    }
+    return disabledDates;
   }
+
+  // patchDateRangeValue(newValue: any) {
+  //   this.myForm.get('selectedDateRange').patchValue(newValue);
+  // }
   getForm(): FormGroup {
     return this.myForm;
   }
@@ -303,12 +323,33 @@ export class CreateProjectComponent implements OnInit {
     this.companyOptions = [];
     this.MasterTableservice.getCompany().subscribe((res: any) => {
       if (res?.message == "success") {
-        this.companyOptions = res?.data;
+          this.companyOptions = res?.data.map(company => ({
+        id: company.id,
+        name: company.companyName, 
+        companyCode: company.companyCode,
+        industryVertical: company.industryVertical
+      }));
       } else {
         this.companyOptions = [];
       }
     })
   }
+
+
+
+  onCompanySelectionChange(event: any) {
+    const selectedCompanyId = event.value;
+    const selectedCompany = this.companyOptions.find(company => company.id === selectedCompanyId);
+
+    if (selectedCompany) {
+      this.myForm.patchValue({
+    //    companyId:selectedCompany.id,
+        companyCode: selectedCompany.companyCode || '',
+        industryVertical: selectedCompany.industryVertical || ''
+      });
+    }
+  }
+  
   // ---------------get Opportunity name on company select------------------------//
 
   onCompanySelect(event) {
@@ -400,16 +441,16 @@ OnStageSelectProjectstatus(event) {
     });
 }
   // ---------------get Opportunity Manager------------------------//
-  getOpportunityManger() {
-    this.projectStageOptions = [];
-    this.MasterTableservice.getOpportunityManger().subscribe((res: any) => {
-      if (res?.message == "success") {
-        this.opportunityManagerOptions = res?.data;
-      } else {
-        this.opportunityManagerOptions = [];
-      }
-    })
-  }
+  // getOpportunityManger() {
+  //   this.projectStageOptions = [];
+  //   this.MasterTableservice.getOpportunityManger().subscribe((res: any) => {
+  //     if (res?.message == "success") {
+  //       this.opportunityManagerOptions = res?.data;
+  //     } else {
+  //       this.opportunityManagerOptions = [];
+  //     }
+  //   })
+  // }
 
   formatDate(date: Date): string {
     return dayjs(date).format('YYYY-MM-DD');
@@ -460,19 +501,19 @@ OnStageSelectProjectstatus(event) {
     } else {
         
     
-    var om = this.myForm.get('opportunityManger').value;
-    if (om == "" || om == undefined || om == null) {
-      var opportunityMangers = []
-    } else {
-      opportunityMangers = om.map(id => ({ id }))
-    }
-    this.dateRange = this.myForm.get('selectedDateRange').value;
-    let dateRange = this.dateRange
-    if (typeof this.dateRange == 'string' && this.dateRange.indexOf("-") != -1) {
-       dateRange = this.dateRange.split("-");
-    }
+    // var om = this.myForm.get('opportunityManger').value;
+    // if (om == "" || om == undefined || om == null) {
+    //   var opportunityMangers = []
+    // } else {
+    //   opportunityMangers = om.map(id => ({ id }))
+    // }
+    // this.dateRange = this.myForm.get('selectedDateRange').value;
+    // let dateRange = this.dateRange
+    // if (typeof this.dateRange == 'string' && this.dateRange.indexOf("-") != -1) {
+    //    dateRange = this.dateRange.split("-");
+    // }
 
-    let dateRangevalEndDate = this.dateRange.endDate;
+    // let dateRangevalEndDate = this.dateRange.endDate;
 
     const originProjectLocationData = this.OtableData.map((row: TableRow) => ({
      // volume: row.Volume,
@@ -507,21 +548,15 @@ OnStageSelectProjectstatus(event) {
       description: "",
       projectInformation: {
         id:this.projinfoidedit ||  '',
-        customerCode: this.myForm.get('customerCode').value,
-        projectName: this.myForm.get('projectName').value,
-        startDate: this.formatDate(dateRange[0]),
-        endDate: this.formatDate(dateRange[1]),
-        designNote: this.myForm.get('designNotes').value,
-        implementationNote: this.myForm.get('impleNotes').value,
-        company: {
-          "id": this.myForm.get('companyName').value,
-        },
-        opportunityName: {
-          "id": this.myForm.get('opportunityName').value,
-        },
-        industryVertical: {
-          "id": this.myForm.get('industryVertical').value,
-        },
+        // company: {
+        //   "id": this.myForm.get('companyName').value,
+        // },
+        companyName:this.myForm.get('companyName').value,
+        companyId:this.myForm.get('companyId').value || '',
+        companyCode:this.myForm.get('companyCode').value || '',
+        industryVertical:this.myForm.get('industryVertical').value,
+        opportunityId:this.myForm.get('OpportunityId').value,
+        opportunityName:this.myForm.get('opportunityName').value,
         region: {
           "id": this.myForm.get('region').value,
         },
@@ -531,7 +566,30 @@ OnStageSelectProjectstatus(event) {
         projectStatus: {
           "id": this.myForm.get('projectStatus').value,
         },
-        opportunityManager: opportunityMangers,
+        opportunityManager:this.myForm.get('opportunityManager').value ,
+    //    projectName: this.myForm.get('projectName').value,
+        // startDate: this.formatDate(dateRange[0]),
+        // endDate: this.formatDate(dateRange[1]),
+        designNote: this.myForm.get('designNotes').value,
+        implementationNote: this.myForm.get('impleNotes').value,
+        scopeAssumption:this.myForm.get('scopeAssumption').value,
+        // notes:[
+        //   {
+        //     date:null,
+        //     actionItem:null,
+        //     outcome:null
+
+        //   }
+        // ]
+        // opportunityName: {
+        //   "id": this.myForm.get('opportunityName').value,
+        // },
+        // industryVertical: {
+        //   "id": this.myForm.get('industryVertical').value,
+        // },
+        // region: {
+        //   "id": this.myForm.get('region').value,
+        // },
       },
       projectLocation: [
           ...originProjectLocationData,
@@ -988,10 +1046,10 @@ OnStageSelectProjectstatus(event) {
     });
 }
 populateForm(): void {
-  this.myForm.patchValue({
+  // this.myForm.patchValue({
     
-    selectedDateRange: `${this.patchformatDate(this.response.startDate)} - ${this.patchformatDate(this.response.endDate)}`,
-  });
+  // //  selectedDateRange: `${this.patchformatDate(this.response.startDate)} - ${this.patchformatDate(this.response.endDate)}`,
+  // });
   this.myForm.patchValue({
     companyName: this.response.company?.id,
     customerCode: this.response.customerCode,

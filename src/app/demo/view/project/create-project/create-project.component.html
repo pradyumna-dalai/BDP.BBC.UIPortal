@@ -8,30 +8,30 @@
             <div class="p-fluid grid">
                 <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>Company Name<span class="requiredField">*</span></label></div>
-                    <p-dropdown [options]="companyOptions" (onChange)="onCompanySelect($event)" optionLabel="name"
+                    <p-dropdown [options]="companyOptions" optionLabel="name" (onChange)="onCompanySelectionChange($event)"
                         optionValue="id" formControlName="companyName" placeholder="Select Company Name" [filter]="true"
                         filterBy="name"></p-dropdown>
                 </div>
                 <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>Company Code</label></div>
-                    <input placeholder="Enter Company Code" formControlName="customerCode" type="text" pInputText>
+                    <input placeholder="Enter Company Code" formControlName="companyCode" type="text" pInputText>
                 </div>
                 <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>Industry Vertical<span class="requiredField">*</span></label></div>
-                    <input placeholder="Select Company" formControlName="industryVertical" type="text" pInputText>
+                    <input  id="readonly-input" placeholder="Select Company"  [readonly]="true"  formControlName="industryVertical" type="text" pInputText>
                 </div>
 
                 <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>OpportunityId<span class="requiredField">*</span></label></div>
-                    <input placeholder="Enter OpportunityId" formControlName="customerCode" type="text" pInputText>
+                    <input placeholder="Enter OpportunityId" formControlName="OpportunityId" type="text" pInputText>
                 </div>
                 <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>Opportunity Name<span class="requiredField">*</span></label></div>
-                    <p-dropdown [options]="opportunityNameOptions" optionLabel="name"
+                    <!-- <p-dropdown [options]="opportunityNameOptions" optionLabel="name"
                         (onChange)="onOpportunitySelect($event)" optionValue="id" formControlName="opportunityName"
-                        placeholder="Select Opportunity Name" [filter]="true" filterBy="name"></p-dropdown>
-                    <!-- <input   placeholder="Enter Opportunity Name" formControlName="opportunityName" type="text" 
-                        pInputText> -->
+                        placeholder="Select Opportunity Name" [filter]="true" filterBy="name"></p-dropdown> -->
+                    <input   placeholder="Enter Opportunity Name" formControlName="opportunityName" type="text" 
+                        pInputText>
                 </div>         
                 <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>Region<span class="requiredField">*</span></label></div>
@@ -59,16 +59,14 @@
                 </div>
                 <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>Opportunity Manager<span class="requiredField">*</span></label></div>
-                    <p-multiSelect [options]="opportunityManagerOptions" formControlName="opportunityManger"
-                        optionLabel="name" optionValue="id" placeholder="Select Opportunity Manager" [filter]="true"
-                        filterBy="name"></p-multiSelect>
+                    <input placeholder="Enter Opportunity Manager" formControlName="opportunityManager" type="text" pInputText>
                 </div>
                 <div class="field col-12 md:col-12">
                     <div class="p-d-block"><label>Scope & Assumptions<span class="requiredField">*</span></label></div>
-                    <textarea rows="4" cols="30" pInputTextarea formControlName="designNotes"
+                    <textarea rows="4" cols="30" pInputTextarea formControlName="scopeAssumption"
                         placeholder="Enter Scope & Assumptions" id="inputtext" style="resize: none;"></textarea>
 
-                    <div class="error" *ngIf="myForm.get('designNotes').hasError('maxlength')">
+                    <div class="error" *ngIf="myForm.get('scopeAssumption').hasError('maxlength')">
                         Maximum character limit exceeded (1000 characters).
                     </div>
                 </div>
@@ -86,12 +84,12 @@
                 <div class="p-fluid grid">
                 <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>Start Date & Time<span class="requiredField">*</span></label></div>
-                    <p-calendar [(ngModel)]="date" formControlName="selectedDateRange" placeholder="Start-date & Time" [showTime]="true" [showSeconds]="true" [minDate]="" [maxDate]=""  [showIcon]="true" ></p-calendar>
+                    <p-calendar  formControlName="selectedDateRange" placeholder="Start-date & Time"  [disabledDates]="disabledStartDates" [minDate]="minStartDate" [maxDate]="maxStartDate"  [showTime]="true" [showSeconds]="true" [minDate]="" [maxDate]=""  [showIcon]="true" ></p-calendar>
                         <!-- <p-calendar  selectionMode="range"  formControlName="selectedDateRange" placeholder="start-date/end-date" [style.width]="'200px'" [style.height]="'200px'"></p-calendar> -->
                 </div>
                 <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>Due Date & Time<span class="requiredField">*</span></label></div>
-                    <p-calendar [(ngModel)]="date" formControlName="selectedDateRange" placeholder="Due-date & Time" [showTime]="true" [showSeconds]="true"  [minDate]="" [maxDate]=""  [showIcon]="true"></p-calendar>
+                    <p-calendar  formControlName="selectedDateRange" placeholder="Due-date & Time" [showTime]="true" [showSeconds]="true"  [minDate]="" [maxDate]=""  [showIcon]="true"></p-calendar>
                         <!-- <p-calendar  selectionMode="range"  formControlName="selectedDateRange" placeholder="start-date/end-date" [style.width]="'200px'" [style.height]="'200px'"></p-calendar> -->
                 </div>
                 </div>
@@ -103,7 +101,7 @@
                 <div class="p-fluid grid">
                 <div class="field col-12 md:col-2">
                     <div class="p-d-block"><label>Date</label></div>
-                    <p-calendar [(ngModel)]="date" formControlName="selectedDateRange" placeholder="MM/DD/YYYY"  [showSeconds]="true" [minDate]="" [maxDate]=""  [showIcon]="true" ></p-calendar>
+                    <p-calendar  formControlName="selectedDateRange" placeholder="MM/DD/YYYY"  [showSeconds]="true" [minDate]="" [maxDate]=""  [showIcon]="true" ></p-calendar>
                 </div>
                 <div class="field col-12 md:col-5">
                     <div class="p-d-block"><label>Action Items</label></div>
