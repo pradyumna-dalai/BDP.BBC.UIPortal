@@ -1,31 +1,22 @@
 <p-tabView [(activeIndex)]="activeIndex" (onChange)="onTabChange($event)">
     <p-tabPanel header="Project Information">
-        <div>
-            <h5>Project Information</h5>
+        <div style="display: flex;">
+            <h5>Project Information</h5>&nbsp;<p> | Please fill up all the mondatory fields(<span class="requiredField">*</span>) & Save to proceed to the next tab</p>
         </div>
         <hr class="align">
         <form [formGroup]="myForm">
             <div class="p-fluid grid">
-                <div class="field col-12 md:col-3">
+                <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>Company Name<span class="requiredField">*</span></label></div>
                     <p-dropdown [options]="companyOptions" (onChange)="onCompanySelect($event)" optionLabel="name"
                         optionValue="id" formControlName="companyName" placeholder="Select Company Name" [filter]="true"
                         filterBy="name"></p-dropdown>
                 </div>
-                <div class="field col-12 md:col-3">
+                <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>Company Code</label></div>
                     <input placeholder="Enter Company Code" formControlName="customerCode" type="text" pInputText>
                 </div>
-                <div class="field col-12 md:col-3">
-                    <div class="p-d-block"><label>Opportunity Name<span class="requiredField">*</span></label></div>
-                    <p-dropdown [options]="opportunityNameOptions" optionLabel="name"
-                        (onChange)="onOpportunitySelect($event)" optionValue="id" formControlName="opportunityName"
-                        placeholder="Select Opportunity Name" [filter]="true" filterBy="name"></p-dropdown>
-                    <!-- <input   placeholder="Enter Opportunity Name" formControlName="opportunityName" type="text" 
-                        pInputText> -->
-                </div>
-
-                <div class="field col-12 md:col-3">
+                <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>Industry Vertical<span class="requiredField">*</span></label></div>
                     <p-dropdown [options]="IVOptions" optionLabel="name" optionValue="id"
                         formControlName="industryVertical" placeholder="Enter Industry Vertical" [filter]="true"
@@ -33,7 +24,20 @@
                     <!-- <input  placeholder="Enter Industry Vertical" formControlName="industryVertical" type="text"
                     pInputText> -->
                 </div>
-                <div class="field col-12 md:col-3">
+
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>OpportunityId<span class="requiredField">*</span></label></div>
+                    <input placeholder="Enter OpportunityId" formControlName="customerCode" type="text" pInputText>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>Opportunity Name<span class="requiredField">*</span></label></div>
+                    <p-dropdown [options]="opportunityNameOptions" optionLabel="name"
+                        (onChange)="onOpportunitySelect($event)" optionValue="id" formControlName="opportunityName"
+                        placeholder="Select Opportunity Name" [filter]="true" filterBy="name"></p-dropdown>
+                    <!-- <input   placeholder="Enter Opportunity Name" formControlName="opportunityName" type="text" 
+                        pInputText> -->
+                </div>         
+                <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>Region<span class="requiredField">*</span></label></div>
                     <p-dropdown [options]="regionOptions" formControlName="region" placeholder="Select Region"
                         optionLabel="name" optionValue="id" [filter]="true" filterBy="name"></p-dropdown>
@@ -41,50 +45,83 @@
                 <br>
 
 
-                <div class="field col-12 md:col-3">
+                <!-- <div class="field col-12 md:col-3">
                     <div class="p-d-block"><label>Project Name<span class="requiredField">*</span></label></div>
                     <input formControlName="projectName" placeholder="Enter Project Name" type="text" id="inputtext"
                         pInputText>
-                </div>
-                <div class="field col-12 md:col-3">
+                </div> -->
+                <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>Project Stage<span class="requiredField">*</span></label></div>
                     <p-dropdown [options]="projectStageOptions" formControlName="projectStage"
                         (onChange)="OnStageSelectProjectstatus($event)" placeholder="Select Project Stage"
                         optionLabel="name" optionValue="id" [filter]="true" filterBy="name"></p-dropdown>
                 </div>
-                <div class="field col-12 md:col-3">
+                <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>Project Status<span class="requiredField">*</span></label></div>
                     <p-dropdown [options]="projectStatusOptions" formControlName="projectStatus"
                         placeholder="Select Project Status" optionLabel="name" optionValue="id" [filter]="true"
                         filterBy="name"></p-dropdown>
                 </div>
-                <div class="field col-12 md:col-6">
+                <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>Opportunity Manager<span class="requiredField">*</span></label></div>
                     <p-multiSelect [options]="opportunityManagerOptions" formControlName="opportunityManger"
                         optionLabel="name" optionValue="id" placeholder="Select Opportunity Manager" [filter]="true"
                         filterBy="name"></p-multiSelect>
                 </div>
-                <div class="field col-12 md:col-6">
-                    <div class="p-d-block"><label>Start Date-End Date<span class="requiredField">*</span></label></div>
-                    <!-- <input type="text" ngxDaterangepickerMd [lockStartDate]="false" formControlName="selectedDateRange"
-                        placeholder="Start Date-End Date" class="date_pick" /> -->
-                        <p-calendar  selectionMode="range"  formControlName="selectedDateRange" placeholder="start-date/end-date" [style.width]="'200px'" [style.height]="'200px'"></p-calendar>
-                </div>
-                <div class="field col-12 md:col-6">
-                    <div class="p-d-block"><label>Design Notes<span class="requiredField">*</span></label></div>
+                <div class="field col-12 md:col-12">
+                    <div class="p-d-block"><label>Scope & Assumptions<span class="requiredField">*</span></label></div>
                     <textarea rows="4" cols="30" pInputTextarea formControlName="designNotes"
-                        placeholder="Enter Design Notes" id="inputtext"></textarea>
+                        placeholder="Enter Scope & Assumptions" id="inputtext" style="resize: none;"></textarea>
 
                     <div class="error" *ngIf="myForm.get('designNotes').hasError('maxlength')">
                         Maximum character limit exceeded (1000 characters).
                     </div>
                 </div>
-                <div class="field col-12 md:col-6">
-                    <div class="p-d-block"><label>Implementation Notes<span class="requiredField">*</span></label></div>
-                    <!-- <input formControlName="impleNotes" placeholder="Enter Implementation Notes"  type="text" id="inputtext"
-                    pInputText> -->
+            </div>
+         
+                <br>
+
+                <!-- <div class="field col-12 md:col-6">
+                    <div class="p-d-block"><label>Start Date-End Date<span class="requiredField">*</span></label></div>
+                        <p-calendar  selectionMode="range"  formControlName="selectedDateRange" placeholder="start-date/end-date" [style.width]="'200px'" [style.height]="'200px'"></p-calendar>
+                </div> -->
+              
+                <div style="display: flex;padding-left: 2px;"><label>Duration<span class="requiredField">*</span></label></div>
+                <br>
+                <div class="p-fluid grid">
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>Start Date & Time<span class="requiredField">*</span></label></div>
+                    <p-calendar [(ngModel)]="date" formControlName="selectedDateRange" placeholder="Start-date & Time" [showTime]="true" [showSeconds]="true" [minDate]="" [maxDate]=""  [showIcon]="true" ></p-calendar>
+                        <!-- <p-calendar  selectionMode="range"  formControlName="selectedDateRange" placeholder="start-date/end-date" [style.width]="'200px'" [style.height]="'200px'"></p-calendar> -->
+                </div>
+                <div class="field col-12 md:col-4">
+                    <div class="p-d-block"><label>Due Date & Time<span class="requiredField">*</span></label></div>
+                    <p-calendar [(ngModel)]="date" formControlName="selectedDateRange" placeholder="Due-date & Time" [showTime]="true" [showSeconds]="true"  [minDate]="" [maxDate]=""  [showIcon]="true"></p-calendar>
+                        <!-- <p-calendar  selectionMode="range"  formControlName="selectedDateRange" placeholder="start-date/end-date" [style.width]="'200px'" [style.height]="'200px'"></p-calendar> -->
+                </div>
+                </div>
+             
+                <hr class="aligndown">
+                <br>
+                <div style="display: flex;"><label>Notes<span class="requiredField">*</span>&nbsp;|</label><p style="color: rgb(0, 162, 255);">&nbsp;  Add Row</p></div>
+                <br>
+                <div class="p-fluid grid">
+                <div class="field col-12 md:col-2">
+                    <div class="p-d-block"><label>Date</label></div>
+                    <p-calendar [(ngModel)]="date" formControlName="selectedDateRange" placeholder="MM/DD/YYYY"  [showSeconds]="true" [minDate]="" [maxDate]=""  [showIcon]="true" ></p-calendar>
+                </div>
+                <div class="field col-12 md:col-5">
+                    <div class="p-d-block"><label>Action Items</label></div>
                     <textarea rows="4" cols="30" pInputTextarea formControlName="impleNotes"
-                        placeholder="Enter Implementation Notes" id="inputtext"></textarea>
+                        placeholder="Enter Action Items" id="inputtext" style="resize: none;"></textarea>
+                    <div class="error" *ngIf="myForm.get('impleNotes').hasError('maxlength')">
+                        Maximum character limit exceeded (1000 characters).
+                    </div>
+                </div>
+                <div class="field col-12 md:col-5">
+                    <div class="p-d-block"><label>Outcome</label></div>
+                    <textarea rows="4" cols="30" pInputTextarea formControlName="impleNotes"
+                        placeholder="Enter Outcome" id="inputtext" style="resize: none;"></textarea>
                     <div class="error" *ngIf="myForm.get('impleNotes').hasError('maxlength')">
                         Maximum character limit exceeded (1000 characters).
                     </div>
@@ -171,7 +208,7 @@
 
                                                 </div>
                                             </td>
-                                         <td>
+                                         <td class="chip">
                                                 {{ rowData.city }}
                                             </td>
                                            <!--     <td>
@@ -234,7 +271,7 @@
 
                                                 </div>
                                             </td>
-                                           <td>
+                                           <td class="chip">
                                                 {{ rowData.city }}
                                             </td>
                                            <!--   <td>
@@ -272,51 +309,59 @@
                             <div class="p-d-block">
                                 <p><b>A.</b> Value Document&nbsp; <a (click)="showDialogValue()"
                                         style="text-decoration: underline;">Upload</a></p>
-                                <ul *ngIf="uploadedFiles.length > 0">
-                                    <li *ngFor="let file of uploadedFiles; let i = index" class="file-item">
-                                        <a (click)="downloadArtifactByIDValue(i)"
-                                            [pTooltip]="'Click on the file to Download'" [tooltipPosition]="'top'"
-                                            style="text-decoration: underline;">{{ file.name }}</a>
-                                        <button pButton pRipple type="button" icon="pi pi-trash"
-                                            (click)="deleteProjectArtifact(i)" style="margin-left: 8px;"
-                                            class="p-button-rounded p-button-text p-button-danger"></button>
-                                    </li>
-                                </ul>
                             </div>
                         </div>
                         <div class="field col-12 md:col-4">
                             <div class="p-d-block">
                                 <p><b>B.</b> Response Document&nbsp; <a (click)="showDialogResponse()"
                                         style="text-decoration: underline;">Upload</a></p>
-                                <ul *ngIf="uploadedResponseFiles.length > 0">
-                                    <li *ngFor="let file of uploadedResponseFiles; let i = index" class="file-item">
-                                        <a (click)="downloadArtifactByIDResponse(i)"
-                                            [pTooltip]="'Click on the file to Download'" [tooltipPosition]="'top'"
-                                            style="text-decoration: underline;">{{ file.name }}</a>
-                                        <button pButton pRipple type="button" icon="pi pi-trash"
-                                            (click)="deleteResponseArtifact(i)" style="margin-left: 8px;"
-                                            class="p-button-rounded p-button-text p-button-danger"></button>
-                                    </li>
-                                </ul>
                             </div>
                         </div>
                         <div class="field col-12 md:col-4">
                             <div class="p-d-block">
                                 <p><b>C.</b> Others&nbsp; <a (click)="showDialogOthers()"
                                         style="text-decoration: underline;">Upload</a></p>
-                                <ul *ngIf="uploadedOtherFiles.length > 0">
-                                    <li *ngFor="let file of uploadedOtherFiles; let i = index" class="file-item">
-                                        <a (click)="downloadArtifactByIDOther(i)"
-                                            [pTooltip]="'Click on the file to Download'" [tooltipPosition]="'top'"
-                                            style="text-decoration: underline;">{{ file.name }}</a>
-                                        <button pButton pRipple type="button" icon="pi pi-trash"
-                                            (click)="deleteOtherArtifact(i)" style="margin-left: 8px;"
-                                            class="p-button-rounded p-button-text p-button-danger"></button>
-                                    </li>
-                                </ul> 
                             </div>
                         </div>
                     </div>
+                    <p-tabView>
+                        <p-tabPanel header="Value Document">
+                            <ul *ngIf="uploadedFiles.length > 0">
+                                <li *ngFor="let file of uploadedFiles; let i = index" class="file-item">
+                                    <a (click)="downloadArtifactByIDValue(i)"
+                                        [pTooltip]="'Click on the file to Download'" [tooltipPosition]="'top'"
+                                        style="text-decoration: underline;">{{ file.name }}</a>
+                                    <button pButton pRipple type="button" icon="pi pi-trash"
+                                        (click)="deleteProjectArtifact(i)" style="margin-left: 8px;"
+                                        class="p-button-rounded p-button-text p-button-danger"></button>
+                                </li>
+                            </ul>
+                        </p-tabPanel>
+                        <p-tabPanel header="Response Document">
+                            <ul *ngIf="uploadedResponseFiles.length > 0">
+                                <li *ngFor="let file of uploadedResponseFiles; let i = index" class="file-item">
+                                    <a (click)="downloadArtifactByIDResponse(i)"
+                                        [pTooltip]="'Click on the file to Download'" [tooltipPosition]="'top'"
+                                        style="text-decoration: underline;">{{ file.name }}</a>
+                                    <button pButton pRipple type="button" icon="pi pi-trash"
+                                        (click)="deleteResponseArtifact(i)" style="margin-left: 8px;"
+                                        class="p-button-rounded p-button-text p-button-danger"></button>
+                                </li>
+                            </ul>
+                        </p-tabPanel>
+                        <p-tabPanel header="Others">
+                            <ul *ngIf="uploadedOtherFiles.length > 0">
+                                <li *ngFor="let file of uploadedOtherFiles; let i = index" class="file-item">
+                                    <a (click)="downloadArtifactByIDOther(i)"
+                                        [pTooltip]="'Click on the file to Download'" [tooltipPosition]="'top'"
+                                        style="text-decoration: underline;">{{ file.name }}</a>
+                                    <button pButton pRipple type="button" icon="pi pi-trash"
+                                        (click)="deleteOtherArtifact(i)" style="margin-left: 8px;"
+                                        class="p-button-rounded p-button-text p-button-danger"></button>
+                                </li>
+                            </ul> 
+                        </p-tabPanel>
+                    </p-tabView>
                     <hr class="aligndown">
                     <div class="col-12" style="display: flex;justify-content: flex-end;">
                         <button pButton pRipple type="button" label="Save As Draft" [disabled]="!myForm.valid"
