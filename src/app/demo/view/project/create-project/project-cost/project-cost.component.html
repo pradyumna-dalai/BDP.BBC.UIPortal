@@ -83,8 +83,8 @@
     <p style="display: inline; margin-left: 5px;" [innerHTML]="block.serviceDescription">{{ block.serviceDescription }}</p>
                                 </div>
                                 <br>
-                                <p-table *ngIf="block.processes && block.processes.length > 0"[value]="block.processes" dataKey="processId" editMode="row"
-                                    [tableStyle]="{'min-width': '50rem'}">
+                                <p-table *ngIf="block.processes && block.processes.length > 0" [value]="block.processes" dataKey="processId"
+                                    editMode="row" [tableStyle]="{'min-width': '50rem'}">
                                     <ng-template pTemplate="header">
                                         <tr>
                                             <th style="width:20%">Service Steps</th>
@@ -103,67 +103,61 @@
                                                         <ng-container *ngIf="process?.originService">
                                                             <ng-container *ngFor="let config of process?.originService?.configurations">
                                                                 <ng-container *ngFor="let location of config?.locations">
-                                            <tr>
-                                                <td>{{config?.configurableName}}</td>
-                                            </tr>
-                                        </ng-container>
-                                        </ng-container>
-                                        </ng-container>
-                                        <ng-container *ngIf="process?.destinationService">
-                                            <ng-container *ngFor="let config of process?.destinationService?.configurations">
-                                                <ng-container *ngFor="let location of config?.locations">
-                                                    <tr>
-                                                        <td>{{config?.configurableName}}</td>
-                                                    </tr>
-                                                </ng-container>
-                                            </ng-container>
-                                        </ng-container>
-                                        </ng-container>
-                                        </td>
-                                        <td>
-                                            <ng-container *ngIf="process?.originService || process?.destinationService">
+                                                                    
+                                                                        {{config?.configurableName}}<br><br>
+                                                                   
+                                                                </ng-container>
+                                                            </ng-container>
+                                                        </ng-container>
+                                                        <ng-container *ngIf="process?.destinationService">
+                                                            <ng-container *ngFor="let config of process?.destinationService?.configurations">
+                                                                <ng-container *ngFor="let location of config?.locations">
+                                                                    
+                                                                       {{config?.configurableName}}<br><br>
+                                                                    
+                                                                </ng-container>
+                                                            </ng-container>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                </td>
+                                            <td>
                                                 <ng-container *ngIf="process?.originService">
                                                     <ng-container *ngFor="let config of process?.originService?.configurations">
                                                         <ng-container *ngFor="let location of config.locations">
-                                                            <tr>
-                                                                <td>{{location?.locationName}}</td>
-                                                            </tr>
+                                                            {{ location?.locationName }}<br><br>
                                                         </ng-container>
                                                     </ng-container>
                                                 </ng-container>
                                                 <ng-container *ngIf="process?.destinationService">
                                                     <ng-container *ngFor="let config of process?.destinationService?.configurations">
                                                         <ng-container *ngFor="let location of config.locations">
-                                                            <tr>
-                                                                <td>{{location?.locationName}}</td>
-                                                            </tr>
+                                                           {{ location?.locationName }}<br><br>
                                                         </ng-container>
                                                     </ng-container>
                                                 </ng-container>
-                                            </ng-container>
-                                        </td>
-                                        <td>
-                                            <ng-container *ngIf="process?.originService">
-                                                <ng-container *ngFor="let config of process?.originService?.configurations">
-                                                    <ng-container *ngFor="let location of config.locations">
-                                                        <tr>
-                                                            <td>Origin</td>
-                                                        </tr>
+                                            </td>
+                                            <td>
+                                                <ng-container *ngIf="process?.originService">
+                                                    <ng-container *ngFor="let config of process?.originService?.configurations">
+                                                        <ng-container *ngFor="let location of config.locations">
+                                                         
+                                                               Origin <br><br>
+                                                            
+                                                        </ng-container>
                                                     </ng-container>
                                                 </ng-container>
-                                            </ng-container>
-                                            <ng-container *ngIf="process?.destinationService">
-                                                <ng-container *ngFor="let config of process?.destinationService?.configurations">
-                                                    <ng-container *ngFor="let location of config.locations">
-                                                        <tr>
-                                                            <td>Destination</td>
-                                                        </tr>
+                                                <ng-container *ngIf="process?.destinationService">
+                                                    <ng-container *ngFor="let config of process?.destinationService?.configurations">
+                                                        <ng-container *ngFor="let location of config.locations">
+                                                          
+                                                                Destination <br><br>
+                                                            
+                                                        </ng-container>
                                                     </ng-container>
                                                 </ng-container>
-                                            </ng-container>
-                                        </td>
-                                        <td>NA</td>
-                                        </tr>
+                                            </td>
+                                            <td>NA</td>
+                                            </tr>
                                         </ng-container>
                                     </ng-template>
                                     <ng-template pTemplate="emptymessage">
