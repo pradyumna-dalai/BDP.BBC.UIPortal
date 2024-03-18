@@ -173,16 +173,97 @@
                     <hr style="margin-top: 1px;margin-bottom: 22px;color: gray;background-color: #d9d2d2;height: 1px;border: none;">
                 </div>
                 </div>
-                <div class="col-12" style="display: flex;justify-content: flex-end;">
+                <!-- <div class="col-12" style="display: flex;justify-content: flex-end;">
                     <button type="submit" pButton pRipple label="Submit" (click)="goToNextTab()" class="mr-2 mb-2"></button>
-                </div>
+                </div> -->
             </p-tabPanel>
             <p-tabPanel header="P & L Statement">
-                <p>
-                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim
-                    ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
-                </p>
+                <div  style="min-height: 90px;">
+                    <div style="margin-top: 90px;">
+                        <div style="display: flex;justify-content: center;">
+                            <div style="display: flex;justify-content: center;">
+                                <!-- <i class="fas fa-upload"></i> -->
+                            </div><br>
+                        </div><br>
+                        <div style="display: flex;justify-content: center;">
+                            <h4>Upload P & L Statement</h4>
+                        </div>
+                        <div style="display: flex;justify-content: center;">
+                            <h6>There are no P & L Statement uploaded click on below button to upload the same</h6>
+                        </div>
+                        <div style="padding: 5px;display: flex;justify-content: center;"><button pButton pRipple type="button" label="Upload"
+                            (click)="showDialogOthers()"></button></div>
+                    </div>
+                </div>
             </p-tabPanel>
         </p-tabView>
-       
+        <div class="col-12" style="display: flex;justify-content: flex-end;">
+            <button type="submit" pButton pRipple label="Submit" (click)="goToNextTab()" class="mr-2 mb-2"></button>
+        </div>
+        <p-toast></p-toast>
 </div>
+
+<p-dialog header="Upload" [(visible)]="visiblePandLBox" [style]="{width: '50vw'}">
+    <ng-template pTemplate="header">
+        <div style="width: 100%;">
+            <h5 style="display: contents;">Upload </h5>&nbsp;&nbsp;&nbsp;
+            <!-- <h5 style="display: contents;">
+                <a href="#" (click)="downloadSampleOpExcel($event)" style="text-decoration: underline;">Download Sample
+                    File</a>
+            </h5> -->
+        </div>
+    </ng-template>
+    <hr>
+    <div>
+        <div class="p-fluid grid">
+            <div class="col-12 md:col-12">
+                <div class="custom-container">
+                    <h6><b>Instructions</b></h6>
+                    <!-- <ul class="list" style="display:inline;"> -->
+                <p><b>1.</b> Maximum File Size: 5MB <b>2.</b> File Format: xlsx and xls <b>3.</b> Only one P & L Statement can be uploaded at a time
+                <b> 4.</b> Make sure to provide valid data
+                    <b> 5.</b> Keep file name recognizable</p>
+                    <!-- </ul> -->
+                </div>
+            </div>
+            <div class="col-12 md:col-12">
+                <div class="custom-container">
+                    <h6><b>Upload</b></h6>
+                    <div *ngIf="showUploaderror" style="color: red;">
+                        Upload error: All fields empty or exceeds 1000 characters. Review the file before uploading.
+                    </div>
+                    <div class="box">
+                        <div class="card-body">
+                            <div class="container">
+                                <label for="fileInput" class="custom-file-input">
+                                    <i class="pi pi-upload" style="font-size: 30px;display: block;"></i>
+                                    <div class="upload_name">Upload</div>
+                                </label>
+                                <p style="text-align: center;">{{fileNameOC}}</p>
+                                <input type="file" id="fileInput" (change)="onFileSelected($event)"
+                                    style="display: none;" accept=".xlsx">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card_footer">
+                        <div>
+                            <button type="submit" pButton pRipple class="p-button-outlined mr-2 mb-2" [disabled]="!selectedFile"
+                                (click)="onRemoveOperationClick()">
+                                Remove File
+                            </button>
+                        </div>
+                        <div class="uplodBtn_right">
+                            <button type="submit" (click)="onOperarationCancelClick()" pButton pRipple
+                            class="p-button-outlined mr-2 mb-2">Cancel</button>
+                            <button type="submit" pButton pRipple class="mr-2 mb-2" [disabled]="!selectedFile"
+                                (click)="onUploadClick($event)">
+                                Submit
+                            </button>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</p-dialog>
