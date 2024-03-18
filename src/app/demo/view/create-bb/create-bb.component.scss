@@ -56,13 +56,28 @@
   .excel-table th {
     background-color: #f2f2f2;
   }
-  .box{
-    border: 1px solid #a6d5fa;;
-    padding: 0;
-    border-style: dashed;
-    height: 150px;
+  // .box{
+  //   border: 1px solid #a6d5fa;
+  //   padding: 0;
+  //   border-style: dashed;
+  //   height: 150px;
+  //   background-color: #a6d5fa;
 
-  }
+  // }
+  .box {
+    padding: 12px;
+    background-color: #f3f9ff;
+    height: 150px;
+    border-radius: 8px;
+}
+
+.containers {
+  border: 3px dashed #c7e5ff;
+  height: 126px;
+  padding: 6px;
+  padding-left: 15px;
+  border-radius: 5px;
+}
  .btn{
   display: flex;
   justify-content: space-between;
@@ -90,7 +105,7 @@
   height: 33px;
   margin-right: 8px;
   margin-left: 46%;
-  margin-top: 6%;
+  margin-top: 3%;
 }
 .card_footer{
   margin-top: 11px;

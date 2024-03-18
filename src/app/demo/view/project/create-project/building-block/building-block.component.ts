@@ -61,7 +61,7 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
 
   // #endregion
 
-
+  private _isExpanded = false;
 
   constructor(private router: Router,private sharedService: SharedServiceService, private projectService: ProjectsService, private messageService: MessageService, private appMain: AppMainComponent, private buildingBlockService: CreateBuildingBlockService) {
   // Set setDraftSavedBB to false when navigating away
@@ -640,5 +640,11 @@ export class BuildingBlockComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
 
   }
+  public get isExpanded() {
+    return this._isExpanded;
+  }
 
+  public set isExpanded(value: boolean) {
+    this._isExpanded = value;
+  }
 }

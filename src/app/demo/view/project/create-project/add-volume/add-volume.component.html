@@ -217,10 +217,12 @@
                         </button> 
                         </div>
                         <div class="uplodBtn_right">
+                        <button type="submit" (click)="onPopupCancelClick()" [disabled]="!uploadFile"
+                          pButton pRipple class="p-button-outlined mr-2 mb-2">Cancel</button>
                         <button type="submit" (click)="onSubmitUploadClick(this.projectIdbb)" pButton pRipple class="mr-2 mb-2">
                             Submit
                         </button>
-                        <button type="submit" (click)="onPopupCancelClick()" [disabled]="!uploadFile"  pButton pRipple class="p-button-outlined mr-2 mb-2">Cancel</button>
+                        
                         </div>
                     </div>
                     </div>
