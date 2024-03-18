@@ -14,7 +14,7 @@ export namespace AppRoutes {
         public static readonly getModeofTransport = "mode-of-transport";
         public static readonly getProjectStatus = "project-status";
         public static readonly getRegion = "region";
-        public static readonly getCompany = "company";
+        public static readonly getCompany = "companys";
         public static readonly getProjectStage = "project-stage";
         public static readonly getOpportunityManger = "opportunity-manager";
         public static readonly getOpportunityName = "opportunity-name";

@@ -5,15 +5,43 @@
   color: red;;
 }
 
+.p-dropdown-item {
+    cursor: pointer;
+    font-weight: 400;
+    white-space: break-spaces;
+    position: relative;
+    overflow: hidden;
+}
+.chip {
+  display: inline-block;
+  padding: 0.5em 0.75em;
+  margin: 0.25em;
+  background-color: #e0e0e0;
+  border-radius: 16px;
+  font-size: 14px;
+  padding-top: 5px;
+}
 
+.closebtn {
+  padding-left: 10px;
+  color: #888;
+  font-weight: bold;
+  float: right;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.closebtn:hover {
+  color: #000;
+}
 
 .align{
   margin-top: -7px;
   margin-bottom: 22px;
   color: gray;
   background-color: #d9d2d2;
-  height: 1px; /* Set the height of the line */
-  border: none; /* Remove default border */
+  height: 1px; 
+  border: none; 
   
 }
 .aligndown{
