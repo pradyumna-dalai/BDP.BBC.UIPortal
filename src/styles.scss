@@ -21,7 +21,7 @@ $primaryFont: "Montserrat", sans-serif !important;
 
 /* Break long option labels into multiple lines */
 .p-dropdown .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
-  white-space: nowrap;
+  white-space: break-spaces;
 }
 
 .p-toast-top-right {

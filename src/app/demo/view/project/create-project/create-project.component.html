@@ -1,16 +1,17 @@
 <p-tabView [(activeIndex)]="activeIndex" (onChange)="onTabChange($event)">
     <p-tabPanel header="Project Information">
         <div style="display: flex;">
-            <h5>Project Information</h5>&nbsp;<p> | Please fill up all the mondatory fields(<span class="requiredField">*</span>) & Save to proceed to the next tab</p>
+            <h5>Project Information</h5>&nbsp;<p> | Please fill up all the mondatory fields(<span
+                    class="requiredField">*</span>) & Save to proceed to the next tab</p>
         </div>
         <hr class="align">
         <form [formGroup]="myForm">
             <div class="p-fluid grid">
                 <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>Company Name<span class="requiredField">*</span></label></div>
-                    <p-dropdown [options]="companyOptions" optionLabel="name" (onChange)="onCompanySelectionChange($event)"
-                        optionValue="id" formControlName="companyName" placeholder="Select Company Name" [filter]="true"
-                        filterBy="name"></p-dropdown>
+                    <p-dropdown [options]="companyOptions" optionLabel="name"
+                        (onChange)="onCompanySelectionChange($event)" optionValue="id" formControlName="companyName"
+                        placeholder="Select Company Name" [filter]="true" filterBy="name"></p-dropdown>
                 </div>
                 <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>Company Code</label></div>
@@ -18,7 +19,8 @@
                 </div>
                 <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>Industry Vertical<span class="requiredField">*</span></label></div>
-                    <input  id="readonly-input" placeholder="Select Company"  [readonly]="true"  formControlName="industryVertical" type="text" pInputText>
+                    <input id="readonly-input" placeholder="Select Company" [readonly]="true"
+                        formControlName="industryVertical" type="text" pInputText>
                 </div>
 
                 <div class="field col-12 md:col-4">
@@ -30,26 +32,20 @@
                     <!-- <p-dropdown [options]="opportunityNameOptions" optionLabel="name"
                         (onChange)="onOpportunitySelect($event)" optionValue="id" formControlName="opportunityName"
                         placeholder="Select Opportunity Name" [filter]="true" filterBy="name"></p-dropdown> -->
-                    <input   placeholder="Enter Opportunity Name" formControlName="opportunityName" type="text" 
+                    <input placeholder="Enter Opportunity Name" formControlName="opportunityName" type="text"
                         pInputText>
-                </div>         
+                </div>
                 <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>Region<span class="requiredField">*</span></label></div>
                     <p-dropdown [options]="regionOptions" formControlName="region" placeholder="Select Region"
                         optionLabel="name" optionValue="id" [filter]="true" filterBy="name"></p-dropdown>
                 </div>
                 <br>
-
-
-                <!-- <div class="field col-12 md:col-3">
-                    <div class="p-d-block"><label>Project Name<span class="requiredField">*</span></label></div>
-                    <input formControlName="projectName" placeholder="Enter Project Name" type="text" id="inputtext"
-                        pInputText>
-                </div> -->
                 <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>Project Stage<span class="requiredField">*</span></label></div>
-                    <p-dropdown [options]="projectStageOptions" formControlName="projectStage" placeholder="Select Project Stage"
-                        optionLabel="name" optionValue="id" [filter]="true" filterBy="name" [ngClass]="{'p-dropdown-disabled': projectStageDisabled}"></p-dropdown>
+                    <p-dropdown [options]="projectStageOptions" formControlName="projectStage"
+                        placeholder="Select Project Stage" optionLabel="name" optionValue="id" [filter]="true"
+                        filterBy="name" [ngClass]="{'p-dropdown-disabled': projectStageDisabled}"></p-dropdown>
                 </div>
                 <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>Project Status<span class="requiredField">*</span></label></div>
@@ -59,7 +55,8 @@
                 </div>
                 <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>Opportunity Manager<span class="requiredField">*</span></label></div>
-                    <input placeholder="Enter Opportunity Manager" formControlName="opportunityManager" type="text" pInputText>
+                    <input placeholder="Enter Opportunity Manager" formControlName="opportunityManager" type="text"
+                        pInputText>
                 </div>
                 <div class="field col-12 md:col-12">
                     <div class="p-d-block"><label>Scope & Assumptions<span class="requiredField">*</span></label></div>
@@ -71,52 +68,59 @@
                     </div>
                 </div>
             </div>
-         
-                <br>
-
-                <!-- <div class="field col-12 md:col-6">
-                    <div class="p-d-block"><label>Start Date-End Date<span class="requiredField">*</span></label></div>
-                        <p-calendar  selectionMode="range"  formControlName="selectedDateRange" placeholder="start-date/end-date" [style.width]="'200px'" [style.height]="'200px'"></p-calendar>
-                </div> -->
-              
-                <div style="display: flex;padding-left: 2px;"><label>Duration<span class="requiredField">*</span></label></div>
-                <br>
-                <div class="p-fluid grid">
+            <br>
+            <div style="display: flex;padding-left: 2px;"><label>Duration<span class="requiredField">*</span></label>
+            </div>
+            <br>
+            <div class="p-fluid grid">
                 <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>Start Date & Time<span class="requiredField">*</span></label></div>
-                    <p-calendar  formControlName="startDate" placeholder="Start-date & Time"  [disabledDates]="disabledStartDates" [minDate]="minStartDate" [maxDate]="maxStartDate"  [showTime]="true" [showSeconds]="true"   [showIcon]="true" ></p-calendar>
-                        <!-- <p-calendar  selectionMode="range"  formControlName="selectedDateRange" placeholder="start-date/end-date" [style.width]="'200px'" [style.height]="'200px'"></p-calendar> -->
+                    <p-calendar formControlName="startDate" placeholder="Start-date & Time"
+                        [disabledDates]="disabledStartDates" [minDate]="minStartDate"
+                        (ngModelChange)="updateDisabledDates($event)" [maxDate]="maxStartDate" [showTime]="true"
+                        [showSeconds]="true" [showIcon]="true"></p-calendar>
                 </div>
                 <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>Due Date & Time<span class="requiredField">*</span></label></div>
-                    <p-calendar  formControlName="endDate" placeholder="Due-date & Time" [showTime]="true"  [disabledDates]="" [minDate]="" [showSeconds]="true"    [showIcon]="true"></p-calendar>
-                        <!-- <p-calendar  selectionMode="range"  formControlName="selectedDateRange" placeholder="start-date/end-date" [style.width]="'200px'" [style.height]="'200px'"></p-calendar> -->
+                    <p-calendar formControlName="endDate" placeholder="Due-date & Time" [showTime]="true"
+                        [disabledDates]="disabledDates" [minDate]="startDate" [showSeconds]="true"
+                        [showIcon]="true"></p-calendar>
                 </div>
-                </div>
-             
-                <hr class="aligndown">
-                <br>
-                <div style="display: flex;"><label>Notes<span class="requiredField">*</span>&nbsp;|</label><p style="color: rgb(0, 162, 255);">&nbsp;  Add Row</p></div>
-                <br>
-                <div class="p-fluid grid">
-                <div class="field col-12 md:col-2">
-                    <div class="p-d-block"><label>Date</label></div>
-                    <p-calendar  formControlName="date" placeholder="MM/DD/YYYY"  [showSeconds]="true" [minDate]="" [maxDate]=""  [showIcon]="true" ></p-calendar>
-                </div>
-                <div class="field col-12 md:col-5">
-                    <div class="p-d-block"><label>Action Items</label></div>
-                    <textarea rows="4" cols="30" pInputTextarea formControlName="impleNotes"
-                        placeholder="Enter Action Items" id="inputtext" style="resize: none;"></textarea>
-                    <div class="error" *ngIf="myForm.get('impleNotes').hasError('maxlength')">
-                        Maximum character limit exceeded (1000 characters).
+            </div>
+
+            <hr class="aligndown">
+            <br>
+            <div style="display: flex;">
+                <label>Notes<span class="requiredField">*</span>&nbsp;|</label>
+                <p style="color: rgb(0, 162, 255);" (click)="addRowNotes()">&nbsp; Add Row</p>
+            </div>
+            <br>
+            <div class="p-fluid grid" formArrayName="rows">
+                <div *ngFor="let row of rows.controls; let i=index" [formGroupName]="i" class="row"
+                    style="display: flex; align-items: center;">
+                    <div class="field col-12 md:col-5" style="margin-right: 10px;">
+                        <div class="p-d-block"><label>Date</label></div>
+                        <p-calendar formControlName="date" placeholder="MM/DD/YYYY" [showSeconds]="true"
+                            [showIcon]="true"></p-calendar>
+                        <!-- <div class="error" *ngIf="row.get('date').hasError('required')">
+                          Date is required.
+                        </div> -->
                     </div>
-                </div>
-                <div class="field col-12 md:col-5">
-                    <div class="p-d-block"><label>Outcome</label></div>
-                    <textarea rows="4" cols="30" pInputTextarea formControlName="impleNotes"
-                        placeholder="Enter Outcome" id="inputtext" style="resize: none;"></textarea>
-                    <div class="error" *ngIf="myForm.get('impleNotes').hasError('maxlength')">
-                        Maximum character limit exceeded (1000 characters).
+                    <div class="field col-12 md:col-8" style="margin-right: 10px;">
+                        <div class="p-d-block"><label>Action Items</label></div>
+                        <textarea rows="4" cols="30" pInputTextarea formControlName="actionItems"
+                            placeholder="Enter Action Items" style="resize: none;"></textarea>
+                        <div class="error" *ngIf="row.get('actionItems').hasError('maxlength')">
+                            Maximum character limit exceeded (1000 characters).
+                        </div>
+                    </div>
+                    <div class="field col-12 md:col-8">
+                        <div class="p-d-block"><label>Outcome</label></div>
+                        <textarea rows="4" cols="30" pInputTextarea formControlName="outcome"
+                            placeholder="Enter Outcome" style="resize: none;"></textarea>
+                        <div class="error" *ngIf="row.get('outcome').hasError('maxlength')">
+                            Maximum character limit exceeded (1000 characters).
+                        </div>
                     </div>
                 </div>
             </div>
@@ -131,9 +135,9 @@
                         <label for="ny" style="padding-left: 6px;">Origin Location</label>
                     </div>
 
-                    
+
                     <p-multiSelect placeholder="Select Origin Location" optionLabel="name" optionValue="id"
-                       [showClear]="true" [options]="originLocations" [disabled]="!enableOriginLocation"
+                        [showClear]="true" [options]="originLocations" [disabled]="!enableOriginLocation"
                         (onChange)="onOriginLocationChange($event)" [(ngModel)]="selectedCitiesOrign"
                         [ngModelOptions]="{standalone: true}">
                     </p-multiSelect>
@@ -148,88 +152,85 @@
                         <label for="nyz" style="padding-left: 6px;">Destination Location</label>
                     </div>
                     <p-multiSelect placeholder="Select Destination Location" optionLabel="name" optionValue="id"
-                      [showClear]="true" [options]="destinationLocations" [(ngModel)]="selectedCities"
+                        [showClear]="true" [options]="destinationLocations" [(ngModel)]="selectedCities"
                         [ngModelOptions]="{standalone: true}" [disabled]="!enableDestinationLocation"
-                        (onChange)="onDestinationLocationChange($event)"
-                        >
+                        (onChange)="onDestinationLocationChange($event)">
                     </p-multiSelect>
                 </div>
             </div>
-             <div class="card">
-                        <p-tabView>
-                            <p-tabPanel header="Origin Location">
+            <div class="card">
+                <p-tabView>
+                    <p-tabPanel header="Origin Location">
 
-                                <p-table [value]="OtableData" [tableStyle]="{'min-width': '50rem'}">
-                                    <ng-template pTemplate="header">
-                                        <tr>
-                                            <th style="width:20%">Action</th>
-                                            <th style="width:20%">Location</th>
-                                        </tr>
-                                    </ng-template>
-                                    <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
-                                        <tr>
-                                            <td>
-                                                <div>
-                                                    <button pButton pRipple type="button" pSaveEditableRow
-                                                        icon="pi pi-check" (click)="OrignsaveRow(rowIndex)"
-                                                        *ngIf="rowData.editing"
-                                                        class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                                                    <button pButton pRipple type="button" pCancelEditableRow
-                                                        icon="pi pi-times" (click)="OrigndiscardRow(rowIndex)"
-                                                        *ngIf="rowData.editing"
-                                                        class="p-button-rounded p-button-text p-button-danger"></button>
-                                                    <button pButton pRipple type="button" icon="pi pi-trash"
-                                                        (click)="OrigndeleteRow(rowIndex)" *ngIf="!rowData.editing"
-                                                        class="p-button-rounded p-button-text p-button-danger"></button>
-                                                </div>
-                                            </td>
-                                         <td>
-                                            <div class="chip">{{ rowData.city }} <span class="closebtn" onclick="this.parentElement.style.display='none'">&times;</span></div>
-                                            </td>
-                                         </tr>
-                                    </ng-template>
-                                </p-table>
+                        <p-table [value]="OtableData" [tableStyle]="{'min-width': '50rem'}">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width:20%">Action</th>
+                                    <th style="width:20%">Location</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <button pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
+                                                (click)="OrignsaveRow(rowIndex)" *ngIf="rowData.editing"
+                                                class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                                            <button pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+                                                (click)="OrigndiscardRow(rowIndex)" *ngIf="rowData.editing"
+                                                class="p-button-rounded p-button-text p-button-danger"></button>
+                                            <button pButton pRipple type="button" icon="pi pi-trash"
+                                                (click)="OrigndeleteRow(rowIndex)" *ngIf="!rowData.editing"
+                                                class="p-button-rounded p-button-text p-button-danger"></button>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="chip">{{ rowData.city }} <span class="closebtn"
+                                                onclick="this.parentElement.style.display='none'">&times;</span></div>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
 
-                            </p-tabPanel>
-                            <p-tabPanel header="Destination Location">
+                    </p-tabPanel>
+                    <p-tabPanel header="Destination Location">
 
-                                <p-table [value]="tableData" [tableStyle]="{'min-width': '50rem'}">
-                                    <ng-template pTemplate="header">
-                                        <tr>
-                                            <th style="width:20%">Action</th>
-                                            <th style="width:20%">Location</th>
-                                    </tr>
-                                    </ng-template>
-                                    <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
-                                        <tr>
-                                            <td>
-                                                <div>
-                                            
-                                                    <button pButton pRipple type="button" pSaveEditableRow
-                                                        icon="pi pi-check" (click)="saveRow(rowIndex)"
-                                                        *ngIf="rowData.editing"
-                                                        class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                                                    <button pButton pRipple type="button" pCancelEditableRow
-                                                        icon="pi pi-times" (click)="discardRow(rowIndex)"
-                                                        *ngIf="rowData.editing"
-                                                        class="p-button-rounded p-button-text p-button-danger"></button>
-                                                    <button pButton pRipple type="button" icon="pi pi-trash"
-                                                        (click)="deleteRow(rowIndex)" *ngIf="!rowData.editing"
-                                                        class="p-button-rounded p-button-text p-button-danger"></button>
+                        <p-table [value]="tableData" [tableStyle]="{'min-width': '50rem'}">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width:20%">Action</th>
+                                    <th style="width:20%">Location</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+                                <tr>
+                                    <td>
+                                        <div>
 
-                                                </div>
-                                            </td>
-                                           <td >
-                                            <div class="chip">{{ rowData.city }} <span class="closebtn" onclick="this.parentElement.style.display='none'">&times;</span></div>
-                                             
-                                            </td>
-                                          </tr>
-                                    </ng-template>
-                                </p-table>
-                            </p-tabPanel>
-                        </p-tabView>
-             </div>
-             
+                                            <button pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
+                                                (click)="saveRow(rowIndex)" *ngIf="rowData.editing"
+                                                class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                                            <button pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+                                                (click)="discardRow(rowIndex)" *ngIf="rowData.editing"
+                                                class="p-button-rounded p-button-text p-button-danger"></button>
+                                            <button pButton pRipple type="button" icon="pi pi-trash"
+                                                (click)="deleteRow(rowIndex)" *ngIf="!rowData.editing"
+                                                class="p-button-rounded p-button-text p-button-danger"></button>
+
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="chip">{{ rowData.city }} <span class="closebtn"
+                                                onclick="this.parentElement.style.display='none'">&times;</span></div>
+
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </p-tabPanel>
+                </p-tabView>
+            </div>
+
 
             <h6><b>Documents</b></h6>
             <p>Upload the following documents: File Size < 5 mb,Format Excel, Word, PDF, PPT, JPEG & PNG</p>
@@ -288,7 +289,7 @@
                                         (click)="deleteOtherArtifact(i)" style="margin-left: 8px;"
                                         class="p-button-rounded p-button-text p-button-danger"></button>
                                 </li>
-                            </ul> 
+                            </ul>
                         </p-tabPanel>
                     </p-tabView>
                     <hr class="aligndown">
@@ -304,31 +305,36 @@
     </p-tabPanel>
     <p-tabPanel header="Building Block" [disabled]="!draftSaved">
         <div *ngIf="activeIndex==1 && projinfoID !== null">
-            <app-building-block #buildingBlockComponent (continueClicked)="goToNextTab()" [projStatus]="projStatus" [projectID]="projinfoID"></app-building-block>
+            <app-building-block #buildingBlockComponent (continueClicked)="goToNextTab()" [projStatus]="projStatus"
+                [projectID]="projinfoID"></app-building-block>
         </div>
     </p-tabPanel>
 
     <p-tabPanel [disabled]="!draftSavedBB" header="Add Volume">
         <div *ngIf="projectIDbb !== null">
-          <app-add-volume  #addVolumeComponent (onClickContinuetoAddVolume)="goToNextTab()" [projStatus]="projStatus" [projectIdbb]="projectIDbb"></app-add-volume>
+            <app-add-volume #addVolumeComponent (onClickContinuetoAddVolume)="goToNextTab()" [projStatus]="projStatus"
+                [projectIdbb]="projectIDbb"></app-add-volume>
         </div>
     </p-tabPanel>
 
 
     <p-tabPanel header="Cost Line Item" [disabled]="!draftSavedVolume">
         <div *ngIf="projectidVolume !== null">
-          <app-cost-line-item #costLineItemComponent (continueClickedToCLI)="goToNextTab()" [projStatus]="projStatus" [projectidVolume]="projectidVolume"></app-cost-line-item>
+            <app-cost-line-item #costLineItemComponent (continueClickedToCLI)="goToNextTab()" [projStatus]="projStatus"
+                [projectidVolume]="projectidVolume"></app-cost-line-item>
         </div>
     </p-tabPanel>
     <p-tabPanel header="Other Cost" [disabled]="!draftSavedCLI">
         <div *ngIf="projectIdCLI !== null">
-            <app-other-cost #otherCostComponent (continueClickedToProjectCost)="goToNextTab()" [projStatus]="projStatus" [projectIdCLI]="projectIdCLI"></app-other-cost>
+            <app-other-cost #otherCostComponent (continueClickedToProjectCost)="goToNextTab()" [projStatus]="projStatus"
+                [projectIdCLI]="projectIdCLI"></app-other-cost>
         </div>
     </p-tabPanel>
 
     <p-tabPanel header="Revenue " [disabled]="!draftSavedCLI">
         <div *ngIf="projectIdCLI !== null">
-            <app-revenue #revenueComponent (continueClickedToRevenue)="goToNextTab()" [projStatus]="projStatus" [projectIdCLI]="projectIdCLI"></app-revenue>
+            <app-revenue #revenueComponent (continueClickedToRevenue)="goToNextTab()" [projStatus]="projStatus"
+                [projectIdCLI]="projectIdCLI"></app-revenue>
         </div>
     </p-tabPanel>
 
@@ -388,7 +394,8 @@
                     </div>
                     <div class="card_footer">
                         <div>
-                            <button type="submit" pButton pRipple class="p-button-outlined mr-2 mb-2" (click)="onRemoveClick()">
+                            <button type="submit" pButton pRipple class="p-button-outlined mr-2 mb-2"
+                                (click)="onRemoveClick()">
                                 Remove File
                             </button>
                         </div>
@@ -453,7 +460,8 @@
                     </div>
                     <div class="card_footer">
                         <div>
-                            <button type="submit" pButton pRipple class="p-button-outlined mr-2 mb-2" (click)="onRemoveClick()">
+                            <button type="submit" pButton pRipple class="p-button-outlined mr-2 mb-2"
+                                (click)="onRemoveClick()">
                                 Remove File
                             </button>
                         </div>
@@ -518,7 +526,8 @@
                     </div>
                     <div class="card_footer">
                         <div>
-                            <button type="submit" pButton pRipple class="p-button-outlined mr-2 mb-2" (click)="onRemoveClick()">
+                            <button type="submit" pButton pRipple class="p-button-outlined mr-2 mb-2"
+                                (click)="onRemoveClick()">
                                 Remove File
                             </button>
                         </div>
@@ -528,7 +537,7 @@
                             <button type="submit" pButton pRipple class="mr-2 mb-2" (click)="onUploadOtherClick()">
                                 Submit
                             </button>
-                            
+
                         </div>
                     </div>
                 </div>
