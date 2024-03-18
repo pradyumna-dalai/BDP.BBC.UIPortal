@@ -270,8 +270,9 @@ export class ProjectComponent {
     };
     this.projectsService.getAllProjectDetails(params).subscribe((res: any) => {
       if (res?.message == "success") {
-        this.proejctdetails = res?.data.projects.map((item: any) => {
-          const opportunityManagers = item.projectInformation?.opportunityManager?.map(manager => manager?.name).join(', ');
+        this.proejctdetails = res?.data.map((item: any) => {
+          const opportunityManagers = item.projectInformation
+          // ?.map(manager => manager?.name).join(', ');
           //console.log('opp',opportunityManagers);
 
           // Determine origin and destination locations
@@ -286,21 +287,25 @@ export class ProjectComponent {
           const formattedStartDate = this.momentService.getFullDate(item.projectInformation?.startDate);
           const formattedEndDate = this.momentService.getFullDate(item.projectInformation?.endDate);
           return {
-            companyname: item.projectInformation?.company?.name,
-            customerCode: item.projectInformation?.customerCode,
-            industryVertical: item.projectInformation?.industryVertical?.name,
+            companyname: item.projectInformation?.companyName,
+            customerCode: item.projectInformation?.companyCode,
+            industryVertical: item.projectInformation?.industryVertical,
             originLocation: originLocation,
             destinationLocation: destinationLocation,
             region: item.projectInformation?.region?.name,
             id: item?.id,
-            projectName: item.projectInformation?.projectName,
-            opportunityName: item.projectInformation?.opportunityName?.name,
-            opportunityID: item.projectInformation?.opportunityName?.id,
+           // projectName: item.projectInformation?.projectName,
+            opportunityName: item.projectInformation?.opportunityName,
+            opportunityID: item.projectInformation?.opportunityId,
             projectStage: item.projectInformation?.projectStage?.name,
             projectStatus: item.projectInformation?.projectStatus?.name,
-            opportunitymanager: opportunityManagers,
+            opportunitymanager: item.projectInformation.opportunityManager,
             startDate: formattedStartDate,
             endDate: formattedEndDate,
+            scopeAssumption:item.projectInformation?.scopeAssumption,
+            totalCost:item.totalCost,
+            totalRevenue:item.totalRevenue
+           
           };
         });
         this.totalRecords = res?.data.totalElements;
