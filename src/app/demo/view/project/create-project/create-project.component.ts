@@ -17,10 +17,10 @@ import { CreateBuildingBlockService } from 'src/app/services/create-buildingBloc
 import { SharedServiceService } from 'src/app/services/project-serivce/shared-service.service';
 import { RevenueComponent } from './revenue/revenue.component';
 
-interface UomData {
-  id: number;
-  name: string;
-}
+// interface UomData {
+//   id: number;
+//   name: string;
+// }
 
 interface TableRow {
   city: string;
@@ -89,7 +89,7 @@ export class CreateProjectComponent implements OnInit {
   selectedFile: any;
   visibleValueBox: boolean = false;
   fileNameOC: string;
-  uomOptions: UomData[] = [];
+ // uomOptions: UomData[] = [];
   tableData: TableRow[] = [];//Destination table data
   selectedCity: any[] = [];
   selectedCities: any[] = [];
@@ -235,7 +235,7 @@ export class CreateProjectComponent implements OnInit {
       opportunityManager: [''],
       scopeAssumption:[''],
       startDate: [new Date(), Validators.required],
-      endDate:[''],
+      endDate:[null, Validators.required] ,
       //selectedDateRange: [''],
       designNotes: ['', [Validators.maxLength(1000)]],
       impleNotes: ['', [Validators.maxLength(1000)]]
@@ -682,19 +682,19 @@ OnStageSelectProjectstatus(event) {
       }
     });
   }
-  fetchActiveUom() {
-    this.uomOptions = [];
-    this.MasterTableservice.getAllActiveUOM().subscribe((res: any) => {
-      if (res?.message == "success") {
-        this.uomOptions = res?.data.map((uom: any) => ({
-          id: uom.id,
-          name: uom.name
-        }));
-      } else {
-        this.uomOptions = [];
-      }
-    })
-  }
+  // fetchActiveUom() {
+  //   this.uomOptions = [];
+  //   this.MasterTableservice.getAllActiveUOM().subscribe((res: any) => {
+  //     if (res?.message == "success") {
+  //       this.uomOptions = res?.data.map((uom: any) => ({
+  //         id: uom.id,
+  //         name: uom.name
+  //       }));
+  //     } else {
+  //       this.uomOptions = [];
+  //     }
+  //   })
+  // }
 
   toggleOriginCheckbox() {
     this.enableOriginLocation = !this.enableOriginLocation;
@@ -790,10 +790,10 @@ OnStageSelectProjectstatus(event) {
   OrigndeleteRow(rowIndex: number) {
     this.OtableData.splice(rowIndex, 1);
   }
-  OrigngetUomName(uomId: number): string {
-    const selectedUom = this.uomOptions.find(uom => uom.id === uomId);
-    return selectedUom ? selectedUom.name : '';
-  }
+  // OrigngetUomName(uomId: number): string {
+  //   const selectedUom = this.uomOptions.find(uom => uom.id === uomId);
+  //   return selectedUom ? selectedUom.name : '';
+  // }
   //-----------------------------------Destination Location Table----------------------------------------------//
   onDestinationLocationChange(event: any) {
     let selectedLocationIds = event.value;
