@@ -21,15 +21,15 @@
                     <div class="p-fluid grid">
                         <div class="col-12 md:col-4">
                             <label><b>Company Name</b></label><br>
-                            <label>{{projectInfo?.company?.name}}</label>
+                            <label>{{projectInfo?.companyName}}</label>
                         </div>
                         <div class="col-12 md:col-4">
                             <label><b>Company Code</b></label><br>
-                            <label>{{projectInfo?.customerCode}}</label>
+                            <label>{{projectInfo?.companycode}}</label>
                         </div>
                         <div class="col-12 md:col-4">
                             <label><b>Industry Vertical</b></label><br>
-                            <label>{{projectInfo?.industryVertical?.name}}</label>
+                            <label>{{projectInfo?.industryVertical}}</label>
                         </div>
                         <div class="col-12 md:col-4">
                             <label><b>Region</b></label><br>
@@ -37,12 +37,12 @@
                         </div>
                         <div class="col-12 md:col-4">
                             <label><b>Opportunity Name</b></label><br>
-                            <label>{{projectInfo?.opportunityName?.name}}
+                            <label>{{projectInfo?.opportunityName}}
                             </label>
                         </div>
                         <div class="col-12 md:col-4">
                             <label><b>Opportunity Manager</b></label><br>
-                            <label>{{ getOpportunityManagerNames(projectInfo?.opportunityManager) }}</label>
+                            <label>{{ projectInfo?.opportunityManager }}</label>
                         </div>
                         <div class="col-12 md:col-4">
                             <label><b>Project Stage</b></label><br>

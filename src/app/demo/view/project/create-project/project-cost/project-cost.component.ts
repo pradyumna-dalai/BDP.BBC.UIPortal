@@ -90,26 +90,20 @@ export class ProjectCostComponent {
     });
   }
 
-  getOpportunityManagerNames(opportunityManagers: any[]): string {
-    if (!opportunityManagers || opportunityManagers.length === 0) {
-      return '';
-    }
-    const managerNames = opportunityManagers.map(manager => manager.name);
-    return managerNames.join(', ');
-  }
+  // getOpportunityManagerNames(opportunityManagers: any[]): string {
+  //   if (!opportunityManagers || opportunityManagers.length === 0) {
+  //     return '';
+  //   }
+  //   const managerNames = opportunityManagers.map(manager => manager.name);
+  //   return managerNames.join(', ');
+  // }
 
   //---------------------------------------------get Buidling Block Info--------------------------------------------//
   fetchAllProjectBuildingBlock(projectIdOC: any) {
     if (this.projectIdOC != null) {
       this.projectService.getSOWInformations(projectIdOC).subscribe({
         next: (response: any) => {
-          this.getSavedBlockslist = response.data;
-          // console.log("Table BB", this.getSavedBlockslist)
-          // this.getSavedBlocksDetails = response.data.buildingBlocks.map((block: any) => ({
-          //   // buildingBlockId: block.buildingBlockId,
-          //   // buildingBlockName: block.buildingBlockName
-          // }));
-          // console.log("Table BB2",  this.getSavedBlocksDetails);
+          this.getSavedBlockslist = response?.data;
         }
       });
     }
@@ -118,17 +112,7 @@ export class ProjectCostComponent {
 
 
   //------------------------------------------------Download Pdf--------------------------------------------------//
-  // downloadAsPdf() {
-  //   const element = document.getElementById('pdf-content');
-  //   const opt = {
-  //     margin: 1,
-  //     filename: 'BBC_SOW.pdf',
-  //     image: { type: 'jpeg', quality: 0.98 },
-  //     html2canvas: { scale: 2 },
-  //     jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-  //   };
-  //   html2pdf().from(element).set(opt).save();
-  // }
+ 
 
   downloadAsPdf() {
 

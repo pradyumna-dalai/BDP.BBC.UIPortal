@@ -10,7 +10,7 @@
                 <div class="field col-12 md:col-4">
                     <div class="p-d-block"><label>Company Name<span class="requiredField">*</span></label></div>
                     <p-dropdown [options]="companyOptions" optionLabel="name"
-                        (onChange)="onCompanySelectionChange($event)" optionValue="id" formControlName="companyName"
+                        (onChange)="onCompanySelectionChange($event)" optionValue="name" formControlName="companyName"
                         placeholder="Select Company Name" [filter]="true" filterBy="name"></p-dropdown>
                 </div>
                 <div class="field col-12 md:col-4">
@@ -98,9 +98,9 @@
             <div class="p-fluid grid" formArrayName="rows">
                 <div *ngFor="let row of rows.controls; let i=index" [formGroupName]="i" class="row"
                     style="display: flex; align-items: center;">
-                    <div class="field col-12 md:col-5" style="margin-right: 10px;">
+                    <div class="field col-12 md:col-4" style="margin-right: 10px;">
                         <div class="p-d-block"><label>Date</label></div>
-                        <p-calendar formControlName="date" placeholder="MM/DD/YYYY" [showSeconds]="true"
+                        <p-calendar formControlName="date" placeholder="MM/DD/YYYY" [showSeconds]="true" dateFormat="mm/dd/yy"
                             [showIcon]="true"></p-calendar>
                         <!-- <div class="error" *ngIf="row.get('date').hasError('required')">
                           Date is required.
