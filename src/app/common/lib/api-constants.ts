@@ -74,7 +74,7 @@ export namespace AppRoutes {
 
         public static readonly saveProjectDraft = "project";
 
-        public static readonly getallProjects = "projectss";
+        public static readonly getallProjects = "projects";
 
         public static readonly exportProjectsinExcel = "export-project";
 
