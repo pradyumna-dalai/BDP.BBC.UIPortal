@@ -36,16 +36,16 @@ export class ProjectComponent {
   endDateString: string;
   startDateString: string;
   // Pagination properties
-  currentPage: number = 1;
-  pageSize: number = 10;
-  sortField: string = ''; // Initial sort field
-  sortOrder: number = 1; // 1 for ascending, -1 for descending
+  // currentPage: number = 1;
+  // pageSize: number = 10;
+  // sortField: string = ''; // Initial sort field
+  // sortOrder: number = 1; // 1 for ascending, -1 for descending
 
-  totalRecords: any = 10;
-  first: any = 0;
-  rows: any = 10;
-  newSortField: any;
-  newSortOrder: any;
+  // totalRecords: any = 10;
+  // first: any = 0;
+  // rows: any = 10;
+  // newSortField: any;
+  // newSortOrder: any;
   visible: boolean = false;
   selectedProjectName: string = '';
   dateRangeCopy: any;
@@ -262,19 +262,9 @@ export class ProjectComponent {
 
 
   fetchAllProjectDetails() {
-    const params = {
-      pageNo: isNaN(this.currentPage) ? 0 : this.currentPage - 1,
-      pageSize: isNaN(this.pageSize) ? 10 : this.pageSize,
-      sortBy: this.sortField,
-      sortDir: this.sortOrder
-    };
-    this.projectsService.getAllProjectDetails(params).subscribe((res: any) => {
+    this.projectsService.getAllProjectDetails().subscribe((res: any) => {
       if (res?.message == "success") {
         this.proejctdetails = res?.data.map((item: any) => {
-          const opportunityManagers = item.projectInformation
-          // ?.map(manager => manager?.name).join(', ');
-          //console.log('opp',opportunityManagers);
-
           // Determine origin and destination locations
           const originLocation = item.projectLocation
             .filter((loc: any) => loc.originDestinationCode === 0)
@@ -288,15 +278,14 @@ export class ProjectComponent {
           const formattedEndDate = this.momentService.getFullDate(item.projectInformation?.endDate);
           return {
             companyname: item.projectInformation?.companyName,
-            customerCode: item.projectInformation?.companyCode,
+            companyCode: item.projectInformation?.companyCode,
             industryVertical: item.projectInformation?.industryVertical,
             originLocation: originLocation,
             destinationLocation: destinationLocation,
             region: item.projectInformation?.region?.name,
             id: item?.id,
-           // projectName: item.projectInformation?.projectName,
             opportunityName: item.projectInformation?.opportunityName,
-            opportunityID: item.projectInformation?.opportunityId,
+            opportunityId: item.projectInformation?.opportunityId,
             projectStage: item.projectInformation?.projectStage?.name,
             projectStatus: item.projectInformation?.projectStatus?.name,
             opportunitymanager: item.projectInformation.opportunityManager,
@@ -308,33 +297,13 @@ export class ProjectComponent {
            
           };
         });
-        this.totalRecords = res?.data.totalElements;
-        //console.log('fbggf', this.proejctdetails);
       } else {
         this.proejctdetails = [];
-        this.totalRecords = 0;
       }
     });
   }
 
-  onPageChange(event: any) {
-    this.currentPage = event.page + 1;
-    this.pageSize = event.rows;
-    this.fetchAllProjectDetails();
-  }
-  onSort(event: any) {
 
-    this.newSortField = event.field;
-    this.newSortOrder = (event.order === 1) ? 'asc' : 'desc';
-
-    if (this.newSortField !== this.sortField || this.newSortOrder !== this.sortOrder) {
-      this.sortField = this.newSortField;
-      this.sortOrder = this.newSortOrder;
-      this.currentPage = 1;
-      this.fetchAllProjectDetails();
-    }
-
-  }
   exportData() {
     if (this.selectedStartDate && this.selectedEndDate) {
       this.startDateString = this.formatDate(this.selectedStartDate);

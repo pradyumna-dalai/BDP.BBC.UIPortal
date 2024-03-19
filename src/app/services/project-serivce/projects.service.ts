@@ -40,14 +40,8 @@ shareBuildingData(newData: string) {
     this.dataSubject.next(newData);
 }
 
-getAllProjectDetails(params: any): Observable<any>{
-  let httpParams = new HttpParams();
-  Object.keys(params).forEach((key) => {
-    if (params[key] !== null && params[key] !== undefined) {
-      httpParams = httpParams.append(key, params[key]);
-    }
-  });
-  return this.http.get<any>(url + settings.AppRoutes.Auth.getallProjects,{ params: httpParams});
+getAllProjectDetails(): Observable<any>{
+  return this.http.get<any>(url + settings.AppRoutes.Auth.getallProjects);
 }
 deleteProject(id:number) {
   const downloadUrl = `${url}${settings.AppRoutes.Auth.saveProjectDraft}/${id}`;
