@@ -191,8 +191,9 @@ export class ProjectCostComponent {
         this.projectService.UploadProjectArtifact(this.selectedFile, scopeId, entityId).subscribe(
           (res: any) => {
             if (res?.message === 'success') {
-              this.fileNameOC = "";
-              this.selectedFile = null;
+            //  this.fileNameOC = "";
+            //  this.selectedFile = null;
+              this.fileNameOC = this.selectedFile.name;
               this.messageService.add({
                 key: 'successToast',
                 severity: 'success',
