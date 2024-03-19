@@ -162,10 +162,10 @@ export class CreateProjectComponent implements OnInit {
         this.getProjectDetails(this.projId);
       }
 
-      this.projectId = params.projId;
-      if (this.projectId != undefined) {
-        this.getProjectDetails(this.projectId);
-      }
+      // this.projectId = params.projId;
+      // if (this.projectId != undefined) {
+      //   this.getProjectDetails(this.projectId);
+      // }
     });
 
     if (this.projId) {
@@ -313,7 +313,7 @@ export class CreateProjectComponent implements OnInit {
   get rows() {
     return this.myForm.get('rows') as FormArray;
   }
-  
+
   getForm(): FormGroup {
     return this.myForm;
   }
@@ -349,8 +349,6 @@ export class CreateProjectComponent implements OnInit {
     })
   }
 
-
-
   onCompanySelectionChange(event: any) {
     const selectedCompanyId = event.value;
     const selectedCompany = this.companyOptions.find(company => company.id === selectedCompanyId);
@@ -365,51 +363,50 @@ export class CreateProjectComponent implements OnInit {
   }
 
   // ---------------get Opportunity name on company select------------------------//
+  // onCompanySelect(event) {
+  //   this.IVOptions = [];
+  //   this.opportunityNameOptions = [];
+  //   const selectedCompanyId = event.value;
+  //   this.MasterTableservice.getOpportunityName(selectedCompanyId).subscribe((res: any) => {
+  //     if (res?.message === "success") {
+  //       this.opportunityNameOptions = res?.data;
 
-  onCompanySelect(event) {
-    this.IVOptions = [];
-    this.opportunityNameOptions = [];
-    const selectedCompanyId = event.value;
-    this.MasterTableservice.getOpportunityName(selectedCompanyId).subscribe((res: any) => {
-      if (res?.message === "success") {
-        this.opportunityNameOptions = res?.data;
-
-        // Automatically select the opportunity name if it matches the response
-        const selectedOpportunityId = this.response?.opportunityName?.id;
-        if (selectedOpportunityId) {
-          const matchingOpportunity = this.opportunityNameOptions.find(opportunity => opportunity.id === selectedOpportunityId);
-          if (matchingOpportunity) {
-            this.myForm.get('opportunityName').setValue(matchingOpportunity.id);
-          }
-        }
-      } else {
-        this.opportunityNameOptions = [];
-      }
-    });
-  }
+  //       // Automatically select the opportunity name if it matches the response
+  //       const selectedOpportunityId = this.response?.opportunityName?.id;
+  //       if (selectedOpportunityId) {
+  //         const matchingOpportunity = this.opportunityNameOptions.find(opportunity => opportunity.id === selectedOpportunityId);
+  //         if (matchingOpportunity) {
+  //           this.myForm.get('opportunityName').setValue(matchingOpportunity.id);
+  //         }
+  //       }
+  //     } else {
+  //       this.opportunityNameOptions = [];
+  //     }
+  //   });
+  // }
 
   // ---------------get Industry Vertical------------------------//
-  onOpportunitySelect(event) {
-    const selectedOpportunityId = event.value;
+  // onOpportunitySelect(event) {
+  //   const selectedOpportunityId = event.value;
 
-    // Fetch industry vertical options based on the selected opportunity ID
-    this.MasterTableservice.getIndustryVertical(selectedOpportunityId).subscribe((res: any) => {
-      if (res?.message === "success") {
-        this.IVOptions = res?.data;
+  //   // Fetch industry vertical options based on the selected opportunity ID
+  //   this.MasterTableservice.getIndustryVertical(selectedOpportunityId).subscribe((res: any) => {
+  //     if (res?.message === "success") {
+  //       this.IVOptions = res?.data;
 
-        // Automatically select the industry vertical if it matches the response
-        const selectedIVId = this.response?.industryVertical?.id;
-        if (selectedIVId) {
-          const matchingIV = this.IVOptions.find(iv => iv.id === selectedIVId);
-          if (matchingIV) {
-            this.myForm.get('industryVertical').setValue(matchingIV.id);
-          }
-        }
-      } else {
-        this.IVOptions = [];
-      }
-    });
-  }
+  //       // Automatically select the industry vertical if it matches the response
+  //       const selectedIVId = this.response?.industryVertical?.id;
+  //       if (selectedIVId) {
+  //         const matchingIV = this.IVOptions.find(iv => iv.id === selectedIVId);
+  //         if (matchingIV) {
+  //           this.myForm.get('industryVertical').setValue(matchingIV.id);
+  //         }
+  //       }
+  //     } else {
+  //       this.IVOptions = [];
+  //     }
+  //   });
+  // }
   // ---------------get Project Stage------------------------//
   getProjectStage() {
     this.MasterTableservice.getProjectStage().subscribe((res: any) => {
@@ -454,7 +451,7 @@ export class CreateProjectComponent implements OnInit {
       }
     });
   }
-  
+
   formatDate(date: Date): string {
     return dayjs(date).format('YYYY-MM-DD');
   }
@@ -643,19 +640,6 @@ export class CreateProjectComponent implements OnInit {
       }
     });
   }
-  // fetchActiveUom() {
-  //   this.uomOptions = [];
-  //   this.MasterTableservice.getAllActiveUOM().subscribe((res: any) => {
-  //     if (res?.message == "success") {
-  //       this.uomOptions = res?.data.map((uom: any) => ({
-  //         id: uom.id,
-  //         name: uom.name
-  //       }));
-  //     } else {
-  //       this.uomOptions = [];
-  //     }
-  //   })
-  // }
 
   toggleOriginCheckbox() {
     this.enableOriginLocation = !this.enableOriginLocation;
@@ -747,10 +731,7 @@ export class CreateProjectComponent implements OnInit {
   OrigndeleteRow(rowIndex: number) {
     this.OtableData.splice(rowIndex, 1);
   }
-  // OrigngetUomName(uomId: number): string {
-  //   const selectedUom = this.uomOptions.find(uom => uom.id === uomId);
-  //   return selectedUom ? selectedUom.name : '';
-  // }
+
   //-----------------------------------Destination Location Table----------------------------------------------//
   onDestinationLocationChange(event: any) {
     let selectedLocationIds = event.value;
@@ -825,10 +806,7 @@ export class CreateProjectComponent implements OnInit {
   deleteRow(rowIndex: number) {
     this.tableData.splice(rowIndex, 1);
   }
-  // getUomName(uomId: number): string {
-  //   const selectedUom = this.uomOptions.find(uom => uom.id === uomId);
-  //   return selectedUom ? selectedUom.name : '';
-  // }
+
   //-----------------------------destination end----------------------------------//
 
 
@@ -952,107 +930,6 @@ export class CreateProjectComponent implements OnInit {
     this.visibleOthersBox = false;
   }
   //-------------------------------------------------end-----------------------------------------//
-
-  getProjectDetails(projectId): void {
-    this.projectService.getProjectDetails(projectId).subscribe((res: any) => {
-      if (res?.message === 'success') {
-        //this.projectService.setDraftData(res);
-        this.draftSaved = true;
-        this.projinfoID = projectId;
-        this.draftSavedBB = true;
-        this.draftSavedVolume = true;
-        this.projectidVolume = projectId;
-        this.projectIDbb = projectId;
-        this.projectIdCLI = projectId;
-        this.draftSavedCLI = true;
-        this.draftSavedOC = true;
-        this.projectIdOC = projectId;
-        this.response = res.data.projectInformation;
-        this.projinfoidedit = res.data.projectInformation.id;
-        this.projStatus = this.response.projectStatus?.name;
-        this.populateForm();
-        const originLocations = res.data.projectLocation.filter(location => location.originDestinationCode === 0);
-        const destinationLocations = res.data.projectLocation.filter(location => location.originDestinationCode === 1);
-
-        this.OtableData = originLocations.map(location => ({
-          city: location.location.name,
-          //  Volume: location.volume,
-          //  Uom: location.uom.id,
-          editing: false,
-          adding: false
-        }));
-
-        this.tableData = destinationLocations.map(location => ({
-          city: location.location.name,
-          //    Volume: location.volume,
-          //    Uom: location.uom.id,
-          editing: false,
-          adding: false
-        }));
-
-        if (originLocations.length > 0) {
-          this.enableOriginLocation = true;
-        }
-
-        if (destinationLocations.length > 0) {
-          this.enableDestinationLocation = true;
-        }
-      } else {
-        // Handle error
-      }
-    });
-  }
-  populateForm(): void {
-    // this.myForm.patchValue({
-
-    // //  selectedDateRange: `${this.patchformatDate(this.response.startDate)} - ${this.patchformatDate(this.response.endDate)}`,
-    // });
-    this.myForm.patchValue({
-      companyName: this.response.company?.id,
-      customerCode: this.response.customerCode,
-      opportunityName: this.response.opportunityName?.id,
-      industryVertical: this.response.industryVertical?.id,
-      region: this.response.region?.id,
-      projectName: this.response.projectName,
-      projectStage: this.response.projectStage?.id,
-      projectStatus: this.response.projectStatus?.id,
-      // opportunityManager: this.response.opportunityManager.map(manager => manager.id),
-      designNotes: this.response.designNote,
-      impleNotes: this.response.implementationNote,
-
-    });
-
-    // Automatically fetch and set opportunity names based on the selected company
-    if (this.response.company) {
-      this.onCompanySelect({ value: this.response.company.id });
-    }
-    // Automatically fetch and set industry vertical based on the selected opportunity name
-    if (this.response.opportunityName) {
-      this.onOpportunitySelect({ value: this.response.opportunityName.id });
-    }
-
-    // Set selected opportunity managers
-    if (this.response.opportunityManager && this.response.opportunityManager.length > 0) {
-      const selectedOpportunityManagers = this.response.opportunityManager.map(manager => manager.id);
-      this.myForm.get('opportunityManger').setValue(selectedOpportunityManagers);
-    }
-    const selectedRegionIndex = this.regionOptions.findIndex(region => region.id === this.response.region?.id);
-    const selectedProjectStageIndex = this.projectStageOptions.findIndex(stage => stage.id === this.response.projectStage?.id);
-
-    if (selectedProjectStageIndex !== -1) {
-      this.myForm.get('projectStage').setValue(this.projectStageOptions[selectedProjectStageIndex].id);
-      // Automatically fetch and set project status based on the selected project stage
-      this.OnStageSelectProjectstatus({ value: this.response.projectStage.id });
-    }
-
-
-
-    if (selectedRegionIndex !== -1) {
-      this.myForm.get('region').setValue(this.regionOptions[selectedRegionIndex].id);
-    }
-
-
-  }
   //-------------------------------------Delete  Document By ID -----------------------------------//
 
   deleteResponseArtifact(index: number): void {
@@ -1308,5 +1185,110 @@ export class CreateProjectComponent implements OnInit {
 
   }
 
+
+
+  //#region   Edit the project  details
+
+
+  getProjectDetails(projectId): void {
+    this.projectService.getProjectDetails(projectId).subscribe((res: any) => {
+      if (res?.message === 'success') {
+        //this.projectService.setDraftData(res);
+        this.draftSaved = true;
+        this.projinfoID = projectId;
+        this.draftSavedBB = true;
+        this.draftSavedVolume = true;
+        this.projectidVolume = projectId;
+        this.projectIDbb = projectId;
+        this.projectIdCLI = projectId;
+        this.draftSavedCLI = true;
+        this.draftSavedOC = true;
+        this.projectIdOC = projectId;
+        this.response = res.data.projectInformation;
+        this.projinfoidedit = res.data.projectInformation.id;
+        this.projStatus = this.response.projectStatus?.name;
+        this.populateForm();
+        const originLocations = res.data.projectLocation.filter(location => location.originDestinationCode === 0);
+        const destinationLocations = res.data.projectLocation.filter(location => location.originDestinationCode === 1);
+
+        this.OtableData = originLocations.map(location => ({
+          city: location.location.name,
+          editing: false,
+          adding: false
+        }));
+
+        this.tableData = destinationLocations.map(location => ({
+          city: location.location.name,
+          editing: false,
+          adding: false
+        }));
+
+        if (originLocations.length > 0) {
+          this.enableOriginLocation = true;
+        }
+
+        if (destinationLocations.length > 0) {
+          this.enableDestinationLocation = true;
+        }
+      } else {
+        // Handle error
+      }
+    });
+
+  }
+  
+
+  populateForm(): void {
+    this.myForm.patchValue({
+      companyId: this.response.companyId,
+      companyName: this.response.companyName,
+      companyCode: this.response.companyCode,
+      industryVertical: this.response.industryVertical,
+      OpportunityId: this.response.opportunityId,
+      opportunityName: this.response.opportunityName,
+      region: this.response.region?.id,
+      projectStage: this.response.projectStage?.id,
+      projectStatus: this.response.projectStatus?.id,
+      opportunityManager: this.response.opportunityManager,
+      scopeAssumption: this.response.scopeAssumption,
+      startDate: new Date(this.response.startDate),
+      endDate: new Date(this.response.endDate)
+
+
+    });
+    // Clear existing rows if any
+    this.rows.clear();
+    // Populate Notes data
+    if (this.response.notes && this.response.notes.length > 0) {
+      this.response.notes.forEach(note => {
+        const newRow = this.fb.group({
+          date: [new Date(note.date), Validators.required],
+          actionItems: [note.actionItem, Validators.maxLength(1000)],
+          outcome: [note.outcome, Validators.maxLength(1000)]
+        });
+        this.rows.push(newRow);
+      });
+    } else {
+      // If there are no notes, add a single empty row
+      this.addRowNotes();
+    }
+    // Automatically fetch and set opportunity names based on the selected company
+    if (this.response.company) {
+      //  this.onCompanySelect({ value: this.response.company.id });
+    }
+    const selectedRegionIndex = this.regionOptions.findIndex(region => region.id === this.response.region?.id);
+    const selectedProjectStageIndex = this.projectStageOptions.findIndex(stage => stage.id === this.response.projectStage?.id);
+    if (selectedProjectStageIndex !== -1) {
+      this.myForm.get('projectStage').setValue(this.projectStageOptions[selectedProjectStageIndex].id);
+      // Automatically fetch and set project status based on the selected project stage
+      this.OnStageSelectProjectstatus({ value: this.response.projectStage.id });
+    }
+    if (selectedRegionIndex !== -1) {
+      this.myForm.get('region').setValue(this.regionOptions[selectedRegionIndex].id);
+    }
+
+
+  }
+  //#endregion
 }
 
