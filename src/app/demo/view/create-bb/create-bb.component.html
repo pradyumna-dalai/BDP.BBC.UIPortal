@@ -249,7 +249,7 @@
         </div>
     </div>
     <hr class="align">
-    <div *ngIf="!excelDataOpration" style="min-height: 669px;">
+    <div *ngIf="!excelDataOpration && !pdfSrc" style="min-height: 669px;">
         <div style="margin-top: 90px;">
             <div style="display: flex;justify-content: center;">
                 <img src="assets/layout/images/no-bb-found.svg" alt="No Building Blocks Found">
@@ -263,7 +263,7 @@
         </div>
     </div>
 
-    <div *ngIf="excelDataOpration">
+    <div *ngIf="excelDataOpration && !pdfSrc">
         <h4 style="text-align: center;">Excel Preview</h4>
         <div class="excel-container" [style.min-height]="excelDataOpration.length ? '200px' : '100px'">
             <table class="excel-table">
@@ -278,6 +278,13 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+    </div>
+
+    <div>
+        <h4 *ngIf="pdfSrc" style="text-align: center;">Pdf Preview</h4>
+        <div class="excel-container" [style.min-height]="'200px'">
+            <iframe src="" id="iframe-pdf" width="1400px" height="800px" style="visibility: hidden;"></iframe>
         </div>
     </div>
     <br>
@@ -771,7 +778,7 @@
                     <h6><b>Instructions</b></h6>
                     <ul class="list">
                         <li>Maximum File Size: 5MB</li>
-                        <li>File Format: xlsx</li>
+                        <li>File Format: xlsx, pdf</li>
                     </ul>
                     <ol class="list" type="1">
                         <li>Make sure to provide valid data</li>
@@ -794,7 +801,7 @@
                                 </label>
                                 <p style="text-align: center;">{{fileNameOC}}</p>
                                 <input type="file" id="fileInput" (change)="onFileSelected($event)"
-                                    style="display: none;" accept=".xlsx">
+                                    style="display: none;" accept=".xlsx, .pdf">
                             </div>
                         </div>
                     </div>

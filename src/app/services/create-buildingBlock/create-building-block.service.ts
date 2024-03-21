@@ -77,6 +77,11 @@ export class CreateBuildingBlockService {
     return this.http.get(downloadUrl, { responseType: 'arraybuffer' as 'json' });
   }
 
+  downloadUploadedOperationPDFCard(id: number) {
+    const downloadUrl = `${url}${settings.AppRoutes.Auth.downloadOperationExcel}/${id}`;
+    return this.http.get(downloadUrl, { responseType: 'blob' as 'json' });
+  }
+
   // allUploadedExcel(scopeId: number, entityId: number, limitSize: number, removeDuplicate: boolean): Observable<any> {
   //   // const formData: FormData = new FormData();
   //   //formData.append('file', file, file.name);

@@ -216,7 +216,7 @@
                             (click)="downloadOperationCardExcel($event)">Download</a>
                     </div>
                 </div>
-                <div *ngIf="excelDataOpration">
+                <div *ngIf="excelDataOpration && !pdfView">
                     <h4 style="text-align: center;">Excel Preview</h4>
                     <div class="excel-container" [style.min-height]="excelDataOpration.length ? '200px' : '100px'">
                         <table class="excel-table">
@@ -231,6 +231,13 @@
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 style="text-align: center;" *ngIf="pdfView">Pdf Preview</h4>
+                    <div class="excel-container" [style.min-height]="'50px'">
+                        <iframe src="" id="iframe-pdf" width="1400px" height="800px" style="visibility: hidden;"></iframe>
                     </div>
                 </div>
                 <br>
