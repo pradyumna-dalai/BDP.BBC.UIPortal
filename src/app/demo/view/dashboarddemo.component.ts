@@ -32,6 +32,7 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
     fileName: any;
     showDownload: boolean = false;
     excelDataOpration: any;
+    pdfView: boolean = false;
     constructor(private breadcrumbService: AppBreadcrumbService, private appMain: AppMainComponent, private createBuildingBlockservice: CreateBuildingBlockService) {
         this.breadcrumbService.setItems([
             { label: 'Building Blocks' }
@@ -172,7 +173,11 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
             this.showScopingCrad = false;
             this.showOperationCrad = true;
             this.showCommercialCrad = false;
-            this.downloadOperationCardExcelView();
+            if (this.isPdfFile(this.fileName)) {
+                this.downloadOperationCardPdfView();
+            } else {
+                this.downloadOperationCardExcelView();
+            }
 
         }
         if (val == 'commercial') {
@@ -208,6 +213,12 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
           return label;
         }
       }
+
+    isPdfFile(fileName) {
+        let fileNameSplit = fileName.split(".");
+        this.pdfView = fileNameSplit[fileNameSplit.length-1] === 'pdf';
+        return this.pdfView;
+    }
     onDraftItemClick(): void {
         if (this.selectedNode) {
             this.itemId = this.selectedNode.data.id;
@@ -216,9 +227,17 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
                     this.buildingBlockDetails = response;
                     this.operationDocId = response.data.operationsCard?.id;
                     this.fileName = response.data.operationsCard?.name; 
-                    this.showDownload = response.data.operationsCard !== null; 
+                    this.showDownload = response.data.operationsCard !== null;
                     if (this.showDownload) {
-                        this.downloadOperationCardExcelView();
+                        if (!this.isPdfFile(this.fileName)) {
+                            this.downloadOperationCardExcelView();
+                            this.pdfView = false;
+                            const preview = document.querySelector('iframe');
+                            preview.style.visibility = 'hidden';
+                        } else {
+                            this.pdfView = true;
+                            this.downloadOperationCardPdfView();
+                        }
                     } else {
                         this.excelDataOpration = null;
                     }
@@ -284,6 +303,22 @@ export class DashboardDemoComponent implements OnInit, OnDestroy {
       );
     } else {
    //   console.error('Operation Card ID or Name is null or undefined.');
+    }
+  }
+
+  downloadOperationCardPdfView() {
+    if (this.operationDocId != null) {
+        this.createBuildingBlockservice.downloadUploadedOperationPDFCard(this.operationDocId).subscribe(
+            (data: Blob) => {
+                const file = window.URL.createObjectURL(data);
+                const iframe = document.querySelector("iframe");
+                iframe.src = file;
+                iframe.style.visibility = 'visible';
+              },
+              (error) => {
+                console.error('Error downloading file:', error);
+              }
+        );
     }
   }
 

@@ -102,6 +102,8 @@ export class CreateBbComponent {
   operationDocId: any;
   operationDocName: any;
   showDownload: boolean = false;
+  pdfSrc: any;
+
   constructor(private breadcrumbService: AppBreadcrumbService, private messageService: MessageService,
     public MasterTableservice: MasterTableService, private confirmationService: ConfirmationService,
     public CreateBuildingBlockservice: CreateBuildingBlockService, private router: Router, private httpClient: HttpClient,
@@ -1101,6 +1103,19 @@ onScopeSelectbyid(body) {
     reader.readAsArrayBuffer(file);
   }
 
+  readPdfFile(file: File) {
+    const preview = document.querySelector('iframe');
+    preview.style.visibility = 'visible';
+    const reader = new FileReader();
+    reader.addEventListener("load", function () {
+      // convert file to base64 string
+      preview.src = reader.result as string;
+    }, false);
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  }
+
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
 
@@ -1126,7 +1141,26 @@ onScopeSelectbyid(body) {
 
   showErrorMessage(message: string) {
     this.messageService.add({ key: 'errorToast', severity: 'error', summary: 'Error', detail: message });
-}
+  }
+
+  UploadFileForOperationCard(scopeId, entityId) {
+    this.createBuildingBlockservice.operationCardUploadExcel(this.selectedFile, scopeId, entityId).subscribe(
+      (res: any) => {
+          if (res?.message === 'success') {
+              this.fileNameOC = "";
+              this.selectedFile = null;
+              this.showSuccessMessage('File uploaded successfully!');
+              const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+              if (fileInput) {
+                fileInput.value = '';
+              }
+          }
+      },
+      (error) => {
+          console.error('Error uploading file:', error);
+      }
+    );
+  }
 
   onUploadClick(event: any): void {
     if (this.selectedFile) {
@@ -1135,6 +1169,9 @@ onScopeSelectbyid(body) {
 
         // Check if the file extension is Excel
         if (fileExtension === 'xls' || fileExtension === 'xlsx') {
+            const preview = document.querySelector('iframe');
+            preview.style.visibility = 'hidden';
+            this.pdfSrc = false;
             const scopeId = 1;
             const entityId = this.blockId;
             this.readExcelFile(this.selectedFile);
@@ -1159,10 +1196,20 @@ onScopeSelectbyid(body) {
                     console.error('Error uploading file:', error);
                 }
             );
+        } else if(fileExtension === 'pdf') {
+            this.pdfSrc = true;
+            const scopeId = 1;
+            const entityId = this.blockId;
+            this.readPdfFile(this.selectedFile);
+            this.visibleOperationBox = false;
+            this.UploadFileForOperationCard(scopeId, entityId);
         } else {
-            this.showErrorMessage('Only Excel files (.xlsx) are allowed!');
+            this.showErrorMessage('Only Excel, Pdf files (.xlsx, .pdf) are allowed!');
         }
     } else {
+      const preview = document.querySelector('iframe');
+      preview.style.visibility = 'hidden';
+      this.pdfSrc = false;
     }
 }
 
